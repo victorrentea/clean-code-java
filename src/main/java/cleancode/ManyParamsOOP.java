@@ -1,19 +1,14 @@
 package cleancode;
 
-import javax.inject.Inject;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 public class ManyParamsOOP {
     public static void main(String[] args) {
 
     }
 
-    @Inject // pretend
+    //@Inject // pretend
     private Validator validator = new Validator();
 
     public void bizLogic() {
