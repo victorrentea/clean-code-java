@@ -12,9 +12,9 @@ public class StatementViewerTest {
     @Test
     public void characterizationTest() {
         List<Rental> rentals = new ArrayList<>();
-        rentals.add(new Rental(new Movie("Star Wars"), 6));
-        rentals.add(new Rental(new Movie("Sofia"), 7));
-        rentals.add(new Rental(new Movie("Inception"), 5));
+        rentals.add(new Rental(new Movie("Star Wars", Movie.Category.NEW_RELEASE), 6));
+        rentals.add(new Rental(new Movie("Sofia", Movie.Category.CHILDREN), 7));
+        rentals.add(new Rental(new Movie("Inception", Movie.Category.REGULAR), 5));
         
         String expected = "Rental Record for John Doe\n"
                 + "	Star Wars	18.0\n"
