@@ -7,27 +7,36 @@ public class BouleanParameters {
 
     public static void main(String[] args) {
         // The method is called from various foreign places in the codebase
-        bigUglyMethod(1,2,3,4,5, false);
-        bigUglyMethod(1,2,3,4,5, false);
-        bigUglyMethod(1,2,3,4,5, false);
-        bigUglyMethod(1,2,3,4,5, false);
-        bigUglyMethod(1,2,3,4,5, false);
+        bigUglyMethod(1,2,3,4,5);
+        bigUglyMethod(1,2,3,4,5);
+        bigUglyMethod(1,2,3,4,5);
+        bigUglyMethod(1,2,3,4,5);
+        bigUglyMethod(1,2,3,4,5);
 
         // TODO From **MY** use-case #323, I call it too, to do more within:
-        bigUglyMethod(1,2,3,4,5, true);
+        bigUglyMethodCR323(1,2,3,4,5);
     }
-    static void bigUglyMethod(int a, int b, int c, int d, int e, boolean cr323) {
-        // complex logic
-        // complex logic
-        // complex logic
+    static void bigUglyMethod(int a, int b, int c, int d, int e) {
+        before();
+        after();
+    }
 
-        if (cr323) {
-            // sI eu
-        }
+    static void bigUglyMethodCR323(int a, int b, int c, int d, int e) {
+        before();
+        System.out.println("#Sieu");
+        after();
+    }
 
+    private static void after() {
         // more complex logic
         // more complex logic
         // more complex logic
+    }
+
+    private static void before() {
+        // complex logic
+        // complex logic
+        // complex logic
     }
 
 
@@ -45,6 +54,7 @@ public class BouleanParameters {
                      i ++;
                     // more code
                     // TODO HERE, when call this method, I want MY own custom code to run here
+                    System.out.println("#Sieu");
                     // more code
                 }
                 // more code
