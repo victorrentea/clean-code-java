@@ -2,15 +2,27 @@ package cleancode;
 
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
+    public void placeOrder(FullName fullName, Address address) {
+        if (fullName == null) {
+            throw new IllegalArgumentException();
+        }
+
 
     }
 }
 
 class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
+    public void otherMethod(FullName fullName, int x) {
         //distant logic
     }
+}
+
+
+class Person {
+
+//    private String firstName;
+//    private String lastName;
+    private FullName fullName;
 }
