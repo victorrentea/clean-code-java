@@ -32,7 +32,7 @@ class Rental {
 	}
 
 	public double computePrice() {
-		return movie.getCategory().computePrice(daysRented);
+		return movie.computePrice(daysRented);
     }
 
 }

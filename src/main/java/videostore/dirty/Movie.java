@@ -1,5 +1,5 @@
 package videostore.dirty;
-public class Movie {
+public abstract class Movie {
 
 	enum Category {
 		CHILDREN{
@@ -29,22 +29,35 @@ public class Movie {
 			}
 		};
 
-		public abstract double computePrice(int daysRented);
 	}
 
 	private final String title;
-	private final Category category;
 
-	public Movie(String title, Category category) {
+	public Movie(String title) {
 		this.title = title;
-		this.category = category;
 	}
 
-	public Category getCategory() {
-		return category;
-	}
+	public abstract double computePrice(int daysRented);
+	public abstract int computeFreqRenterPoints(int daysRented);
+	public abstract int computeMaxRentalDays(int daysRented);
 
 	public String getTitle() {
 		return title;
 	};
 }
+
+class NewReleaseMovie extends Movie {
+	public NewReleaseMovie(String title) {
+		super(title);
+	}
+	public double computePrice(int daysRented) {
+		return daysRented * 3;
+	}
+	public int computeFreqRenterPoints(int daysRented) {
+		return 0;
+	}
+	public int computeMaxRentalDays(int daysRented) {
+		return 0;
+	}
+}
+
