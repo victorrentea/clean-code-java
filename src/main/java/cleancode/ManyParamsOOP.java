@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManyParamsOOP {
-    public static void main(String[] args) {
-
-    }
-
-    //@Inject // pretend
+    // @Autowired/@Inject // pretend
     private Validator validator = new Validator();
 
     public void bizLogic() {
@@ -23,7 +19,10 @@ public class ManyParamsOOP {
         }
     }
 }
+// @Service ~pretend
 class Validator {
+	// @Autowired/@Inject // pretend
+	//private OtherDependency dep;
 
     public void m1(String a, int b, List<String> errors) {
         // stuff
