@@ -1,6 +1,7 @@
 package cleancode;
 
 import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ImmutablePlay {
 		a.getStrings().add("si p'asta");
 		System.out.println(a);
 		
+		A altA = a.setS("AltS");
 		
 	}
 }
@@ -32,6 +34,10 @@ class A {
 	
 	public String getS() {
 		return s;
+	}
+	
+	public A setS(String newS) {
+		return new A(newS, b, strings);
 	}
 	public List<String> getStrings() {
 		return unmodifiableList(strings);
