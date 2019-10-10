@@ -6,6 +6,47 @@ import java.util.Set;
 
 public class LoosingElementsInSet {
     public static void main(String[] args) {
-//        Set<Child> children = new HashSet<>();
+        Set<Child> children = new HashSet<>();
+        Child childOne = new Child("Emma");
+
+        children.add(childOne);
+
+        System.out.println("hash(fiimea): " + childOne.hashCode());
+        System.out.println("O am pe emma? " + children.contains(childOne));
+
+//        childOne.setName("Emma-Simona");
+
+        System.out.println("hash(fiimea): " + childOne.hashCode());
+        System.out.println("O am pe emma? " + children.contains(childOne));
+    }
+}
+
+class Child {
+    private final String name;
+
+    Child(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+//    public Child setName(String name) {
+//        this.name = name;
+//        return this;
+//    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Child child = (Child) o;
+        return Objects.equals(name, child.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
