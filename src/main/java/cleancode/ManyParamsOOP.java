@@ -25,9 +25,15 @@ class Validator {
 	//private OtherDependency dep;
 
     public void m1(String a, int b, List<String> errors) {
+        if (a == null) {
+            errors.add("a must not be null");
+        }
         // stuff
     }
     public void m2(String s, int c, List<String> errors) {
+        if (c < 0) {
+            errors.add("negative c");
+        }
         // stuff
     }
     public void m3(String fileName, long versionId, String reference, List<String> errors) {

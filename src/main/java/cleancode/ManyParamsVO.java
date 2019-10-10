@@ -5,7 +5,7 @@ public class ManyParamsVO {
         new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
     }
     public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName != null) throw new IllegalArgumentException();
+    	if (fName == null || lName == null) throw new IllegalArgumentException();
     	
     	System.out.println("Some Logic");
     }
@@ -13,8 +13,15 @@ public class ManyParamsVO {
 
 class AnotherClass {
     public void otherMethod(String firstName, String lastName, int x) {
-    	if (firstName == null || lastName != null) throw new IllegalArgumentException();
+    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
     	
     	System.out.println("Another distant Logic");
     }
+}
+
+class Customer {
+    private String firstName;
+    private String lastName;
+
+
 }
