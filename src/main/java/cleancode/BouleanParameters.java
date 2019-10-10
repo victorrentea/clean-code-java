@@ -7,18 +7,18 @@ public class BouleanParameters {
 
 	public static void main(String[] args) {
 		// The method is called from various foreign places in the codebase
-		bigUglyMethod(1, 2, 3, 4, 5);
-		bigUglyMethod(1, 2, 3, 4, 5);
-		bigUglyMethod(1, 2, 3, 4, 5);
-		bigUglyMethod(1, 2, 3, 4, 5);
-		bigUglyMethod(1, 2, 3, 4, 5);
+		bigUglyMethod(1, 2);
+		bigUglyMethod(1, 2);
+		bigUglyMethod(1, 2);
+		bigUglyMethod(1, 2);
+		bigUglyMethod(1, 2);
 
 		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(1, 2, 3, 4, 5);
+		bigUglyMethod(1, 2);
 
 	}
 
-	static void bigUglyMethod(int a, int b, int c, int d, int e) {
+	static void bigUglyMethod(int a, int b) {
 		System.out.println("Complex Logic");
 		System.out.println("Complex Logic");
 		System.out.println("Complex Logic");
