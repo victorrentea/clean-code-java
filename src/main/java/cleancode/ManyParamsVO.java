@@ -23,5 +23,18 @@ class Customer {
     private String firstName;
     private String lastName;
 
+    public Customer(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+        // TODO think: is this sufficient enforcing ?
+    }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }
