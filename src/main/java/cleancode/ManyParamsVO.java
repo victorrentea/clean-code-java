@@ -19,11 +19,11 @@ class AnotherClass {
     }
 }
 
-class Customer {
+class Person {
     private String firstName;
     private String lastName;
 
-    public Customer(String firstName, String lastName) {
+    public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
         if (firstName == null || lastName == null) throw new IllegalArgumentException();

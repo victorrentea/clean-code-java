@@ -17,7 +17,12 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+        </dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>
