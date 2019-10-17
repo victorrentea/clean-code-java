@@ -33,8 +33,20 @@ class Person {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+}
+
+class PersonService {
+    public void f(Person person) {
+        String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
+        System.out.println(fullName);
     }
 }
