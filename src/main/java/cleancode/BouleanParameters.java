@@ -14,18 +14,38 @@ public class BouleanParameters {
 		bigUglyMethod(1, 2);
 
 		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(1, 2);
+		bigUglyMethod324(1, 2);
 
 	}
 
-	static void bigUglyMethod(int a, int b) {
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
+	private static void bigUglyMethod(int a, int b) {
+		beforeLogic();
+		afterLogic();
+	}
+	static void bigUglyMethod324(int a, int b) {
+		beforeLogic();
+		System.out.println("#sieu");
+		afterLogic();
+	}
 
+	private static void afterLogic() {
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+		System.out.println("More Complex Logic");
+	}
+
+	private static void beforeLogic() {
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
 	}
 
 	// ============== "BOSS" LEVEL: A log harder to break down =================
@@ -47,6 +67,6 @@ public class BouleanParameters {
 				System.out.println("Logic6 " + j++);
 			}
 		}
-		System.out.println("Logic7");
+		System.out.println("Logic7 ");
 	}
 }
