@@ -1,4 +1,4 @@
-package cleancode.test;
+package cleancode;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,10 +6,10 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
-public class Test {
+public class TestScratchPad {
 
 
-    public void applyDiscount(ProductCategory category, String m, Optional<MemberCard> cardOpt, boolean usingPromoCode) {
+    public void applyDiscount(ProductCategory category, String m, Optional<GoldCard> cardOpt, boolean usingPromoCode) {
         int discount = 0;
         if (!cardOpt.isPresent() && usingPromoCode) {
             discount = 10;
@@ -63,7 +63,7 @@ class Order {}
 enum ProductCategory {
 
 }
-class MemberCard {
+class GoldCard {
     public int getPoints() {
         return 0;
     }
