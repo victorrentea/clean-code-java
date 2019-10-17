@@ -1,25 +1,31 @@
 package videostore.dirty;
+
+// applicationContext.getBean(
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private int _priceCode;
+	public enum Type {
+		REGULAR(() -> 2), NEW_RELEASE(new  NewReleasePriceCalculator()), CHILDREN(() -> 1);
 
-	public Movie(String title, int priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+		public final Rental.PriceCalculator calculator;
+
+		Type(Rental.PriceCalculator calculator) {
+
+			this.calculator = calculator;
+		}
 	}
 
-	public int getPriceCode() {
-		return _priceCode;
-	}
+	private final String title;
+	private final Type type;
 
-	public void setPriceCode(int arg) {
-		_priceCode = arg;
+	public Movie(String title, Type type) {
+		this.title = title;
+		this.type = type;
 	}
 
 	public String getTitle() {
-		return _title;
-	};
+		return title;
+	}
+
+	public Type getType() {
+		return type;
+	}
 }
