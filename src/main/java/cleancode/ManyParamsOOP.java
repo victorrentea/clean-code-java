@@ -1,11 +1,14 @@
 package cleancode;
 
+import cleancode.pretend.Autowired;
+import cleancode.pretend.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManyParamsOOP {
-    // @Autowired/@Inject // pretend
-    private Validator validator = new Validator();
+    @Autowired
+    private Validator validator;
 
     public void bizLogic() {
         List<String> errors = new ArrayList<>();
@@ -19,10 +22,10 @@ public class ManyParamsOOP {
         }
     }
 }
-// @Service ~pretend
+@Service
 class Validator {
-	// @Autowired/@Inject // pretend
-	//private OtherDependency dep;
+    @Autowired
+	private OtherDependency dep;
 
     public void m1(String a, int b, List<String> errors) {
         if (a == null) {
@@ -45,4 +48,9 @@ class Validator {
     public void m5(int b, List<String> errors) {
         // stuff
     }
+}
+
+@Service
+class OtherDependency {
+
 }
