@@ -1,25 +1,40 @@
 package videostore.dirty;
+
+import java.util.function.Function;
+
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private int _priceCode;
 
-	public Movie(String title, int priceCode) {
-		_title = title;
-		_priceCode = priceCode;
-	}
+    enum Category {
+		CHILDREN{
+            @Override
+            public double computePrice(int daysRented) {
+                return 0;
+            }
+        },
+		REGULAR(PriceCalculators::computeRegular),
+		NEW_RELEASE (dr -> 2d);
+public final Function<Category, Double> priceAlgo;
+Category(Function<Category, Double> priceAlgo) {
 
-	public int getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(int arg) {
-		_priceCode = arg;
-	}
-
-	public String getTitle() {
-		return _title;
-	};
+    this.priceAlgo = priceAlgo;
 }
+    }
+
+    private final String title;
+    private final Category category;
+
+
+    public Movie(final String title, final Category category) {
+        this.title = title;
+        this.category = category;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+}
+
