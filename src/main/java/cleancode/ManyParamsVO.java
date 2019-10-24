@@ -1,46 +1,82 @@
 package cleancode;
 
+import lombok.Data;
+
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(new FullName("John", "Doe"), new PersonAddress("St. Albergue", "Paris", 99));
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName == null) throw new IllegalArgumentException();
+    public void placeOrder(FullName fullName, PersonAddress address) {
+    	if (fullName == null)
+    	    throw new IllegalArgumentException();
     	
     	System.out.println("Some Logic");
     }
 }
 
+class FullName {
+    private final String firstName;
+    private final String lastName;
+
+    public FullName(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        if (firstName == null || lastName == null) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAsFullName() {
+        return firstName + " " + lastName;
+    }
+}
+@Data
+class PersonAddress {
+    private final String city;
+    private final String streetName;
+    private final Integer streetNumber;
+}
+
 class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
-    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    public void otherMethod(FullName fullName, int x) {
+    	if (fullName == null)
+    	    throw new IllegalArgumentException();
     	
     	System.out.println("Another distant Logic");
     }
 }
 
 class Person {
-    private String firstName;
-    private String lastName;
+    private FullName fullName;
 
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    public Person(FullName fullName) {
+        this.fullName = fullName;
+        if (fullName == null) throw new IllegalArgumentException();
         // TODO think: is this sufficient enforcing ?
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public Person setFullName(FullName fullName) {
+        this.fullName = fullName;
+        return this;
     }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+
+    public FullName getFullName() {
+        return fullName;
     }
+
     public String getFirstName() {
-        return firstName;
+        return getFullName().getFirstName();
     }
     public String getLastName() {
-        return lastName;
+        return getFullName().getLastName();
     }
 }
 
