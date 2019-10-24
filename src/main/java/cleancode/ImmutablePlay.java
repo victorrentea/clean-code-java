@@ -15,11 +15,20 @@ public class ImmutablePlay {
         a.getNames().add("me again");
     }
 }
+class AHacked extends A {
+    public AHacked(String a, B b, List<String> names) {
+        super(a, b, names);
+    }
 
+    @Override
+    public List<String> getNames() {
+        return names;
+    }
+}
 class A {
     private final String a;
     private final B b;
-    private final List<String> names; //shawarma
+    protected final List<String> names; //shawarma
 
     public A(String a, B b, List<String> names) {
         this.a = a;
