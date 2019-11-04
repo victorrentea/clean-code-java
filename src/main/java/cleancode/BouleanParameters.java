@@ -28,7 +28,7 @@ public class BouleanParameters {
 		System.out.println("More Complex Logic");
 	}
 
-	// ============== "BOSS" LEVEL: A log harder to break down =================
+	// ============== "BOSS" LEVEL: A lot harder to break down =================
 
 	static void bossLevel(boolean stuff, boolean fluff, List<Integer> tasks) {
 		int i = 0;
