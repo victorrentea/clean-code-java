@@ -3,13 +3,12 @@ package cleancode;
 public class ManyParamsVO {
     public static void main(String[] args) {
         FullName fullName = new FullName("John", "Doe");
-        Address address = new Address("St. Albergue", "Paris", 99);
-        new ManyParamsVO().placeOrder(fullName, address);
-        new ManyParamsVO().placeOrder(fullName, address);
-        new ManyParamsVO().placeOrder(fullName, address);
-        new ManyParamsVO().placeOrder(fullName, address);
-        new ManyParamsVO().placeOrder(fullName, address);
-        new ManyParamsVO().placeOrder(fullName, address);
+        new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
+        new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
+        new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
+        new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
+        new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
+        new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
     }
     public void placeOrder(FullName fullName, Address address) {
     	if (fullName == null) throw new IllegalArgumentException("null fullName");
