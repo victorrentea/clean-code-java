@@ -1,24 +1,44 @@
 package cleancode;
 
+import lombok.NonNull;
+
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName == null) throw new IllegalArgumentException();
-    	
+    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+    	if (fullName == null) throw new IllegalArgumentException("null fullName");
     	System.out.println("Some Logic");
+    }
+}
+class FullName {
+    private final String firstName;
+    private final String lastName;
+
+    public FullName(String firstName, String lastName) {
+        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }
 
 class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
-    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    public void otherMethod(FullName fullName, int x) {
+    	if (fullName == null) throw new IllegalArgumentException();
     	
     	System.out.println("Another distant Logic");
     }
 }
 
+// Holy ENtity!!
 class Person {
     private String firstName;
     private String lastName;
@@ -30,12 +50,6 @@ class Person {
         // TODO think: is this sufficient enforcing ?
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
     public String getFirstName() {
         return firstName;
     }
