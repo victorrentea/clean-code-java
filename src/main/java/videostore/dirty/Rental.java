@@ -26,14 +26,15 @@ class Rental {
 	}
 
 	public double computePrice() {
-		return movie.getCategory().computePrice();
+return		new PriceCalculatorService().computePrice(movie.getCategory(), daysRented);
+//		return movie.getCategory().computePrice();
 
-		switch (movie.getCategory()) {
-			case REGULAR: return computeRegularPrice();
-			case NEW_RELEASE: return computeNewReleasePrice();
-			case CHILDREN: return  computeChildrenPrice();
-			default: throw new IllegalStateException("Unexpected value: " + movie.getCategory());
-		}
+//				switch (movie.getCategory()) {
+//					case REGULAR: return computeRegularPrice();
+//					case NEW_RELEASE: return computeNewReleasePrice();
+//					case CHILDREN: return  computeChildrenPrice();
+//					default: throw new IllegalStateException("Unexpected value: " + movie.getCategory());
+//		}
 	}
 
 	private double computeChildrenPrice() {
