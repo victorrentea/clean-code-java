@@ -1,7 +1,5 @@
 package cleancode;
 
-import lombok.NonNull;
-
 public class ManyParamsVO {
     public static void main(String[] args) {
         new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
@@ -28,6 +26,10 @@ class FullName {
     public String getLastName() {
         return lastName;
     }
+
+    public String asSingleString() {
+        return firstName + " " + lastName.toUpperCase();
+    }
 }
 
 class AnotherClass {
@@ -40,27 +42,22 @@ class AnotherClass {
 
 // Holy ENtity!!
 class Person {
-    private String firstName;
-    private String lastName;
+    private FullName fullName;
 
     public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+        fullName = new FullName(firstName,lastName);
         // TODO think: is this sufficient enforcing ?
     }
 
-    public String getFirstName() {
-        return firstName;
+    public FullName getFullName() {
+        return fullName;
     }
-    public String getLastName() {
-        return lastName;
-    }
+
 }
 
 class PersonService {
     public void f(Person person) {
-        String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
+        String fullName = person.getFullName().asSingleString();
         System.out.println(fullName);
     }
 }
