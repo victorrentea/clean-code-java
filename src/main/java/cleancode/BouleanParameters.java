@@ -14,39 +14,60 @@ public class BouleanParameters {
 		bigUglyMethod(1, 2);
 
 		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(1, 2);
+		bigUglyMethodCR323(1, 2);
 
 	}
 
 	static void bigUglyMethod(int a, int b) {
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
+		beforeLogic();
+		afterLogic();
+	}
+	static void bigUglyMethodCR323(int a, int b) {
+		beforeLogic();
+		System.out.println("Other logic");
+		afterLogic();
+	}
 
+	private static void afterLogic() {
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
 	}
 
+	private static void beforeLogic() {
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
+	}
+
 	// ============== "BOSS" LEVEL: A lot harder to break down =================
 
-	static void bossLevel(boolean stuff, boolean fluff, List<Integer> tasks) {
+	static void bossLevelStuffFluff(boolean stuff, boolean fluff, List<Integer> tasks) {
 		int i = 0;
 		int j = 1;
 		System.out.println("Logic1");
-		if (stuff) {
-			System.out.println("Logic2");
-			if (fluff) {
-				System.out.println("Logic3");
-				for (int task : tasks) {
-					i++;
-					System.out.println("Logic4 " + task);
-					// TODO HERE, when call this method, I want MY own custom code to run here
-					System.out.println("Logic5 " + i);
-				}
-				System.out.println("Logic6 " + j++);
-			}
+		System.out.println("Logic2");
+		System.out.println("Logic3");
+		for (int task : tasks) {
+			i++;
+			System.out.println("Logic4 " + task);
+			// TODO HERE, when call this method, I want MY own custom code to run here
+			System.out.println("Logic5 " + i);
 		}
+		System.out.println("Logic6 " + j++);
+		System.out.println("Logic7");
+	}
+	static void bossLevelStuffNoFluff(boolean stuff, boolean fluff, List<Integer> tasks) {
+		int i = 0;
+		int j = 1;
+		System.out.println("Logic1");
+		System.out.println("Logic2");
+		System.out.println("Logic7");
+	}
+	static void bossLevelNoStuff(boolean stuff, boolean fluff, List<Integer> tasks) {
+		int i = 0;
+		int j = 1;
+		System.out.println("Logic1");
 		System.out.println("Logic7");
 	}
 }
