@@ -2,7 +2,13 @@ package cleancode;
 
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
+        FullName fullName = new FullName("John", "Doe");
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
     }
     public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
     	if (fullName == null) throw new IllegalArgumentException("null fullName");
