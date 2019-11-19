@@ -26,6 +26,8 @@ class Rental {
 	}
 
 	public double computePrice() {
+		return movie.getCategory().computePrice();
+
 		switch (movie.getCategory()) {
 			case REGULAR: return computeRegularPrice();
 			case NEW_RELEASE: return computeNewReleasePrice();

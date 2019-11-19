@@ -2,9 +2,27 @@ package videostore.dirty;
 
 public class Movie {
 	public enum Category {
-		CHILDREN,
-		REGULAR,
-		NEW_RELEASE
+		CHILDREN{
+			@Override
+			public double computePrice() {
+				return 0;
+			}
+		},
+		REGULAR {
+			@Override
+			public double computePrice() {
+				return 0;
+			}
+		},
+		NEW_RELEASE {
+			@Override
+			public double computePrice() {
+				return 0;
+			}
+		};
+
+		public abstract double computePrice();
+
 	}
 
 	private final String title;
