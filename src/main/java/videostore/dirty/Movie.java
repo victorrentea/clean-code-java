@@ -1,6 +1,5 @@
 package videostore.dirty;
 
-import cleancode.pretend.Autowired;
 import cleancode.pretend.Service;
 
 import java.util.HashMap;
@@ -29,7 +28,7 @@ class PriceCalculatorService {
 	}
 
 	public double computePrice(Movie.Category category, int daysRented) {
-		return Movie.algorithmMap.get(category).apply(this, daysRented);
+		return category.priceAlgo.apply(this, daysRented);
 	}
 
 	public double computeRegularPrice(int daysRented) {
@@ -42,15 +41,14 @@ class PriceCalculatorService {
 
 public class Movie {
 	public enum Category {
-		CHILDREN,
-		REGULAR,
-		NEW_RELEASE;
-	}
-	public static final Map<Category, BiFunction<PriceCalculatorService, Integer, Double>> algorithmMap = new HashMap<>();
-	static {
-		algorithmMap.put(Category.REGULAR, PriceCalculatorService::computeRegularPrice);
-		algorithmMap.put(Category.CHILDREN, PriceCalculatorService::computeChildrenPrice);
-		algorithmMap.put(Category.NEW_RELEASE, PriceCalculatorService::computeNewReleasePrice);
+		CHILDREN(PriceCalculatorService::computeChildrenPrice),
+		REGULAR(PriceCalculatorService::computeRegularPrice),
+		NEW_RELEASE(PriceCalculatorService::computeNewReleasePrice);
+		public final BiFunction<PriceCalculatorService, Integer, Double> priceAlgo;
+
+		Category(BiFunction<PriceCalculatorService, Integer, Double> priceAlgo) {
+			this.priceAlgo = priceAlgo;
+		}
 	}
 
 	private final String title;
