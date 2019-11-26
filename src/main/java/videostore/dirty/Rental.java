@@ -28,15 +28,11 @@ class Rental {
 
     public double computePrice() {
         switch (getMovie().getMovieType()) {
-            case REGULAR:
-				return computeRegularMoviePrice();
-			case NEW_RELEASE:
-				return computeNewReleaseMoviePrice();
-			case CHILDREN:
-                return computeChildrenMoviePrice();
-
+            case REGULAR: return computeRegularMoviePrice();
+            case NEW_RELEASE: return computeNewReleaseMoviePrice();
+            case CHILDREN: return computeChildrenMoviePrice();
             default:
-                throw new IllegalStateException("Unexpected value: " + getMovie().getMovieType());
+                throw new IllegalStateException("JDD Unexpected value: " + getMovie().getMovieType());
         }
     }
 
