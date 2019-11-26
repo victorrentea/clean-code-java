@@ -13,19 +13,32 @@ public class BouleanParameters {
 		bigUglyMethod(1, 2);
 		bigUglyMethod(1, 2);
 
-		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(1, 2);
+		// TODO From my use-case, I call it too, to do more within: UC-123
+		bigUglyMethod123(1, 2);
 
 	}
 
 	static void bigUglyMethod(int a, int b) {
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
+		beforeLogic();
 
+		afterLogic();
+	}
+	static void bigUglyMethod123(int a, int b) {
+		beforeLogic();
+		System.out.println("#sieu");
+		afterLogic();
+	}
+
+	private static void afterLogic() {
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
+	}
+
+	private static void beforeLogic() {
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
 	}
 
 	// ============== "BOSS" LEVEL: A lot harder to break down =================
