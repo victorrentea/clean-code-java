@@ -1,16 +1,17 @@
 package videostore.dirty;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public enum MovieType {
-	CHILDREN(Rental::computeChildrenMoviePrice),
-	REGULAR(Rental::computeRegularMoviePrice),
+	CHILDREN(PriceCalculators::computeChildrenMoviePrice),
+	REGULAR(PriceCalculators::computeRegularMoviePrice),
 //	ELDERS(null),
-	NEW_RELEASE(Rental::computeNewReleaseMoviePrice);
+	NEW_RELEASE(PriceCalculators::computeNewReleaseMoviePrice);
 
-	public final Function<Integer, Double> priceCalculator;
+	public final BiFunction<PriceCalculators, Integer, Double> priceCalculator;
 
-	MovieType(Function<Integer, Double> priceCalculator) {
+	MovieType(BiFunction<PriceCalculators, Integer, Double>  priceCalculator) {
 		this.priceCalculator = priceCalculator;
 	}
 }

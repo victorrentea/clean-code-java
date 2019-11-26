@@ -1,5 +1,7 @@
 package videostore.dirty;
 
+import cleancode.pretend.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -32,22 +34,27 @@ class Rental {
     }
 
     public double computePrice() {
-        return movie.getMovieType().priceCalculator.apply(daysRented);
+        return movie.getMovieType().priceCalculator.apply(new PriceCalculators(),daysRented);
     }
 
 
-	public static double computeRegularMoviePrice(int daysRented) {
-		double price = 2;
-		if (daysRented > 2)
-			price += (daysRented - 2) * 1.5;
-		return price;
-	}
+}
 
-	public static double computeNewReleaseMoviePrice(int daysRented) {
-		return daysRented * 3;
-	}
+@Service
+class PriceCalculators {
 
-	public static double computeChildrenMoviePrice(int daysRented) {
+    public double computeRegularMoviePrice(int daysRented) {
+        double price = 2;
+        if (daysRented > 2)
+            price += (daysRented - 2) * 1.5;
+        return price;
+    }
+
+    public double computeNewReleaseMoviePrice(int daysRented) {
+        return daysRented * 3;
+    }
+
+    public double computeChildrenMoviePrice(int daysRented) {
         double price = 0;
         price += 1.5;
         if (daysRented > 3)
