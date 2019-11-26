@@ -38,13 +38,6 @@ class Rental {
     }
     public double computePrice() {
         return map.get(movie.getMovieType()).apply(daysRented);
-//        switch (getMovie().getMovieType()) {
-//            case REGULAR: return computeRegularMoviePrice();
-//            case NEW_RELEASE: return computeNewReleaseMoviePrice();
-//            case CHILDREN: return computeChildrenMoviePrice();
-//            default:
-//                throw new IllegalStateException("JDD Unexpected value: " + getMovie().getMovieType());
-//        }
     }
 
     static {
