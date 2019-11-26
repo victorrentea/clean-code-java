@@ -3,9 +3,10 @@ package cleancode;
 public class ManyParamsVO {
     public static void main(String[] args) {
         PersonName personName = new PersonName("John", "Doe");
-        new ManyParamsVO().placeOrder(personName, "St. Albergue", "Paris", 99);
+        Address paris = new Address("St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(personName, paris);
     }
-    public void placeOrder(PersonName name, String city, String streetName, Integer streetNumber) {
+    public void placeOrder(PersonName name, Address address) {
         if (name == null) throw new IllegalArgumentException();
     	System.out.println("Some Logic");
     }
