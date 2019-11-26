@@ -1,12 +1,19 @@
 package cleancode;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class LoosingElementsInSet {
     public static void main(String[] args) {
         Set<Child> children = new HashSet<>();
+
+
+        List<String> strings = Arrays.asList("a", "b");
+
+        for (String string : strings) {
+            
+        }
+        
+        System.out.println("a");
 
         Child childOne = new Child("Emma");
         System.out.println(childOne.hashCode());
