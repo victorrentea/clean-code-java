@@ -2,18 +2,29 @@ package cleancode;
 
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        PersonName personName = new PersonName("John", "Doe");
+        new ManyParamsVO().placeOrder(personName, "St. Albergue", "Paris", 99);
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName == null) throw new IllegalArgumentException();
-    	
+    public void placeOrder(PersonName name, String city, String streetName, Integer streetNumber) {
+        if (name == null) throw new IllegalArgumentException();
     	System.out.println("Some Logic");
+    }
+}
+class PersonName {
+    private final String firstName;
+    private final String lastName;
+//    protected PersonName() {} // e un rau necesar, cerut de frameworkuri
+
+    public PersonName(String firstName, String lastName) {
+    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }
 
 class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
-    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    public void otherMethod(PersonName name, int x) {
+    	if (name == null) throw new IllegalArgumentException();
     	
     	System.out.println("Another distant Logic");
     }
