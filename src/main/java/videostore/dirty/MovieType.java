@@ -1,12 +1,7 @@
 package videostore.dirty;
 
 public enum MovieType {
-	CHILDREN(2){
-		@Override
-		public double computePrice(int daysRented) {
-			return 0;
-		}
-	},
+	CHILDREN(2, ChildrenPriceCalculator.class),
 	REGULAR(0) {
 		@Override
 		public double computePrice(int daysRented) {
@@ -25,10 +20,11 @@ public enum MovieType {
 };
 
 	private final int id;
+	private final Class<? extends MoviePriceCalculator> strategyClass;
 
-	MovieType(int id) {
+	MovieType(int id, Class<? extends MoviePriceCalculator> strategyClass) {
 		this.id = id;
+		this.strategyClass = strategyClass;
 	}
 
-	public abstract double computePrice(int daysRented);
 }
