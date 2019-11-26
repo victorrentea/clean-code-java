@@ -10,7 +10,7 @@ public class LoosingElementsInSet {
         List<String> strings = Arrays.asList("a", "b");
 
         for (String string : strings) {
-            
+
         }
         
         System.out.println("a");
