@@ -14,7 +14,7 @@ public class LoosingElementsInSet {
 
         System.out.println(children.contains(childOne));
 
-        childOne.setName("Emma-Simona");
+//        childOne.setName("Emma-Simona");
 
         System.out.println(childOne.hashCode());
         System.out.println(children.contains(childOne));
@@ -22,7 +22,7 @@ public class LoosingElementsInSet {
 }
 
 class Child {
-    private String name;
+    private final String name;
 
     Child(String name) {
         this.name = name;
@@ -32,9 +32,9 @@ class Child {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     @Override
     public boolean equals(Object o) {
