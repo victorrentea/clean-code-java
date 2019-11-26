@@ -2,6 +2,7 @@ package videostore.dirty;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 class Rental {
@@ -37,7 +38,9 @@ class Rental {
         map.put(MovieType.CHILDREN, Rental::computeChildrenMoviePrice);
     }
     public double computePrice() {
-        return map.get(movie.getMovieType()).apply(daysRented);
+        return
+            Optional.ofNullable(map.get(movie.getMovieType()).apply(daysRented))
+                .orElseThrow(() -> new IllegalStateException("JDD Unexpected value: " + getMovie().getMovieType()));
     }
 
     static {
