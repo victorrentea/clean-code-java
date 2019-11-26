@@ -10,6 +10,7 @@ public class ManyParamsVO {
     	System.out.println("Some Logic");
     }
 }
+//@Embeddable -- JPA
 class PersonName {
     private final String firstName;
     private final String lastName;
@@ -19,6 +20,18 @@ class PersonName {
     	if (firstName == null || lastName == null) throw new IllegalArgumentException();
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String asString() {
+        return firstName + " " + lastName.toUpperCase();
     }
 }
 
@@ -30,34 +43,26 @@ class AnotherClass {
     }
 }
 
+// sacrele entitati
 class Person {
-    private String firstName;
-    private String lastName;
+    private PersonName name;
+    //mai sunt chestii aicea. alte campuri. CNP... .ETC
 
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    public Person(PersonName name) {
+        this.name = name;
         // TODO think: is this sufficient enforcing ?
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public PersonName getName() {
+        return name;
     }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
+
 }
+
 
 class PersonService {
     public void f(Person person) {
-        String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
-        System.out.println(fullName);
+        System.out.println(person.getName().asString());
     }
+
 }
