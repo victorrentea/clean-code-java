@@ -31,34 +31,23 @@ class Rental {
         return frequentRenterPoints;
     }
 
-    public static final Map<MovieType, Function<Integer, Double>> map = new HashMap<>();
-    static {
-        map.put(MovieType.REGULAR, Rental::computeRegularMoviePrice);
-        map.put(MovieType.NEW_RELEASE, Rental::computeNewReleaseMoviePrice);
-        map.put(MovieType.CHILDREN, Rental::computeChildrenMoviePrice);
-    }
     public double computePrice() {
-        return
-            Optional.ofNullable(map.get(movie.getMovieType()).apply(daysRented))
-                .orElseThrow(() -> new IllegalStateException("JDD Unexpected value: " + getMovie().getMovieType()));
+        return movie.getMovieType().priceCalculator.apply(daysRented);
     }
 
-    static {
-        Function<Integer, Double> f = Rental::computeChildrenMoviePrice;
-    }
 
-	private static double computeRegularMoviePrice(int daysRented) {
+	public static double computeRegularMoviePrice(int daysRented) {
 		double price = 2;
 		if (daysRented > 2)
 			price += (daysRented - 2) * 1.5;
 		return price;
 	}
 
-	private static double computeNewReleaseMoviePrice(int daysRented) {
+	public static double computeNewReleaseMoviePrice(int daysRented) {
 		return daysRented * 3;
 	}
 
-	private static double computeChildrenMoviePrice(int daysRented) {
+	public static double computeChildrenMoviePrice(int daysRented) {
         double price = 0;
         price += 1.5;
         if (daysRented > 3)
