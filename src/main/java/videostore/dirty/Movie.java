@@ -3,14 +3,22 @@ package videostore.dirty;
 public class Movie {
 
 	enum Type {
-		REGULAR(Rental.NewReleaseMovieFunctions.class),
-		NEW_RELEASE(),
-		CHILDREN();
-		public final Class<? extends Rental.MovieTypeFunctions> strategyClass;
+		REGULAR{
+            @Override
+            public double computePrice() {
+                return 0; //logica de Regular
+            }
+        },
+		NEW_RELEASE,
+		CHILDREN,
+        BABCIUNI {
+            @Override
+            public double computePrice() {
+                return 0;
+            }
+        };
 
-        Type(Class<? extends Rental.MovieTypeFunctions> strategyClass) {
-            this.strategyClass = strategyClass;
-        }
+        public abstract double computePrice();
     }
 
 	private final String title;

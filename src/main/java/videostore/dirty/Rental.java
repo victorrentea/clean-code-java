@@ -15,30 +15,16 @@ class Rental {
 
     interface MovieTypeFunctions {
         double computePrice();
-        double computePrice2();
-        double computePrice3();
     }
 
     public static class NewReleaseMovieFunctions implements MovieTypeFunctions {
-
-        @Override
         public double computePrice() {
-            return 0;
-        }
-
-        @Override
-        public double computePrice2() {
-            return 0;
-        }
-
-        @Override
-        public double computePrice3() {
             return 0;
         }
     }
 
     public double computePrice() {
-        spring.getBean(movie.getType().strategyClass).computePrice();
+        movie.getType().computePrice();
         switch (getMovie().getType()) {
             case REGULAR: return computeRegularPrice();
             case NEW_RELEASE: return computeNewReleasePrice();
