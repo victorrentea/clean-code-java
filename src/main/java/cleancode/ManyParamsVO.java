@@ -20,8 +20,10 @@ class AnotherClass {
 }
 
 class Person {
+    private Long id;
     private String firstName;
     private String lastName;
+    private String phone;
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
@@ -48,5 +50,8 @@ class PersonService {
     public void f(Person person) {
         String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
         System.out.println(fullName);
+    }
+    public void p(String city, String streetName, Integer streetNumber) {
+        System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
     }
 }
