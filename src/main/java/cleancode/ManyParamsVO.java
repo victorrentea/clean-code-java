@@ -17,9 +17,13 @@ public class ManyParamsVO {
 class PersonName {
     private final String firstName;
     private final String lastName;
+    //language=sql
+    public static final String SQL = "SELECT * FROM ";
 
     public PersonName(String firstName, String lastName) {
-    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    	if (firstName == null || lastName == null) {
+    	    throw new IllegalArgumentException();
+        }
         this.firstName = firstName;
         this.lastName = lastName;
     }
