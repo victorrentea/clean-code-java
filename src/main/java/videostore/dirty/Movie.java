@@ -1,6 +1,14 @@
 package videostore.dirty;
 
-public class Movie {
+class NewReleaseMovie extends Movie {
+    private String altCampInPlus;
+    @Override
+    public double computePrice(int daysRented) {
+        return 0;
+    }
+}
+
+abstract public class Movie {
 
 	enum Type {
 		REGULAR{
@@ -29,6 +37,8 @@ public class Movie {
         this.title = title;
         this.type = type;
     }
+
+    public abstract double computePrice(int daysRented);
 
     public Type getType() {
         return type;
