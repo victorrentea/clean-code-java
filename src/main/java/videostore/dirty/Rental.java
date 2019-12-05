@@ -1,5 +1,7 @@
 package videostore.dirty;
 
+import cleancode.pretend.Service;
+
 class Rental {
     private final Movie movie;
     private final int daysRented;
@@ -13,60 +15,10 @@ class Rental {
         return movie;
     }
 
-    interface MovieTypeFunctions {
-        double computePrice();
-    }
-
-    public static class NewReleaseMovieFunctions implements MovieTypeFunctions {
-        public double computePrice() {
-            return 0;
-        }
-    }
-
     public double computePrice() {
-        movie.getType().computePrice();
-        switch (getMovie().getType()) {
-            case REGULAR: return computeRegularPrice();
-            case NEW_RELEASE: return computeNewReleasePrice();
-            case CHILDREN:return computeChildrenPrice();
-			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
-		}
-    }
-    public double computePrice2() {
-        switch (getMovie().getType()) {
-            case REGULAR: return computeRegularPrice();
-            case NEW_RELEASE: return computeNewReleasePrice();
-            case CHILDREN:return computeChildrenPrice();
-			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
-		}
-    }
-    public double computePrice3() {
-        switch (getMovie().getType()) {
-            case REGULAR: return computeRegularPriceX();
-            case NEW_RELEASE: return computeNewReleasePriceY();
-            case CHILDREN:return computeChildrenPriceZ();
-			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
-		}
+        return new PriceCalculationService().computePrice(this);
     }
 
-	private double computeChildrenPrice() {
-		double price = 1.5;
-		if (daysRented > 3)
-			price += (daysRented - 3) * 1.5;
-		return price;
-	}
-
-	private int computeNewReleasePrice() {
-		return daysRented * 3;
-	}
-
-	private double computeRegularPrice() {
-		double price = 0;
-		price += 2;
-		if (daysRented > 2)
-			price += (daysRented - 2) * 1.5;
-		return price;
-	}
 
 	public int computeFrequentRenterPoints() {
         int frequentRenterPoints = 1;
@@ -77,5 +29,35 @@ class Rental {
         return frequentRenterPoints;
     }
 
+    public int getDaysRented() {
+        return daysRented;
+    }
+}
 
+@Service
+class PriceCalculationService {
+
+    public double computePrice(Rental rental) {
+        return rental.getMovie().getType().
+                priceAlgo.apply(this, rental.getDaysRented());
+    }
+
+    public double computeChildrenPrice(int daysRented) {
+        double price = 1.5;
+        if (daysRented > 3)
+            price += (daysRented - 3) * 1.5;
+        return price;
+    }
+
+    public double computeNewReleasePrice(int daysRented) {
+        return daysRented * 3;
+    }
+
+    public double computeRegularPrice(int daysRented) {
+        double price = 0;
+        price += 2;
+        if (daysRented > 2)
+            price += (daysRented - 2) * 1.5;
+        return price;
+    }
 }

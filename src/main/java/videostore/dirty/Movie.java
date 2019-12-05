@@ -1,32 +1,22 @@
 package videostore.dirty;
 
-class NewReleaseMovie extends Movie {
-    private String altCampInPlus;
-    @Override
-    public double computePrice(int daysRented) {
-        return 0;
-    }
-}
+import java.util.function.BiFunction;
 
-abstract public class Movie {
+public class Movie {
 
 	enum Type {
-		REGULAR{
-            @Override
-            public double computePrice() {
-                return 0; //logica de Regular
-            }
-        },
-		NEW_RELEASE,
-		CHILDREN,
-        BABCIUNI {
-            @Override
-            public double computePrice() {
-                return 0;
-            }
-        };
+		REGULAR(PriceCalculationService::computeRegularPrice),
+		NEW_RELEASE(PriceCalculationService::computeNewReleasePrice),
+		CHILDREN(PriceCalculationService::computeChildrenPrice);
+		public final BiFunction<PriceCalculationService,Integer,Double> priceAlgo;
 
-        public abstract double computePrice();
+        Type(BiFunction<PriceCalculationService, Integer, Double> priceAlgo) {
+            this.priceAlgo = priceAlgo;
+        }
+
+//        public double computePrice(PriceCalculationService service, Integer daysRented) {
+//            return priceAlgo.apply(service, daysRented);
+//        }
     }
 
 	private final String title;
@@ -38,7 +28,6 @@ abstract public class Movie {
         this.type = type;
     }
 
-    public abstract double computePrice(int daysRented);
 
     public Type getType() {
         return type;
