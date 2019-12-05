@@ -1,50 +1,58 @@
 package videostore.dirty;
+
 class Rental {
-	private final Movie movie;
-	private final int daysRented;
+    private final Movie movie;
+    private final int daysRented;
 
-	public Rental(Movie movie, int daysRented) {
-		this.movie = movie;
-		this.daysRented = daysRented;
-	}
+    public Rental(Movie movie, int daysRented) {
+        this.movie = movie;
+        this.daysRented = daysRented;
+    }
 
-	public int getDaysRented() {
-		return daysRented;
-	}
+    public int getDaysRented() {
+        return daysRented;
+    }
 
-	public Movie getMovie() {
-		return movie;
-	}
+    public Movie getMovie() {
+        return movie;
+    }
 
-	public double computePrice() {
-		double price = 0;
-
-		switch (getMovie().getType()) {
-			case REGULAR:
-				price += 2;
-				if (daysRented > 2)
-					price += (daysRented - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				price += daysRented * 3;
-				break;
-			case CHILDREN:
-				price += 1.5;
-				if (daysRented > 3)
-					price += (daysRented - 3) * 1.5;
-				break;
+    public double computePrice() {
+        switch (getMovie().getType()) {
+            case REGULAR: return computeRegularPrice();
+            case NEW_RELEASE: return computeNewReleasePrice();
+            case CHILDREN:return computeChildrenPrice();
+			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
 		}
+    }
+
+	private double computeChildrenPrice() {
+		double price = 1.5;
+		if (daysRented > 3)
+			price += (daysRented - 3) * 1.5;
+		return price;
+	}
+
+	private int computeNewReleasePrice() {
+		return daysRented * 3;
+	}
+
+	private double computeRegularPrice() {
+		double price = 0;
+		price += 2;
+		if (daysRented > 2)
+			price += (daysRented - 2) * 1.5;
 		return price;
 	}
 
 	public int computeFrequentRenterPoints() {
-		int frequentRenterPoints = 1;
-		boolean isNewRelease = movie.getType() == Movie.Type.NEW_RELEASE;
-		if (isNewRelease && daysRented >= 2){
-			frequentRenterPoints++;
-		}
-		return frequentRenterPoints;
-	}
+        int frequentRenterPoints = 1;
+        boolean isNewRelease = movie.getType() == Movie.Type.NEW_RELEASE;
+        if (isNewRelease && daysRented >= 2) {
+            frequentRenterPoints++;
+        }
+        return frequentRenterPoints;
+    }
 
 
 }
