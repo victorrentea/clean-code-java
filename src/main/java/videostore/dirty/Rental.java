@@ -9,12 +9,18 @@ class Rental {
         this.daysRented = daysRented;
     }
 
-    public int getDaysRented() {
-        return daysRented;
-    }
-
     public Movie getMovie() {
         return movie;
+    }
+
+    interface MovieTypeFunctions {
+        double computePrice();
+        double computePrice2();
+        double computePrice3();
+    }
+
+    public static class NewReleaseMovieFunctions implements MovieTypeFunctions {
+
     }
 
     public double computePrice() {
@@ -22,6 +28,22 @@ class Rental {
             case REGULAR: return computeRegularPrice();
             case NEW_RELEASE: return computeNewReleasePrice();
             case CHILDREN:return computeChildrenPrice();
+			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
+		}
+    }
+    public double computePrice2() {
+        switch (getMovie().getType()) {
+            case REGULAR: return computeRegularPrice();
+            case NEW_RELEASE: return computeNewReleasePrice();
+            case CHILDREN:return computeChildrenPrice();
+			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
+		}
+    }
+    public double computePrice3() {
+        switch (getMovie().getType()) {
+            case REGULAR: return computeRegularPriceX();
+            case NEW_RELEASE: return computeNewReleasePriceY();
+            case CHILDREN:return computeChildrenPriceZ();
 			default: throw new IllegalStateException("Unexpected value: " + getMovie().getType());
 		}
     }
