@@ -1,5 +1,7 @@
 package cleancode;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,17 +9,23 @@ public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
         results.removeIf(model -> ! MateUtil.intervalsIntersect(
-                model.getStartYear(), model.getEndYear(),
-                criteria.getStartYear(), criteria.getEndYear()));
+                new Interval(model.getStartYear(), model.getEndYear()),
+                new Interval(criteria.getStartYear(), criteria.getEndYear())));
         System.out.println("More filtering logic");
         return results;
     }
 }
 
+@Data
+class Interval {
+    private final int start;
+    private final int end;
+}
+
 class MateUtil {
     // http://world.std.com/~swmcd/steven/tech/interval.html
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+    public static boolean intervalsIntersect(Interval a, Interval b) {
+        return a.getStart() <= b.getEnd() && b.getStart() <= a.getEnd();
     }
 }
 
