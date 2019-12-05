@@ -3,13 +3,13 @@ package videostore.dirty;
 public class Movie {
 
 	enum Type {
-		REGULAR(new Rental.NewReleaseMovieFunctions()),
-		NEW_RELEASE(functions),
-		CHILDREN(functions);
-		public final Rental.MovieTypeFunctions functions;
+		REGULAR(Rental.NewReleaseMovieFunctions.class),
+		NEW_RELEASE(),
+		CHILDREN();
+		public final Class<? extends Rental.MovieTypeFunctions> strategyClass;
 
-        Type(Rental.MovieTypeFunctions functions) {
-            this.functions = functions;
+        Type(Class<? extends Rental.MovieTypeFunctions> strategyClass) {
+            this.strategyClass = strategyClass;
         }
     }
 
