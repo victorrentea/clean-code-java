@@ -1,25 +1,28 @@
 package videostore.horror;
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+
+	enum Genre {
+		REGULAR,
+		NEW_RELEASE,
+		CHILDREN;
+	}
+	private final String title;
+	private final Genre genre;
+	public Movie(String title, Genre genre) {
+		this.title = title;
+		this.genre = genre;
 	}
 
-	public Integer getPriceCode() {
-		return _priceCode;
+	public boolean isNewRelease() {
+		return getGenre() == Genre.NEW_RELEASE;
 	}
 
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
+	public Genre getGenre() {
+		return genre;
 	}
 
 	public String getTitle() {
-		return _title;
+		return title;
 	};
 }
