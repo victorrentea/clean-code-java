@@ -30,6 +30,10 @@ class FullName {
     public String getLastName() {
         return lastName;
     }
+
+    public String asFull() {
+        return firstName + " " + lastName.toUpperCase();
+    }
 }
 
 
@@ -50,7 +54,6 @@ class Person {
 
     public Person(String firstName, String lastName) {
         this.fullName = new FullName(firstName, lastName);
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
         // TODO think: is this sufficient enforcing ?
     }
 
@@ -62,9 +65,9 @@ class Person {
 
 class PersonService {
     public void f(Person person) {
-        String fullName = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
-        System.out.println(fullName);
+        System.out.println(person.getFullName().asFull());
     }
+
     public void p(String city, String streetName, Integer streetNumber) {
         System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
     }
