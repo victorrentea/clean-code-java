@@ -1,54 +1,68 @@
 package cleancode;
 
+import static java.util.Objects.requireNonNull;
+
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        FullName fullName = new FullName("John", "Doe");
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName == null) throw new IllegalArgumentException();
-    	
+    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+        requireNonNull(fullName);
     	System.out.println("Some Logic");
     }
 }
+class FullName {
+    private final String firstName;
+    private final String lastName;
 
-class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
+    public FullName(String firstName, String lastName) {
+
     	if (firstName == null || lastName == null) throw new IllegalArgumentException();
-    	
-    	System.out.println("Another distant Logic");
-    }
-}
-
-class Person {
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String phone;
-
-    public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
-        // TODO think: is this sufficient enforcing ?
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
     public String getFirstName() {
         return firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
 }
 
+
+
+class AnotherClass {
+    public void otherMethod(FullName fullName, int x) {
+        requireNonNull(fullName);
+
+    	System.out.println("Another distant Logic");
+    }
+}
+
+// Entity . holy stuff
+class Person {
+    private Long id;
+    private FullName fullName;
+    private String phone;
+
+    public Person(String firstName, String lastName) {
+        this.fullName = new FullName(firstName, lastName);
+        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+        // TODO think: is this sufficient enforcing ?
+    }
+
+    public FullName getFullName() {
+        return fullName;
+    }
+
+}
+
 class PersonService {
     public void f(Person person) {
-        String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
+        String fullName = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
         System.out.println(fullName);
     }
     public void p(String city, String streetName, Integer streetNumber) {
