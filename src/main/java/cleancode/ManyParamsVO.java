@@ -5,9 +5,10 @@ import static java.util.Objects.requireNonNull;
 public class ManyParamsVO {
     public static void main(String[] args) {
         FullName fullName = new FullName("John", "Doe");
-        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        Address address = new Address("St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, address);
     }
-    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+    public void placeOrder(FullName fullName, Address address) {
         requireNonNull(fullName);
     	System.out.println("Some Logic");
     }
@@ -64,11 +65,19 @@ class Person {
 }
 
 class PersonService {
-    public void f(Person person) {
-        System.out.println(person.getFullName().asFull());
+    public static void main(String[] args) {
+        Person person = new Person("J", "D");
+        new PersonService().newF(person.getFullName());
     }
 
-    public void p(String city, String streetName, Integer streetNumber) {
-        System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+    private void newF(FullName fullName) {
+        System.out.println(fullName.asFull());
+        System.out.println(fullName.asFull());
+        System.out.println(fullName.asFull());
+        System.out.println(fullName.asFull());
+    }
+
+    public void p(Address address) {
+        System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
     }
 }
