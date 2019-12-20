@@ -43,10 +43,14 @@ class CarSearchCriteria {
 }
 
 class CarModel {
+    private final String make;
+    private final String model;
     private final int startYear;
     private final int endYear;
 
-    public CarModel(int startYear, int endYear) {
+    public CarModel(String make, String model, int startYear, int endYear) {
+        this.make = make;
+        this.model = model;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
