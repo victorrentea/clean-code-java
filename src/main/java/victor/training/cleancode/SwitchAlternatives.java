@@ -1,6 +1,5 @@
-package cleancode;
+package victor.training.cleancode;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;

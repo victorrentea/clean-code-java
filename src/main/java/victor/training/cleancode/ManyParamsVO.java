@@ -1,4 +1,4 @@
-package cleancode;
+package victor.training.cleancode;
 
 public class ManyParamsVO {
     public static void main(String[] args) {

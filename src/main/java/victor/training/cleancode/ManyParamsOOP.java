@@ -1,7 +1,7 @@
-package cleancode;
+package victor.training.cleancode;
 
-import cleancode.pretend.Autowired;
-import cleancode.pretend.Service;
+import victor.training.cleancode.pretend.Autowired;
+import victor.training.cleancode.pretend.Service;
 
 import java.util.ArrayList;
 import java.util.List;
