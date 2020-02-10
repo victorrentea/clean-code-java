@@ -18,4 +18,8 @@ public class ReplaceTempWithQuery {
         else
             return basePrice * 0.98;
     }
+
+    public int computeFidelityPoints() {
+        return (int) (quantity * itemPrice * 0.5);
+    }
 }

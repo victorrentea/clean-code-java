@@ -19,14 +19,6 @@ public class EncapsulateConditionals {
 }
 
 
-class Client {
-    private double fidelityFactor;
-
-    public double getFidelityFactor() {
-        return fidelityFactor;
-    }
-}
-
 @Data
 class RatesPlan {
     private final Date summerStart;
