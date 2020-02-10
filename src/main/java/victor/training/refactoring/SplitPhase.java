@@ -1,5 +1,6 @@
 package victor.training.refactoring;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class SplitPhase {
@@ -11,6 +12,6 @@ public class SplitPhase {
     }
 
     public static void main(String[] args) {
-        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Map.of("CHR", 5)));
+        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
     }
 }
