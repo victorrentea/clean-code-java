@@ -1,12 +1,29 @@
 package victor.training.refactoring;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class ExtractDelegate {
+}
+class BigOne {
     private final A a;
     private final B b;
     private final C c;
+
+    public BigOne(A a, B b, C c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+
+    public A getA() {
+        return a;
+    }
+
+    public B getB() {
+        return b;
+    }
+
+    public C getC() {
+        return c;
+    }
 
     public void a() {
         a.f();
