@@ -1,66 +1,65 @@
 package victor.training.cleancode;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! intervalsIntersect(
-                model.getStartYear(), model.getEndYear(),
-                criteria.getStartYear(), criteria.getEndYear()));
+        // criteriaYearInterval = criteria.getYearInterval();
+        Interval criteriaYearInterval = criteria.getYearInterval();
+        results.removeIf(model -> !model.getYearInterval().intersects(criteriaYearInterval));
         System.out.println("More filtering logic");
         return results;
     }
-    // http://world.std.com/~swmcd/steven/tech/interval.html
-    private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+}
+
+@Data
+class Interval {
+    private final int start;
+    private final int end;
+
+    public Interval(int start, int end) {
+        if (start > end) throw new IllegalArgumentException("start larger than end");
+        this.start = start;
+        this.end = end;
+    }
+
+    public boolean intersects(Interval other) {
+        return start <= other.getEnd() && other.getStart() <= end;
     }
 }
 
 
-
-
-
-
 class CarSearchCriteria {
-    private final int startYear;
-    private final int endYear;
+    private final Interval interval;
+    private final int altceva;
 
-    public CarSearchCriteria(int startYear, int endYear) {
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+    public CarSearchCriteria(int startYear, int endYear, int altceva) {
+        this.altceva = altceva;
+        interval = new Interval(startYear, endYear);
     }
 
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public int getEndYear() {
-        return endYear;
+    public Interval getYearInterval() {
+        return interval;
     }
 }
 
 class CarModel {
     private final String make;
     private final String model;
-    private final int startYear;
-    private final int endYear;
 
-    public CarModel(String make, String model, int startYear, int endYear) {
+    private final Interval interval;
+
+    public CarModel(String make, String model, Interval interval) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        this.interval = interval;
     }
 
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
+    public Interval getYearInterval() {
+        return interval;
     }
 }

@@ -16,7 +16,7 @@ class AnotherClass {
     	if (firstName == null || lastName == null) throw new IllegalArgumentException();
     	
     	System.out.println("Another distant Logic");
-    }
+}
 }
 
 class Person {
