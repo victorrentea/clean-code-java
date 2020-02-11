@@ -7,14 +7,28 @@ import java.util.List;
 public class ReplacePrimitiveWithObject {
     public void displayUrgent(List<Incident> incidents) {
         incidents.stream()
-                // over 'normal'
-                .filter(i-> i.getPriority().equals("high") || i.getPriority().equals("rush"))
+                .filter(Incident::aboveNormal)
                 .forEach(System.out::println);
+    }
+}
+
+class Priority {
+    private final String value;
+    Priority(String value) {
+        this.value = value;
+    }
+
+    public boolean aboveNormal() {
+        return value.equals("high") || value.equals("rush");
     }
 }
 
 @Data
 class Incident {
     private final Long id;
-    private final String priority;
+    private final Priority priority;
+
+    public boolean aboveNormal() {
+        return priority.aboveNormal();
+    }
 }
