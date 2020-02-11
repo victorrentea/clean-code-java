@@ -10,12 +10,21 @@ public class EncapsulateConditionals {
     public double getQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor)
     {
         double charge;
-        if (!(date.before(plan.getSummerStart())) && date .before(plan.getSummerEnd()))
-            charge = quantity * plan.getSummerRate();
+        if (plan.duringSummer(date))
+            charge = summerCharge(plan, quantity);
         else
-            charge = quantity * plan.getRegularRate()  + plan.getRegularServiceCharge();
+            charge = offSeasonCharge(plan, quantity);
         return charge - clientFidelityFactor;
     }
+
+    private double offSeasonCharge(RatesPlan plan, int quantity) {
+        return quantity * plan.getRegularRate()  + plan.getRegularServiceCharge();
+    }
+
+    private double summerCharge(RatesPlan plan, int quantity) {
+        return quantity * plan.getSummerRate();
+    }
+
 }
 
 
@@ -26,4 +35,8 @@ class RatesPlan {
     private final double summerRate;
     private final double regularRate;
     private final double regularServiceCharge;
+
+    public boolean duringSummer(Date date) {
+        return !date.before(getSummerStart()) && date.before(getSummerEnd());
+    }
 }

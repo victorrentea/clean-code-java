@@ -4,14 +4,16 @@ class ParameterizeAndExtract {
 
     public void f() {
         System.out.println("Logica f");
-        for (int i = 0; i < 4; i++) {
-            System.out.println("Cod " + i);
-        }
+        m(4);
     }
 
     public void g() {
         System.out.println("Logica g");
-        for (int i = 0; i < 3; i++) {
+        m(3);
+    }
+
+    private void m(int n) {
+        for (int i = 0; i < n; i++) {
             System.out.println("Cod " + i);
         }
     }
