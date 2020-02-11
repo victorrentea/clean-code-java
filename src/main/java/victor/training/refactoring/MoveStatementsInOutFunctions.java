@@ -4,22 +4,22 @@ public class MoveStatementsInOutFunctions {
 
     public static void f() {
         System.out.println("Line1f");
-        System.out.println("Line2");
-        m2();
+        m2prim();
+        System.out.println("Line5f");
         System.out.println("Line6f");
     }
 
     public static void g() {
         System.out.println("Line1g");
-        System.out.println("Line2");
-        m2();
+        m2prim();
+        System.out.println("Line5g");
         System.out.println("Line6g");
     }
 
-    public static void m2() {
+    private static void m2prim() {
+        System.out.println("Line2");
         System.out.println("Line3");
         System.out.println("Line4");
-        System.out.println("Line5");
     }
 
     public static void main(String[] args) {
