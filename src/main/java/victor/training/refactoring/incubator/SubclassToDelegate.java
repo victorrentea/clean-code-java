@@ -1,4 +1,4 @@
-package victor.training.refactoring.inheritance;
+package victor.training.refactoring.incubator;
 
 class Order
 {

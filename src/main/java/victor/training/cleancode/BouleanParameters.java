@@ -31,7 +31,7 @@ public class BouleanParameters {
 	// ============== "BOSS" LEVEL: A lot harder to break down =================
 
 	static void bossLevel(boolean stuff, boolean fluff, List<Integer> tasks) {
-		int i = 0;
+		int i = 0; // TODO localize
 		int j = 1;
 		System.out.println("Logic1");
 		if (stuff) {

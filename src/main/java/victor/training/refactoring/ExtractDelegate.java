@@ -2,35 +2,17 @@ package victor.training.refactoring;
 
 public class ExtractDelegate {
     public static void main(String[] args) {
-        BigOne one = new BigOne(new A(), new B(), new C());
+        BigOne one = new BigOne();
         one.fa();
-        one.getB();
         one.fab();
-        one.getC();
+        one.fcab();
+        one.fc();
     }
 }
 class BigOne {
-    private final A a;
-    private final B b;
-    private final C c;
-
-    public BigOne(A a, B b, C c) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-    }
-
-    public A getA() {
-        return a;
-    }
-
-    public B getB() {
-        return b;
-    }
-
-    public C getC() {
-        return c;
-    }
+    private A a = new A();
+    private B b = new B();
+    private C c = new C();
 
     public void fa() {
         a.f();
@@ -50,12 +32,12 @@ class BigOne {
 }
 
 class A {
-    void f(){};
+    void f(){System.out.println("A.f");}
 }
 class B {
-    void f(){};
+    void f(){System.out.println("B.f");}
 }
 class C {
-    void f(){};
+    void f(){System.out.println("C.f");}
 }
 

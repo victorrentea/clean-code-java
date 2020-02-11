@@ -7,8 +7,7 @@ public class SplitPhase {
     public float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
         String[] orderData = orderString.split("\\s+");
         Integer productPrice = priceList.get(orderData[0].split("-")[1]);
-        int orderPrice = Integer.parseInt(orderData[1]) * productPrice;
-        return orderPrice;
+        return Integer.parseInt(orderData[1]) * productPrice;
     }
 
     public static void main(String[] args) {

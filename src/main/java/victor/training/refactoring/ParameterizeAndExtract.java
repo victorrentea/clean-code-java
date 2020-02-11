@@ -12,7 +12,9 @@ class ParameterizeAndExtract {
     public void g() {
         System.out.println("Logica g");
         for (int i = 0; i < 3; i++) {
-            System.out.println("Cod " + i);
+            String x = "Cod" +
+                    " " + i;
+            System.out.println(x);
         }
     }
 

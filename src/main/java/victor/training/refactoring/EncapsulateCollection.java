@@ -9,8 +9,11 @@ public class EncapsulateCollection {
     public static void main(String[] args) {
         HotelCharges hotelCharges = new HotelCharges();
         HotelDayCharge dayCharge = new HotelDayCharge(100, true, 5);
+
         hotelCharges.days.add(dayCharge);
         System.out.println("FEE: " + hotelCharges.totalFee + "\n");
+
+        // Never forget to do:
         hotelCharges.computeTotal();
         System.out.println("FEE: " + hotelCharges.totalFee + "\n");
 
@@ -18,12 +21,12 @@ public class EncapsulateCollection {
 }
 
 class HotelCharges {
-    public static final double BREAKFAST_FEE = 10;
-    public static final double PARKING_HOUR_RATE = 2;
     public List<HotelDayCharge> days = new ArrayList<>();
     public double totalFee;
 
     public void computeTotal() {
+        final double BREAKFAST_FEE = 10;
+        final double PARKING_HOUR_RATE = 2;
         totalFee = 0;
         for (HotelDayCharge day : days) {
             totalFee += day.getDayRate();
@@ -31,7 +34,6 @@ class HotelCharges {
                 totalFee += BREAKFAST_FEE;
             }
             totalFee += day.getParkingHours() * PARKING_HOUR_RATE;
-
         }
     }
 }

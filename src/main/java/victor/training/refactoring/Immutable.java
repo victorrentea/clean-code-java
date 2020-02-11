@@ -4,6 +4,10 @@ import java.util.List;
 
 class MutableHost { //think "Entity"
     public Immutable immutable;
+
+    public static void main(String[] args) {
+
+    }
 }
 
 public class Immutable {

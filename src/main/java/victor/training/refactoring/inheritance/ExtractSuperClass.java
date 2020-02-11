@@ -6,7 +6,7 @@ class A {
     private int x;
     private int y;
     void m() {System.out.println(x);}
-    void n() {}
+    void n() {x ++;}
 }
 
 class B {
@@ -17,5 +17,5 @@ class B {
 class C {
     private int x;
     void m() {System.out.println(x);}
-    void n() {}
+    void n() {x++;}
 }

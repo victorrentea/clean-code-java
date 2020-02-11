@@ -5,15 +5,12 @@ import lombok.Data;
 import java.util.Date;
 
 public class EncapsulateConditionals {
-    // TODO encapsulate fields
-    // TODO move method
-    public double getQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor)
-    {
+    public double getQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor) {
         double charge;
-        if (!(date.before(plan.getSummerStart())) && date .before(plan.getSummerEnd()))
+        if (!(date.before(plan.getSummerStart())) && date.before(plan.getSummerEnd()))
             charge = quantity * plan.getSummerRate();
         else
-            charge = quantity * plan.getRegularRate()  + plan.getRegularServiceCharge();
+            charge = quantity * plan.getRegularRate() + plan.getRegularServiceCharge();
         return charge - clientFidelityFactor;
     }
 }

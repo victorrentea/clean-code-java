@@ -23,7 +23,6 @@ public class SplitLoop {
         averageAge = averageAge / employees.size();
         averageSalary = averageSalary / employees.size();
         System.out.println("avg age = " + averageAge + "\navg sal = " + averageSalary);
-        // TODO pipeline
     }
 }
 

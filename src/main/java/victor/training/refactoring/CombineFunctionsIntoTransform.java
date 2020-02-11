@@ -4,18 +4,18 @@ import lombok.Data;
 
 public class CombineFunctionsIntoTransform {
     public String generateQRCode(String code) {
+        // Call External Service
         return "QR" + code;
     }
 
     public String getAddress(long eventId) {
-        // Call Repo or External Service
+        // Call Repository
         return "Location Details of event " + eventId;
     }
     // ----------- a line -------------
 
     public String generateTicket(Ticket ticket) {
-        String invoice;
-        invoice = "Invoice for " + ticket.getCustomerName() + "\n";
+        String invoice = "Invoice for " + ticket.getCustomerName() + "\n";
         invoice += "QR Code: " + generateQRCode(ticket.getCode()) + "\n";
         invoice += "Address: " + getAddress(ticket.getEventId()) + "\n";
         invoice += "Please arrive 20 minutes before the start of the event\n";
