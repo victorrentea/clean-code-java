@@ -1,5 +1,7 @@
 package victor.training.refactoring;
 
+import lombok.NonNull;
+
 class NullObject {
     public static void main(String[] args) {
         new NullObject().process(Customer.NULL_CUSTOMER);
@@ -39,7 +41,8 @@ class Customer implements ICustomer {
 
     private final String name;
 
-    Customer(String name) {
+    Customer(@NonNull String name) {
+        assert name != null; // sau
         this.name = name;
     }
 
