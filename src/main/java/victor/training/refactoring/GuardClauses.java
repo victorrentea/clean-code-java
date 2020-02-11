@@ -5,41 +5,31 @@ public class GuardClauses {
     private boolean isSeparated = false;
     private boolean isRetired = false;
 
-    public int getPayAmount()
-    {
-        int result;
+    public int getPayAmount() {
         if (isDead)
-            result = deadAmount();
-        else {
-            if (isSeparated)
-                result = separatedAmount();
-            else {
-                if (isRetired)
-                    result = retiredAmount();
-                else
-                    result = normalPayAmount();
-            }
-        }
-        return result;
+            return deadAmount();
+        if (isSeparated)
+            return separatedAmount();
+        if (isRetired)
+            return retiredAmount();
+
+        // 50 linii de logica grea
+        return normalPayAmount();
     }
 
-    private int deadAmount()
-    {
+    private int deadAmount() {
         return 1;
     }
 
-    private int retiredAmount()
-    {
+    private int retiredAmount() {
         return 2;
     }
 
-    private int separatedAmount()
-    {
+    private int separatedAmount() {
         return 3;
     }
 
-    private int normalPayAmount()
-    {
+    private int normalPayAmount() {
         return 4;
     }
 }
