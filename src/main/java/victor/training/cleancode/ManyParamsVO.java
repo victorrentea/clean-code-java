@@ -28,6 +28,13 @@ class Person {
     public Person(String firstName, String lastName) {
         fullName = new FullName(firstName, lastName);
         // TODO think: is this sufficient enforcing ?
+
+
+//        customer.birhtDate.getYear
+//        customer.birthYear
+//
+//        message.getMap().getKey("k")
+//        message.getK()
     }
 
     //    HARD CORE : public void setLastName(String lastName) {
