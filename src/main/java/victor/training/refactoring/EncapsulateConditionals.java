@@ -1,10 +1,26 @@
 package victor.training.refactoring;
 
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 
 public class EncapsulateConditionals {
+//    private static final Logger log = LoggerFactory.getLogger(EncapsulateConditionals.class);
+//
+//    static {
+//        if (log.isTraceEnabled()) {
+//            log.trace("Halo {}", fScumpa());
+//        }
+//    }
+//
+//    private static Object fScumpa() {
+//        Thread.sleep(1000);
+//        return "";
+//    }
+
     // TODO encapsulate fields
     // TODO move method
     public double getQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor)

@@ -1,6 +1,8 @@
 package victor.training.refactoring;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 public class CombineFunctionsIntoTransform {
     public String generateQRCode(String code) {
@@ -36,6 +38,7 @@ public class CombineFunctionsIntoTransform {
         return invoice;
     }
 }
+
 class TicketView {
     private String qr;
     private String address;
