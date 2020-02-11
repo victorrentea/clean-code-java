@@ -1,6 +1,13 @@
 package victor.training.refactoring;
 
 public class ExtractDelegate {
+    public static void main(String[] args) {
+        BigOne one = new BigOne(new A(), new B(), new C());
+        one.fa();
+        one.getB();
+        one.fab();
+        one.getC();
+    }
 }
 class BigOne {
     private final A a;
@@ -25,30 +32,30 @@ class BigOne {
         return c;
     }
 
-    public void a() {
+    public void fa() {
         a.f();
     }
-    public void ab() {
+    public void fab() {
         a.f();
         b.f();
     }
-    public void cab() {
+    public void fcab() {
         c.f();
         a.f();
         b.f();
     }
-    public void c() {
+    public void fc() {
         c.f();
     }
 }
 
-interface A {
-    void f();
+class A {
+    void f(){};
 }
-interface B {
-    void f();
+class B {
+    void f(){};
 }
-interface C {
-    void f();
+class C {
+    void f(){};
 }
 
