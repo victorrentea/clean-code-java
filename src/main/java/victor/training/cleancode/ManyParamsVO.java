@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embedded;
+
 public class ManyParamsVO {
     public static void main(String[] args) {
         new ManyParamsVO().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
@@ -19,15 +21,11 @@ class AnotherClass {
 // ENTITATE FRATE.
 class Person {
     private Long id;
-    private String firstName;
-    private String lastName;
     private String phone;
+    @Embedded
     private FullName fullName;
 
     public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
         fullName = new FullName(firstName, lastName);
         // TODO think: is this sufficient enforcing ?
     }

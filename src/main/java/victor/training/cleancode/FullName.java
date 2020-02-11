@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class FullName {
     private final String firstName;
     private final String lastName;
