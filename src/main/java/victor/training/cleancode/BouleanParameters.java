@@ -6,34 +6,48 @@ import java.util.List;
 public class BouleanParameters {
 
 	public static void main(String[] args) {
+		main2(args);
+	}
+	public static void main2(String[] args) {
+		main3(args);
+	}
+	public static void main3(String[] args) {
+		main4(args);
+	}
+	public static void main4(String[] args) {
 		// The method is called from various foreign places in the codebase
-		bigUglyMethod(1, 2, false);
-		bigUglyMethod(1, 2, false);
-		bigUglyMethod(1, 2, false);
-		bigUglyMethod(1, 2, false);
-		bigUglyMethod(1, 2, false);
+		bigUglyMethod(2, 1);
+		bigUglyMethod(2, 1);
+		bigUglyMethod(2, 1);
+		bigUglyMethod(2, 1);
+		bigUglyMethod(2, 1);
 
 		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(1, 2, true);
+		bigUglyMethod323(2, 1);
 
 	}
 
-	static void bigUglyMethod(int a, int b, boolean cr323) {
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
-		System.out.println("Complex Logic");
+	static void bigUglyMethod(int b, int a) {
+		beforeLogic();
+		afterLogic();
+	}
+	static void bigUglyMethod323(int b, int a) {
+		beforeLogic();
+		System.out.println("motz"); // sa ruleze asta DOAR CAND EU CHEM FUNCTIA
+		afterLogic();
+	}
 
-		if (cr323) {
-			System.out.println("motz"); // sa ruleze asta DOAR CAND EU CHEM FUNCTIA
-		}
-
+	private static void afterLogic() {
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
 	}
 
-
-
+	private static void beforeLogic() {
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
+		System.out.println("Complex Logic");
+	}
 
 
 	// ============== "BOSS" LEVEL: A lot harder to break down =================
