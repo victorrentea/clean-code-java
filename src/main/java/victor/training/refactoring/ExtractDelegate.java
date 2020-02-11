@@ -10,22 +10,20 @@ public class ExtractDelegate {
     }
 }
 class BigOne {
-    private final A a;
-    private final B b;
     private final C c;
+    private final victor.training.refactoring.AB ab;
 
     public BigOne(A a, B b, C c) {
-        this.a = a;
-        this.b = b;
+        this.ab = new AB(a, b);
         this.c = c;
     }
 
     public A getA() {
-        return a;
+        return ab.getA();
     }
 
     public B getB() {
-        return b;
+        return ab.getB();
     }
 
     public C getC() {
@@ -33,16 +31,15 @@ class BigOne {
     }
 
     public void fa() {
-        a.f();
+        ab.fa();
     }
     public void fab() {
-        a.f();
-        b.f();
+        ab.fab();
     }
     public void fcab() {
         c.f();
-        a.f();
-        b.f();
+        ab.getA().f();
+        ab.getB().f();
     }
     public void fc() {
         c.f();
