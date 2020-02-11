@@ -14,16 +14,18 @@ public class SplitLoop {
     }
 
     private static void computeStats(List<Employee> employees) {
-        int averageAge = 0;
-        double averageSalary = 0;
-        for (Employee employee : employees) {
-            averageAge += employee.getAge();
-            averageSalary += employee.getSalary();
-        }
-        averageAge = averageAge / employees.size();
-        averageSalary = averageSalary / employees.size();
+        int averageAge = calculateTotalAge(employees) / employees.size();
+        double averageSalary = calculateTotalSalary(employees) / employees.size();
         System.out.println("avg age = " + averageAge + "\navg sal = " + averageSalary);
         // TODO pipeline
+    }
+
+    private static int calculateTotalAge(List<Employee> employees) {
+        return employees.stream().mapToInt(Employee::getAge).sum();
+    }
+
+    private static double calculateTotalSalary(List<Employee> employees) {
+        return employees.stream().mapToDouble(Employee::getSalary).sum();
     }
 }
 
