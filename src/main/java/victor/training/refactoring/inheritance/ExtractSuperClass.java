@@ -1,21 +1,26 @@
 package victor.training.refactoring.inheritance;
 
 
-class S {}
-class A {
-    private int x;
+class S {
+    protected int z;
+}
+class A extends S {
+    protected int x;
     private int y;
-    void m() {System.out.println(x);}
-    void n() {}
+    void n() {
+        m();
+        System.out.println(z);
+        System.out.println(x);
+    }
+
+    protected void m() {System.out.println(x);}
 }
 
-class B {
-    private int x;
+class B extends S {
     private int y;
-    void m() {System.out.println(x);}
+    void p() { System.out.println(z); }
+
 }
-class C {
-    private int x;
-    void m() {System.out.println(x);}
-    void n() {}
+class C extends S {
+    void n() { System.out.println(z); }
 }
