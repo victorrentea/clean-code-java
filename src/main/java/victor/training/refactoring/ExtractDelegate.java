@@ -1,37 +1,61 @@
 package victor.training.refactoring;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class ExtractDelegate {
+    public static void main(String[] args) {
+        BigOne one = new BigOne(new A(), new B(), new C());
+        one.fa();
+        one.getB();
+        one.fab();
+        one.getC();
+    }
+}
+class BigOne {
     private final A a;
     private final B b;
     private final C c;
 
-    public void a() {
+    public BigOne(A a, B b, C c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+
+    public A getA() {
+        return a;
+    }
+
+    public B getB() {
+        return b;
+    }
+
+    public C getC() {
+        return c;
+    }
+
+    public void fa() {
         a.f();
     }
-    public void ab() {
+    public void fab() {
         a.f();
         b.f();
     }
-    public void cab() {
+    public void fcab() {
         c.f();
         a.f();
         b.f();
     }
-    public void c() {
+    public void fc() {
         c.f();
     }
 }
 
-interface A {
-    void f();
+class A {
+    void f(){};
 }
-interface B {
-    void f();
+class B {
+    void f(){};
 }
-interface C {
-    void f();
+class C {
+    void f(){};
 }
 
