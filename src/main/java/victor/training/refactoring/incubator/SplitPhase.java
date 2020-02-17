@@ -1,4 +1,4 @@
-package victor.training.refactoring;
+package victor.training.refactoring.incubator;
 
 import java.util.Collections;
 import java.util.Map;

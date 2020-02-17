@@ -20,6 +20,6 @@ public class ReplaceTempWithQuery {
     }
 
     public int computeFidelityPoints() {
-        return (int) (quantity * itemPrice * 0.5);
+        return (int) (quantity * itemPrice /2);
     }
 }
