@@ -14,6 +14,7 @@ public class CombineFunctionsIntoTransform {
     }
     // ----------- a line -------------
 
+    // TODO go through preserve Whole Object
     public String generateTicket(Ticket ticket) {
         String invoice = "Invoice for " + ticket.getCustomerName() + "\n";
         invoice += "QR Code: " + generateQRCode(ticket.getCode()) + "\n";
