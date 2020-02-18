@@ -1,19 +1,26 @@
 package victor.training.refactoring;
 
 import lombok.Data;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class SplitLoop {
 
-    public static void main(String[] args) {
-        computeStats(Arrays.asList(
-                new Employee(24, 1500),
-                new Employee(30, 2500)));
+    @Test
+    public void test() {
+        String actual = computeStats(asList(
+                new Employee(24, 2000, false),
+                new Employee(28, 1500, true),
+                new Employee(30, 2500, true)));
+        Assert.assertEquals("avg age = 24; avg sal = 2000.0", actual);
     }
 
-    private static void computeStats(List<Employee> employees) {
+    private String computeStats(List<Employee> employees) {
         long averageAge = 0;
         double averageSalary = 0;
         for (Employee employee : employees) {
@@ -23,7 +30,7 @@ public class SplitLoop {
         }
         averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
         averageSalary = averageSalary / employees.size();
-        System.out.println("avg age = " + averageAge + "\navg sal = " + averageSalary);
+        return "avg age = " + averageAge + "; avg sal = " + averageSalary;
     }
 }
 
@@ -32,8 +39,5 @@ public class SplitLoop {
 class Employee {
     private final int age;
     private final double salary;
-
-    public boolean isConsultant() {
-        return false;
-    }
+    private final boolean consultant;
 }
