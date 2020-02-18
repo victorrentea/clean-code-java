@@ -5,10 +5,12 @@ import lombok.Data;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Arrays.*;
+
 public class SplitLoop {
 
     public static void main(String[] args) {
-        computeStats(Arrays.asList(
+        computeStats(asList(
                 new Employee(24, 1500),
                 new Employee(30, 2500)));
     }
