@@ -8,17 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 
 public class SplitLoop {
-
-    @Test
-    public void test() {
-        String actual = computeStats(asList(
-                new Employee(24, 2000, false),
-                new Employee(28, 1500, true),
-                new Employee(30, 2500, true)));
-        Assert.assertEquals("avg age = 24; avg sal = 2000.0", actual);
-    }
 
     private String computeStats(List<Employee> employees) {
         long averageAge = 0;
@@ -31,6 +23,15 @@ public class SplitLoop {
         averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
         averageSalary = averageSalary / employees.size();
         return "avg age = " + averageAge + "; avg sal = " + averageSalary;
+    }
+
+    @Test
+    public void test() {
+        String actual = computeStats(asList(
+                new Employee(24, 2000, false),
+                new Employee(28, 1500, true),
+                new Employee(30, 2500, true)));
+        assertEquals("avg age = 24; avg sal = 2000.0", actual);
     }
 }
 

@@ -12,8 +12,8 @@ public class UtilsVsVO {
         System.out.println("More filtering logic");
         return results;
     }
-    // http://world.std.com/~swmcd/steven/tech/interval.html
     private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
+        // http://world.std.com/~swmcd/steven/tech/interval.html
         return start1 <= end2 && start2 <= end1;
     }
 }
@@ -26,8 +26,10 @@ public class UtilsVsVO {
 class CarSearchCriteria {
     private final int startYear;
     private final int endYear;
+    private final String make;
 
-    public CarSearchCriteria(int startYear, int endYear) {
+    public CarSearchCriteria(int startYear, int endYear, String make) {
+        this.make = make;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
@@ -39,6 +41,10 @@ class CarSearchCriteria {
 
     public int getEndYear() {
         return endYear;
+    }
+
+    public String getMake() {
+        return make;
     }
 }
 

@@ -35,6 +35,7 @@ class Person {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+    // TODO hard-core: implement setter
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
