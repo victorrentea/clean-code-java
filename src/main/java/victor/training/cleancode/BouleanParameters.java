@@ -7,21 +7,25 @@ public class BouleanParameters {
 
 	public static void main(String[] args) {
 		// The method is called from various foreign places in the codebase
-		bigUglyMethod(1, 2);
-		bigUglyMethod(1, 2);
-		bigUglyMethod(1, 2);
-		bigUglyMethod(1, 2);
-		bigUglyMethod(1, 2);
+		bigUglyMethod(1, 2, false);
+		bigUglyMethod(1, 2, false);
+		bigUglyMethod(1, 2, false);
+		bigUglyMethod(1, 2, false);
+		bigUglyMethod(1, 2, false);
 
 		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(1, 2);
+		bigUglyMethod(1, 2, true);
 
 	}
 
-	static void bigUglyMethod(int a, int b) {
+	static void bigUglyMethod(int a, int b, boolean dacaEu) {
 		System.out.println("Complex Logic");
 		System.out.println("Complex Logic");
 		System.out.println("Complex Logic");
+
+		if (dacaEu) {
+			System.out.println("aici" + 1);
+		}
 
 		System.out.println("More Complex Logic");
 		System.out.println("More Complex Logic");
