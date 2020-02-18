@@ -19,7 +19,7 @@ public class MoveStatementsInOutFunctions {
     public static void m2() {
         System.out.println("Line3");
         System.out.println("Line4");
-        System.out.println("Line5"); // split
+        System.out.println("Line5"); // split -> f and g
     }
 
     public static void main(String[] args) {

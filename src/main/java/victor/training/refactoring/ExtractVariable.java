@@ -2,7 +2,7 @@ package victor.training.refactoring;
 
 import lombok.Data;
 
-public class ExtractInlineVariable {
+public class ExtractVariable {
     public double computeTotalPrice(Order order) {
         return order.getQuantity() * order.getItemPrice() -
                 Math.max(0, order.getQuantity() - 500) * order.getItemPrice() * 0.05 +
