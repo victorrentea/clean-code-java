@@ -4,18 +4,18 @@ class ParameterizeAndExtract {
 
     public void f() {
         System.out.println("Logica f");
-        for (int i = 0; i < 4; i++) {
+        aaa(4);
+    }
+
+    private void aaa(int n) {
+        for (int i = 0; i < n; i++) {
             System.out.println("Cod " + i);
         }
     }
 
     public void g() {
         System.out.println("Logica g");
-        for (int i = 0; i < 3; i++) {
-            String x = "Cod" +
-                    " " + i;
-            System.out.println(x);
-        }
+        aaa(3);
     }
 
 }

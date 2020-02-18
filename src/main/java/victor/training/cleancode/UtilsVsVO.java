@@ -19,6 +19,7 @@ class Interval {
     private final int end;
 
     Interval(int start, int end) {
+//        if  start >= end;
         this.start = start;
         this.end = end;
     }
