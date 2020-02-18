@@ -14,16 +14,21 @@ public class SplitLoop {
     }
 
     private static void computeStats(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant())
-            averageAge += employee.getAge();
-            averageSalary += employee.getSalary();
-        }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
+        long averageAge = computeTotalAge(employees) /
+                employees.stream().filter(Employee::isNotConsultant).count();
+        double averageSalary = computeTotalSalary(employees) / employees.size();
         System.out.println("avg age = " + averageAge + "\navg sal = " + averageSalary);
+    }
+
+    private static long computeTotalAge(List<Employee> employees) {
+        return employees.stream()
+                .filter(Employee::isNotConsultant)
+                .mapToLong(Employee::getAge)
+                .sum();
+    }
+
+    private static double computeTotalSalary(List<Employee> employees) {
+        return employees.stream().mapToDouble(Employee::getSalary).sum();
     }
 }
 
@@ -35,5 +40,9 @@ class Employee {
 
     public boolean isConsultant() {
         return false;
+    }
+
+    public boolean isNotConsultant() {
+        return true;
     }
 }
