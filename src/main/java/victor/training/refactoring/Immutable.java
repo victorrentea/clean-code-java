@@ -1,6 +1,5 @@
 package victor.training.refactoring;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,8 @@ class MutableHost { //think "Entity"
     public static void main(String[] args) {
         List<Integer> list = new ArrayList<>();
         Other other = new Other();
+        other.setX(1);
+        other.setX(other.getX() + 1);
         Immutable immutable = new Immutable(1, list, other);
         list.add(-1);
 
@@ -44,4 +45,14 @@ public class Immutable {
     }
 }
 
-class Other {}
+class Other {
+    private int x;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+}
