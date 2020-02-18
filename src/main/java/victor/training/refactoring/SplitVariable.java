@@ -16,10 +16,10 @@ public class SplitVariable {
         assertEquals(48, discount(51,101));
     }
 
-    public int discount(int inputValue, int quantity) {
-        if (inputValue > 50) inputValue = inputValue - 2;
-        if (quantity > 100) inputValue = inputValue - 1;
-        return inputValue;
+    public int discount(int price, int quantity) {
+        if (price > 50) price = price - 2;
+        if (quantity > 100) price = price - 1;
+        return price;
     }
 
 }
