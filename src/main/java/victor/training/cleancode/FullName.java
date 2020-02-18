@@ -24,8 +24,15 @@ public class FullName {
         this.lastName = lastName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
 
     public String asEnterpriseName() {
         return firstName + " " + lastName.toUpperCase();
+    }
+
+    public FullName withLastName(String newLastName) {
+        return new FullName(firstName, newLastName);
     }
 }

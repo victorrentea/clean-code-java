@@ -1,21 +1,38 @@
 package victor.training.refactoring.inheritance;
 
 
-class S {}
-class A {
-    private int x;
-    private int y;
+class S {
+    protected int x;
     void m() {System.out.println(x);}
-    void n() {x ++;}
+}
+class A{
+    private S s;
+    private int y;
+
+    void m() {System.out.println(s.x);}
+//    void n() {x ++;}
 }
 
 class B {
-    private int x;
     private int y;
-    void m() {System.out.println(x);}
 }
-class C {
-    private int x;
-    void m() {System.out.println(x);}
-    void n() {x++;}
+class C  {
+    private S s;
+    void n() {s.x++;}
+}
+
+
+
+interface I1 {
+    default int f() {return 1;}
+}
+interface I2 {
+    default int f() {return 1;}
+}
+class A2 implements I1,I2 {
+
+    @Override
+    public int f() {
+        return I1.super.f();
+    }
 }

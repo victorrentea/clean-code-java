@@ -34,6 +34,10 @@ class Person {
         fullName = new FullName(firstName, lastName);
     }
 
+    public void marita(Person sotzu) {
+        fullName = fullName.withLastName(sotzu.getFullName().getLastName());
+    }
+
     public FullName getFullName() {
         return fullName;
     }

@@ -2,12 +2,18 @@ package victor.training.refactoring;
 
 
 class Cheese {
+    private String type;
     private int discountedTotal;
     private int discount = 0;
 
-    public Cheese(int basePrice) {
-        this.discountedTotal = basePrice;
+    private Cheese(int basePrice) {
+        this(basePrice, "ca$h");
     }
+    private Cheese(int basePrice, String type) {
+        this.discountedTotal = basePrice;
+        this.type = type;
+    }
+
 
     public int getDiscountedTotal() {
         return discountedTotal;

@@ -29,4 +29,29 @@ class Rectangle {
 }
 
 // TODO
-class Square {}
+class Square {
+    private final Rectangle rectangle = new Rectangle();
+    public int area() {
+        return rectangle.area();
+    }
+    public int perimeter() {
+        return rectangle.perimeter();
+    }
+
+    public void setEdge(int edge) {
+        rectangle.setWidth(edge);
+        rectangle.setHeight(edge);
+    }
+}
+
+class CodClient {
+    public static void main(String[] args) {
+        Square s = new Square();
+        m(s);
+    }
+
+    private static void m(Square s) {
+        s.setEdge(4);
+        System.out.println(s.area());
+    }
+}
