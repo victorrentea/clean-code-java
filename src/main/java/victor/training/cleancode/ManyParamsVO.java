@@ -1,56 +1,50 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embedded;
+
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        Address address = new Address("St. Albergue", "Paris", 99);
+        FullName fullName = new FullName("John", "Doe");
+        new ManyParamsVO().placeOrder(fullName, address);
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName == null) throw new IllegalArgumentException();
-    	
+    public void placeOrder(FullName fullName, Address address) {
+
     	System.out.println("Some Logic");
     }
 }
 
 class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
-    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
-    	
+    public void otherMethod(FullName fullName, int x) {
     	System.out.println("Another distant Logic");
     }
 }
 
+
+// Sacra Entitate
 class Person {
     private Long id;
-    private String firstName;
-    private String lastName;
+    @Embedded
+    private FullName fullName;
     private String phone;
 
     public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        if (firstName == null || lastName == null) throw new IllegalArgumentException();
         // TODO think: is this sufficient enforcing ?
+
+        fullName = new FullName(firstName, lastName);
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getLastName() {
-        return lastName;
+    public FullName getFullName() {
+        return fullName;
     }
 }
 
 class PersonService {
     public void f(Person person) {
-        String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
+        String fullName = person.getFullName().asEnterpriseName();
         System.out.println(fullName);
     }
+
     public void p(String city, String streetName, Integer streetNumber) {
         System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
     }
