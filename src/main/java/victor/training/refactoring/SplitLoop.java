@@ -14,8 +14,8 @@ public class SplitLoop {
     }
 
     private static void computeStats(List<Employee> employees) {
-        long averageAge = computeTotalAge(employees) /
-                employees.stream().filter(Employee::isNotConsultant).count();
+        long employeeCount = employees.stream().filter(Employee::isNotConsultant).count();
+        long averageAge = computeTotalAge(employees) / employeeCount;
         double averageSalary = computeTotalSalary(employees) / employees.size();
         System.out.println("avg age = " + averageAge + "\navg sal = " + averageSalary);
     }
