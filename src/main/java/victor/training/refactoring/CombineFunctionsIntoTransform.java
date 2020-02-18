@@ -16,13 +16,32 @@ public class CombineFunctionsIntoTransform {
 
     // TODO go through preserve Whole Object
     public String generateTicket(Ticket ticket) {
-        String invoice = "Invoice for " + ticket.getCustomerName() + "\n";
-        invoice += "QR Code: " + generateQRCode(ticket.getCode()) + "\n";
-        invoice += "Address: " + getAddress(ticket.getEventId()) + "\n";
+        TicketView ticketView = createView(ticket);
+        return generateTicket(ticketView);
+    }
+
+    public TicketView createView(Ticket ticket) {
+        String customerName = ticket.getCustomerName();
+        String qrCode = generateQRCode(ticket.getCode());
+        String address = getAddress(ticket.getEventId());
+        return new TicketView(customerName, qrCode, address);
+    }
+
+    public String generateTicket(TicketView ticketView) {
+        String invoice = "Invoice for " + ticketView.getCustomerName() + "\n";
+        invoice += "QR Code: " + ticketView.getQrCode() + "\n";
+        invoice += "Address: " + ticketView.getAddress() + "\n";
         invoice += "Please arrive 20 minutes before the start of the event\n";
         invoice += "In case of emergency, call 0899898989\n";
         return invoice;
     }
+}
+
+@Data
+class TicketView {
+    private final String customerName;
+    private final String qrCode;
+    private final String address;
 }
 
 
