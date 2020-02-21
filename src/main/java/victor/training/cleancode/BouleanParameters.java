@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import victor.training.cleancode.pretend.TestUtils;
-
 import java.util.List;
 
 @SuppressWarnings("all")
@@ -9,21 +7,25 @@ public class BouleanParameters {
 
 	public static void main(String[] args) {
 		// The method is called from various foreign places in the codebase
-		bigUglyMethod(2, 1);
-		bigUglyMethod(2, 1);
-		bigUglyMethod(2, 1);
-		bigUglyMethod(2, 1);
-		bigUglyMethod(2, 1);
+		bigUglyMethod(2, 1, false);
+		bigUglyMethod(2, 1, false);
+		bigUglyMethod(2, 1, false);
+		bigUglyMethod(2, 1, false);
+		bigUglyMethod(2, 1, false);
 
 		// TODO From my use-case, I call it too, to do more within:
-		bigUglyMethod(2, 1);
+		bigUglyMethod(2, 1, true);
 
 	}
 
-	static void bigUglyMethod(int b, int a) {
+	static void bigUglyMethod(int b, int a, boolean crMeu) {
 		System.out.println("Complex Logic " + a);
 		System.out.println("Complex Logic " + a);
 		System.out.println("Complex Logic " + a);
+
+		if (crMeu) {
+			System.out.println("#sieu");
+		}
 
 		System.out.println("More Complex Logic " + b);
 		System.out.println("More Complex Logic " + b);
