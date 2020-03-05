@@ -2,13 +2,26 @@ package videostore.dirty;
 
 import lombok.NonNull;
 
-public class Movie {
+//class ChildrenMovie extends Movie {
+//}
+//class RegularMovie extends Movie {
+//}
+//class NewReleaseMovie extends Movie {
+//	@Override
+//	public double computePrice(int daysRented) {
+//		return daysRented * 3;
+//	}
+//}
+
+
+public abstract class Movie {
 
 	public enum Category {
 		CHILDREN,
 		REGULAR,
 		NEW_RELEASE
 	}
+
 	private final String title;
 
 	private final Category category;
@@ -24,5 +37,7 @@ public class Movie {
 
 	public String getTitle() {
 		return title;
-	};
+	}
+
+//	public abstract double computePrice(int daysRented);
 }

@@ -1,5 +1,5 @@
 package videostore.dirty;
-class Rental {
+public class Rental {
 	private final Movie movie;
 	private final int daysRented;
 
@@ -17,7 +17,7 @@ class Rental {
 	}
 
 	public double computePrice() {
-		switch (getMovie().getCategory()) {
+		switch (movie.getCategory()) {
 			case REGULAR:
 				return computeRegularPrice();
 			case NEW_RELEASE:
