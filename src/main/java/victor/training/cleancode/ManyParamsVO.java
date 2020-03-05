@@ -49,8 +49,8 @@ class Person {
 
 class PersonService {
     public void f(Person person) {
-        String fullName = person.getFirstName() + " " + person.getLastName().toUpperCase();
-        System.out.println(fullName);
+        String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+        System.out.println(fullNameStr);
     }
     public void p(String city, String streetName, Integer streetNumber) {
         System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
