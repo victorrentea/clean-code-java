@@ -1,24 +1,39 @@
 package victor.training.cleancode;
 
+import lombok.Data;
+
 public class ManyParamsVO {
     public static void main(String[] args) {
-        new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+        FullName fullName = new FullName("John", "Doe");
+        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
     }
-    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    	if (fName == null || lName == null) throw new IllegalArgumentException();
-    	
+    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+
     	System.out.println("Some Logic");
     }
 }
 
+@Data
+class FullName {
+    private final String firstName;
+    private final String lastName;
+
+    FullName(String firstName, String lastName) {
+        if (firstName == null || lastName == null) throw new IllegalArgumentException();
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+
 class AnotherClass {
-    public void otherMethod(String firstName, String lastName, int x) {
-    	if (firstName == null || lastName == null) throw new IllegalArgumentException();
-    	
+    public void otherMethod(FullName fullName, int x) {
+
     	System.out.println("Another distant Logic");
     }
 }
 
+// Holy Entity
 class Person {
     private Long id;
     private String firstName;
