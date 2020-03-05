@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public class ManyParamsVO {
@@ -26,8 +27,16 @@ class FullName {
         this.lastName = lastName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public String asEnterpriseName() {
         return firstName + " " + lastName.toUpperCase();
+    }
+
+    public FullName withLastName(String newLastName) {
+        return new FullName(firstName, newLastName);
     }
 }
 
@@ -55,6 +64,10 @@ class Person {
 
     public void setFullName(FullName fullName) {
         this.fullName = fullName;
+    }
+
+    public void marita(Person person) {
+        fullName = fullName.withLastName(person.getFullName().getLastName());
     }
 
     public Optional<String> getPhone() {

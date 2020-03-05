@@ -3,6 +3,7 @@ package victor.training.cleancode;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import static java.util.Collections.*;
 
 public class VreauSaMaJoc {
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
+        List<String> list = Arrays.asList();
         A a = new A("a", new B(1), list);
 
         list.add("tzeapa");
