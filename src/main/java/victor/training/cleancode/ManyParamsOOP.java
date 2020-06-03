@@ -58,6 +58,7 @@ class Validator {
 //        this.errors = errors;
 //    }
 
+    List<String> errors = new ArrayList<>();
 //    @Autowired
 	private final OtherDependency dep;
 
