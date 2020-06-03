@@ -1,8 +1,6 @@
 package victor.training.cleancode;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Value;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Embeddable;
@@ -11,9 +9,10 @@ import javax.persistence.Embedded;
 public class ManyParamsVO {
     public static void main(String[] args) {
         FullName fullName = new FullName("John", "Doe");
-        new ManyParamsVO().placeOrder(fullName, "St. Albergue", "Paris", 99);
+        Address address = new Address("St. Albergue", "Paris", 99);
+        new ManyParamsVO().placeOrder(fullName, address);
     }
-    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+    public void placeOrder(FullName fullName, Address address) {
 
     	System.out.println("Some Logic");
     }
@@ -107,7 +106,7 @@ class PersonService {
         System.out.println(person.getFullName().getFirstName());
         System.out.println(fullNameStr);
     }
-    public void p(String city, String streetName, Integer streetNumber) {
-        System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+    public void p(Address address) {
+        System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
     }
 }
