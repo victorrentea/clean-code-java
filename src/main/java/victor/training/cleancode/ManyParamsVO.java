@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.Value;
 import org.apache.commons.lang.StringUtils;
 
@@ -22,7 +23,8 @@ public class ManyParamsVO {
 //class ContactPerson { neah
 //class Name { // is vague. a company also has name
 //class PersonIdentifier {// not true, CNP, SSN
-@Data
+//@Data
+@Getter
 @Embeddable // best underused feature of JPA/Hivernate
 class FullName {
     private String firstName;
@@ -33,6 +35,10 @@ class FullName {
         if (firstName == null || lastName == null) throw new IllegalArgumentException();
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public FullName withLastName(String newLastName) {
+        return new FullName(firstName, newLastName);
     }
 }
 
@@ -85,9 +91,9 @@ class Person {
     }
 
     // TODO hard-core: implement setter when she marries him
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
+    public void setLastName(String newLastName) {
+        fullName = fullName.withLastName(newLastName);
+    }
 
     public FullName getFullName() {
         return fullName;
