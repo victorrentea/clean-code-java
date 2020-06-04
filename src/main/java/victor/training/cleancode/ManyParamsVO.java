@@ -39,6 +39,10 @@ class FullName {
     public FullName withLastName(String newLastName) {
         return new FullName(firstName, newLastName);
     }
+
+    public String asEnterpriseName() {
+        return  firstName + " " + lastName.toUpperCase();
+    }
 }
 
 //class Address
@@ -83,6 +87,17 @@ class Person {
     @Embedded
     private FullName fullName;
     private String phone;
+    private Status status = Status.DRAFT;
+    enum Status {
+        DRAFT, ACTIVE
+    }
+
+    public void activate() {
+        if (status != Status.DRAFT) {
+            throw new IllegalStateException();
+        }
+        status = Status.ACTIVE;
+    }
 
     public Person(String firstName, String lastName) {
         // TODO think: is this sufficient enforcing ?
@@ -102,7 +117,7 @@ class Person {
 
 class PersonService {
     public void f(Person person) {
-        String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
+        String fullNameStr = person.getFullName().asEnterpriseName();
         System.out.println(person.getFullName().getFirstName());
         System.out.println(fullNameStr);
     }

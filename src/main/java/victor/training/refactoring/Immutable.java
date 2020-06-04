@@ -38,6 +38,9 @@ public /*final*/ class Immutable {
         return other;
     }
 
+//    public void addNumber(Integer integer) {
+//        numbers.add(integer);
+//    }
     public List<Integer> getNumbers() {
         return unmodifiableList(numbers);
     }
