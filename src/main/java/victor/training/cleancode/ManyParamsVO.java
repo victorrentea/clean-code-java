@@ -43,47 +43,47 @@ class PersonName {
 
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(PersonName personName, int x) {
+      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic");
    }
 }
 
+// Holy entity. SACRED GROUNDS OF PERSISTENT OBJECTS.
+// toata lumea lucreaza cu astea.
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
+   private PersonName name;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
+      name = new PersonName(firstName, lastName);
       if (firstName == null || lastName == null) throw new IllegalArgumentException();
       // TODO think: is this sufficient enforcing ?
    }
 
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
-
    // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
+//   public void setLastName(String lastName) {
+//      this.lastName = lastName;
+//   }
+
+
+   public PersonName getName() {
+      return name;
    }
 
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
-   }
 }
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+      String fullNameStr = person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase();
+      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
+      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
+      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
+      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
+      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
+      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
       System.out.println(fullNameStr);
    }
 
