@@ -24,12 +24,8 @@ class PersonName {
       this.lastName = lastName;
    }
 
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
+   public String getFullName() {
+      return firstName + " " + lastName.toUpperCase();
    }
 }
 
@@ -74,12 +70,8 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = getFullName(person.getName());
+      String fullNameStr = person.getName().getFullName();
       System.out.println(fullNameStr);
-   }
-
-   private String getFullName(PersonName name) {
-      return name.getFirstName() + " " + name.getLastName().toUpperCase();
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
