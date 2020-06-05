@@ -24,8 +24,17 @@ class PersonName {
       this.lastName = lastName;
    }
 
+   public String getLastName() {
+      return lastName;
+   }
+
+
    public String getFullName() {
       return firstName + " " + lastName.toUpperCase();
+   }
+
+   public PersonName withLastName(String newLastName) {
+      return new PersonName(firstName, newLastName);
    }
 }
 
@@ -57,9 +66,9 @@ class Person {
    }
 
    // TODO hard-core: implement setter
-//   public void setLastName(String lastName) {
-//      this.lastName = lastName;
-//   }
+   public void marita(Person ala) {
+      name = name.withLastName(ala.getName().getLastName());
+   }
 
 
    public PersonName getName() {
