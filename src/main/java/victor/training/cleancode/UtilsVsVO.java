@@ -15,7 +15,8 @@ public class UtilsVsVO {
 }
 //class Interval {
 //    boolean intersects(Interval other) {}
-//} // TODO tema de weekend
+//} // TODO tema de weekend folosind :
+// refactorul : Convert to instance method (intelliJ)
 class AlteClase {
     {
         MathUtil.intervalsIntersect(1, 2, 3, 4);
