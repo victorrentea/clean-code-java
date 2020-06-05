@@ -2,10 +2,11 @@ package victor.training.cleancode;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder(new PersonName("John", "Doe"), "St. Albergue", "Paris", 99);
+      PersonName personName = new PersonName("John", "Doe");
+      new ManyParamsVO().placeOrder(personName, new Address("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(PersonName personName, String city, String streetName, Integer streetNumber) {
+   public void placeOrder(PersonName personName, Address address) {
 
       System.out.println("Some Logic");
    }
@@ -82,8 +83,12 @@ class PersonService {
       String fullNameStr = person.getName().getFullName();
       System.out.println(fullNameStr);
    }
+   {
+      Address address = new Address("Bucuresti", "Mea", 99);
+      p(address);
+   }
 
-   public void p(String city, String streetName, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
