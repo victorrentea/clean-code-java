@@ -6,7 +6,6 @@ public class ManyParamsVO {
    }
 
    public void placeOrder(PersonName personName, String city, String streetName, Integer streetNumber) {
-      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
    }
@@ -20,6 +19,7 @@ class PersonName {
    private final String lastName;
 
    public PersonName(String firstName, String lastName) {
+      if (firstName == null || lastName == null) throw new IllegalArgumentException();
       this.firstName = firstName;
       this.lastName = lastName;
    }
@@ -44,8 +44,6 @@ class PersonName {
 
 class AnotherClass {
    public void otherMethod(PersonName personName, int x) {
-      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException();
-
       System.out.println("Another distant Logic");
    }
 }
@@ -59,7 +57,6 @@ class Person {
 
    public Person(String firstName, String lastName) {
       name = new PersonName(firstName, lastName);
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
       // TODO think: is this sufficient enforcing ?
    }
 
@@ -77,14 +74,12 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase();
-      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
-      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
-      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
-      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
-      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
-      System.out.println(person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase());
+      String fullNameStr = getFullName(person.getName());
       System.out.println(fullNameStr);
+   }
+
+   private String getFullName(PersonName name) {
+      return name.getFirstName() + " " + name.getLastName().toUpperCase();
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
