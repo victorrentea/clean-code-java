@@ -1,0 +1,13 @@
+
+All methods <= 5 lines long  ............................. +15p
+Relying on a Method Object (stateful processing class) ... -5p
+Immutable Classes (Rental, Movie, Customer)............... +5p/class
+Delete getter (fully hide data) .......................... +5p/field
+Explanatory variable (helpful) ........................... +3p/variable
+Feature Envy (using only state of another object) ........ -3p/method
+Number of method params >= 4 ............................. -7p/method
+Number of method params == 3 ............................. -3p/method
+
+====== Phase 2 ======
+Apply Model-View-Controller (MVC) principles  +15p
+Clean up tests............................... +10p
