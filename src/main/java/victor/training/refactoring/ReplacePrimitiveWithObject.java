@@ -1,12 +1,8 @@
 package victor.training.refactoring;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import static java.util.stream.Collectors.toList;
@@ -33,10 +29,22 @@ public class ReplacePrimitiveWithObject {
     }
 }
 
-@Data
 class Incident {
     private final Long id;
     private final String priority;
+
+    Incident(Long id, String priority) {
+        this.id = id;
+        this.priority = priority;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
 }
 
 class CustomerRepo {

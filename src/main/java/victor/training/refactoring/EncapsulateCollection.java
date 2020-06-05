@@ -1,7 +1,5 @@
 package victor.training.refactoring;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +36,6 @@ class HotelCharges {
     }
 }
 
-@Data
 class HotelDayCharge {
     private double dayRate;
     private boolean breakfast;
@@ -49,5 +46,21 @@ class HotelDayCharge {
         this.dayRate = dayRate;
         this.breakfast = breakfast;
         this.parkingHours = parkingHours;
+    }
+
+    public double getDayRate() {
+        return dayRate;
+    }
+
+    public HotelCharges getHotel() {
+        return hotel;
+    }
+
+    public int getParkingHours() {
+        return parkingHours;
+    }
+
+    public boolean isBreakfast() {
+        return breakfast;
     }
 }

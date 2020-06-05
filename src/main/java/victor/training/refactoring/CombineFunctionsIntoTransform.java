@@ -1,7 +1,5 @@
 package victor.training.refactoring;
 
-import lombok.Data;
-
 public class CombineFunctionsIntoTransform {
     public String generateQRCode(String code) {
         // Call External Service
@@ -27,9 +25,26 @@ public class CombineFunctionsIntoTransform {
 
 
 // ----- SUPPORTING, DUMMY CODE ------
-@Data
 class Ticket {
     private final String customerName;
     private final String code;
     private final long eventId;
+
+    Ticket(String customerName, String code, long eventId) {
+        this.customerName = customerName;
+        this.code = code;
+        this.eventId = eventId;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
 }

@@ -1,8 +1,6 @@
 package victor.training.cleancode;
 
-import lombok.Data;
-
-/* "I call it my billion-dollar mistake. 
+/* "I call it my billion-dollar mistake.
  * It was the invention of the null reference in 1965..."
  *  -- Sir Charles Antony Richard  */
 
@@ -51,7 +49,15 @@ class Customer {
 	}
 }
 
-@Data
+
 class MemberCard {
 	private final int fidelityPoints;
+
+	MemberCard(int fidelityPoints) {
+		this.fidelityPoints = fidelityPoints;
+	}
+
+	public int getFidelityPoints() {
+		return fidelityPoints;
+	}
 }

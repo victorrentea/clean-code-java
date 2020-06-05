@@ -1,11 +1,13 @@
 package victor.training.refactoring.incubator;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class ReplaceQueryWithParam {
     private final UserRepo userRepo;
     private final OfferService offerService;
+
+    public ReplaceQueryWithParam(UserRepo userRepo, OfferService offerService) {
+        this.userRepo = userRepo;
+        this.offerService = offerService;
+    }
 
     public void cancelOffer(int offerId, int userId) {
         User user = userRepo.findById(userId);
@@ -15,10 +17,14 @@ public class ReplaceQueryWithParam {
     }
 }
 
-@RequiredArgsConstructor
 class OfferService {
     private final UserRepo userRepo;
-    private final OfferRepo offerRepo;
+    private final OfferRepo  offerRepo;
+
+    OfferService(UserRepo userRepo, OfferRepo offerRepo) {
+        this.userRepo = userRepo;
+        this.offerRepo = offerRepo;
+    }
 
     public void cancelOffer(int userId, int offerId) {
         Offer offer = offerRepo.findById(offerId);

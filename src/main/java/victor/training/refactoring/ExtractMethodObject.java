@@ -1,6 +1,5 @@
 package victor.training.refactoring;
 
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -9,9 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
 public class ExtractMethodObject {
     private final EntityManager em;
+
+    public ExtractMethodObject(EntityManager em) {
+        this.em = em;
+    }
 
     public List<Long> search(CustomerSearchCriteria criteria) {
         String jpql = "SELECT c.id FROM Customer c WHERE 1=1 ";

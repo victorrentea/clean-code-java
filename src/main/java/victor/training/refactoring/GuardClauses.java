@@ -1,7 +1,5 @@
 package victor.training.refactoring;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +45,33 @@ public class GuardClauses {
     }
 }
 
-@Data
 class Marine {
     private final boolean dead;
     private final boolean retired;
     private final Integer yearsService;
     private final List<Award> awards = new ArrayList<>();
+
+    Marine(boolean dead, boolean retired, Integer yearsService) {
+        this.dead = dead;
+        this.retired = retired;
+        this.yearsService = yearsService;
+    }
+
+    public Integer getYearsService() {
+        return yearsService;
+    }
+
+    public List<Award> getAwards() {
+        return awards;
+    }
+
+    public boolean isRetired() {
+        return retired;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
 }
 
 class Award {
