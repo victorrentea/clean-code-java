@@ -2,14 +2,13 @@ package victor.training.refactoring;
 
 public class ReplaceTempWithQuery {
 
-    private int quantity;
-    private double itemPrice;
+    private final int quantity;
+    private final double itemPrice;
 
     public ReplaceTempWithQuery(int quantity, double itemPrice) {
         this.quantity = quantity;
         this.itemPrice = itemPrice;
     }
-
 
     public double computePrice() {
         double basePrice = quantity * itemPrice;
@@ -20,8 +19,8 @@ public class ReplaceTempWithQuery {
     }
 
     private double computeNormalPrice(double basePrice) {
-        if (basePrice > 1000) return basePrice * 0.95;
-        else return basePrice * 0.98;
+        double factor = (basePrice > 1000) ? 0.95: 0.98;
+        return factor * basePrice;
     }
 
     public int computeFidelityPoints() {
