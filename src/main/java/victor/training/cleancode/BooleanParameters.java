@@ -31,7 +31,7 @@ public class BooleanParameters {
 
    public void bossLevel(boolean stuff, boolean fluff, List<Integer> tasks) {
       int i = 0; // TODO move closer to usages
-      int j = 1;
+      int j = tasks.size();
       System.out.println("Logic1");
       if (stuff) {
          System.out.println("Logic2");
@@ -39,16 +39,22 @@ public class BooleanParameters {
             System.out.println("Logic3");
             for (int task : tasks) {
                i++;
-               System.out.println("Logic4 " + task);
-               // TODO HERE, when call this method, I want MY own custom code to run here
-               System.out.println("Logic5 " + i);
+               System.out.println("Logic4: Validate " + task);
+               // TODO When **I** call this method, I want this to run HERE, too:
+               // System.out.println("My Logic: " + task);
+               System.out.println("Logic5 " + i + " on " + task);
             }
-            System.out.println("Logic6 " + j++);
+            System.out.println("Logic6 " + j);
          } else {
             System.out.println("Logic7 " + tasks);
          }
       }
       System.out.println("Logic7");
    }
+
+}
+
+
+class Task {
 
 }
