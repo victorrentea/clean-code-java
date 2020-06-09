@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import java.util.List;
+
 public class Address {
    private final String city;
    private final String streetName;
@@ -22,4 +24,5 @@ public class Address {
    public Integer getStreetNumber() {
       return streetNumber;
    }
+
 }

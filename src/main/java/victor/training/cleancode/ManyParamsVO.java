@@ -1,9 +1,15 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import java.util.List;
+import java.util.Objects;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       PersonName personName = new PersonName("John", "Doe");
-      new ManyParamsVO().placeOrder(personName, new Address("St. Albergue", "Paris", 99));
+      Address address = new Address("St. Albergue", "Paris", 99);
+      new ManyParamsVO().placeOrder(personName, address);
    }
 
    public void placeOrder(PersonName personName, Address address) {
@@ -11,11 +17,12 @@ public class ManyParamsVO {
       System.out.println("Some Logic");
    }
 }
+@Embeddable
 //class ClientName { // prea specifi. nu reutilizabil
-// Person poate contine
+// Person poate contine orice
 // Name e gresit - si un SRL are nume
 // PersonName
-class PersonName {
+class PersonName { // value object
    private final String firstName;
    private final String lastName;
 
@@ -36,6 +43,20 @@ class PersonName {
 
    public PersonName withLastName(String newLastName) {
       return new PersonName(firstName, newLastName);
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      PersonName that = (PersonName) o;
+      return Objects.equals(firstName, that.firstName) &&
+          Objects.equals(lastName, that.lastName);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(firstName, lastName);
    }
 }
 
@@ -58,6 +79,7 @@ class AnotherClass {
 // toata lumea lucreaza cu astea.
 class Person {
    private Long id;
+   @Embedded
    private PersonName name;
    private String phone;
 
@@ -86,9 +108,12 @@ class PersonService {
    {
       Address address = new Address("Bucuresti", "Mea", 99);
       p(address);
+
+      Address address1 = new Address("a", "Living in ", 12);
    }
 
    public void p(Address address) {
+
       System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
