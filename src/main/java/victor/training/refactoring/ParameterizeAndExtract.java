@@ -2,19 +2,21 @@ package victor.training.refactoring;
 
 class ParameterizeAndExtract {
 
+    // linia 200
     public void f() {
         System.out.println("Logica f");
-        for (int i = 0; i < 4; i++) {
-            System.out.println("Cod " + i);
-        }
+        commonStuffWithExtraParam(4);
     }
 
+    //linia 500
     public void g() {
         System.out.println("Logica g");
-        for (int i = 0; i < 3; i++) {
-            String x = "Cod" +
-                    " " + i;
-            System.out.println(x);
+        commonStuffWithExtraParam(3);
+    }
+
+    private void commonStuffWithExtraParam(int i2) {
+        for (int i = 0; i < i2; i++) {
+            System.out.println("Cod " + i);
         }
     }
 
