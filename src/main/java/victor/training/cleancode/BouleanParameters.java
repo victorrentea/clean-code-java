@@ -1,6 +1,11 @@
 package victor.training.cleancode;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 
 @SuppressWarnings("all")
 public class BouleanParameters {
@@ -49,15 +54,22 @@ public class BouleanParameters {
       System.out.println("Logic1");
       System.out.println("Logic2");
       System.out.println("Logic3");
+
+//      Path p = new File("2gb.txt").toPath();
+//      Stream<String> lines = Files.lines(p)
+//          .filter()
+//      .distinct() // Out of mem pentru streamuri foarte lungi
+//          .am;
+
       // TODO localize
       for (int task : tasks) {
          System.out.println("Logic4 " + task);
       }
-
       for (int task : tasks) {
          // TODO HERE, when call this method, I want MY own custom code to run here
          // PP: ca logica noua depinde de task4: adica vrea sa proceseze elementele dupa ce Logic4 a rulat
       }
+
       int i = 0;
       for (int task : tasks) {
          i++;
