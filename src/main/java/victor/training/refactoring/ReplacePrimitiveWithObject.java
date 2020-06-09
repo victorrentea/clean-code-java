@@ -19,15 +19,53 @@ public class ReplacePrimitiveWithObject {
    private CustomerRepo customerRepo = new CustomerRepo(); //fake dep injection
 
    public void microIdTypes() {
-      Map<Long, List<Long>> idMap = customerRepo.getCustomerOrders();
-      for (Long id : idMap.keySet()) {
-         List<Long> ids = idMap.get(id);
-         processCustomer(id, ids);
+      Map<Long, List<Long>> customerIdToOrderIds = customerRepo.getCustomerOrders();
+//      step1: Map<CustomerId, List<OrderId>> orders = customerRepo.getCustomerOrders();
+//      List<CustomerOrderIds> customerIdToOrderIds = customerRepo.getCustomerOrders();
+
+      // Step2:
+      // cand iterezi pe cheile mapei si faci imediat get(key), de fapt tu iti bati joc de mapa
+      // o folosesti intr-un mod degenerat ca o simpla lista.
+      for (Long customerId : customerIdToOrderIds.keySet()) {
+         List<Long> orderIds = customerIdToOrderIds.get(customerId);
+
+//      for (CustomerOrderIds co : list) {
+         processCustomer(customerId, orderIds);
       }
    }
 
-   private void processCustomer(Long id, List<Long> ids) {
-      System.out.println("Process cid=" + id + " -> order Ids:" + ids);
+   private void processCustomer(Long customerIds, List<Long> orderIds) {
+      System.out.println("Process cid=" + customerIds + " -> order Ids:" + orderIds);
+   }
+}
+
+class CustomerOrderIds {
+   private final long customerId;
+   private final List<Long> orderIds;
+
+   CustomerOrderIds(long customerId, List<Long> orderIds) {
+      this.customerId = customerId;
+      this.orderIds = orderIds;
+   }
+
+   public List<Long> getOrderIds() {
+      return orderIds;
+   }
+
+   public long getCustomerId() {
+      return customerId;
+   }
+}
+
+
+// microtypes
+class CustomerId {
+   private final long id;
+   CustomerId(long id) {
+      this.id = id;
+   }
+   public long getId() {
+      return id;
    }
 }
 
