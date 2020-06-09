@@ -8,18 +8,21 @@ public class EncapsulateCollection {
         HotelCharges hotelCharges = new HotelCharges();
         HotelDayCharge dayCharge = new HotelDayCharge(100, true, 5);
 
-        hotelCharges.days.add(dayCharge);
+//        hotelCharges.getDays().add(dayCharge); -- nu ai sansa sa fii destept
+        hotelCharges.addDay(dayCharge);
         System.out.println("FEE: " + hotelCharges.totalFee + "\n");
 
+//        hotelCharges.setDays(Arrays.asList(dayCharge));
+
         // Never forget to do:
-        hotelCharges.computeTotal();
+//        hotelCharges.computeTotal(); // redundant. Implem ta actual are grija sa faca ere asta
         System.out.println("FEE: " + hotelCharges.totalFee + "\n");
 
     }
 }
 
 class HotelCharges {
-    public List<HotelDayCharge> days = new ArrayList<>();
+    private List<HotelDayCharge> days = new ArrayList<>();
     public double totalFee;
 
     public void computeTotal() {
@@ -34,6 +37,26 @@ class HotelCharges {
             totalFee += day.getParkingHours() * PARKING_HOUR_RATE;
         }
     }
+
+    public Iterable<HotelDayCharge> getDays() {
+        return days;
+    }
+
+    public HotelCharges addDay(HotelDayCharge/*Idea: ... varargs */dayCharge) {
+        days.add(dayCharge);
+        computeTotal();
+        // daca te joci cu JPA/Hibernate, aici poti seta relatii bidirectionale
+        return this;
+    }
+    public void removeDay(HotelDayCharge dayCharge) {
+        days.remove(dayCharge);
+        computeTotal();
+    }
+//
+//    public HotelCharges setDays(List<HotelDayCharge> days) {
+//        this.days = days;
+//        return this;
+//    }
 }
 
 class HotelDayCharge {

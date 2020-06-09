@@ -63,7 +63,6 @@ class Copil{
     }
 }
 
-
 public class Immutable {
     private final int x;
     private final List<Integer> numbers;
