@@ -12,11 +12,14 @@ public class ReplaceTempWithQuery {
 
 
     public double computePrice() {
-        double basePrice = quantity * itemPrice;
         if (quantity > 10)
-            return basePrice * 0.95;
+            return basePrice() * 0.95;
         else
-            return computeNormalPrice(basePrice);
+            return computeNormalPrice(basePrice());
+    }
+
+    private double basePrice() {
+        return quantity * itemPrice;
     }
 
     private double computeNormalPrice(double basePrice) {
@@ -25,6 +28,6 @@ public class ReplaceTempWithQuery {
     }
 
     public int computeFidelityPoints() {
-        return (int) (quantity * itemPrice / 2);
+        return (int) (basePrice() / 2);
     }
 }
