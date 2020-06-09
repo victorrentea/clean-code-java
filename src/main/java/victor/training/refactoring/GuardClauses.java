@@ -5,25 +5,22 @@ import java.util.List;
 
 public class GuardClauses {
     public int getPayAmount(Marine marine) {
-        int result;
-        if (!marine.isDead()) {
-            if (!marine.isRetired()) {
-                if (marine.getYearsService()!=null) {
-                    result = marine.getYearsService() * 100;
-                    if (!marine.getAwards().isEmpty()) {
-                        result += 1000;
-                    }
-                    if (marine.getAwards().size() >= 3) {
-                        result += 2000;
-                    }
-                } else {
-                    throw new IllegalArgumentException("Any marine should have the years of servce set");
-                }
-            } else {
-                result = retiredAmount();
-            }
-        } else {
-            result = deadAmount();
+        if (marine.isDead()) {
+            return deadAmount();
+        }
+        if (marine.isRetired()) {
+            return retiredAmount();
+        }
+        if (marine.getYearsService() == null) {
+            throw new IllegalArgumentException("Any marine should have the years of servce set");
+        }
+        int result = marine.getYearsService() * 100;
+//        if (!marine.getAwards().isEmpty()) {
+        if (marine.hasAwards()) {
+            result += 1000;
+        }
+        if (marine.getAwards().size() >= 3) {
+            result += 2000;
         }
         return result;
     }
@@ -71,6 +68,10 @@ class Marine {
 
     public boolean isDead() {
         return dead;
+    }
+
+    public boolean hasAwards() {
+        return !awards.isEmpty();
     }
 }
 
