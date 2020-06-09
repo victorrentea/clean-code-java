@@ -1,16 +1,26 @@
 package victor.training.refactoring;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class EncapsulateConditionals {
     public double getQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor) {
+
+        List<Date> dates = Arrays.asList(new Date(), new Date(), new Date(), new Date());
+        List<Date> summerDate = dates.stream().filter(plan::duringSummer).collect(Collectors.toList());
+
         double charge;
-        if (!(date.before(plan.getSummerStart())) && date.before(plan.getSummerEnd()))
+        if (plan.duringSummer(date)) {
             charge = quantity * plan.getSummerRate();
-        else
+        } else {
             charge = quantity * plan.getRegularRate() + plan.getRegularServiceCharge();
+        }
         return charge - clientFidelityFactor;
     }
+
 }
 
 
@@ -47,5 +57,9 @@ class RatesPlan {
 
     public double getSummerRate() {
         return summerRate;
+    }
+
+    public boolean duringSummer(Date date) {
+        return !date.before(summerStart) && date.before(summerEnd);
     }
 }
