@@ -1,4 +1,4 @@
-package victor.training.cleancode;
+package victor.training.refactoring;
 
 import java.util.List;
 

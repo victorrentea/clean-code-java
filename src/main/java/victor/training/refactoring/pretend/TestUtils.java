@@ -1,10 +1,8 @@
-package victor.training.cleancode.pretend;
+package victor.training.refactoring.pretend;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.concurrent.Callable;
 
 public class TestUtils {
     public static String output(Runnable runnable) {
