@@ -14,8 +14,8 @@ class ParameterizeAndExtract {
         commonStuffWithExtraParam(3);
     }
 
-    private void commonStuffWithExtraParam(int i2) {
-        for (int i = 0; i < i2; i++) {
+    private void commonStuffWithExtraParam(int n) {
+        for (int i = 0; i < n; i++) {
             System.out.println("Cod " + i);
         }
     }
