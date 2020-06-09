@@ -8,7 +8,6 @@ class ParameterizeAndExtract {
             System.out.println("Code " + i);
         }
     }
-
     public void g() {
         System.out.println("Logic G");
         for (int i = 0; i < 3; i++) {

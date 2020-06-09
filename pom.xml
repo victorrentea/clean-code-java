@@ -17,11 +17,6 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
-        </dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>javax.persistence-api</artifactId>
@@ -51,6 +46,8 @@
 					<!--<source>13</source>
 					<target>13</target>
 					<compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
+
+					<!--<release>14</release>-->
 				</configuration>
 			</plugin>
 		</plugins>

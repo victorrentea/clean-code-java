@@ -1,7 +1,5 @@
 package victor.training.refactoring;
 
-import lombok.Data;
-
 public class ExtractVariable {
     public double computeTotalPrice(Order order) {
         return order.getQuantity() * order.getItemPrice() -
@@ -10,8 +8,15 @@ public class ExtractVariable {
     }
 }
 
-@Data
 class Order {
     private int quantity;
     private int itemPrice;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getItemPrice() {
+        return itemPrice;
+    }
 }

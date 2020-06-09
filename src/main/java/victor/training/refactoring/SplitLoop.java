@@ -1,10 +1,7 @@
 package victor.training.refactoring;
 
-import lombok.Data;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -36,9 +33,26 @@ public class SplitLoop {
 }
 
 
-@Data
 class Employee {
     private final int age;
     private final double salary;
     private final boolean consultant;
+
+    public Employee(int age, double salary, boolean consultant) {
+        this.age = age;
+        this.salary = salary;
+        this.consultant = consultant;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public boolean isConsultant() {
+        return consultant;
+    }
 }
