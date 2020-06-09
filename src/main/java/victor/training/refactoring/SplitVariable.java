@@ -13,7 +13,7 @@ public class SplitVariable {
 	}
 
 	private int computeQuantityDiscount(int quantity) {
-       if (quantity > 100) {
+		if (quantity > 100) {
            return 1;
 		} else {
            return 0;
