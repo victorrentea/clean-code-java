@@ -15,6 +15,7 @@ public class ParameterObjects {
    }
 
 }
+
 //   class OrderRequest {} // too specific. Only usable in this workflow
 //   class PlaceOrderRequest {} // too specific. Only usable in this workflow
 //class Customer {} // too  vague. many developers will have ideas on what to add to this class
@@ -36,8 +37,20 @@ class FullName {
       return lastName;
    }
 
-   public String getFirstName() {
-      return firstName;
+   public String asEnterpriseName() { // feature envy
+      return firstName + " " + lastName.toUpperCase();
+   }
+
+   @Override
+   public String toString() {
+      return "FullName{" +
+          "firstName='" + firstName + '\'' +
+          ", lastName='" + lastName + '\'' +
+          '}';
+   }
+
+   public FullName withLastName(String newLastName) {
+      return new FullName(firstName, newLastName);
    }
 }
 
@@ -49,10 +62,11 @@ class AnotherClass {
       System.out.println("Person: " + fullName.getLastName());
    }
 }
+
 // Holy entity. Persistent data. Expect heavy use of this class throughout your codebase.
 class Person {
    private Long id;
-   private final FullName fullName;
+   private FullName fullName;
    private String phone;
 
    public Person(FullName fullName) {
@@ -60,9 +74,9 @@ class Person {
    }
 
 //   // TODO hard-core: implement setter
-//   public void setLastName(String lastName) {
-//      this.lastName = lastName;
-//   }
+   public void setLastName(String hisLastName) {
+      fullName = fullName.withLastName(hisLastName);
+   }
 
    public FullName getFullName() {
       return fullName;
@@ -71,17 +85,8 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = getFullNameStr(person);
+      String fullNameStr = person.getFullName().asEnterpriseName();
       System.out.println(fullNameStr);
-   }
-
-   private String getFullNameStr(Person person) {
-      FullName fullName = person.getFullName();
-      return asEnterpriseName(fullName);
-   }
-
-   private String asEnterpriseName(FullName fullName) { // feature envy
-      return fullName.getFirstName() + " " + fullName.getLastName().toUpperCase();
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
