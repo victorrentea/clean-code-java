@@ -8,7 +8,6 @@ public class ParameterObjects {
    }
 
    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
@@ -26,6 +25,9 @@ class FullName {
    private final String lastName;
 
    FullName(String firstName, String lastName) {
+      if (firstName == null || lastName == null) {
+         throw new IllegalArgumentException();
+      }
       this.firstName = firstName;
       this.lastName = lastName;
    }
@@ -42,7 +44,6 @@ class FullName {
 
 class AnotherClass {
    public void otherMethod(FullName fullName, int x) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
       System.out.println("Person: " + fullName.getLastName());
@@ -56,9 +57,6 @@ class Person {
 
    public Person(String firstName, String lastName) {
       fullName = new FullName(firstName, lastName);
-      if (firstName == null || lastName == null) {
-         throw new IllegalArgumentException();
-      }
    }
 
 //   // TODO hard-core: implement setter
