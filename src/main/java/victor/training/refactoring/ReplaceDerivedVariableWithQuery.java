@@ -2,21 +2,20 @@ package victor.training.refactoring;
 
 
 class Cheese {
-    private int discountedTotal;
-    private int discount = 0;
+    private final int basePrice;
+    private int discount;
+//    private int discountedTotal; // regula ca discountedTotal + discount = basePrice
 
     public Cheese(int basePrice) {
-        this.discountedTotal = basePrice;
+        this.basePrice = basePrice;
     }
 
     public int getDiscountedTotal() {
-        return discountedTotal;
+        return basePrice - discount;
     }
 
-    public void discount(int aNumber) {
-        int old = this.discount;
-        this.discount = aNumber;
-        this.discountedTotal += old - aNumber;
+    public void discount(int discount) {
+        this.discount = discount;
     }
 
     public static void main(String[] args) {
