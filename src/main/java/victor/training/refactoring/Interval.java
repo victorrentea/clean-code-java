@@ -11,7 +11,7 @@ public class Interval {
 
    public boolean intersects(Interval other) {
        // http://world.std.com/~swmcd/steven/tech/interval.html
-      return start <= other.end && other.start <= end;
+       return getStart() <= other.getEnd() && other.getStart() <= getEnd();
    }
 
    public int getStart() {

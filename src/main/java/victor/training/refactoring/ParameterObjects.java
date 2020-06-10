@@ -2,6 +2,7 @@ package victor.training.refactoring;
 
 import org.junit.Assert;
 
+import javax.persistence.*;
 import java.util.Arrays;
 
 public class ParameterObjects {
@@ -25,11 +26,13 @@ public class ParameterObjects {
 //class Customer {} // too  vague. many developers will have ideas on what to add to this class
 //class Name // silly. incorrect. company name doesnt have a first name
 //class PersonName // too specific : user might also have first and last name
+@Embeddable
 class FullName {
-   private final String firstName;
-   private final String lastName;
+   private String firstName;
+   private String lastName;
 
-   FullName(String firstName, String lastName) {
+   protected FullName() {}
+   public FullName(String firstName, String lastName) {
       if (firstName == null || lastName == null) {
          throw new IllegalArgumentException();
       }
@@ -68,8 +71,11 @@ class AnotherClass {
 }
 
 // Holy entity. Persistent data. Expect heavy use of this class throughout your codebase.
+@Entity
 class Person {
+   @Id
    private Long id;
+   @Embedded
    private FullName fullName;
    private String phone;
 
