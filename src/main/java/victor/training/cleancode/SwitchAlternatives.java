@@ -4,6 +4,7 @@ import victor.training.cleancode.pretend.Autowired;
 import victor.training.cleancode.pretend.Service;
 
 import java.util.List;
+import java.util.function.Function;
 
 import static java.util.Arrays.asList;
 
@@ -38,19 +39,27 @@ interface MovieCalculations {
 //    double calculateMaxDays();
 }
 
+class MoviePriceCalculationHelper {
+    public static double randomBonus(int daysRented) {
+    return -1;    }
+}
 @Service
 class RegularMovieCalculations implements MovieCalculations {
     @Override
     public double calculatePrice(int daysRented) {
-        return daysRented * 2;
+        return daysRented * 2 + MoviePriceCalculationHelper.randomBonus(daysRented);
     }
+//    double calculateFidelityPoints(int daysRented) {..}
+//    double calculateMaxDays() {..}
 }
 @Service
 class NewReleaseMovieCalculations implements MovieCalculations {
     @Override
     public double calculatePrice(int daysRented) {
-        return daysRented * 3;
+        return daysRented * 3 + MoviePriceCalculationHelper.randomBonus(daysRented);
     }
+//    double calculateFidelityPoints(int daysRented) {..}
+//    double calculateMaxDays() {..}
 }
 @Service
 class ChildrenMovieCalculations implements MovieCalculations {
@@ -59,20 +68,44 @@ class ChildrenMovieCalculations implements MovieCalculations {
     @Override
     public double calculatePrice(int daysRented) {
         //tot nu pot accesa nicio dependinta injectata de spring/ejb/@Inject
-        return daysRented + 1;
+        return daysRented + 1 + MoviePriceCalculationHelper.randomBonus(daysRented);
+    }
+//    double calculateFidelityPoints(int daysRented) {..}
+//    double calculateMaxDays() {..}
+}
+
+// ----------------------------  daca ai mult cod comun intre implementarile unei functi specifice tipului:
+@Service
+class MoviePriceCalculations {
+    @Autowired// merge
+    private OtherDependency other;
+
+    public static double calculateRegularPrice(int daysRented) {
+        return daysRented * 2 + randomBonus(daysRented);
+    }
+    public static double calculateNewReleasePrice(int daysRented) {
+        return daysRented * 3 + randomBonus(daysRented);
+    }
+    public static double calculateChildrenPrice(int daysRented) {
+        //tot nu pot accesa nicio dependinta injectata de spring/ejb/@Inject
+        return daysRented + 1 + randomBonus(daysRented);
+    }
+    private static double randomBonus(int daysRented) {
+        return 0; // TODO
     }
 }
+// f(int):double
 
 class Movie {
     private int x;
     enum Type {
-        REGULAR(RegularMovieCalculations.class),
-        NEW_RELEASE(NewReleaseMovieCalculations.class),
-        CHILDREN(ChildrenMovieCalculations.class);
+        REGULAR(MoviePriceCalculations::calculateRegularPrice),
+        NEW_RELEASE(MoviePriceCalculations::calculateNewReleasePrice),
+        CHILDREN(MoviePriceCalculations::calculateChildrenPrice);
 
-        public final Class<? extends MovieCalculations> calculations;
+        public final Function<Integer, Double> calculations;
 
-        Type(Class<? extends MovieCalculations> calculations) {
+        Type(Function<Integer, Double> calculations) {
             this.calculations = calculations;
         }
     }
@@ -94,7 +127,7 @@ class Movie {
 //        }
 //        MovieCalculations calculations = spring.getBean(type.calculations); -- va functiona in spring.
         // TODO trebuie sa muti aceasta metoda in exteriorul entitatii, intr-o alta clasa manageuita de spring
-        return calculations.calculatePrice(daysRented);
+        return type.calculations.apply(daysRented);
     }
 
     // TODO see bellow other switches
