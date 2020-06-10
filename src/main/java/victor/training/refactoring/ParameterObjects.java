@@ -41,47 +41,39 @@ class FullName {
 
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getLastName());
    }
 }
-
+// Holy entity. Persistent data. Expect heavy use of this class throughout your codebase.
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
+   private final FullName fullName;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+      fullName = new FullName(firstName, lastName);
+      if (firstName == null || lastName == null) {
+         throw new IllegalArgumentException();
+      }
    }
 
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
+//   // TODO hard-core: implement setter
+//   public void setLastName(String lastName) {
+//      this.lastName = lastName;
+//   }
 
-   // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
-
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
+   public FullName getFullName() {
+      return fullName;
    }
 }
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
       System.out.println(fullNameStr);
    }
 
