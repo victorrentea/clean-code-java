@@ -34,6 +34,8 @@ class NewReleaseMovie  extends Movie {
 
 interface MovieCalculations {
     double calculatePrice(int daysRented);
+//    double calculateFidelityPoints(int daysRented);
+//    double calculateMaxDays();
 }
 
 @Service
