@@ -12,24 +12,23 @@ import static org.junit.Assert.assertEquals;
 class GuardService {
    public int getPayAmount(Marine marine) {
       int result;
-      if (!marine.isDead()) {
-         if (!marine.isRetired()) {
-            if (marine.getYearsService() != null) {
-               result = marine.getYearsService() * 100;
-               if (!marine.getAwards().isEmpty()) {
-                  result += 1000;
-               }
-               if (marine.getAwards().size() >= 3) {
-                  result += 2000;
-               }
-            } else {
-               throw new IllegalStateException("Any marine should have the years of service set");
-            }
-         } else {
-            result = retiredAmount();
-         }
-      } else {
-         result = deadAmount();
+      if (marine.isDead()) {
+         return deadAmount();
+      }
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+      if (marine.getYearsService() == null) {
+         throw new IllegalStateException("Any marine should have the years of service set");
+      }
+
+      result = marine.getYearsService() * 100;
+//      if (!marine.getAwards().isEmpty()) {
+      if (marine.wasAwarded()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
       }
       return result;
    }
@@ -140,6 +139,13 @@ class Marine {
    public Marine setYearsService(Integer yearsService) {
       this.yearsService = yearsService;
       return this;
+   }
+
+   public boolean wasAwarded() {
+//      System.out.println("Print this " + awards);
+//      for (Award award : awards) {
+//      }
+      return !awards.isEmpty();
    }
 }
 

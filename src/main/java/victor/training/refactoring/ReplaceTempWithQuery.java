@@ -35,11 +35,20 @@ class PriceCalculator {
     }
 
     public double computePrice() {
-        double basePrice = quantity * itemPrice;
         if (quantity > 10)
-            return basePrice * 0.95;
+            return basePrice() * 0.95;
         else
-            return computeNormalPrice(basePrice);
+            return computeNormalPrice(basePrice());
+    }
+
+    private double basePrice() {
+//        Thread.sleep(100); BAD - slow
+
+        // sql(query bull) // side effect BAD not referential trasparent.
+        // DB might change between the two calls of this method
+
+        // write a file / send an SMS BAD side effect
+        return quantity * itemPrice /* * Math.random()*/;
     }
 
     private double computeNormalPrice(double basePrice) {
@@ -48,7 +57,7 @@ class PriceCalculator {
     }
 
     public int computeFidelityPoints() {
-        return (int) (quantity * itemPrice / 2);
+        return (int) (basePrice() / 2);
     }
 
 
