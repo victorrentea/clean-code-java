@@ -2,17 +2,43 @@ package victor.training.refactoring;
 
 public class ParameterObjects {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      ParameterObjects target = new ParameterObjects();
+      FullName fullName = new FullName("John", "Doe");
+      target.placeOrder(fullName, "St. Albergue", "Paris", 99);
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
 
    }
+
 }
+//   class OrderRequest {} // too specific. Only usable in this workflow
+//   class PlaceOrderRequest {} // too specific. Only usable in this workflow
+//class Customer {} // too  vague. many developers will have ideas on what to add to this class
+//class Name // silly. incorrect. company name doesnt have a first name
+//class PersonName // too specific : user might also have first and last name
+class FullName {
+   private final String firstName;
+   private final String lastName;
+
+   FullName(String firstName, String lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+   }
+
+   public String getLastName() {
+      return lastName;
+   }
+
+   public String getFirstName() {
+      return firstName;
+   }
+}
+
 
 class AnotherClass {
    public void otherMethod(String firstName, String lastName, int x) {
