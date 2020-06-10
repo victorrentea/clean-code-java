@@ -6,16 +6,20 @@ import java.util.List;
 public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! intervalsIntersect(
-                model.getStartYear(), model.getEndYear(),
-                criteria.getStartYear(), criteria.getEndYear()));
+        results.removeIf(model -> ! new Interval(model.getStartYear(), model.getEndYear()).intersects(
+            new Interval(criteria.getStartYear(), criteria.getEndYear())));
         System.out.println("More filtering logic");
         return results;
     }
-    private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        // http://world.std.com/~swmcd/steven/tech/interval.html
-        return start1 <= end2 && start2 <= end1;
+}
+class Other2 {
+    {
+        new Interval(1, 1).intersects(new Interval(1, 1));
     }
+}
+
+class MathUtil {
+
 }
 
 
