@@ -4,16 +4,17 @@ class ParameterizeAndExtract {
 
     public void f() {
         System.out.println("Logic F");
-        for (int i = 0; i < 4; i++) {
-            System.out.println("Code " + i);
-        }
+        doLoopSmartName(4);
     }
+
     public void g() {
         System.out.println("Logic G");
-        for (int i = 0; i < 3; i++) {
-            String x = "Code" +
-                    " " + i;
-            System.out.println(x);
+        doLoopSmartName(3);
+    }
+
+    private void doLoopSmartName(int i2) {
+        for (int i = 0; i < i2; i++) {
+            System.out.println("Code " + i);
         }
     }
 

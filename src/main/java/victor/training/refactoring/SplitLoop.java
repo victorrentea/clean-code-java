@@ -10,16 +10,21 @@ import static org.junit.Assert.assertEquals;
 public class SplitLoop {
 
     private String computeStats(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant())
-            averageAge += employee.getAge();
-            averageSalary += employee.getSalary();
-        }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
-        return "avg age = " + averageAge + "; avg sal = " + averageSalary;
+        return "avg age = " + averageAge(employees) + "; avg sal = " + averageSalary(employees);
+    }
+
+    private double averageSalary(List<Employee> employees) {
+        return employees.stream()
+            .mapToDouble(Employee::getSalary)
+            .average().orElse(0);
+    }
+
+    private long averageAge(List<Employee> employees) {
+        return (long) employees.stream()
+            .filter(employee1 -> !employee1.isConsultant())
+            .mapToLong(Employee::getAge)
+            .average()
+            .orElse(0d);
     }
 
     @Test
