@@ -4,6 +4,7 @@ import victor.training.cleancode.pretend.Autowired;
 import victor.training.cleancode.pretend.Service;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static java.util.Arrays.asList;
@@ -80,17 +81,17 @@ class MoviePriceCalculations {
     @Autowired// merge
     private OtherDependency other;
 
-    public static double calculateRegularPrice(int daysRented) {
+    public double calculateRegularPrice(int daysRented) {
         return daysRented * 2 + randomBonus(daysRented);
     }
-    public static double calculateNewReleasePrice(int daysRented) {
+    public double calculateNewReleasePrice(int daysRented) {
         return daysRented * 3 + randomBonus(daysRented);
     }
-    public static double calculateChildrenPrice(int daysRented) {
+    public double calculateChildrenPrice(int daysRented) {
         //tot nu pot accesa nicio dependinta injectata de spring/ejb/@Inject
         return daysRented + 1 + randomBonus(daysRented);
     }
-    private static double randomBonus(int daysRented) {
+    private double randomBonus(int daysRented) {
         return 0; // TODO
     }
 }
@@ -103,9 +104,9 @@ class Movie {
         NEW_RELEASE(MoviePriceCalculations::calculateNewReleasePrice),
         CHILDREN(MoviePriceCalculations::calculateChildrenPrice);
 
-        public final Function<Integer, Double> calculations;
+        public final BiFunction<MoviePriceCalculations, Integer, Double> calculations;
 
-        Type(Function<Integer, Double> calculations) {
+        Type(BiFunction<MoviePriceCalculations, Integer, Double> calculations) {
             this.calculations = calculations;
         }
     }
@@ -127,7 +128,8 @@ class Movie {
 //        }
 //        MovieCalculations calculations = spring.getBean(type.calculations); -- va functiona in spring.
         // TODO trebuie sa muti aceasta metoda in exteriorul entitatii, intr-o alta clasa manageuita de spring
-        return type.calculations.apply(daysRented);
+        MoviePriceCalculations implDiNSpring = new MoviePriceCalculations();
+        return type.calculations.apply(implDiNSpring, daysRented);
     }
 
     // TODO see bellow other switches
