@@ -29,7 +29,30 @@ class NewReleaseMovie  extends Movie {
 }
 class Movie {
     enum Type {
-        REGULAR, NEW_RELEASE, CHILDREN
+        REGULAR{
+            @Override
+            public double calculatePrice(int daysRented) {
+                return daysRented * 2;
+            }
+        }, NEW_RELEASE {
+            @Override
+            public double calculatePrice(int daysRented) {
+                return daysRented *3;
+            }
+        }, CHILDREN {
+            @Override
+            public double calculatePrice(int daysRented) {
+                return daysRented + 1;
+            }
+        },
+        BABACI {
+            @Override
+            public double calculatePrice(int daysRented) {
+                return 1;
+            }
+        };
+
+        public abstract double calculatePrice(int daysRented);
     }
     private final Type type;
     private final String name;
@@ -41,32 +64,33 @@ class Movie {
         return name;
     }
     public double calculatePrice(int daysRented) {
-        switch (type) {
-            case CHILDREN: return daysRented + 1;
-            case REGULAR: return daysRented * 2;
-            case NEW_RELEASE: return daysRented * 3;
-            default: throw new IllegalStateException("Unexpected value: " + type);
-        }
+//        switch (type) {
+//            case CHILDREN: return daysRented + 1;
+//            case REGULAR: return daysRented * 2;
+//            case NEW_RELEASE: return daysRented * 3;
+//            default: throw new IllegalStateException("Unexpected value: " + type);
+//        }
+        return type.calculatePrice(daysRented);
     }
 
     // TODO see bellow other switches
 
+    public double calculateFidelityPoints(int daysRented) {
+        switch (type) {
+            case CHILDREN: return daysRented / 2d;
+            case REGULAR: return daysRented;
+            case NEW_RELEASE: return daysRented + 1;
+            default: throw new IllegalStateException("Unexpected value: " + type);
+        }
+    }
+    public int maxRentalDays() {
+        switch (type) {
+            case CHILDREN: return 5;
+            case REGULAR: return 4;
+            case NEW_RELEASE: return 3;
+            default: throw new IllegalStateException("Unexpected value: " + type);
+        }
+    }
 }
 
 
-//    public double calculateFidelityPoints(int daysRented) {
-//        switch (type) {
-//            case CHILDREN: return daysRented / 2d;
-//            case REGULAR: return daysRented;
-//            case NEW_RELEASE: return daysRented + 1;
-//            default: throw new IllegalStateException("Unexpected value: " + type);
-//        }
-//    }
-//    public int maxRentalDays() {
-//        switch (type) {
-//            case CHILDREN: return 5;
-//            case REGULAR: return 4;
-//            case NEW_RELEASE: return 3;
-//            default: throw new IllegalStateException("Unexpected value: " + type);
-//        }
-//    }
