@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import victor.training.cleancode.pretend.Autowired;
+import victor.training.cleancode.pretend.Service;
 
 import java.util.List;
 
@@ -35,20 +36,24 @@ interface MovieCalculations {
     double calculatePrice(int daysRented);
 }
 
+@Service
 class RegularMovieCalculations implements MovieCalculations {
     @Override
     public double calculatePrice(int daysRented) {
         return daysRented * 2;
     }
 }
+@Service
 class NewReleaseMovieCalculations implements MovieCalculations {
     @Override
     public double calculatePrice(int daysRented) {
         return daysRented * 3;
     }
 }
+@Service
 class ChildrenMovieCalculations implements MovieCalculations {
-//    @Autowired// nu merge
+    @Autowired// merge
+    private OtherDependency other;
     @Override
     public double calculatePrice(int daysRented) {
         //tot nu pot accesa nicio dependinta injectata de spring/ejb/@Inject
@@ -59,13 +64,13 @@ class ChildrenMovieCalculations implements MovieCalculations {
 class Movie {
     private int x;
     enum Type {
-        REGULAR(new RegularMovieCalculations()),
-        NEW_RELEASE(new NewReleaseMovieCalculations()),
-        CHILDREN(new ChildrenMovieCalculations());
+        REGULAR(RegularMovieCalculations.class),
+        NEW_RELEASE(NewReleaseMovieCalculations.class),
+        CHILDREN(ChildrenMovieCalculations.class);
 
-        public final MovieCalculations calculations;
+        public final Class<? extends MovieCalculations> calculations;
 
-        Type(MovieCalculations calculations) {
+        Type(Class<? extends MovieCalculations> calculations) {
             this.calculations = calculations;
         }
     }
@@ -78,14 +83,16 @@ class Movie {
     public String getName() {
         return name;
     }
-    public double calculatePrice(int daysRented) {
+    public double calculatePrice(int daysRented/* NU FA ASTA, ApplicationContext spring*/) {
 //        switch (type) {
 //            case CHILDREN: return daysRented + 1;
 //            case REGULAR: return daysRented * 2;
 //            case NEW_RELEASE: return daysRented * 3;
 //            default: throw new IllegalStateException("Unexpected value: " + type);
 //        }
-        return type.calculations.calculatePrice(daysRented);
+//        MovieCalculations calculations = spring.getBean(type.calculations); -- va functiona in spring.
+        // TODO trebuie sa muti aceasta metoda in exteriorul entitatii, intr-o alta clasa manageuita de spring
+        return calculations.calculatePrice(daysRented);
     }
 
     // TODO see bellow other switches
