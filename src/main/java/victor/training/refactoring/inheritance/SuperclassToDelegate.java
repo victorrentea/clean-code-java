@@ -1,7 +1,5 @@
 package victor.training.refactoring.inheritance;
 
-import org.apache.commons.lang.NotImplementedException;
-
 class Rectangle {
    private int width;
    private int height;
@@ -32,23 +30,21 @@ class Rectangle {
 }
 
 // TODO
-class Square extends Rectangle {
+class Square {
+   private final Rectangle rectangle;
    public Square(int edge) {
-      setWidth(edge);
-      setHeight(edge);
+      rectangle = new Rectangle();
+      rectangle.setHeight(edge);
+      rectangle.setWidth(edge);
    }
 
-   public void setWidth(int w) {
-//      throw new NotImplementedException(); // pervers caci crapa doar la runtime
-      super.setHeight(w);
-      super.setWidth(w);
-   }
-   public void setHeight(int h) {
-//      throw new NotImplementedException();
-      super.setHeight(h);
-      super.setWidth(h);
+   public int area() {
+      return rectangle.area();
    }
 
+   public int perimeter() {
+      return rectangle.perimeter();
+   }
 }
 
 //record Recta(int width, int height) {
@@ -58,16 +54,13 @@ class ShapesPlay {
 //        Recta recta = new Recta(2, 3);
 //        recta.height();
 
-      Rectangle square = new Square(3);
+      Square square = new Square(3);
 
 
       altaMetoda(square);
    }
 
-   private static void altaMetoda(Rectangle square) {
-      square.setHeight(3);
-      square.setWidth(4);
-
+   private static void altaMetoda(Square square) {
       System.out.println(square.area());
       System.out.println(square.perimeter());
    }
