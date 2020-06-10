@@ -1,5 +1,9 @@
 package victor.training.refactoring;
 
+import org.junit.Assert;
+
+import java.util.Arrays;
+
 public class ParameterObjects {
    public static void main(String[] args) {
       ParameterObjects target = new ParameterObjects();
@@ -81,10 +85,20 @@ class Person {
    public FullName getFullName() {
       return fullName;
    }
+   public static double h() {
+      return 1;
+   }
+
 }
 
 class PersonService {
+   public double g() {
+       return 1 ;
+   }
    public void f(Person person) {
+      double x = 1;
+
+
       String fullNameStr = person.getFullName().asEnterpriseName();
       System.out.println(fullNameStr);
    }
