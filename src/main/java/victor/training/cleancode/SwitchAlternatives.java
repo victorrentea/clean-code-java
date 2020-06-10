@@ -27,32 +27,43 @@ class NewReleaseMovie  extends Movie {
         super(type, name);
     }
 }
-class Movie {
-    enum Type {
-        REGULAR{
-            @Override
-            public double calculatePrice(int daysRented) {
-                return daysRented * 2;
-            }
-        }, NEW_RELEASE {
-            @Override
-            public double calculatePrice(int daysRented) {
-                return daysRented *3;
-            }
-        }, CHILDREN {
-            @Override
-            public double calculatePrice(int daysRented) {
-                return daysRented + 1;
-            }
-        },
-        BABACI {
-            @Override
-            public double calculatePrice(int daysRented) {
-                return 1;
-            }
-        };
 
-        public abstract double calculatePrice(int daysRented);
+
+interface MovieCalculations {
+    double calculatePrice(int daysRented);
+}
+
+class RegularMovieCalculations implements MovieCalculations {
+    @Override
+    public double calculatePrice(int daysRented) {
+        return daysRented * 2;
+    }
+}
+class NewReleaseMovieCalculations implements MovieCalculations {
+    @Override
+    public double calculatePrice(int daysRented) {
+        return daysRented * 3;
+    }
+}
+class ChildrenMovieCalculations implements MovieCalculations {
+    @Override
+    public double calculatePrice(int daysRented) {
+        return daysRented + 1;
+    }
+}
+
+class Movie {
+    private int x;
+    enum Type {
+        REGULAR(new RegularMovieCalculations()),
+        NEW_RELEASE(new NewReleaseMovieCalculations()),
+        CHILDREN(new ChildrenMovieCalculations());
+
+        public final MovieCalculations calculations;
+
+        Type(MovieCalculations calculations) {
+            this.calculations = calculations;
+        }
     }
     private final Type type;
     private final String name;
@@ -70,7 +81,7 @@ class Movie {
 //            case NEW_RELEASE: return daysRented * 3;
 //            default: throw new IllegalStateException("Unexpected value: " + type);
 //        }
-        return type.calculatePrice(daysRented);
+        return type.calculations.calculatePrice(daysRented);
     }
 
     // TODO see bellow other switches
