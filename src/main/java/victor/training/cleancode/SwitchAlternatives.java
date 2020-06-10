@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import victor.training.cleancode.pretend.Autowired;
+
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -46,8 +48,10 @@ class NewReleaseMovieCalculations implements MovieCalculations {
     }
 }
 class ChildrenMovieCalculations implements MovieCalculations {
+//    @Autowired// nu merge
     @Override
     public double calculatePrice(int daysRented) {
+        //tot nu pot accesa nicio dependinta injectata de spring/ejb/@Inject
         return daysRented + 1;
     }
 }
