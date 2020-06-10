@@ -13,10 +13,10 @@ public class ImmutablePlay {
         immutable.other = new Other(13);
         System.out.println(immutable.x);
 
-        Set<Child> children = new HashSet<>();
-        Child childOne = new Child("Emma");
-        children.add(childOne);
-        System.out.println(children.contains(childOne));
+//        Set<Child> children = new HashSet<>();
+//        Child childOne = new Child("Emma");
+//        children.add(childOne);
+//        System.out.println(children.contains(childOne));
     }
 }
 
@@ -39,22 +39,5 @@ class Other {
 
     public void setA(int a) {
         this.a = a;
-    }
-}
-
-class Child {
-    private String name;
-
-    public Child(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Child setName(String name) {
-        this.name = name;
-        return this;
     }
 }
