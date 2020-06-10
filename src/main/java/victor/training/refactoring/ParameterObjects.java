@@ -1,8 +1,8 @@
 package victor.training.refactoring;
 
-public class ManyParamsVO {
+public class ParameterObjects {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
    }
 
    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
