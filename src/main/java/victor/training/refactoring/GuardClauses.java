@@ -1,32 +1,38 @@
 package victor.training.refactoring;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertEquals;
 
 public class GuardClauses {
-    public int getPayAmount(Marine marine) {
-        int result;
-        if (!marine.isDead()) {
-            if (!marine.isRetired()) {
-                if (marine.getYearsService()!=null) {
-                    result = marine.getYearsService() * 100;
-                    if (!marine.getAwards().isEmpty()) {
-                        result += 1000;
-                    }
-                    if (marine.getAwards().size() >= 3) {
-                        result += 2000;
-                    }
-                } else {
-                    throw new IllegalArgumentException("Any marine should have the years of service set");
-                }
+   public int getPayAmount(Marine marine) {
+      int result;
+      if (!marine.isDead()) {
+         if (!marine.isRetired()) {
+            if (marine.getYearsService() != null) {
+               result = marine.getYearsService() * 100;
+               if (!marine.getAwards().isEmpty()) {
+                  result += 1000;
+               }
+               if (marine.getAwards().size() >= 3) {
+                  result += 2000;
+               }
             } else {
-                result = retiredAmount();
+               throw new IllegalStateException("Any marine should have the years of service set");
             }
-        } else {
-            result = deadAmount();
-        }
-        return result;
-    }
+         } else {
+            result = retiredAmount();
+         }
+      } else {
+         result = deadAmount();
+      }
+      return result;
+   }
 
    private int deadAmount() {
       return 1;
@@ -39,12 +45,15 @@ public class GuardClauses {
 }
 
 class Marine {
-   private final boolean dead;
-   private final boolean retired;
-   private final Integer yearsService;
-   private final List<Award> awards = new ArrayList<>();
+   private boolean dead;
+   private boolean retired;
+   private Integer yearsService;
+   private List<Award> awards = new ArrayList<>();
 
-   Marine(boolean dead, boolean retired, Integer yearsService) {
+   public Marine() {
+   }
+
+   public Marine(boolean dead, boolean retired, Integer yearsService) {
       this.dead = dead;
       this.retired = retired;
       this.yearsService = yearsService;
@@ -64,6 +73,26 @@ class Marine {
 
    public boolean isDead() {
       return dead;
+   }
+
+   public Marine setDead(boolean dead) {
+      this.dead = dead;
+      return this;
+   }
+
+   public Marine addAward(Award... awards) {
+      this.awards.addAll(Arrays.asList(awards));
+      return this;
+   }
+
+   public Marine setRetired(boolean retired) {
+      this.retired = retired;
+      return this;
+   }
+
+   public Marine setYearsService(Integer yearsService) {
+      this.yearsService = yearsService;
+      return this;
    }
 }
 
