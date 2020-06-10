@@ -6,29 +6,24 @@ import static java.util.Arrays.asList;
 
 public class SeparateQueryCommand {
 
-    public String alertForMiscreant(List<String> people) {
-        for (String person : people) {
-            if (person.equals("Don")) {
-                setOffAlarms();
-                return "Don";
-            }
-            if (person.equals("John")) {
-                setOffAlarms();
-                return "John";
-            }
+    // TODO uita-te la cine cheama functia asta si vezi daca nu poti sa-i
+    //  faci sa cheme functia getMiscreant nou creeata
+    // Daca reusesti sa faci functia asta sa intoarca void, atunci devine command
+    public void alertForMiscreant(List<String> people) {
+        String miscreant = getMiscreant(people);
+        if (!miscreant.isEmpty()) {
+            setOffAlarms();
         }
-        return "";
+//        return miscreant;
     }
 
 
     // pure query function
     public String getMiscreant(List<String> people) {
-        for (String person : people) {
-            if (asList("Don", "John").contains(person)) {
-                return person;
-            }
-        }
-        return "";
+        return people.stream()
+            .filter(person -> asList("Don", "John").contains(person))
+            .findFirst()
+            .orElse("");
     }
 
     private void setOffAlarms() {
