@@ -55,8 +55,8 @@ class Person {
    private final FullName fullName;
    private String phone;
 
-   public Person(String firstName, String lastName) {
-      fullName = new FullName(firstName, lastName);
+   public Person(FullName fullName) {
+      this.fullName = fullName;
    }
 
 //   // TODO hard-core: implement setter
@@ -71,8 +71,17 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
+      String fullNameStr = getFullNameStr(person);
       System.out.println(fullNameStr);
+   }
+
+   private String getFullNameStr(Person person) {
+      FullName fullName = person.getFullName();
+      return asEnterpriseName(fullName);
+   }
+
+   private String asEnterpriseName(FullName fullName) { // feature envy
+      return fullName.getFirstName() + " " + fullName.getLastName().toUpperCase();
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
