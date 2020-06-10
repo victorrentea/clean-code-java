@@ -6,15 +6,21 @@ class S {
 
     void m() {System.out.println(x);}
 }
-class A extends S {
-    private int y;
 
-    void n() {x ++;}
+class A extends S {
+
+    protected int y;
+
+    void n() {x ++; y++;}
 }
 
 class B extends  S{
-    private int y;
+    protected int y;
+
+    void cumva() {y ++;}
 }
+
 class C extends S {
+
     void n() {x++;}
 }
