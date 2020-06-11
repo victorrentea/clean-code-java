@@ -1,36 +1,35 @@
 package victor.training.trivia;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game  {
-    ArrayList players = new ArrayList();
-    int[] places = new int[6];
-    int[] purses  = new int[6];
-    boolean[] inPenaltyBox  = new boolean[6];
-    
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
-    
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
-    
-    public Game(){
-    	for (int i = 0; i < 50; i++) {
+	private final Writer writer;
+
+	ArrayList players = new ArrayList();
+	int[] places = new int[6];
+	int[] purses  = new int[6];
+	boolean[] inPenaltyBox  = new boolean[6];
+
+	LinkedList popQuestions = new LinkedList();
+	LinkedList scienceQuestions = new LinkedList();
+	LinkedList sportsQuestions = new LinkedList();
+	LinkedList rockQuestions = new LinkedList();
+
+	int currentPlayer = 0;
+	boolean isGettingOutOfPenaltyBox;
+
+    public Game(Writer writer){
+		 this.writer = writer;
+		 for (int i = 0; i < 50; i++) {
 			popQuestions.addLast("Pop Question " + i);
 			scienceQuestions.addLast(("Science Question " + i));
 			sportsQuestions.addLast(("Sports Question " + i));
 			rockQuestions.addLast(createRockQuestion(i));
     	}
     }
-
-    private Writer writer = new PrintWriter(System.out);
 
 	private void writeText(Object text) {
 		try {
