@@ -9,15 +9,15 @@ import java.util.List;
 public class GameRefactored implements IGame {
    private final Writer writer;
 
-   List players = new ArrayList();
+   List<String> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
-   List popQuestions = new LinkedList();
-   List scienceQuestions = new LinkedList();
-   List sportsQuestions = new LinkedList();
-   List rockQuestions = new LinkedList();
+   List<String> popQuestions = new LinkedList<>();
+   List<String> scienceQuestions = new LinkedList<>();
+   List<String> sportsQuestions = new LinkedList<>();
+   List<String> rockQuestions = new LinkedList<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
@@ -105,44 +105,54 @@ public class GameRefactored implements IGame {
    }
 
    enum Category {
-   	POP, SCIENCE, SPORTS, ROCK
+      Pop, Science, Sports, Rock
    }
 
    private void askQuestion() {
-      if (Category.POP == currentCategory())
-         writeText(popQuestions.remove(0));
-      if (Category.SCIENCE == currentCategory())
-         writeText(scienceQuestions.remove(0));
-      if (Category.SPORTS == currentCategory())
-         writeText(sportsQuestions.remove(0));
-      if (Category.ROCK == currentCategory())
-         writeText(rockQuestions.remove(0));
+      String question;
+      switch (currentCategory()) {
+         case Pop:
+            question = popQuestions.remove(0);
+            break;
+         case Science:
+            question = scienceQuestions.remove(0);
+            break;
+         case Sports:
+            question = sportsQuestions.remove(0);
+            break;
+         case Rock:
+            question = rockQuestions.remove(0);
+            break;
+         default:
+            throw new IllegalStateException("Unexpected value: " + currentCategory());
+      }
+      writeText(question);
    }
 
 
    private Category currentCategory() {
       switch (places[currentPlayer]) {
          case 0:
-            return Category.POP;
+            return Category.Pop;
          case 4:
-            return Category.POP;
+            return Category.Pop;
          case 8:
-            return Category.POP;
+            return Category.Pop;
 
          case 1:
-            return Category.SCIENCE;
+            return Category.Science;
          case 5:
-            return Category.SCIENCE;
+            return Category.Science;
          case 9:
-            return Category.SCIENCE;
+            return Category.Science;
          case 2:
-            return Category.SPORTS;
+            return Category.Sports;
          case 6:
-            return Category.SPORTS;
+            return Category.Sports;
          case 10:
-            return Category.SPORTS;
+            return Category.Sports;
          default:
-            return Category.ROCK;
+            return Category.Rock;
       }
    }
 
