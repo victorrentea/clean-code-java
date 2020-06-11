@@ -40,7 +40,6 @@ public class Player {
 
    public void moveInPenaltyBox() {
       inPenaltyBox = true;
-      // TODO PossibleBug: Where the hack is the= false?!
    }
 
    public void moveOutOfPenaltyBox() {

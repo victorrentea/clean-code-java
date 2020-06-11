@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.*;
 
 public class GameRefactored implements IGame {
+   // TODO: maybe move all string formatting to a different class.
    private final Writer writer;
    private final List<Player> players = new ArrayList<>();
    private final QuestionSet questions = new QuestionSet();
@@ -14,7 +15,6 @@ public class GameRefactored implements IGame {
 
    public GameRefactored(Writer writer) {
       this.writer = writer;
-
    }
 
    private void writeText(Object text) {
