@@ -3,17 +3,24 @@ package victor.training.trivia;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Random;
+import java.util.function.Function;
 
 public class GamePlay {
    public static void main(String[] args) {
 
       int seed = 1;
+      Function<StringWriter, Game> constructor = Game::new;
 
+
+      String output = runGame(constructor, seed);
+
+      System.out.println(output);
+   }
+
+   private static String runGame(Function<StringWriter, Game> constructor, int seed) {
       Random random = new Random(seed);
-
-
       StringWriter sw = new StringWriter();
-      Game aGame = new Game(sw);
+      Game aGame = constructor.apply(sw);
       aGame.add("Chet");
       aGame.add("Pat");
       aGame.add("Sue");
@@ -30,6 +37,6 @@ public class GamePlay {
          }
 
       }
-      System.out.println(sw.toString());
+      return sw.toString();
    }
 }
