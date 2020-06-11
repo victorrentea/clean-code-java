@@ -9,7 +9,6 @@ import java.util.List;
 public class GameRefactored implements IGame {
    private final Writer writer;
 
-   List<String> playerNames = new ArrayList<>();
    List<Player> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
@@ -48,7 +47,6 @@ public class GameRefactored implements IGame {
 
    @Override
    public boolean add(String playerName) {
-      playerNames.add(playerName);
       players.add(new Player(playerName));
       places[howManyPlayers()] = 0;
       purses[howManyPlayers()] = 0;
@@ -57,14 +55,6 @@ public class GameRefactored implements IGame {
       writeText(playerName + " was added");
       writeText("They are player number " + players.size());
       return true;
-   }
-
-   class Player {
-      private final String name;
-
-      public Player(String name) {
-         this.name = name;
-      }
    }
 
    public int howManyPlayers() {
@@ -109,7 +99,7 @@ public class GameRefactored implements IGame {
    }
 
    private String getCurrentPlayerName() {
-      return playerNames.get(currentPlayer);
+      return players.get(currentPlayer).getName();
    }
 
    private void askQuestion() {
@@ -171,12 +161,12 @@ public class GameRefactored implements IGame {
 
             boolean winner = didPlayerWin();
             currentPlayer++;
-            if (currentPlayer == playerNames.size()) currentPlayer = 0;
+            if (currentPlayer == howManyPlayers()) currentPlayer = 0;
 
             return winner;
          } else {
             currentPlayer++;
-            if (currentPlayer == playerNames.size()) currentPlayer = 0;
+            if (currentPlayer == howManyPlayers()) currentPlayer = 0;
             return true;
          }
 
@@ -192,7 +182,7 @@ public class GameRefactored implements IGame {
 
          boolean winner = didPlayerWin();
          currentPlayer++;
-         if (currentPlayer == playerNames.size()) currentPlayer = 0;
+         if (currentPlayer == howManyPlayers()) currentPlayer = 0;
 
          return winner;
       }
@@ -205,7 +195,7 @@ public class GameRefactored implements IGame {
       inPenaltyBox[currentPlayer] = true;
 
       currentPlayer++;
-      if (currentPlayer == playerNames.size()) currentPlayer = 0;
+      if (currentPlayer == howManyPlayers()) currentPlayer = 0;
       return true;
    }
 
