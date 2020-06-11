@@ -2,30 +2,34 @@ package victor.training.trivia;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GameRefactored implements IGame {
    private final Writer writer;
 
    private final List<Player> players = new ArrayList<>();
 
-   private List<String> popQuestions = new LinkedList<>();
-   private List<String> scienceQuestions = new LinkedList<>();
-   private List<String> sportsQuestions = new LinkedList<>();
-   private List<String> rockQuestions = new LinkedList<>();
+   private Map<Category, List<String>> questions = new HashMap<>();
+//   private List<String> popQuestions = new LinkedList<>();
+//   private List<String> scienceQuestions = new LinkedList<>();
+//   private List<String> sportsQuestions = new LinkedList<>();
+//   private List<String> rockQuestions = new LinkedList<>();
 
    private int currentPlayerIndex = 0;
    private boolean isGettingOutOfPenaltyBox;
 
    public GameRefactored(Writer writer) {
       this.writer = writer;
+
+      for (Category category : Category.values()) {
+         questions.put(category, new ArrayList<>());
+      }
+
       for (int i = 0; i < 50; i++) {
-         popQuestions.add("Pop Question " + i);
-         scienceQuestions.add("Science Question " + i);
-         sportsQuestions.add("Sports Question " + i);
-         rockQuestions.add("Rock Question " + i);
+         questions.get(Category.POP).add("Pop Question " + i);
+         questions.get(Category.SCIENCE).add("Science Question " + i);
+         questions.get(Category.SPORTS).add("Sports Question " + i);
+         questions.get(Category.ROCK).add("Rock Question " + i);
       }
    }
 
@@ -61,7 +65,7 @@ public class GameRefactored implements IGame {
       currentPlayer().move(roll);
 
       writeText(currentPlayer().getName() + "'s new location is " + currentPlayer().getPlace());
-      writeText("The category is " + currentCategory().label);
+      writeText("The category is " + Category.getCategoryForPlace(currentPlayer().getPlace()).label);
       askQuestion();
    }
 
@@ -81,40 +85,10 @@ public class GameRefactored implements IGame {
    }
 
    private void askQuestion() {
-      writeText(extractNextQuestion());
-   }
-
-   private String extractNextQuestion() {
-      switch (currentCategory()) {
-         case POP: // Map<Category,List<String>>
-            return popQuestions.remove(0);
-         case SCIENCE:
-            return scienceQuestions.remove(0);
-         case SPORTS:
-            return sportsQuestions.remove(0);
-         case ROCK:
-            return rockQuestions.remove(0);
-         default:
-            throw new IllegalStateException("Unexpected value: " + currentCategory());
-      }
-   }
-
-
-   private Category currentCategory() {
-      // 0 .. 11 pozitii: putem scurta asta : ?
-      switch (currentPlayer().getPlace() % 4) {
-         case 0:
-            return Category.POP;
-         case 1:
-            return Category.SCIENCE;
-         case 2:
-            return Category.SPORTS;
-         case 3:
-            return Category.ROCK;
-
-         default:
-            throw new IllegalStateException("Unexpected value: " + currentPlayer().getPlace() % 4);
-      }
+      Category category = Category.getCategoryForPlace(currentPlayer().getPlace());
+      List<String> categoryQuestions = questions.get(category);
+      String question = categoryQuestions.remove(0);
+      writeText(question);
    }
 
    @Override
