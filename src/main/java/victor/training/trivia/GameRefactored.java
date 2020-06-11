@@ -73,7 +73,7 @@ public class GameRefactored implements IGame {
 
             writeText(getCurrentPlayerName()
                 + "'s new location is "
-                + players.get(currentPlayer).getPlace());
+                + currentPlayer().getPlace());
             writeText("The category is " + currentCategory().label);
             askQuestion();
          } else {
@@ -87,19 +87,23 @@ public class GameRefactored implements IGame {
 
          writeText(getCurrentPlayerName()
              + "'s new location is "
-             + players.get(currentPlayer).getPlace());
+             + currentPlayer().getPlace());
          writeText("The category is " + currentCategory().label);
          askQuestion();
       }
 
    }
 
+   private Player currentPlayer() {
+      return players.get(currentPlayer);
+   }
+
    private void movePlayer(int roll) {
-      players.get(currentPlayer).move(roll);
+      currentPlayer().move(roll);
    }
 
    private String getCurrentPlayerName() {
-      return players.get(currentPlayer).getName();
+      return currentPlayer().getName();
    }
 
    private void askQuestion() {
@@ -123,7 +127,7 @@ public class GameRefactored implements IGame {
 
 
    private Category currentCategory() {
-      switch (players.get(currentPlayer).getPlace()) {
+      switch (currentPlayer().getPlace()) {
          case 0:
             return Category.POP;
          case 4:
