@@ -6,14 +6,8 @@ import java.util.*;
 
 public class GameRefactored implements IGame {
    private final Writer writer;
-
    private final List<Player> players = new ArrayList<>();
-
-   private Map<Category, List<String>> questions = new HashMap<>();
-//   private List<String> popQuestions = new LinkedList<>();
-//   private List<String> scienceQuestions = new LinkedList<>();
-//   private List<String> sportsQuestions = new LinkedList<>();
-//   private List<String> rockQuestions = new LinkedList<>();
+   private final QuestionSet questions = new QuestionSet();
 
    private int currentPlayerIndex = 0;
    private boolean isGettingOutOfPenaltyBox;
@@ -21,16 +15,6 @@ public class GameRefactored implements IGame {
    public GameRefactored(Writer writer) {
       this.writer = writer;
 
-      for (Category category : Category.values()) {
-         questions.put(category, new ArrayList<>());
-      }
-
-      for (int i = 0; i < 50; i++) {
-         questions.get(Category.POP).add("Pop Question " + i);
-         questions.get(Category.SCIENCE).add("Science Question " + i);
-         questions.get(Category.SPORTS).add("Sports Question " + i);
-         questions.get(Category.ROCK).add("Rock Question " + i);
-      }
    }
 
    private void writeText(Object text) {
@@ -63,7 +47,6 @@ public class GameRefactored implements IGame {
 
    private void defaultMove(int roll) {
       currentPlayer().move(roll);
-
       writeText(currentPlayer().getName() + "'s new location is " + currentPlayer().getPlace());
       writeText("The category is " + Category.getCategoryForPlace(currentPlayer().getPlace()).label);
       askQuestion();
@@ -82,8 +65,7 @@ public class GameRefactored implements IGame {
 
    private void askQuestion() {
       Category category = Category.getCategoryForPlace(currentPlayer().getPlace());
-      List<String> categoryQuestions = questions.get(category);
-      String question = categoryQuestions.remove(0);
+      String question = questions.getNextQuestionFor(category);
       writeText(question);
    }
 
