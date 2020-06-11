@@ -104,41 +104,45 @@ public class GameRefactored implements IGame {
 
    }
 
+   enum Category {
+   	POP, SCIENCE, SPORTS, ROCK
+   }
+
    private void askQuestion() {
-      if (currentCategory() == "Pop")
+      if (Category.POP == currentCategory())
          writeText(popQuestions.remove(0));
-      if (currentCategory() == "Science")
+      if (Category.SCIENCE == currentCategory())
          writeText(scienceQuestions.remove(0));
-      if (currentCategory() == "Sports")
+      if (Category.SPORTS == currentCategory())
          writeText(sportsQuestions.remove(0));
-      if (currentCategory() == "Rock")
+      if (Category.ROCK == currentCategory())
          writeText(rockQuestions.remove(0));
    }
 
 
-   private String currentCategory() {
+   private Category currentCategory() {
       switch (places[currentPlayer]) {
          case 0:
-            return "Pop";
+            return Category.POP;
          case 4:
-            return "Pop";
+            return Category.POP;
          case 8:
-            return "Pop";
+            return Category.POP;
 
          case 1:
-            return "Science";
+            return Category.SCIENCE;
          case 5:
-            return "Science";
+            return Category.SCIENCE;
          case 9:
-            return "Science";
+            return Category.SCIENCE;
          case 2:
-            return "Sports";
+            return Category.SPORTS;
          case 6:
-            return "Sports";
+            return Category.SPORTS;
          case 10:
-            return "Sports";
+            return Category.SPORTS;
          default:
-            return "Rock";
+            return Category.ROCK;
       }
    }
 
