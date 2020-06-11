@@ -46,4 +46,8 @@ public class Player {
    public void moveOutOfPenaltyBox() {
       inPenaltyBox = false;
    }
+
+   public boolean isWinner() {
+      return purse == 6;
+   }
 }

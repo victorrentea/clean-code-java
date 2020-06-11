@@ -114,7 +114,7 @@ public class GameRefactored implements IGame {
       writeText("Answer was correct!!!!");
       currentPlayer().addCoin();
       writeText(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
-      boolean winner = currentPlayer().getPurse() == 6;
+      boolean winner = currentPlayer().isWinner();
       endTurn();
       return !winner;
    }
