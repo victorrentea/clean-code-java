@@ -61,49 +61,43 @@ public class GameRefactored implements IGame {
 
    @Override
    public void roll(int roll) {
-      writeText(getCurrentPlayerName() + " is the current player");
+      writeText(currentPlayer().getName() + " is the current player");
       writeText("They have rolled a " + roll);
 
       if (inPenaltyBox[currentPlayer]) {
-         if (roll % 2 != 0) {
-            isGettingOutOfPenaltyBox = true;
-
-            writeText(getCurrentPlayerName() + " is getting out of the penalty box");
-            movePlayer(roll);
-
-            writeText(getCurrentPlayerName()
-                + "'s new location is "
-                + currentPlayer().getPlace());
-            writeText("The category is " + currentCategory().label);
-            askQuestion();
-         } else {
-            writeText(getCurrentPlayerName() + " is not getting out of the penalty box");
-            isGettingOutOfPenaltyBox = false;
-         }
+         penaltyBoxMove(roll);
 
       } else {
 
-         movePlayer(roll);
-
-         writeText(getCurrentPlayerName()
-             + "'s new location is "
-             + currentPlayer().getPlace());
-         writeText("The category is " + currentCategory().label);
-         askQuestion();
+         defaultMove(roll);
       }
 
    }
 
+   private void defaultMove(int roll) {
+      currentPlayer().move(roll);
+
+      writeText(currentPlayer().getName()
+              + "'s new location is "
+              + currentPlayer().getPlace());
+      writeText("The category is " + currentCategory().label);
+      askQuestion();
+   }
+
+   private void penaltyBoxMove(int roll) {
+      if (roll % 2 != 0) {
+         isGettingOutOfPenaltyBox = true;
+
+         writeText(currentPlayer().getName() + " is getting out of the penalty box");
+         defaultMove(roll);
+      } else {
+         writeText(currentPlayer().getName() + " is not getting out of the penalty box");
+         isGettingOutOfPenaltyBox = false;
+      }
+   }
+
    private Player currentPlayer() {
       return players.get(currentPlayer);
-   }
-
-   private void movePlayer(int roll) {
-      currentPlayer().move(roll);
-   }
-
-   private String getCurrentPlayerName() {
-      return currentPlayer().getName();
    }
 
    private void askQuestion() {
@@ -149,7 +143,7 @@ public class GameRefactored implements IGame {
          if (isGettingOutOfPenaltyBox) {
             writeText("Answer was correct!!!!");
             purses[currentPlayer]++;
-            writeText(getCurrentPlayerName()
+            writeText(currentPlayer().getName()
                 + " now has "
                 + purses[currentPlayer]
                 + " Gold Coins.");
@@ -170,7 +164,7 @@ public class GameRefactored implements IGame {
 
          writeText("Answer was corrent!!!!");
          purses[currentPlayer]++;
-         writeText(getCurrentPlayerName()
+         writeText(currentPlayer().getName()
              + " now has "
              + purses[currentPlayer]
              + " Gold Coins.");
@@ -186,7 +180,7 @@ public class GameRefactored implements IGame {
    @Override
    public boolean wrongAnswer() {
       writeText("Question was incorrectly answered");
-      writeText(getCurrentPlayerName() + " was sent to the penalty box");
+      writeText(currentPlayer().getName() + " was sent to the penalty box");
       inPenaltyBox[currentPlayer] = true;
 
       currentPlayer++;
