@@ -26,9 +26,9 @@ public class GameRefactored implements IGame {
       this.writer = writer;
       for (int i = 0; i < 50; i++) {
          popQuestions.add("Pop Question " + i);
-         scienceQuestions.add(("Science Question " + i));
-         sportsQuestions.add(("Sports Question " + i));
-         rockQuestions.add(createRockQuestion(i));
+         scienceQuestions.add("Science Question " + i);
+         sportsQuestions.add("Sports Question " + i);
+         rockQuestions.add("Rock Question " + i);
       }
    }
 
@@ -39,10 +39,6 @@ public class GameRefactored implements IGame {
       } catch (IOException e) {
          throw new RuntimeException(e);
       }
-   }
-
-   public String createRockQuestion(int index) {
-      return "Rock Question " + index;
    }
 
    public boolean isPlayable() {
@@ -102,18 +98,6 @@ public class GameRefactored implements IGame {
          askQuestion();
       }
 
-   }
-
-   public enum Category {
-      POP("Pop"),
-      SCIENCE("Science"),
-      SPORTS("Sports"),
-      ROCK("Rock");
-
-      public final String label;
-      Category(String label) {
-         this.label = label;
-      }
    }
 
    private void askQuestion() {
