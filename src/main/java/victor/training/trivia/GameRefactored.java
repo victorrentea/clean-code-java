@@ -10,6 +10,23 @@ public class GameRefactored implements IGame {
    private final List<Player> players = new ArrayList<>();
    private final QuestionSet questions = new QuestionSet();
 
+   // Retrospec:
+
+   // nu dai cu barda-n cod (Tarzan style), ci adaugi cod usurel, scrii in noile campuri si apoi citesti din cele noi. La final stergi campurile originale
+   // ALT-ENTER
+   // decuplarea dependintelor (System.out)
+   // intelegi codul pe masura ce-l refactorezi -> idei de factoring succesive. STOP. fa-le pe rand
+   // extrage clase noi. OOP. nu fa setteri/getteri decat la nevoie. nume sugestive de metode
+   // arde mici reguli de business pring clasutze.
+   // disipa logica in cat mai multe clase (da sa aiba sens)
+   // ALT-J tata!
+   // fucntii <=7 linii
+   // masezi codul cu inline-extract X repetat
+   // CTRL-Z foarte mult. 20 ori /zi pe stomacu gol.
+   // daca gasesti bug, trebuie sa-ti pese. Dar uneori trebuie confirmat cu biz/clientii ca nu-i strici daca fixezi
+   //    "it's not a bug, it's a feature"
+   // temporal coupling (endTurn())
+
    private int currentPlayerIndex = 0;
    private boolean isGettingOutOfPenaltyBox;
 
@@ -32,7 +49,9 @@ public class GameRefactored implements IGame {
       writeText(playerName + " was added");
       writeText("They are player number " + players.size());
       return true;
+
    }
+
 
    @Override
    public void roll(int roll) {
