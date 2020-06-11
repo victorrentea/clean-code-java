@@ -127,6 +127,7 @@ public class GameRefactored implements IGame {
 
 
    private Category currentCategory() {
+      // 0 .. 11 pozitii: putem scurta asta : ?
       switch (currentPlayer().getPlace()) {
          case 0:
             return Category.POP;
