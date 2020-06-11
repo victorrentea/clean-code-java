@@ -4,21 +4,30 @@ import java.util.Random;
 
 public class GamePlay {
    public static void main(String[] args) {
+
+      int seed = 1;
+
+      Random random = new Random(seed);
+
+
+
+
       Game aGame = new Game();
       aGame.add("Chet");
       aGame.add("Pat");
       aGame.add("Sue");
 
-      boolean notAWinner = false;
-      do {
-         aGame.roll(new Random().nextInt(5) + 1);
+      boolean gameContinues = true;
+      while (gameContinues) {
+         aGame.roll(random.nextInt(6) + 1);
 
-         if (new Random().nextInt(9) == 7) {
-            notAWinner = aGame.wrongAnswer();
+         if (random.nextInt(9) == 7) {
+            // 1/9: 11% sansa sa raspunda gresit
+            gameContinues = aGame.wrongAnswer();
          } else {
-            notAWinner = aGame.wasCorrectlyAnswered();
+            gameContinues = aGame.wasCorrectlyAnswered();
          }
 
-      } while (notAWinner);
+      }
    }
 }
