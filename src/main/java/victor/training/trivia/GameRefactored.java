@@ -80,10 +80,6 @@ public class GameRefactored implements IGame {
       }
    }
 
-   private Player currentPlayer() {
-      return players.get(currentPlayerIndex);
-   }
-
    private void askQuestion() {
       Category category = Category.getCategoryForPlace(currentPlayer().getPlace());
       List<String> categoryQuestions = questions.get(category);
@@ -119,13 +115,8 @@ public class GameRefactored implements IGame {
       return !winner;
    }
 
-   @Override
-   public boolean wrongAnswer() {
-      writeText("Question was incorrectly answered");
-      writeText(currentPlayer().getName() + " was sent to the penalty box");
-      currentPlayer().moveInPenaltyBox();
-      endTurn();
-      return true;
+   private Player currentPlayer() {
+      return players.get(currentPlayerIndex);
    }
 
 
@@ -134,5 +125,14 @@ public class GameRefactored implements IGame {
       if (currentPlayerIndex == players.size()) {
          currentPlayerIndex = 0;
       }
+   }
+
+   @Override
+   public boolean wrongAnswer() {
+      writeText("Question was incorrectly answered");
+      writeText(currentPlayer().getName() + " was sent to the penalty box");
+      currentPlayer().moveInPenaltyBox();
+      endTurn();
+      return true;
    }
 }
