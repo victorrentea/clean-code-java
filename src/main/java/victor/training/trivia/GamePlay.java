@@ -1,6 +1,7 @@
 package victor.training.trivia;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Random;
 
 public class GamePlay {
@@ -11,9 +12,8 @@ public class GamePlay {
       Random random = new Random(seed);
 
 
-
-
-      Game aGame = new Game(new PrintWriter(System.out));
+      StringWriter sw = new StringWriter();
+      Game aGame = new Game(sw);
       aGame.add("Chet");
       aGame.add("Pat");
       aGame.add("Sue");
@@ -30,5 +30,6 @@ public class GamePlay {
          }
 
       }
+      System.out.println(sw.toString());
    }
 }
