@@ -128,28 +128,18 @@ public class GameRefactored implements IGame {
 
    private Category currentCategory() {
       // 0 .. 11 pozitii: putem scurta asta : ?
-      switch (currentPlayer().getPlace()) {
+      switch (currentPlayer().getPlace() % 4) {
          case 0:
             return Category.POP;
-         case 4:
-            return Category.POP;
-         case 8:
-            return Category.POP;
-
          case 1:
-            return Category.SCIENCE;
-         case 5:
-            return Category.SCIENCE;
-         case 9:
             return Category.SCIENCE;
          case 2:
             return Category.SPORTS;
-         case 6:
-            return Category.SPORTS;
-         case 10:
-            return Category.SPORTS;
-         default:
+         case 3:
             return Category.ROCK;
+
+         default:
+            throw new IllegalStateException("Unexpected value: " + currentPlayer().getPlace() % 4);
       }
    }
 
