@@ -154,7 +154,7 @@ public class Game implements IGame {
 			
 		} else {
 		
-			writeText("Answer was corrent!!!!");
+			writeText("Answer was correct!!!!");
 			purses[currentPlayer]++;
 			writeText(players.get(currentPlayer)
 					+ " now has "

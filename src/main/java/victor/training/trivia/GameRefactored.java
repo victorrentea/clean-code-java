@@ -66,20 +66,15 @@ public class GameRefactored implements IGame {
 
       if (inPenaltyBox[currentPlayer]) {
          penaltyBoxMove(roll);
-
       } else {
-
          defaultMove(roll);
       }
-
    }
 
    private void defaultMove(int roll) {
       currentPlayer().move(roll);
 
-      writeText(currentPlayer().getName()
-              + "'s new location is "
-              + currentPlayer().getPlace());
+      writeText(currentPlayer().getName() + "'s new location is " + currentPlayer().getPlace());
       writeText("The category is " + currentCategory().label);
       askQuestion();
    }
@@ -140,41 +135,34 @@ public class GameRefactored implements IGame {
    @Override
    public boolean wasCorrectlyAnswered() {
       if (inPenaltyBox[currentPlayer]) {
-         if (isGettingOutOfPenaltyBox) {
-            writeText("Answer was correct!!!!");
-            purses[currentPlayer]++;
-            writeText(currentPlayer().getName()
-                + " now has "
-                + purses[currentPlayer]
-                + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-
-            return winner;
-         } else {
-            currentPlayer++;
-            if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-            return true;
-         }
-
-
+         return penaltyBoxCorrectAnswers();
       } else {
+         return defaultCorrectAnswers();
+      }
+   }
 
-         writeText("Answer was corrent!!!!");
-         purses[currentPlayer]++;
-         writeText(currentPlayer().getName()
-             + " now has "
-             + purses[currentPlayer]
-             + " Gold Coins.");
-
-         boolean winner = didPlayerWin();
+   private boolean penaltyBoxCorrectAnswers() {
+      if (isGettingOutOfPenaltyBox) {
+         return defaultCorrectAnswers();
+      } else {
          currentPlayer++;
          if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-
-         return winner;
+         return true;
       }
+   }
+
+   private boolean defaultCorrectAnswers() {
+      writeText("Answer was correct!!!!");
+      purses[currentPlayer]++;
+      writeText(currentPlayer().getName() + " now has "
+          + purses[currentPlayer]
+          + " Gold Coins.");
+
+      boolean winner = didPlayerWin();
+      currentPlayer++;
+      if (currentPlayer == howManyPlayers()) currentPlayer = 0;
+
+      return winner;
    }
 
    @Override
