@@ -9,15 +9,15 @@ import java.util.List;
 public class GameRefactored implements IGame {
    private final Writer writer;
 
-   List<Player> players = new ArrayList<>();
+   private final List<Player> players = new ArrayList<>();
 
    private List<String> popQuestions = new LinkedList<>();
    private List<String> scienceQuestions = new LinkedList<>();
    private List<String> sportsQuestions = new LinkedList<>();
    private List<String> rockQuestions = new LinkedList<>();
 
-   int currentPlayer = 0;
-   boolean isGettingOutOfPenaltyBox;
+   private int currentPlayerIndex = 0;
+   private boolean isGettingOutOfPenaltyBox;
 
    public GameRefactored(Writer writer) {
       this.writer = writer;
@@ -38,21 +38,12 @@ public class GameRefactored implements IGame {
       }
    }
 
-   public boolean isPlayable() {
-      return (howManyPlayers() >= 2);
-   }
-
    @Override
    public boolean add(String playerName) {
       players.add(new Player(playerName));
-
       writeText(playerName + " was added");
       writeText("They are player number " + players.size());
       return true;
-   }
-
-   public int howManyPlayers() {
-      return players.size();
    }
 
    @Override
@@ -77,7 +68,6 @@ public class GameRefactored implements IGame {
    private void penaltyBoxMove(int roll) {
       if (roll % 2 != 0) {
          isGettingOutOfPenaltyBox = true;
-
          writeText(currentPlayer().getName() + " is getting out of the penalty box");
          defaultMove(roll);
       } else {
@@ -87,7 +77,7 @@ public class GameRefactored implements IGame {
    }
 
    private Player currentPlayer() {
-      return players.get(currentPlayer);
+      return players.get(currentPlayerIndex);
    }
 
    private void askQuestion() {
@@ -138,6 +128,8 @@ public class GameRefactored implements IGame {
 
    private boolean penaltyBoxCorrectAnswers() {
       if (isGettingOutOfPenaltyBox) {
+         // AICI LIPSESTE CEVA
+         currentPlayer().moveOutOfPenaltyBox();
          return defaultCorrectAnswers();
       } else {
          endTurn();
@@ -165,9 +157,9 @@ public class GameRefactored implements IGame {
 
 
    private void endTurn() {
-      currentPlayer++;
-      if (currentPlayer == players.size()) {
-         currentPlayer = 0;
+      currentPlayerIndex++;
+      if (currentPlayerIndex == players.size()) {
+         currentPlayerIndex = 0;
       }
    }
 }

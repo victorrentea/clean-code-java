@@ -132,6 +132,7 @@ public class Game implements IGame {
 	public boolean wasCorrectlyAnswered() {
 		if (inPenaltyBox[currentPlayer]){
 			if (isGettingOutOfPenaltyBox) {
+				inPenaltyBox[currentPlayer] = false; // bugfix facut in codul vechi de referinta
 				writeText("Answer was correct!!!!");
 				purses[currentPlayer]++;
 				writeText(players.get(currentPlayer)

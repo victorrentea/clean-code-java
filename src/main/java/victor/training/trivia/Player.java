@@ -42,4 +42,8 @@ public class Player {
       inPenaltyBox = true;
       // TODO PossibleBug: Where the hack is the= false?!
    }
+
+   public void moveOutOfPenaltyBox() {
+      inPenaltyBox = false;
+   }
 }
