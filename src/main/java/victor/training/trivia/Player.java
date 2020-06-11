@@ -2,7 +2,9 @@ package victor.training.trivia;
 
 public class Player {
    private final String name;
-   private int place = 0;
+   private int place;
+   private int purse;
+   private boolean inPenaltyBox;
 
    public Player(String name) {
       this.name = name;
@@ -22,5 +24,22 @@ public class Player {
 
    public int getPlace() {
       return place;
+   }
+
+   public boolean isInPenaltyBox() {
+      return inPenaltyBox;
+   }
+
+   public void addCoin() {
+      purse ++;
+   }
+
+   public int getPurse() {
+      return purse;
+   }
+
+   public void moveInPenaltyBox() {
+      inPenaltyBox = true;
+      // TODO PossibleBug: Where the hack is the= false?!
    }
 }

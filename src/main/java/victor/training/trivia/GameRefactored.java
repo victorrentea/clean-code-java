@@ -10,8 +10,6 @@ public class GameRefactored implements IGame {
    private final Writer writer;
 
    List<Player> players = new ArrayList<>();
-   int[] purses = new int[6];
-   boolean[] inPenaltyBox = new boolean[6];
 
    private List<String> popQuestions = new LinkedList<>();
    private List<String> scienceQuestions = new LinkedList<>();
@@ -47,8 +45,6 @@ public class GameRefactored implements IGame {
    @Override
    public boolean add(String playerName) {
       players.add(new Player(playerName));
-      purses[howManyPlayers()] = 0;
-      inPenaltyBox[howManyPlayers()] = false;
 
       writeText(playerName + " was added");
       writeText("They are player number " + players.size());
@@ -63,8 +59,7 @@ public class GameRefactored implements IGame {
    public void roll(int roll) {
       writeText(currentPlayer().getName() + " is the current player");
       writeText("They have rolled a " + roll);
-
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayer().isInPenaltyBox()) {
          penaltyBoxMove(roll);
       } else {
          defaultMove(roll);
@@ -134,7 +129,7 @@ public class GameRefactored implements IGame {
 
    @Override
    public boolean wasCorrectlyAnswered() {
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayer().isInPenaltyBox()) {
          return penaltyBoxCorrectAnswers();
       } else {
          return defaultCorrectAnswers();
@@ -145,23 +140,17 @@ public class GameRefactored implements IGame {
       if (isGettingOutOfPenaltyBox) {
          return defaultCorrectAnswers();
       } else {
-         currentPlayer++;
-         if (currentPlayer == howManyPlayers()) currentPlayer = 0;
+         endTurn();
          return true;
       }
    }
 
    private boolean defaultCorrectAnswers() {
       writeText("Answer was correct!!!!");
-      purses[currentPlayer]++;
-      writeText(currentPlayer().getName() + " now has "
-          + purses[currentPlayer]
-          + " Gold Coins.");
-
-      boolean winner = didPlayerWin();
-      currentPlayer++;
-      if (currentPlayer == howManyPlayers()) currentPlayer = 0;
-
+      currentPlayer().addCoin();
+      writeText(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
+      boolean winner = currentPlayer().getPurse() != 6;
+      endTurn();
       return winner;
    }
 
@@ -169,15 +158,16 @@ public class GameRefactored implements IGame {
    public boolean wrongAnswer() {
       writeText("Question was incorrectly answered");
       writeText(currentPlayer().getName() + " was sent to the penalty box");
-      inPenaltyBox[currentPlayer] = true;
-
-      currentPlayer++;
-      if (currentPlayer == howManyPlayers()) currentPlayer = 0;
+      currentPlayer().moveInPenaltyBox();
+      endTurn();
       return true;
    }
 
 
-   private boolean didPlayerWin() {
-      return !(purses[currentPlayer] == 6);
+   private void endTurn() {
+      currentPlayer++;
+      if (currentPlayer == players.size()) {
+         currentPlayer = 0;
+      }
    }
 }
