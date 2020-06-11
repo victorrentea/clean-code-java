@@ -129,7 +129,7 @@ public class Game implements IGame {
 	}
 
 	@Override
-	public boolean wasCorrectlyAnswered() {
+	public boolean correctAnswer() {
 		if (inPenaltyBox[currentPlayer]){
 			if (isGettingOutOfPenaltyBox) {
 				inPenaltyBox[currentPlayer] = false; // bugfix facut in codul vechi de referinta

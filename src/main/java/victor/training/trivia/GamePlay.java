@@ -1,6 +1,5 @@
 package victor.training.trivia;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -28,15 +27,15 @@ public class GamePlay {
       aGame.add("Pat");
       aGame.add("Sue");
 
-      boolean gameContinues = true;
-      while (gameContinues) {
+      boolean notWinner = true;
+      while (notWinner) {
          aGame.roll(random.nextInt(6) + 1);
 
          if (random.nextInt(9) == 7) {
             // 1/9: 11% sansa sa raspunda gresit
-            gameContinues = aGame.wrongAnswer();
+            notWinner = aGame.wrongAnswer();
          } else {
-            gameContinues = aGame.wasCorrectlyAnswered();
+            notWinner = aGame.correctAnswer();
          }
 
       }

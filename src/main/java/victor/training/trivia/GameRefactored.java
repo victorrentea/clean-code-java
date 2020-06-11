@@ -92,7 +92,7 @@ public class GameRefactored implements IGame {
    }
 
    @Override
-   public boolean wasCorrectlyAnswered() {
+   public boolean correctAnswer() {
       if (currentPlayer().isInPenaltyBox()) {
          return penaltyBoxCorrectAnswers();
       } else {
@@ -102,7 +102,6 @@ public class GameRefactored implements IGame {
 
    private boolean penaltyBoxCorrectAnswers() {
       if (isGettingOutOfPenaltyBox) {
-         // AICI LIPSESTE CEVA
          currentPlayer().moveOutOfPenaltyBox();
          return defaultCorrectAnswers();
       } else {
@@ -115,9 +114,9 @@ public class GameRefactored implements IGame {
       writeText("Answer was correct!!!!");
       currentPlayer().addCoin();
       writeText(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
-      boolean winner = currentPlayer().getPurse() != 6;
+      boolean winner = currentPlayer().getPurse() == 6;
       endTurn();
-      return winner;
+      return !winner;
    }
 
    @Override
