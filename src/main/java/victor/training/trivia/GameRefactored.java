@@ -10,7 +10,6 @@ public class GameRefactored implements IGame {
    private final Writer writer;
 
    List<Player> players = new ArrayList<>();
-   int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
@@ -48,7 +47,6 @@ public class GameRefactored implements IGame {
    @Override
    public boolean add(String playerName) {
       players.add(new Player(playerName));
-      places[howManyPlayers()] = 0;
       purses[howManyPlayers()] = 0;
       inPenaltyBox[howManyPlayers()] = false;
 
@@ -71,12 +69,11 @@ public class GameRefactored implements IGame {
             isGettingOutOfPenaltyBox = true;
 
             writeText(getCurrentPlayerName() + " is getting out of the penalty box");
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+            movePlayer(roll);
 
             writeText(getCurrentPlayerName()
                 + "'s new location is "
-                + places[currentPlayer]);
+                + players.get(currentPlayer).getPlace());
             writeText("The category is " + currentCategory().label);
             askQuestion();
          } else {
@@ -86,16 +83,19 @@ public class GameRefactored implements IGame {
 
       } else {
 
-         places[currentPlayer] = places[currentPlayer] + roll;
-         if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+         movePlayer(roll);
 
          writeText(getCurrentPlayerName()
              + "'s new location is "
-             + places[currentPlayer]);
+             + players.get(currentPlayer).getPlace());
          writeText("The category is " + currentCategory().label);
          askQuestion();
       }
 
+   }
+
+   private void movePlayer(int roll) {
+      players.get(currentPlayer).move(roll);
    }
 
    private String getCurrentPlayerName() {
@@ -123,7 +123,7 @@ public class GameRefactored implements IGame {
 
 
    private Category currentCategory() {
-      switch (places[currentPlayer]) {
+      switch (players.get(currentPlayer).getPlace()) {
          case 0:
             return Category.POP;
          case 4:
