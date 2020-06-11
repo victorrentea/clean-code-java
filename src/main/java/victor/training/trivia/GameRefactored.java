@@ -9,15 +9,16 @@ import java.util.List;
 public class GameRefactored implements IGame {
    private final Writer writer;
 
-   List<String> players = new ArrayList<>();
+   List<String> playerNames = new ArrayList<>();
+   List<Player> players = new ArrayList<>();
    int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
-   List<String> popQuestions = new LinkedList<>();
-   List<String> scienceQuestions = new LinkedList<>();
-   List<String> sportsQuestions = new LinkedList<>();
-   List<String> rockQuestions = new LinkedList<>();
+   private List<String> popQuestions = new LinkedList<>();
+   private List<String> scienceQuestions = new LinkedList<>();
+   private List<String> sportsQuestions = new LinkedList<>();
+   private List<String> rockQuestions = new LinkedList<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
@@ -47,9 +48,8 @@ public class GameRefactored implements IGame {
 
    @Override
    public boolean add(String playerName) {
-
-
-      players.add(playerName);
+      playerNames.add(playerName);
+      players.add(new Player(playerName));
       places[howManyPlayers()] = 0;
       purses[howManyPlayers()] = 0;
       inPenaltyBox[howManyPlayers()] = false;
@@ -59,30 +59,38 @@ public class GameRefactored implements IGame {
       return true;
    }
 
+   class Player {
+      private final String name;
+
+      public Player(String name) {
+         this.name = name;
+      }
+   }
+
    public int howManyPlayers() {
       return players.size();
    }
 
    @Override
    public void roll(int roll) {
-      writeText(players.get(currentPlayer) + " is the current player");
+      writeText(getCurrentPlayerName() + " is the current player");
       writeText("They have rolled a " + roll);
 
       if (inPenaltyBox[currentPlayer]) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 
-            writeText(players.get(currentPlayer) + " is getting out of the penalty box");
+            writeText(getCurrentPlayerName() + " is getting out of the penalty box");
             places[currentPlayer] = places[currentPlayer] + roll;
             if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
-            writeText(players.get(currentPlayer)
+            writeText(getCurrentPlayerName()
                 + "'s new location is "
                 + places[currentPlayer]);
             writeText("The category is " + currentCategory().label);
             askQuestion();
          } else {
-            writeText(players.get(currentPlayer) + " is not getting out of the penalty box");
+            writeText(getCurrentPlayerName() + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
          }
 
@@ -91,13 +99,17 @@ public class GameRefactored implements IGame {
          places[currentPlayer] = places[currentPlayer] + roll;
          if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
 
-         writeText(players.get(currentPlayer)
+         writeText(getCurrentPlayerName()
              + "'s new location is "
              + places[currentPlayer]);
          writeText("The category is " + currentCategory().label);
          askQuestion();
       }
 
+   }
+
+   private String getCurrentPlayerName() {
+      return playerNames.get(currentPlayer);
    }
 
    private void askQuestion() {
@@ -152,19 +164,19 @@ public class GameRefactored implements IGame {
          if (isGettingOutOfPenaltyBox) {
             writeText("Answer was correct!!!!");
             purses[currentPlayer]++;
-            writeText(players.get(currentPlayer)
+            writeText(getCurrentPlayerName()
                 + " now has "
                 + purses[currentPlayer]
                 + " Gold Coins.");
 
             boolean winner = didPlayerWin();
             currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            if (currentPlayer == playerNames.size()) currentPlayer = 0;
 
             return winner;
          } else {
             currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            if (currentPlayer == playerNames.size()) currentPlayer = 0;
             return true;
          }
 
@@ -173,14 +185,14 @@ public class GameRefactored implements IGame {
 
          writeText("Answer was corrent!!!!");
          purses[currentPlayer]++;
-         writeText(players.get(currentPlayer)
+         writeText(getCurrentPlayerName()
              + " now has "
              + purses[currentPlayer]
              + " Gold Coins.");
 
          boolean winner = didPlayerWin();
          currentPlayer++;
-         if (currentPlayer == players.size()) currentPlayer = 0;
+         if (currentPlayer == playerNames.size()) currentPlayer = 0;
 
          return winner;
       }
@@ -189,11 +201,11 @@ public class GameRefactored implements IGame {
    @Override
    public boolean wrongAnswer() {
       writeText("Question was incorrectly answered");
-      writeText(players.get(currentPlayer) + " was sent to the penalty box");
+      writeText(getCurrentPlayerName() + " was sent to the penalty box");
       inPenaltyBox[currentPlayer] = true;
 
       currentPlayer++;
-      if (currentPlayer == players.size()) currentPlayer = 0;
+      if (currentPlayer == playerNames.size()) currentPlayer = 0;
       return true;
    }
 
