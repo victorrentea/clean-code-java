@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import java.util.List;
 
 public class Address {
    private final String city;
