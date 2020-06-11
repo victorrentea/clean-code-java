@@ -83,7 +83,7 @@ public class GameRefactored implements IGame {
             writeText(players.get(currentPlayer)
                 + "'s new location is "
                 + places[currentPlayer]);
-            writeText("The category is " + currentCategory());
+            writeText("The category is " + currentCategory().label);
             askQuestion();
          } else {
             writeText(players.get(currentPlayer) + " is not getting out of the penalty box");
@@ -98,61 +98,67 @@ public class GameRefactored implements IGame {
          writeText(players.get(currentPlayer)
              + "'s new location is "
              + places[currentPlayer]);
-         writeText("The category is " + currentCategory());
+         writeText("The category is " + currentCategory().label);
          askQuestion();
       }
 
    }
 
-   enum Category {
-      Pop, Science, Sports, Rock
+   public enum Category {
+      POP("Pop"),
+      SCIENCE("Science"),
+      SPORTS("Sports"),
+      ROCK("Rock");
+
+      public final String label;
+      Category(String label) {
+         this.label = label;
+      }
    }
 
    private void askQuestion() {
-      String question;
+      writeText(extractNextQuestion());
+   }
+
+   private String extractNextQuestion() {
       switch (currentCategory()) {
-         case Pop:
-            question = popQuestions.remove(0);
-            break;
-         case Science:
-            question = scienceQuestions.remove(0);
-            break;
-         case Sports:
-            question = sportsQuestions.remove(0);
-            break;
-         case Rock:
-            question = rockQuestions.remove(0);
-            break;
+         case POP: // Map<Category,List<String>>
+            return popQuestions.remove(0);
+         case SCIENCE:
+            return scienceQuestions.remove(0);
+         case SPORTS:
+            return sportsQuestions.remove(0);
+         case ROCK:
+            return rockQuestions.remove(0);
          default:
             throw new IllegalStateException("Unexpected value: " + currentCategory());
       }
-      writeText(question);
    }
 
 
    private Category currentCategory() {
       switch (places[currentPlayer]) {
          case 0:
-            return Category.Pop;
+            return Category.POP;
          case 4:
-            return Category.Pop;
+            return Category.POP;
          case 8:
-            return Category.Pop;
+            return Category.POP;
 
          case 1:
-            return Category.Science;
+            return Category.SCIENCE;
          case 5:
-            return Category.Science;
+            return Category.SCIENCE;
          case 9:
-            return Category.Science;
+            return Category.SCIENCE;
          case 2:
-            return Category.Sports;
+            return Category.SPORTS;
          case 6:
-            return Category.Sports;
+            return Category.SPORTS;
          case 10:
-            return Category.Sports;
+            return Category.SPORTS;
          default:
-            return Category.Rock;
+            return Category.ROCK;
       }
    }
 
