@@ -1,26 +1,29 @@
 package victor.training.trivia;
 
-import java.io.PrintWriter;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.StringWriter;
 import java.util.Random;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertEquals;
+
 public class GamePlay {
-   public static void main(String[] args) {
+   @Test
+   public void characterizationTest() {
+      for (int seed = 1; seed < 10_000; seed ++) {
+         String expected = runGame(Game::new, seed);
+         String actual = runGame(GameRefactored::new, seed);
 
-      int seed = 1;
-      Function<StringWriter, Game> constructor = Game::new;
-
-
-      String output = runGame(constructor, seed);
-
-      System.out.println(output);
+         assertEquals(expected, actual);
+      }
    }
 
-   private static String runGame(Function<StringWriter, Game> constructor, int seed) {
+   private static String runGame(Function<StringWriter, IGame> constructor, int seed) {
       Random random = new Random(seed);
       StringWriter sw = new StringWriter();
-      Game aGame = constructor.apply(sw);
+      IGame aGame = constructor.apply(sw);
       aGame.add("Chet");
       aGame.add("Pat");
       aGame.add("Sue");

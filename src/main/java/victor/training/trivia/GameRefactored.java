@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Game implements IGame {
+public class GameRefactored implements IGame {
 	private final Writer writer;
 
 	ArrayList players = new ArrayList();
@@ -21,7 +21,7 @@ public class Game implements IGame {
 	int currentPlayer = 0;
 	boolean isGettingOutOfPenaltyBox;
 
-    public Game(Writer writer){
+    public GameRefactored(Writer writer){
 		 this.writer = writer;
 		 for (int i = 0; i < 50; i++) {
 			popQuestions.addLast("Pop Question " + i);
