@@ -4,19 +4,20 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GameRefactored implements IGame {
    private final Writer writer;
 
-   ArrayList players = new ArrayList();
+   List players = new ArrayList();
    int[] places = new int[6];
    int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
 
-   LinkedList popQuestions = new LinkedList();
-   LinkedList scienceQuestions = new LinkedList();
-   LinkedList sportsQuestions = new LinkedList();
-   LinkedList rockQuestions = new LinkedList();
+   List popQuestions = new LinkedList();
+   List scienceQuestions = new LinkedList();
+   List sportsQuestions = new LinkedList();
+   List rockQuestions = new LinkedList();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
@@ -24,10 +25,10 @@ public class GameRefactored implements IGame {
    public GameRefactored(Writer writer) {
       this.writer = writer;
       for (int i = 0; i < 50; i++) {
-         popQuestions.addLast("Pop Question " + i);
-         scienceQuestions.addLast(("Science Question " + i));
-         sportsQuestions.addLast(("Sports Question " + i));
-         rockQuestions.addLast(createRockQuestion(i));
+         popQuestions.add("Pop Question " + i);
+         scienceQuestions.add(("Science Question " + i));
+         sportsQuestions.add(("Sports Question " + i));
+         rockQuestions.add(createRockQuestion(i));
       }
    }
 
@@ -105,27 +106,40 @@ public class GameRefactored implements IGame {
 
    private void askQuestion() {
       if (currentCategory() == "Pop")
-         writeText(popQuestions.removeFirst());
+         writeText(popQuestions.remove(0));
       if (currentCategory() == "Science")
-         writeText(scienceQuestions.removeFirst());
+         writeText(scienceQuestions.remove(0));
       if (currentCategory() == "Sports")
-         writeText(sportsQuestions.removeFirst());
+         writeText(sportsQuestions.remove(0));
       if (currentCategory() == "Rock")
-         writeText(rockQuestions.removeFirst());
+         writeText(rockQuestions.remove(0));
    }
 
 
    private String currentCategory() {
-      if (places[currentPlayer] == 0) return "Pop";
-      if (places[currentPlayer] == 4) return "Pop";
-      if (places[currentPlayer] == 8) return "Pop";
-      if (places[currentPlayer] == 1) return "Science";
-      if (places[currentPlayer] == 5) return "Science";
-      if (places[currentPlayer] == 9) return "Science";
-      if (places[currentPlayer] == 2) return "Sports";
-      if (places[currentPlayer] == 6) return "Sports";
-      if (places[currentPlayer] == 10) return "Sports";
-      return "Rock";
+      switch (places[currentPlayer]) {
+         case 0:
+            return "Pop";
+         case 4:
+            return "Pop";
+         case 8:
+            return "Pop";
+
+         case 1:
+            return "Science";
+         case 5:
+            return "Science";
+         case 9:
+            return "Science";
+         case 2:
+            return "Sports";
+         case 6:
+            return "Sports";
+         case 10:
+            return "Sports";
+         default:
+            return "Rock";
+      }
    }
 
    @Override
