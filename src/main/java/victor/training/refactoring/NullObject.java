@@ -5,12 +5,12 @@ import java.util.Optional;
 
 class NullObject {
     public void process(Customer customer) {
-        String customerName;
-        if (customer == null) {
-            customerName = "occupant";
-        } else {
-            customerName = customer.getName();
-        }
+//        String customerName;
+//        if (customer == null) {
+//            customerName = "occupant";
+//        } else {
+//            customerName = customer.getName();
+//        }
         // ...
     }
 
@@ -50,7 +50,7 @@ class NullObject {
 @Entity
 class Customer {
     private String name; // vreau sa ramana null in DB.
-    private MemberCard memberCard;
+    private IMemberCard memberCard = new NoMemberCard(); // NU MAI LASI CAMPUL NICIODATA NULL
 
     Customer(String name) {
         this.name = name;
@@ -64,26 +64,38 @@ class Customer {
     public Optional<String> getName() {
         return Optional.ofNullable(name);
     }
-    public Optional<MemberCard> getMemberCard() {
-        return Optional.ofNullable(memberCard);
+    public IMemberCard getMemberCard() {
+        assert (memberCard != null);
+        return memberCard;
     }
 }
 
 class PriceService {
     public int computePrice(Customer customer, Product product) {
-        return customer.getMemberCard().map(card -> card.discountPrice(product)).orElse(product.getPrice());
+        return customer.getMemberCard().discountPrice(product);
         // presupunem ca faci des linia de mai sus
+        // VREAU sa nu REPET in calleri comportamentul default pentru absenta unui MemberCard
+
+        // modelul de date acum iti da mereu ceva. fie member card pe bune, fie un surogat care se ***comporta*** ca ''''absenta unui card'''''
     }
 }
 
 //----------------
-class MemberCard {
+interface IMemberCard {
+    int discountPrice(Product product);
+}
+class NoMemberCard implements IMemberCard {
+    @Override
+    public int discountPrice(Product product) {
+        return product.getPrice();
+    }
+}
+class MemberCard implements IMemberCard {
     private final int discountPercentage;
-
     MemberCard(int discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
-
+    @Override
     public int discountPrice(Product product) {
         if (product.isRegular()) {
             return  product.getPrice() * (100-discountPercentage)/100;
@@ -100,7 +112,6 @@ class Product {
     }
 
     public int getPrice() {
-
-
+        return 0;
     }
 }
