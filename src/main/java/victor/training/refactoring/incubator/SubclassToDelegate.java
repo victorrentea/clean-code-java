@@ -14,6 +14,7 @@ class PriorityOrder extends Order
 {
     private PriorityPlan priorityPlan;
 
+    @Override
     public int daysToShip() {
         return priorityPlan.getDaysToShip();
     }
