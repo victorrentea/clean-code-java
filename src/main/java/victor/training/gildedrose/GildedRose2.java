@@ -16,9 +16,17 @@ public class GildedRose2 {
 
    private static int calculateNormalQuality(Item item) {
       int quality = item.quality;
-      quality--;
+      quality--; //decreaseQuality(item);
       if (item.sellIn <= 0) quality--;
-      return getZeroQualityIfNegative(quality);
+      int result = getZeroQualityIfNegative(quality);
+      return result;
+   }
+
+   private static void decreaseQuality(Item item) {
+      item.quality --;
+      if (item.quality < 0) {
+         item.quality = 0;
+      }
    }
 
    private static int getZeroQualityIfNegative(int quality) {
@@ -34,13 +42,21 @@ public class GildedRose2 {
 
    private static int calculateAgeBrieQuality(Item item) {
       int quality = item.quality;
-      quality++;
-      if (item.sellIn <= 0) quality++;
-      return getMaxQualityIfMore(quality);
+      quality++; // increaseQuality(item);
+      if (item.sellIn <= 0) quality++; //increaseQuality(item);
+      quality = getMaxQualityIfMore(quality);
+      return quality;
    }
 
    private static int getMaxQualityIfMore(int quality) {
       return Math.min(quality, 50);
+   }
+
+   private static void increaseQuality(Item item) {
+      item.quality ++;
+      if (item.quality > 50) {
+         item.quality = 50;
+      }
    }
 
    private static int calculateBackstageQuality(Item item) {
@@ -62,6 +78,7 @@ public class GildedRose2 {
       }
    }
 
+   // TODO move all those funct out of here
    public enum ItemType {
       AGED_BRIE("Aged Brie", GildedRose2::calculateAgeBrieQuality),
       BACKSTAGE("Backstage passes to a TAFKAL80ETC concert", GildedRose2::calculateBackstageQuality),
@@ -78,7 +95,10 @@ public class GildedRose2 {
       }
 
       public static ItemType getTypeOf(String name) {
-         return Arrays.stream(values()).filter(itemType -> itemType.name.equals(name)).findFirst().orElse(DEFAULT);
+         return Arrays.stream(values())
+             .filter(itemType -> itemType.name.equals(name))
+             .findFirst()
+             .orElse(DEFAULT);
       }
    }
 }
