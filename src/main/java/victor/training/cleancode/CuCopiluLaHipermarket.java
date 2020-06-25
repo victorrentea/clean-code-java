@@ -15,10 +15,30 @@ public class CuCopiluLaHipermarket {
       System.out.println(puiiMei.contains(childOne));
 
 //      childOne.setName("Emma-Simona");
+//      childOne.setAltNume("Emma-Simona");
       System.out.println(childOne.hashCode());
       System.out.println(puiiMei.contains(childOne));
    }
 }
+
+//class CopilHackuit extends Copil {
+//   private String altNume;
+//
+//   public CopilHackuit(String name) {
+//      super(name);
+//   }
+//
+//   @Override
+//   public String getName() {
+//      return altNume;
+//   }
+//
+//   public CopilHackuit setAltNume(String altNume) {
+//      this.altNume = altNume;
+//      return this;
+//   }
+//}
+
 class Copil {
    private final String name;
 
