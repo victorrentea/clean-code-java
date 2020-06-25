@@ -41,26 +41,44 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Integer> tasks) {
-      int i = 0; // TODO move closer to usages
-      int j = tasks.size();
+   public void bossLevelStuffFluff(List<Integer> tasks) {
       System.out.println("Logic1");
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (int task : tasks) {
-               i++;
-               System.out.println("Logic4: Validate " + task);
-               // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
-               System.out.println("Logic5 " + i + " on " + task);
-            }
-            System.out.println("Logic6 " + j);
-         } else {
-            System.out.println("Logic7 " + tasks);
-         }
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      int j = 0;
+      for (int taskRaw : tasks) {
+         System.out.println("Logic4: Validate " + taskRaw);
+         // un pas in care modific valorile pentru vara
+         j++;
+         // daca faci modificari doar pe instanta elementului, for-ul urmator le va gasi gata modificate pe toate -- Nu e pb cata vreme forurile nu le interschimbi ordinea
+//             ==> .stream.map
+         // daca faci modificari in afara elementelor (eg j++), atunci da, ai probleme
+//          ==> nu merg cu stream.amp
       }
+
+
+      for (int taskUpdated : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         System.out.println("My Logic: " + taskUpdated + " cu j="+j);
+      }
+
+
+      int i = 0;
+      for (int task : tasks) {
+         i++;
+         System.out.println("Logic5 " + i + " on " + task);
+      }
+      System.out.println("Logic6 " + tasks.size());
+      System.out.println("Logic7");
+   }
+   public void bossLevelStuffNoFluff(List<Integer> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+   public void bossLevelNoStuff() {
+      System.out.println("Logic1");
       System.out.println("Logic7");
    }
 
