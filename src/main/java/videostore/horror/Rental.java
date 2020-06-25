@@ -23,23 +23,30 @@ public class Rental {
 	}
 
 	public double computePrice() {
-		double price = 0;
 		switch (movie.getPriceCode()) {
-			case REGULAR:
-				price += 2;
-				if (daysRented > 2) {
-					price += (daysRented - 2) * 1.5;
-				}
-				break;
-			case NEW_RELEASE:
-				price += daysRented * 3;
-				break;
-			case CHILDRENS:
-				price += 1.5;
-				if (daysRented > 3) {
-					price += (daysRented - 3) * 1.5;
-				}
-				break;
+			case REGULAR: return computeRegularPrice();
+			case NEW_RELEASE: return computeNewReleasePrice();
+			case CHILDRENS: return computeChildrenPrice();
+			default: throw new IllegalStateException("Unexpected value: " + movie.getPriceCode());
+		}
+	}
+
+	private double computeChildrenPrice() {
+		double price = 1.5;
+		if (daysRented > 3) {
+			price += (daysRented - 3) * 1.5;
+		}
+		return price;
+	}
+
+	private int computeNewReleasePrice() {
+		return daysRented * 3;
+	}
+
+	private double computeRegularPrice() {
+		double price = 2;
+		if (daysRented > 2) {
+			price += (daysRented - 2) * 1.5;
 		}
 		return price;
 	}
