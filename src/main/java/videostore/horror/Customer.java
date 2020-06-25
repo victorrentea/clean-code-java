@@ -4,25 +4,35 @@ import java.util.*;
 //class Days {
 //	private final int days;
 //}
-class MovieWithDays {
+class Rental {
 	private final Movie movie;
 	private final int daysRented;
 
-	MovieWithDays(Movie movie, int daysRented) {
+	Rental(Movie movie, int daysRented) {
 		this.movie = movie;
 		this.daysRented = daysRented;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public int getDaysRented() {
+		return daysRented;
 	}
 }
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final Map<Movie, Integer> movieToDaysRented = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int days) {
-		rentals.put(movie, days);
+		movieToDaysRented.put(movie, days);
+		rentals.add(new Rental(movie, days));
 	}
 
 	public String getName() {
@@ -38,39 +48,39 @@ class Customer {
 //		for (Movie movie : rentals.keySet()) {
 //			int daysRented = rentals.get(movie);
 
-		for (Map.Entry<Movie, Integer> entry : rentals.entrySet()) {
-			Movie movie = entry.getKey();
-			int daysRented = entry.getValue();
+//		for (Map.Entry<Movie, Integer> entry : movieToDaysRented.entrySet()) {
+//			Movie movie = entry.getKey();
+//			int daysRented = entry.getValue();
 
-
+		for (Rental rental : rentals) {
 			double thisAmount = 0;
 			// determine amounts for each line
-			switch (movie.getPriceCode()) {
+			switch (rental.getMovie().getPriceCode()) {
 				case REGULAR:
 					thisAmount += 2;
-					if (daysRented > 2) {
-						thisAmount += (daysRented - 2) * 1.5;
+					if (rental.getDaysRented() > 2) {
+						thisAmount += (rental.getDaysRented() - 2) * 1.5;
 					}
 					break;
 				case NEW_RELEASE:
-					thisAmount += daysRented * 3;
+					thisAmount += rental.getDaysRented() * 3;
 					break;
 				case CHILDRENS:
 					thisAmount += 1.5;
-					if (daysRented > 3) {
-						thisAmount += (daysRented - 3) * 1.5;
+					if (rental.getDaysRented() > 3) {
+						thisAmount += (rental.getDaysRented() - 3) * 1.5;
 					}
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (movie.getPriceCode() != null &&
-				(movie.getPriceCode() == PriceCode.NEW_RELEASE)
-				&& daysRented > 1)
+			if (rental.getMovie().getPriceCode() != null &&
+				(rental.getMovie().getPriceCode() == PriceCode.NEW_RELEASE)
+				&& rental.getDaysRented() > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t"
+			result += "\t" + rental.getMovie().getTitle() + "\t"
 				+ String.valueOf(thisAmount) + "\n";
 			totalAmount += thisAmount;
 		}
