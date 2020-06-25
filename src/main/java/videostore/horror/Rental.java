@@ -13,10 +13,6 @@ public class Rental {
 		return movie;
 	}
 
-	public int getDaysRented() {
-		return daysRented;
-	}
-
 	public int computeRenterPoints() {
 		int points = 1;
 		boolean isNewRelease = movie.getPriceCode() == PriceCode.NEW_RELEASE;

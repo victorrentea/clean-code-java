@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -25,6 +26,7 @@ public class StatementFormatter {
    }
 
    private String createFooter(List<Rental> rentals) {
+//      rentals.stream().map(this::createStatementLine).collect(Collectors.toList());
       return "Amount owed is " + computeTotalPrice(rentals) + "\n" +
           "You earned " + computeTotalPoints(rentals) + " frequent renter points";
    }
