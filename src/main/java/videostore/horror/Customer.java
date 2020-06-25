@@ -19,16 +19,37 @@ public class Customer {
 	}
 
 	public String createStatement() {
-		double totalPrice = 0;
+		return createHeader()
+			+ createBody()
+			+ createFooter();
+	}
+
+	private String createFooter() {
+		return createFooter(computeTotalPrice(), computeTotalPoints());
+	}
+
+	private String createBody() {
+		String result = "";
+		for (Rental rental : rentals) {
+			result += createStatementLine(rental, computePrice(rental));
+		}
+		return result;
+	}
+
+	private int computeTotalPoints() {
 		int frequentRenterPoints = 0;
-		String result = createHeader();
 		for (Rental rental : rentals) {
 			frequentRenterPoints += computeRenterPoints(rental);
-			result += createStatementLine(rental, computePrice(rental));
+		}
+		return frequentRenterPoints;
+	}
+
+	private double computeTotalPrice() {
+		double totalPrice = 0;
+		for (Rental rental : rentals) {
 			totalPrice += computePrice(rental);
 		}
-		result += createFooter(totalPrice, frequentRenterPoints);
-		return result;
+		return totalPrice;
 	}
 
 	private String createStatementLine(Rental rental, double price) {
