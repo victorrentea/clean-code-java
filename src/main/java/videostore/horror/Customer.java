@@ -1,29 +1,9 @@
 package videostore.horror;
 
 import java.util.*;
-//class Days {
-//	private final int days;
-//}
-class Rental {
-	private final Movie movie;
-	private final int daysRented;
 
-	Rental(Movie movie, int daysRented) {
-		this.movie = movie;
-		this.daysRented = daysRented;
-	}
-
-	public Movie getMovie() {
-		return movie;
-	}
-
-	public int getDaysRented() {
-		return daysRented;
-	}
-}
-class Customer {
+public class Customer {
 	private final String name;
-	private final Map<Movie, Integer> movieToDaysRented = new LinkedHashMap<>(); // preserves order
 	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
@@ -31,7 +11,6 @@ class Customer {
 	};
 
 	public void addRental(Movie movie, int days) {
-		movieToDaysRented.put(movie, days);
 		rentals.add(new Rental(movie, days));
 	}
 
@@ -42,36 +21,10 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-
-		String result = "Rental Record for " + getName() + "\n";
-
-//		for (Movie movie : rentals.keySet()) {
-//			int daysRented = rentals.get(movie);
-
-//		for (Map.Entry<Movie, Integer> entry : movieToDaysRented.entrySet()) {
-//			Movie movie = entry.getKey();
-//			int daysRented = entry.getValue();
+		String result = "Rental Record for " + name + "\n";
 
 		for (Rental rental : rentals) {
-			double thisAmount = 0;
-			// determine amounts for each line
-			switch (rental.getMovie().getPriceCode()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (rental.getDaysRented() > 2) {
-						thisAmount += (rental.getDaysRented() - 2) * 1.5;
-					}
-					break;
-				case NEW_RELEASE:
-					thisAmount += rental.getDaysRented() * 3;
-					break;
-				case CHILDRENS:
-					thisAmount += 1.5;
-					if (rental.getDaysRented() > 3) {
-						thisAmount += (rental.getDaysRented() - 3) * 1.5;
-					}
-					break;
-			}
+			double thisAmount = computeAmount(rental);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
@@ -89,5 +42,28 @@ class Customer {
 		result += "You earned " + String.valueOf(frequentRenterPoints)
 				+ " frequent renter points";
 		return result;
+	}
+
+	private double computeAmount(Rental rental) {
+		double thisAmount = 0;
+		// determine amounts for each line
+		switch (rental.getMovie().getPriceCode()) {
+			case REGULAR:
+				thisAmount += 2;
+				if (rental.getDaysRented() > 2) {
+					thisAmount += (rental.getDaysRented() - 2) * 1.5;
+				}
+				break;
+			case NEW_RELEASE:
+				thisAmount += rental.getDaysRented() * 3;
+				break;
+			case CHILDRENS:
+				thisAmount += 1.5;
+				if (rental.getDaysRented() > 3) {
+					thisAmount += (rental.getDaysRented() - 3) * 1.5;
+				}
+				break;
+		}
+		return thisAmount;
 	}
 }
