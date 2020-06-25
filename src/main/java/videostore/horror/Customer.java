@@ -2,6 +2,8 @@ package videostore.horror;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.joining;
+
 public class Customer {
 	private final String name;
 	private final List<Rental> rentals = new ArrayList<>();
@@ -24,45 +26,29 @@ public class Customer {
 			+ createFooter();
 	}
 
-	private String createFooter() {
-		return createFooter(computeTotalPrice(), computeTotalPoints());
-	}
-
-	private String createBody() {
-		String result = "";
-		for (Rental rental : rentals) {
-			result += createStatementLine(rental, computePrice(rental));
-		}
-		return result;
-	}
-
-	private int computeTotalPoints() {
-		int frequentRenterPoints = 0;
-		for (Rental rental : rentals) {
-			frequentRenterPoints += computeRenterPoints(rental);
-		}
-		return frequentRenterPoints;
-	}
-
-	private double computeTotalPrice() {
-		double totalPrice = 0;
-		for (Rental rental : rentals) {
-			totalPrice += computePrice(rental);
-		}
-		return totalPrice;
-	}
-
-	private String createStatementLine(Rental rental, double price) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
-	}
-
 	private String createHeader() {
 		return "Rental Record for " + name + "\n";
 	}
 
-	private String createFooter(double totalPrice, int frequentRenterPoints) {
-		return "Amount owed is " + totalPrice + "\n" +
-			"You earned " + frequentRenterPoints + " frequent renter points";
+	private String createBody() {
+		return rentals.stream().map(this::createStatementLine).collect(joining());
+	}
+
+	private String createFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n" +
+			"You earned " + computeTotalPoints() + " frequent renter points";
+	}
+
+	private int computeTotalPoints() {
+		return rentals.stream().mapToInt(this::computeRenterPoints).sum();
+	}
+
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(this::computePrice).sum();
+	}
+
+	private String createStatementLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + computePrice(rental) + "\n";
 	}
 
 	private int computeRenterPoints(Rental rental) {
