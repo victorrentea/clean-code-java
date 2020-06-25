@@ -47,7 +47,7 @@ class Customer {
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if (each.getPriceCode() != null &&
-					(each.getPriceCode() == Movie.PriceCode.NEW_RELEASE)
+					(each.getPriceCode() == PriceCode.NEW_RELEASE)
 					&& dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental

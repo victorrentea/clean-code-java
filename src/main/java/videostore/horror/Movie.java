@@ -1,11 +1,6 @@
 package videostore.horror;
 
 public class Movie {
-   enum PriceCode {
-      REGULAR,
-      NEW_RELEASE,
-      CHILDRENS
-   }
 
    private final String title;
    private final PriceCode priceCode;
