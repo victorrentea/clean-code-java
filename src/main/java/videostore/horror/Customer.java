@@ -23,10 +23,9 @@ public class Customer {
 		int frequentRenterPoints = 0;
 		String result = createHeader();
 		for (Rental rental : rentals) {
-			double price = computePrice(rental);
 			frequentRenterPoints += computeRenterPoints(rental);
-			result += createStatementLine(rental, price);
-			totalPrice += price;
+			result += createStatementLine(rental, computePrice(rental));
+			totalPrice += computePrice(rental);
 		}
 		result += createFooter(totalPrice, frequentRenterPoints);
 		return result;
