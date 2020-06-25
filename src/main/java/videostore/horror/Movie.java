@@ -1,7 +1,6 @@
 package videostore.horror;
 
 public class Movie {
-
    private final String title;
    private final PriceCode priceCode;
 
@@ -17,5 +16,4 @@ public class Movie {
    public String getTitle() {
       return title;
    }
-
 }
