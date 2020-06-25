@@ -1,9 +1,6 @@
 package victor.training.cleancode;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.validation.constraints.NotNull;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
@@ -21,26 +18,15 @@ public class ManyParamsVO {
 
 //class Name { gresit. prea vag si prea general
 class FullName {
-
-   interface Final {}
-   @NotNull(groups = Final.class)
    private final String firstName;
-   @NotNull(groups = Final.class)
    private final String lastName;
 
    public FullName(String firstName, String lastName) {
-      this(firstName, lastName, true);
-   }
-   public FullName(String firstName, String lastName, boolean special) {
       this.firstName = firstName;
       this.lastName = lastName;
-      if (special) {
-         if (firstName == null || lastName == null) throw new IllegalArgumentException();
+      if (firstName == null || lastName == null) {
+         throw new IllegalArgumentException();
       }
-   }
-   // peferi functie si nu in constr daca pe anumite use-caseuri validarea este optionala/nu exista.
-   public void validate(Validator validator) {
-      validator.validate(this, Final.class);
    }
    public String getFirstName() {
       return firstName;
@@ -50,6 +36,9 @@ class FullName {
       return lastName;
    }
 
+   public String toEnterpriseName() {
+      return firstName + " " + lastName.toUpperCase();
+   }
 }
 
 class AnotherClass {
@@ -84,8 +73,7 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println(person.getFullName().toEnterpriseName());
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
