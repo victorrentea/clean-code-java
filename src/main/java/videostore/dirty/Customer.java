@@ -47,6 +47,7 @@ class Customer {
 			if ((each.getMovie().getPriceCode() == Movie.CATEGORY_NEW_RELEASE)
 					&& each.getDaysRented() > 1)
 				frequentRenterPoints++;
+			// init
 			// show figures for this rental
 			result += "\t" + each.getMovie().getTitle() + "\t"
 					+ thisAmount + "\n";
