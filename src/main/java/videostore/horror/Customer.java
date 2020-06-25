@@ -18,20 +18,22 @@ public class Customer {
 		return name;
 	}
 
-	public String statement() {
+	public String createStatement() {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = createHeader();
-
 		for (Rental rental : rentals) {
 			double price = computePrice(rental);
 			frequentRenterPoints += computeRenterPoints(rental);
-			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+			result += createStatementLine(rental, price);
 			totalPrice += price;
 		}
 		result += createFooter(totalPrice, frequentRenterPoints);
 		return result;
+	}
+
+	private String createStatementLine(Rental rental, double price) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
 	}
 
 	private String createHeader() {
