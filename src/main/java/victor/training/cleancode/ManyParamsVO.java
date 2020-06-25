@@ -39,6 +39,10 @@ class FullName {
    public String toEnterpriseName() {
       return firstName + " " + lastName.toUpperCase();
    }
+
+   public FullName withLastName(String newLastName) {
+      return new FullName(firstName, newLastName);
+   }
 }
 
 class AnotherClass {
@@ -65,6 +69,9 @@ class Person {
 //   public void setLastName(String lastName) {
 //      this.lastName = lastName;
 //   }
+   public void marita(Person sotz) {
+      fullName = fullName.withLastName(sotz.fullName.getLastName());
+   }
    public FullName getFullName() {
       return fullName;
    }
