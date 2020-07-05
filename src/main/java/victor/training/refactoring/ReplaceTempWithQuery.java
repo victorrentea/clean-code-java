@@ -34,6 +34,7 @@ class PriceCalculator {
         this.itemPrice = itemPrice;
     }
 
+
     public double computePrice() {
         double basePrice = quantity * itemPrice;
         if (quantity > 10)
