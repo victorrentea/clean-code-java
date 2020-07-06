@@ -101,13 +101,16 @@ class Marine {
    private Integer yearsService;
    private List<Award> awards = new ArrayList<>();
 
-   public Marine() {
+   protected Marine() { // for hibernate
    }
 
    public Marine(boolean dead, boolean retired, Integer yearsService) {
       this.dead = dead;
       this.retired = retired;
       this.yearsService = yearsService;
+      // VALIDATION LOGIC:
+      // + self-validating model : you can't ever get it in an inconsistent state, as long as you
+      // protect the setters too!
    }
 
    public List<Award> getAwards() {

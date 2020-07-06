@@ -1,6 +1,7 @@
 package victor.training.refactoring;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BooleanParameters {
    public static void main(String[] args) {
@@ -12,7 +13,9 @@ public class BooleanParameters {
       bigUglyMethod(5, 1);
 
       // TODO From my use-case, I call it too, to do more within:
-      bigUglyMethod323(2, 1);
+      bigUglyMethodWithAction(2, 1,
+          a2 -> System.out.println("Here, when I call this beast, it should also do: X " + a2 ));
+//      bigUglyMethodWithAction(2, 1, null);
 
    }
 
@@ -20,9 +23,9 @@ public class BooleanParameters {
       beforeLogic(b, a);
       afterLogic(b);
    }
-   static void bigUglyMethod323(int b, int a) {
+   static void bigUglyMethodWithAction(int b, int a, Consumer<Integer> action) {
       beforeLogic(b, a);
-      System.out.println("Here, when I call this beast, it should also do: X");
+      action.accept(a);
       afterLogic(b);
    }
 
