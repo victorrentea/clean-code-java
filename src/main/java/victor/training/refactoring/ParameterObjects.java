@@ -82,11 +82,11 @@ class Person {
 //   }
 
    public String getFirstName() {
-      return firstName;
+      return fullName.getFirstName();
    }
 
    public String getLastName() {
-      return lastName;
+      return fullName.getLastName();
    }
 }
 
