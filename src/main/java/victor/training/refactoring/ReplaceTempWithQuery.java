@@ -45,8 +45,11 @@ class PriceCalculator {
 
     private double basePrice() {
         System.out.println("smt");
-
-        jdbc.insert() // SIDE EFFECT.
+        try {
+            Thread.sleep(1000); // performance hit by calling an external web service
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return quantity * itemPrice ;
     }
 
