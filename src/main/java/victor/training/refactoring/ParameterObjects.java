@@ -30,6 +30,7 @@ public class ParameterObjects {
 //class Customer { // to generic, will grow enormously
 //class Name { // to generic. a company also has a "name"
 //class CustomerName { // to specific. a User also has first and last
+// @Embeddable JPA funclub
 class FullName { //perfect
    private final String firstName;
    private final String lastName;
@@ -64,6 +65,7 @@ class AnotherClass {
 
 class Person {
    private Long id;
+   // @Embedded
    private FullName fullName;
    private String phone;
 
@@ -88,8 +90,17 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
