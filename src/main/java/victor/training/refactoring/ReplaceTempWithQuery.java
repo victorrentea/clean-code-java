@@ -46,7 +46,7 @@ class PriceCalculator {
     private double basePrice() {
         System.out.println("smt");
 
-        return quantity * itemPrice * Math.random();
+        return quantity * itemPrice * Math.random(); // not referentially transparent
     }
 
     private double computeNormalPrice(double basePrice) {
