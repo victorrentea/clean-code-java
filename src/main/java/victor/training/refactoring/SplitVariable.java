@@ -7,11 +7,10 @@ import static org.junit.Assert.assertEquals;
 public class SplitVariable {
 
     public int discount(int price, int quantity) {
-        if (price > 50) price = price - 2;
-        if (quantity > 100) price = price - 1;
-        return price;
+        int priceDiscount = price > 50 ? 2 : 0;
+        int quantityDiscount = quantity > 100 ? 1 : 0;
+        return price - priceDiscount - quantityDiscount;
     }
-
 
 
     @Test
