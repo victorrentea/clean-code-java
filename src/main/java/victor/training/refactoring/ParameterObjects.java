@@ -49,6 +49,10 @@ class FullName { //perfect
    public String getLastName() {
       return lastName;
    }
+
+   public String asEnterpriseName() {
+      return firstName + " " + lastName.toUpperCase();
+   }
 }
 
 
@@ -85,8 +89,7 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println(person.getFullName().asEnterpriseName());
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
