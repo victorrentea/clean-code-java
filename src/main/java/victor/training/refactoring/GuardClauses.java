@@ -2,6 +2,7 @@ package victor.training.refactoring;
 
 import org.junit.Test;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
+class MarineValidator {}
 class GuardService {
    public int getPayAmount(Marine marine) {
       if (marine.isDead()) {
@@ -95,6 +97,7 @@ public class GuardClauses {
 class Marine {
    private boolean dead;
    private boolean retired;
+//   private MarineHistory history; // for destructuring into multiple object. If using JPA, mind @Embeddable
    private Integer yearsService;
    private List<Award> awards = new ArrayList<>();
 
