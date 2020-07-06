@@ -20,6 +20,10 @@ class GuardService {
       if (marine.getYearsService() == null) {
          throw new IllegalStateException("Any marine should have the years of service set");
       }
+      return computeNormalPayAmount(marine);
+   }
+
+   private int computeNormalPayAmount(Marine marine) {
       int result = marine.getYearsService() * 100;
       if (marine.wasAwarded()) {
          result += 1000;
