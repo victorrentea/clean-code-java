@@ -37,19 +37,13 @@ class PriceCalculator {
 
     public double computePrice() {
         if (quantity > 10) {
-            return basePrice() * 0.95;
+            return computeBasePrice() * 0.95;
         } else {
-            return computeNormalPrice(basePrice());
+            return computeNormalPrice(computeBasePrice());
         }
     }
 
-    private double basePrice() {
-        System.out.println("smt");
-        try {
-            Thread.sleep(1000); // performance hit by calling an external web service
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private double computeBasePrice() {
         return quantity * itemPrice ;
     }
 
@@ -59,7 +53,7 @@ class PriceCalculator {
     }
 
     public int computeFidelityPoints() {
-        return (int) (basePrice() / 2);
+        return (int) (computeBasePrice() / 2);
     }
 
 
