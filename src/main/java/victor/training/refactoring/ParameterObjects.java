@@ -80,14 +80,6 @@ class Person {
 //      this.lastName = lastName;
 //   }
 
-   public String getFirstName() {
-      return fullName.getFirstName();
-   }
-
-   public String getLastName() { // this is what the Law of Demeter does to us. In real life scenarios, I personally find it to much
-      return fullName.getLastName();
-   }
-
    public FullName getFullName() {
       return fullName;
    }
@@ -95,17 +87,8 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      System.out.println(person.getFullName().getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
-      System.out.println(person.getFirstName() + " " + person.getLastName().toUpperCase());
+      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
+      System.out.println(fullNameStr);
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
