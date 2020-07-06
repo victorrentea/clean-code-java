@@ -64,14 +64,10 @@ class AnotherClass {
 
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
    private FullName fullName;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
       if (firstName == null || lastName == null) throw new IllegalArgumentException();
       fullName = new FullName(firstName, lastName);
    }
