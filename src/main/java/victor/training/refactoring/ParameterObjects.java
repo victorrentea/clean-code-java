@@ -16,12 +16,13 @@ class Salary {
 public class ParameterObjects {
    public static void main(String[] args) {
       FullName fullName = new FullName("John", "Doe");
-      new ParameterObjects().placeOrder(fullName, "St. Albergue", "Paris", 99);
+      Address address = new Address("St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder(fullName, address);
    }
 
-   public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+   public void placeOrder(FullName fullName, Address address) {
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
 
@@ -92,7 +93,7 @@ class PersonService {
       System.out.println(person.getFullName().asEnterpriseName());
    }
 
-   public void p(String city, String streetName, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
