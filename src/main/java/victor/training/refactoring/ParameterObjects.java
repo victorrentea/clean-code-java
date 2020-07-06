@@ -66,6 +66,7 @@ class Person {
    private Long id;
    private String firstName;
    private String lastName;
+   private FullName fullName;
    private String phone;
 
    public Person(String firstName, String lastName) {
