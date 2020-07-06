@@ -39,7 +39,7 @@ class PriceCalculator {
         if (quantity > 10) {
             return computeBasePrice() * 0.95;
         } else {
-            return computeNormalPrice(computeBasePrice());
+            return computeNormalPrice();
         }
     }
 
@@ -47,9 +47,9 @@ class PriceCalculator {
         return quantity * itemPrice ;
     }
 
-    private double computeNormalPrice(double basePrice) {
-        double factor = (basePrice > 1000) ? 0.95: 0.98;
-        return factor * basePrice;
+    private double computeNormalPrice() {
+        double factor = (computeBasePrice() > 1000) ? 0.95: 0.98;
+        return factor * computeBasePrice();
     }
 
     public int computeFidelityPoints() {
