@@ -32,9 +32,10 @@ public class ParameterObjects {
 //class CustomerName { // to specific. a User also has first and last
 // @Embeddable JPA funclub
 class FullName { //perfect
-   private final String firstName;
-   private final String lastName;
+   private String firstName;
+   private String lastName;
 
+   protected FullName() {}
    public FullName(String firstName, String lastName) {
       this.firstName = firstName;
       this.lastName = lastName;
