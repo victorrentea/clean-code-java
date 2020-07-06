@@ -73,16 +73,13 @@ class Person {
       this.firstName = firstName;
       this.lastName = lastName;
       if (firstName == null || lastName == null) throw new IllegalArgumentException();
-   }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
+      fullName = new FullName(firstName, lastName);
    }
 
    // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
+//   public void setLastName(String lastName) {
+//      this.lastName = lastName;
+//   }
 
    public String getFirstName() {
       return firstName;
