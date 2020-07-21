@@ -3,16 +3,34 @@ package videostore.horror;
 import java.util.*;
 import java.util.Map.Entry;
 
+class Rental {
+	private final Movie movie;
+	private final int daysRented;
+
+	public Rental(Movie movie, int daysRented) {
+		this.movie = movie;
+		this.daysRented = daysRented;
+	}
+
+	public int getDaysRented() {
+		return daysRented;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+}
+
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentalList = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentals.put(movie, daysRented);
+		rentalList.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -25,11 +43,9 @@ class Customer {
 		// header
 		String result = "Rental Record for " + name + "\n";
 
-		// Ai o mapa pe care doar iterezi pe intrari. Nicodata nu faci get() dupa o cheie arbitrara
-		// ===> iti lipseste o abstractie (clasa) pentru a putea itera pe o Lista
-		for (Entry<Movie, Integer> entry : rentals.entrySet()) {
-			Movie movie = entry.getKey();
-			Integer daysRented = entry.getValue();
+		for (Rental rental : rentalList) {
+			Movie movie = rental.getMovie();
+			int daysRented = rental.getDaysRented();
 
 			double thisAmount = 0;
 			// determine amounts for each line
