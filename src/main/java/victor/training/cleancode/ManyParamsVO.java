@@ -1,12 +1,13 @@
 package victor.training.cleancode;
 
+import org.apache.commons.lang.StringUtils;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
    }
 
    public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
-      fullName.validate();
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
@@ -21,10 +22,11 @@ class FullName {
    private final String firstName;
    private final String lastName;
 
-   public FullName(String fName, String lName) {
-      firstName = fName;
-      lastName = lName;
-      validate();
+   public FullName(String firstName, String lastName) {
+      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+      this.firstName = firstName;
+      this.lastName = lastName;
+
    }
 
    public String getFirstName() {
@@ -35,9 +37,6 @@ class FullName {
       return lastName;
    }
 
-   public void validate() {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-   }
 }
 
 class Address {
@@ -46,7 +45,6 @@ class Address {
 
 class AnotherClass {
    public void otherMethod(FullName fullName, int x) {
-      fullName.validate();
 
       System.out.println("Another distant Logic " + x);
       System.out.println("Person: " + fullName.getLastName());
@@ -59,12 +57,22 @@ class Person {
    private FullName fullName;
    private String phone;
 
-   public Person(String firstName, String lastName) {
-
+   protected Person() {} // pt hibernate
+   public Person(String firstName, String lastName, String phone) {
+      setPhone(phone);
       fullName = new FullName(firstName, lastName);
-      fullName.validate();
    }
 
+   public String getPhone() {
+      return phone;
+   }
+
+   public void setPhone(String phone) {
+      if (StringUtils.isBlank(phone)) {
+         throw new IllegalArgumentException();
+      }
+      this.phone = phone;
+   }
 
    // TODO hard-core: implement setter
 //   public void setLastName(String lastName) {
