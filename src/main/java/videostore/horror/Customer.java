@@ -25,10 +25,8 @@ class Customer {
 		// header
 		String result = "Rental Record for " + name + "\n";
 
-		// se da o mapa in care vrei sa iterezi peste perechi
-//		for (Movie movie : rentals.keySet()) {
-//			int daysRented = rentals.get(movie);
-
+		// Ai o mapa pe care doar iterezi pe intrari. Nicodata nu faci get() dupa o cheie arbitrara
+		// ===> iti lipseste o abstractie (clasa) pentru a putea itera pe o Lista
 		for (Entry<Movie, Integer> entry : rentals.entrySet()) {
 			Movie movie = entry.getKey();
 			Integer daysRented = entry.getValue();
