@@ -2,6 +2,8 @@ package victor.training.cleancode;
 
 import org.apache.commons.lang.StringUtils;
 
+import javax.persistence.*;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
@@ -18,15 +20,16 @@ public class ManyParamsVO {
 //class CustomeProfile // mai rau
 //class Name{ // incorect
 //class PersonIdentity { // paru maciuca
+@Embeddable
 class FullName {
-   private final String firstName;
-   private final String lastName;
+   private String firstName;
+   private String lastName;
 
+   protected FullName() {}
    public FullName(String firstName, String lastName) {
       if (firstName == null || lastName == null) throw new IllegalArgumentException();
       this.firstName = firstName;
       this.lastName = lastName;
-
    }
 
    public String getFirstName() {
@@ -51,10 +54,14 @@ class AnotherClass {
    }
 }
 
-// @Entity =-cele mai pretioase lucruri
+@Entity    // =-cele mai pretioase lucruri
 class Person {
    private Long id;
+   @Embedded
+//   @AttributeOverrides(@AttributeOverride(name = "firstName", column = "MY_FIRST_NAME"))
    private FullName fullName;
+//   @AttributeOverrides(@AttributeOverride(name = "firstName", column = "MY_FIRST_NAME"))
+//   private FullName fullName;
    private String phone;
 
    protected Person() {} // pt hibernate
