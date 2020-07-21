@@ -25,13 +25,12 @@ public class StatementWriter {
           createFooter(rentals);
    }
 
-   private String createBody(List<Rental> rentals) {
-      return rentals.stream().map(this::createLine).collect(Collectors.joining());
+   private String createHeader(String customerName) {
+      return "Rental Record for " + customerName + "\n";
    }
 
-   private String createFooter(List<Rental> rentals) {
-      return "Amount owed is " + determineTotalPrice(rentals) + "\n" +
-          "You earned " + determineTotalPoints(rentals) + " frequent renter points";
+   private String createBody(List<Rental> rentals) {
+      return rentals.stream().map(this::createLine).collect(Collectors.joining());
    }
 
    private int determineTotalPoints(List<Rental> rentals) {
@@ -42,12 +41,13 @@ public class StatementWriter {
       return rentals.stream().mapToDouble(Rental::determinePrice).sum();
    }
 
-   private String createHeader(String customerName) {
-      return "Rental Record for " + customerName + "\n";
-   }
-
    private String createLine(Rental rental) {
       return "\t" + rental.getMovie().getTitle() + "\t" + rental.determinePrice() + "\n";
+   }
+
+   private String createFooter(List<Rental> rentals) {
+      return "Amount owed is " + determineTotalPrice(rentals) + "\n" +
+          "You earned " + determineTotalPoints(rentals) + " frequent renter points";
    }
 
 }
