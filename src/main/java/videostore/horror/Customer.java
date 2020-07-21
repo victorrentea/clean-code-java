@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 class Customer {
 	private final String name;
@@ -18,17 +19,24 @@ class Customer {
 		return name;
 	}
 
-	public String statement() {
+	public String createStatement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		Iterator<Movie> rentals = this.rentals.keySet().iterator();
-		String result = "Rental Record for " + getName() + "\n";
-		while (rentals.hasNext()) {
+		// header
+		String result = "Rental Record for " + name + "\n";
+
+		// se da o mapa in care vrei sa iterezi peste perechi
+//		for (Movie movie : rentals.keySet()) {
+//			int daysRented = rentals.get(movie);
+
+		for (Entry<Movie, Integer> entry : rentals.entrySet()) {
+			Movie movie = entry.getKey();
+			Integer daysRented = entry.getValue();
+
 			double thisAmount = 0;
-			Movie each = (Movie) rentals.next();
 			// determine amounts for each line
-			int daysRented = this.rentals.get(each);
-			switch (each.getCategory()) {
+
+			switch (movie.getCategory()) {
 			case REGULAR:
 				thisAmount += 2;
 				if (daysRented > 2)
@@ -43,15 +51,15 @@ class Customer {
 					thisAmount += (daysRented - 3) * 1.5;
 				break;
 			default:
-				throw new IllegalStateException("Unexpected value: " + each.getCategory());
+				throw new IllegalStateException("Unexpected value: " + movie.getCategory());
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getCategory() == Movie.Category.NEW_RELEASE && daysRented > 1)
+			if (movie.getCategory() == Movie.Category.NEW_RELEASE && daysRented > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t"
+			result += "\t" + movie.getTitle() + "\t"
 					+ String.valueOf(thisAmount) + "\n";
 			totalAmount += thisAmount;
 		}
