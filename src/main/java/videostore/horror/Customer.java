@@ -24,10 +24,9 @@ class Customer {
 		String result = createHeader();
 
 		for (Rental rental : rentals) {
-			double price = rental.determinePrice();
 			totalPoints += determineRenterPoints(rental);
-			result += createLine(rental, price);
-			totalPrice += price;
+			result += createLine(rental, rental.determinePrice());
+			totalPrice += rental.determinePrice();
 		}
 		result += createFooter(totalPrice, totalPoints);
 		return result;
