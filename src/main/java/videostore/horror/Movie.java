@@ -1,6 +1,10 @@
 package videostore.horror;
 
 public class Movie {
+   public boolean isNewRelease() {
+      return getCategory() == Category.NEW_RELEASE;
+   }
+
    enum Category {
       CHILDREN,
       REGULAR,
