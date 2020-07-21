@@ -6,20 +6,17 @@ public class Movie {
       REGULAR,
       NEW_RELEASE
    }
-   public static final int CHILDREN = 2;
-   public static final int REGULAR = 0;
-   public static final int NEW_RELEASE = 1;
 
    private final String title;
-   private final Category priceCode;
+   private final Category category;
 
-   public Movie(String title, Category priceCode) {
+   public Movie(String title, Category category) {
       this.title = title;
-      this.priceCode = priceCode;
+      this.category = category;
    }
 
-   public Category getPriceCode() {
-      return priceCode;
+   public Category getCategory() {
+      return category;
    }
 
    public String getTitle() {

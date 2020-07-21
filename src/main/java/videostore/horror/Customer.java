@@ -28,7 +28,7 @@ class Customer {
 			Movie each = (Movie) rentals.next();
 			// determine amounts for each line
 			int dr = this.rentals.get(each);
-			switch (each.getPriceCode()) {
+			switch (each.getCategory()) {
 			case REGULAR:
 				thisAmount += 2;
 				if (dr > 2)
@@ -43,12 +43,12 @@ class Customer {
 					thisAmount += (dr - 3) * 1.5;
 				break;
 			default:
-				throw new IllegalStateException("Unexpected value: " + each.getPriceCode());
+				throw new IllegalStateException("Unexpected value: " + each.getCategory());
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() == Movie.Category.NEW_RELEASE && dr > 1)
+			if (each.getCategory() == Movie.Category.NEW_RELEASE && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t"
