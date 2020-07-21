@@ -37,4 +37,12 @@ public class Rental {
 			throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
 		}
 	}
+
+	public int determineRenterPoints() {
+		int points = 1;
+		if (getMovie().isNewRelease() && getDaysRented() >= 2) {
+			points++;
+		}
+		return points;
+	}
 }
