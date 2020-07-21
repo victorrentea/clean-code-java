@@ -3,6 +3,7 @@ package victor.training.cleancode;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
