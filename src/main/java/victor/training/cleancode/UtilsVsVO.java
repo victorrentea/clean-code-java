@@ -10,15 +10,14 @@ public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> !MathUtil.intervalIntersect(
-            new Interval(model.getStartYear(), model.getEndYear()), criteriaInterval));
+        results.removeIf(model -> !model.getYearInterval().intersects(criteriaInterval));
         System.out.println("More filtering logic");
         return results;
     }
 }
 class Alta {
     {
-        MathUtil.intervalIntersect(new Interval(1, 3), new Interval(2, 4));
+        new Interval(1, 3).intersects(new Interval(2, 4));
     }
 }
 class Interval  {
@@ -28,6 +27,11 @@ class Interval  {
     public Interval(int start, int end) {
         this.start = start;
         this.end = end;
+    }
+
+    public boolean intersects(Interval interval2) {
+        // http://world.std.com/~swmcd/steven/tech/interval.html
+        return start <= interval2.end && interval2.start <= end;
     }
 
     public int getStart() {
@@ -40,11 +44,6 @@ class Interval  {
 }
 
 class MathUtil {
-
-    public static boolean intervalIntersect(Interval interval1, Interval interval2) {
-        // http://world.std.com/~swmcd/steven/tech/interval.html
-        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval2.getEnd();
-    }
 
 }
 
@@ -106,5 +105,9 @@ class CarModel {
 
     public String getModel() {
         return model;
+    }
+
+    public Interval getYearInterval() {
+        return new Interval(startYear, endYear);
     }
 }
