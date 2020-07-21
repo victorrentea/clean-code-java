@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
@@ -19,30 +20,34 @@ class Customer {
 	}
 
 	public String createStatement() {
-		double totalPrice = 0;
-		int totalPoints = 0;
-		String result = createHeader();
+		return createHeader() +
+			createBody() +
+			createFooter();
+	}
 
-		for (Rental rental : rentals) {
-			totalPoints += determineRenterPoints(rental);
-			result += createLine(rental, rental.determinePrice());
-			totalPrice += rental.determinePrice();
-		}
-		result += createFooter(totalPrice, totalPoints);
-		return result;
+	private String createBody() {
+		return rentals.stream().map(this::createLine).collect(Collectors.joining());
+	}
+
+	private String createFooter() {
+		return "Amount owed is " + determineTotalPrice() + "\n" +
+			"You earned " + determineTotalPoints() + " frequent renter points";
+	}
+
+	private int determineTotalPoints() {
+		return rentals.stream().mapToInt(this::determineRenterPoints).sum();
+	}
+
+	private double determineTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::determinePrice).sum();
 	}
 
 	private String createHeader() {
 		return "Rental Record for " + name + "\n";
 	}
 
-	private String createFooter(double totalPrice, int totalPoints) {
-		return "Amount owed is " + totalPrice + "\n" +
-			"You earned " + totalPoints + " frequent renter points";
-	}
-
-	private String createLine(Rental rental, double price) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	private String createLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.determinePrice() + "\n";
 	}
 
 	private int determineRenterPoints(Rental rental) {
