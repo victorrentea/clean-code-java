@@ -18,7 +18,8 @@ public class Rental {
 	}
 
 	public double determinePrice() {
-		return movie.getCategory().determinePrice(daysRented);
+		return new CalculatePriceService()
+			.determinePrice(movie.getCategory(), daysRented);
 	}
 
 	public int determineRenterPoints() {
