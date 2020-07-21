@@ -20,26 +20,38 @@ class Customer {
 
 	public String createStatement() {
 		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + name + "\n";
+		int totalPoints = 0;
+		String result = createHeader();
 
 		for (Rental rental : rentals) {
 			double price = rental.determinePrice();
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			boolean isNewRelease = rental.getMovie().isNewRelease();
-			if (isNewRelease && rental.getDaysRented() >= 2)
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+			totalPoints += determineRenterPoints(rental);
+			result += createLine(rental, price);
 			totalPrice += price;
 		}
-		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalPrice) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
+		result += createFooter(totalPrice, totalPoints);
 		return result;
+	}
+
+	private String createHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String createFooter(double totalPrice, int totalPoints) {
+		return "Amount owed is " + totalPrice + "\n" +
+			"You earned " + totalPoints + " frequent renter points";
+	}
+
+	private String createLine(Rental rental, double price) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	}
+
+	private int determineRenterPoints(Rental rental) {
+		int points = 1;
+		if (rental.getMovie().isNewRelease() && rental.getDaysRented() >= 2) {
+			points++;
+		}
+		return points;
 	}
 
 }
