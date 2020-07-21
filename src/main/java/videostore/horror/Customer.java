@@ -1,7 +1,6 @@
 package videostore.horror;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 class Rental {
 	private final Movie movie;
@@ -38,49 +37,48 @@ class Customer {
 	}
 
 	public String createStatement() {
-		double totalAmount = 0;
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		// header
 		String result = "Rental Record for " + name + "\n";
 
 		for (Rental rental : rentalList) {
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
-
-			double thisAmount = 0;
-			// determine amounts for each line
-
-			switch (movie.getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (daysRented > 2)
-					thisAmount += (daysRented - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += daysRented * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (daysRented > 3)
-					thisAmount += (daysRented - 3) * 1.5;
-				break;
-			default:
-				throw new IllegalStateException("Unexpected value: " + movie.getCategory());
-			}
+			double price = determinePrice(rental.getMovie(), rental.getDaysRented());
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (movie.getCategory() == Movie.Category.NEW_RELEASE && daysRented > 1)
+			if (rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE && rental.getDaysRented() > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+			totalPrice += price;
 		}
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+		result += "Amount owed is " + String.valueOf(totalPrice) + "\n";
 		result += "You earned " + String.valueOf(frequentRenterPoints)
 				+ " frequent renter points";
 		return result;
+	}
+
+	private double determinePrice(Movie movie, int daysRented) {
+		double price = 0;
+		switch (movie.getCategory()) {
+		case REGULAR:
+			price += 2;
+			if (daysRented > 2)
+				price += (daysRented - 2) * 1.5;
+			break;
+		case NEW_RELEASE:
+			price += daysRented * 3;
+			break;
+		case CHILDREN:
+			price += 1.5;
+			if (daysRented > 3)
+				price += (daysRented - 3) * 1.5;
+			break;
+		default:
+			throw new IllegalStateException("Unexpected value: " + movie.getCategory());
+		}
+		return price;
 	}
 }
