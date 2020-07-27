@@ -6,7 +6,10 @@ import java.util.List;
 public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! MathUtil.intervalIntersects(new Interval(model.getStartYear(), model.getEndYear()), new Interval(criteria.getStartYear(), criteria.getEndYear())));
+        //        Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+        results.removeIf(model -> ! 
+        		new Interval(model.getStartYear(), model.getEndYear())
+        		.intersects(criteria.getYearInterval()));
         System.out.println("More filtering logic");
         return results;
     }
@@ -15,7 +18,7 @@ public class UtilsVsVO {
 class Other {
 	private void met() {
 		// TODO Auto-generated method stub
-		MathUtil.intervalIntersects(new Interval(1, 3), new Interval(2, 4));
+		new Interval(1, 3).intersects(new Interval(2, 4));
 	}
 }
 
@@ -38,7 +41,11 @@ class CarSearchCriteria {
         this.endYear = endYear;
     }
 
-    public int getStartYear() {
+    public Interval getYearInterval() {
+		return new Interval(startYear, endYear);
+	}
+
+	public int getStartYear() {
         return startYear;
     }
 

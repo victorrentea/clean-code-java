@@ -17,9 +17,8 @@ public class Interval {
 		return end;
 	}
 
-	public boolean intervalIntersects(Interval interval2) {
-// http://world.std.com/~swmcd/steven/tech/interval.html
-		return start <= interval2.end &&
-				interval2.start <= end;
+	public boolean intersects(Interval other) {
+		// 	http://world.std.com/~swmcd/steven/tech/interval.html
+		return start <= other.end && other.start <= end;
 	}
 }
