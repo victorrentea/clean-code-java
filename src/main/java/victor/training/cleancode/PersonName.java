@@ -1,8 +1,8 @@
 package victor.training.cleancode;
 
 public class PersonName {
-	private String firstName;
-	private String lastName;
+	private final String firstName;
+	private final String lastName;
 
 	public PersonName(String firstName, String lastName) {
 		if (firstName == null || lastName == null) {
