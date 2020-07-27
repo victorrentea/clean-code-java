@@ -43,30 +43,37 @@ public class BooleanParameters {
 	// break down =================
 
 	public void bossLevelStuffFluff(List<Integer> tasks) {
-		System.out.println("Logic1");
-		System.out.println("Logic2");
-		System.out.println("Logic3");
-		
-		for (int task : tasks) {
-			System.out.println("Logic4: Validate " + task);
-		}
+		before2(tasks);
+		after2(tasks);
+	}
+	public void bossLevelStuffFluff333(List<Integer> tasks) {
+		before2(tasks);
 		
 		for (int task : tasks) {
 			// TODO When **I** call this method, I want this to run HERE, too:
 			System.out.println("My Logic: " + task);
 		}
-
 		
+		after2(tasks);
+	}
+
+	private void after2(List<Integer> tasks) {
 		int i = 0; // TODO move closer to usages
 		for (int task : tasks) {
 			i++;
 			System.out.println("Logic5 " + i + " on " + task);
 		}
 		
-		
-		
 		System.out.println("Logic6 " + tasks.size());
 		System.out.println("Logic7");
+	}
+
+	private void before2(List<Integer> tasks) {
+		System.out.println("Logic1");
+		System.out.println("Logic2");
+		System.out.println("Logic3");
+		
+		tasks.forEach(task -> System.out.println("Logic4: Validate " + task));
 	}
 
 	public void bossLevelStuffNoFluff(List<Integer> tasks) {
