@@ -101,7 +101,7 @@ class Person {
 
 class PersonService {
 	public void f(Person person) {
-		String fullNameStr = person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase();
+		String fullNameStr = person.getName().getFullName();
 		System.out.println(fullNameStr);
 	}
 
