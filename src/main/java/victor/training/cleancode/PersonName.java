@@ -23,4 +23,8 @@ public class PersonName {
 	public String getFullName() {
 		return firstName + " " + lastName.toUpperCase();
 	}
+
+	public PersonName withLastName(String newLastName) {
+		return new PersonName(firstName, newLastName);
+	}
 }

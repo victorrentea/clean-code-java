@@ -82,11 +82,9 @@ class Person {
 		this.name = new PersonName(firstName, lastName);
 	}
 
-
-	// TODO hard-core: implement setter
-//	public void setLastName(String lastName) {
-//		this.lastName = lastName;
-//	}
+	public void setLastName(String newLastName) {
+		name = name.withLastName(newLastName);
+	}
 
 	public PersonName getName() {
 		return name;
