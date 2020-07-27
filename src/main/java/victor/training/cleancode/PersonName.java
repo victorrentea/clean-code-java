@@ -5,6 +5,9 @@ public class PersonName {
 	private String lastName;
 
 	public PersonName(String firstName, String lastName) {
+		if (firstName == null || lastName == null) {
+			throw new IllegalArgumentException();
+		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}

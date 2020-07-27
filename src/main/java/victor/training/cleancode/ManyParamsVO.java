@@ -8,8 +8,6 @@ public class ManyParamsVO {
 	}
 
 	public void placeOrder(PersonName personName, Address address) {
-		if (personName.getFirstName() == null || personName.getLastName() == null)
-			throw new IllegalArgumentException();
 
 		System.out.println("Some Logic");
 		System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " "
@@ -59,8 +57,6 @@ class Address {
 
 class AnotherClass {
 	public void otherMethod(PersonName personName, int x) {
-		if (personName.getFirstName() == null || personName.getLastName() == null)
-			throw new IllegalArgumentException();
 
 		System.out.println("Another distant Logic " + x);
 		System.out.println("Person: " + personName.getLastName());
@@ -84,8 +80,6 @@ class Person {
 
 	public Person(String firstName, String lastName) {
 		this.name = new PersonName(firstName, lastName);
-		if (firstName == null || lastName == null)
-			throw new IllegalArgumentException();
 	}
 
 
