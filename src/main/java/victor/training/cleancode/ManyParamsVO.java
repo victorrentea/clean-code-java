@@ -1,65 +1,110 @@
 package victor.training.cleancode;
 
 public class ManyParamsVO {
-   public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
-   }
+	public static void main(String[] args) {
+		PersonName personName = new PersonName("John", "Doe");
+		Address address = new Address("St. Albergue", "Paris", 99);
+		new ManyParamsVO().placeOrder(personName, address);
+	}
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+	public void placeOrder(PersonName personName, Address address) {
+		if (personName.getFirstName() == null || personName.getLastName() == null)
+			throw new IllegalArgumentException();
 
-      System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+		System.out.println("Some Logic");
+		System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " "
+				+ address.getStreetNumber());
 
-   }
+	}
+}
+
+//class CreateOrderRequest { // too specific. Won't ever be used anywhere else except this method call -> probably = OVERENGINEERING
+
+//class Person { // too general purpose. too broad. will explode 
+//class Customer { // too general purpose. too broad. will explode 
+// 30 more fields here.
+//class Profile {	 // every freaking field can fit here
+//class PersonalInformation {  // every freaking field can fit here
+//}
+//class OrderAddress {} // might be reused
+//class Name // wrong because a company also has a name
+//class PersonName {
+//	private final String firstName;
+//	private final String lastName;
+//}
+class Address {
+	private final String city;
+	private final String streetName;
+	private final Integer streetNumber;
+
+	public Address(String city, String streetName, Integer streetNumber) {
+		this.city = city;
+		this.streetName = streetName;
+		this.streetNumber = streetNumber;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public Integer getStreetNumber() {
+		return streetNumber;
+	}
+
 }
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+	public void otherMethod(String firstName, String lastName, int x) {
+		if (firstName == null || lastName == null)
+			throw new IllegalArgumentException();
 
-      System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
-   }
+		System.out.println("Another distant Logic " + x);
+		System.out.println("Person: " + lastName);
+	}
 }
 
 class Person {
-   private Long id;
-   private String firstName;
-   private String lastName;
-   private String phone;
+	private Long id;
+	private String firstName;
+	private String lastName;
+	private String phone;
 
-   public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-   }
+	public Person(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		if (firstName == null || lastName == null)
+			throw new IllegalArgumentException();
+	}
 
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-   // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
+	// TODO hard-core: implement setter
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-   public String getFirstName() {
-      return firstName;
-   }
+	public String getFirstName() {
+		return firstName;
+	}
 
-   public String getLastName() {
-      return lastName;
-   }
+	public String getLastName() {
+		return lastName;
+	}
 }
 
 class PersonService {
-   public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println(fullNameStr);
-   }
+	public void f(Person person) {
+		String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+		System.out.println(fullNameStr);
+	}
 
-   public void p(String city, String streetName, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
-   }
+	public void p(String city, String streetName, Integer streetNumber) {
+		System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+	}
 }
