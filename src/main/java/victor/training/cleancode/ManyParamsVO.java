@@ -94,18 +94,14 @@ class Person {
 //		this.lastName = lastName;
 //	}
 
-	public String getFirstName() {
-		return name.getFirstName();
-	}
-
-	public String getLastName() {
-		return name.getLastName();
+	public PersonName getName() {
+		return name;
 	}
 }
 
 class PersonService {
 	public void f(Person person) {
-		String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+		String fullNameStr = person.getName().getFirstName() + " " + person.getName().getLastName().toUpperCase();
 		System.out.println(fullNameStr);
 	}
 
