@@ -58,43 +58,48 @@ class Address {
 }
 
 class AnotherClass {
-	public void otherMethod(String firstName, String lastName, int x) {
-		if (firstName == null || lastName == null)
+	public void otherMethod(PersonName personName, int x) {
+		if (personName.getFirstName() == null || personName.getLastName() == null)
 			throw new IllegalArgumentException();
 
 		System.out.println("Another distant Logic " + x);
-		System.out.println("Person: " + lastName);
+		System.out.println("Person: " + personName.getLastName());
 	}
 }
 
+
+
+
+
+
+
+
+
+
+// @Entity model
 class Person {
 	private Long id;
-	private String firstName;
-	private String lastName;
 	private String phone;
+	private PersonName name;
 
 	public Person(String firstName, String lastName) {
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.name = new PersonName(firstName, lastName);
 		if (firstName == null || lastName == null)
 			throw new IllegalArgumentException();
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
 
 	// TODO hard-core: implement setter
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+//	public void setLastName(String lastName) {
+//		this.lastName = lastName;
+//	}
 
 	public String getFirstName() {
-		return firstName;
+		return name.getFirstName();
 	}
 
 	public String getLastName() {
-		return lastName;
+		return name.getLastName();
 	}
 }
 
