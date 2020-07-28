@@ -3,7 +3,7 @@ import java.util.*;
 
 class Customer {
 	private String name;
-	private List rentals = new ArrayList();
+	private List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
@@ -20,11 +20,11 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		Iterator rentals = this.rentals.iterator();
+		Iterator<Rental> rentalIterator = rentals.iterator();
 		String result = "Rental Record for " + getName() + "\n";
-		while (rentals.hasNext()) {
+		while (rentalIterator.hasNext()) {
 			double thisAmount = 0;
-			Rental each = (Rental) rentals.next();
+			Rental each = (Rental) rentalIterator.next();
 			// determine amounts for each line
 			switch (each.getMovie().getCategory()) {
 			case REGULAR:

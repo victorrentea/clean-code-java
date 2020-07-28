@@ -1,18 +1,21 @@
 package videostore.dirty;
 class Rental {
-	private Movie _movie;
-	private int _daysRented;
+	private final Movie movie;
+	private final int daysRented;
 
 	public Rental(Movie movie, int daysRented) {
-		_movie = movie;
-		_daysRented = daysRented;
+		if(movie == null) {
+			throw new IllegalArgumentException();
+		}
+		this.movie = movie;
+		this.daysRented = daysRented;
 	}
 
 	public int getDaysRented() {
-		return _daysRented;
+		return daysRented;
 	}
 
 	public Movie getMovie() {
-		return _movie;
+		return movie;
 	}
 }
