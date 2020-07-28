@@ -18,45 +18,51 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
-		Iterator<Rental> rentalIterator = rentals.iterator();
+		
 		String result = "Rental Record for " + getName() + "\n";
-		while (rentalIterator.hasNext()) {
-			double thisAmount = 0;
-			Rental each = (Rental) rentalIterator.next();
+		
+		for (Rental rental:rentals) {
+			
 			// determine amounts for each line
-			switch (each.getMovie().getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (each.getDaysRented() > 2)
-					thisAmount += (each.getDaysRented() - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += each.getDaysRented() * 3;
-				break;
-			case CHILDRENS:
-				thisAmount += 1.5;
-				if (each.getDaysRented() > 3)
-					thisAmount += (each.getDaysRented() - 3) * 1.5;
-				break;
-			}
+			double currentPrice = determineAmount(rental);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if ((each.getMovie().getCategory() == Movie.Category.NEW_RELEASE)
-					&& each.getDaysRented() > 1)
+			if ((rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE)
+					&& rental.getDaysRented() > 1)
 				frequentRenterPoints++;
 			// show figures for this rental
-			result += "\t" + each.getMovie().getTitle() + "\t"
-					+ thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + rental.getMovie().getTitle() + "\t"
+					+ currentPrice + "\n";
+			totalPrice += currentPrice;
 		}
 		//pe master direct
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+		result += "Amount owed is " + String.valueOf(totalPrice) + "\n";
 		result += "You earned " + String.valueOf(frequentRenterPoints)
 				+ " frequent renter points";
 		return result;
+	}
+
+	private double determineAmount(Rental each) {
+		double thisAmount = 0;
+		switch (each.getMovie().getCategory()) {
+		case REGULAR:
+			thisAmount += 2;
+			if (each.getDaysRented() > 2)
+				thisAmount += (each.getDaysRented() - 2) * 1.5;
+			break;
+		case NEW_RELEASE:
+			thisAmount += each.getDaysRented() * 3;
+			break;
+		case CHILDRENS:
+			thisAmount += 1.5;
+			if (each.getDaysRented() > 3)
+				thisAmount += (each.getDaysRented() - 3) * 1.5;
+			break;
+		}
+		return thisAmount;
 	}
 }
