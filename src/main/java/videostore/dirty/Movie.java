@@ -7,19 +7,14 @@ import org.hamcrest.core.IsNot;
 
 public class Movie {
 	
-	enum Category {
-		CATEGORY_CHILDRENS,
-		CATEGORY_REGULAR,
-		CATEGORY_NEW_RELEASE
-	}
 	
-//	public static final int CATEGORY_CHILDRENS = 2;
-//	public static final int CATEGORY_REGULAR = 0;
-//	public static final int CATEGORY_NEW_RELEASE = 1;
+	public static final int CATEGORY_CHILDRENS = 2;
+	public static final int CATEGORY_REGULAR = 0;
+	public static final int CATEGORY_NEW_RELEASE = 1;
 	private final String title;
-	private final Category priceCode;
+	private final int priceCode;
 
-	public Movie(String title, Category priceCode) {
+	public Movie(String title, int priceCode) {
 		if (isBlank(title)) {
 			throw new IllegalArgumentException();
 		}
@@ -27,7 +22,7 @@ public class Movie {
 		this.priceCode = priceCode;
 	}
 
-	public Category getPriceCode() {
+	public int getPriceCode() {
 		return priceCode;
 	}
 
