@@ -24,14 +24,14 @@ class Customer {
 		String result = "Rental Record for " + getName() + "\n";
 		
 		for (Rental rental:rentals) {
-
-			// determine amounts for each line
 			double currentPrice = determineAmount(rental);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if ((rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE) && rental.getDaysRented() > 1)
+			boolean isNewRelease = rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE;
+			if (isNewRelease && rental.getDaysRented() > 1) {
 				frequentRenterPoints++;
+			}
 			// show figures for this rental
 			result += "\t" + rental.getMovie().getTitle() + "\t" + currentPrice + "\n";
 			totalPrice += currentPrice;
