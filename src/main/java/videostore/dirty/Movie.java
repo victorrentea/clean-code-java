@@ -28,4 +28,8 @@ public class Movie {
 	public String getTitle() {
 		return title;
 	}
+
+	public boolean isNewRelease() {
+		return getCategory() == Movie.Category.NEW_RELEASE;
+	}
 }

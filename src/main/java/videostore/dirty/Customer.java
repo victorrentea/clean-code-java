@@ -28,7 +28,7 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			boolean isNewRelease = rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE;
+			boolean isNewRelease = isNewRelease(rental);
 			if (isNewRelease && rental.getDaysRented() > 1) {
 				frequentRenterPoints++;
 			}
@@ -38,10 +38,14 @@ class Customer {
 		}
 		//pe master direct
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalPrice) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
+		result += "Amount owed is " + totalPrice + "\n";
+		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private boolean isNewRelease(Rental rental) {
+		Movie movie = rental.getMovie();
+		return movie.isNewRelease();
 	}
 
 	private double determineAmount(Rental each) {
