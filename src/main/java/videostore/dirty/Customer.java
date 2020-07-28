@@ -45,7 +45,25 @@ class Customer {
 	}
 
 	private String formatBody() {
+		
+		for( Rental r : rentals ) {
+			lotsOfLogic(r);
+		}
 		return rentals.stream().map(this::formatItem).collect(joining());
+	}
+
+	private void lotsOfLogic(Rental r) {
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
+		System.out.println("a lot of logic " + r);
 	}
 
 	private double computeTotalPrice() {

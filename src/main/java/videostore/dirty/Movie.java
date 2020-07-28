@@ -5,9 +5,22 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 public class Movie {
 	
 	public enum Category {
-		CHILDRENS,
+		CHILDRENS /*
+					 * {
+					 * 
+					 * @Override public double computePrice(int days) { // TODO Auto-generated
+					 * method stub return 0; } }
+					 */,
 		REGULAR,
-		NEW_RELEASE
+		NEW_RELEASE,
+		VIEJAS /*
+				 * {
+				 * 
+				 * @Override public double computePrice(int days) { // TODO Auto-generated
+				 * method stub return 0; } }
+				 */;
+		
+//		abstract public double computePrice(int days); 
 	}
 
 	private final String title;

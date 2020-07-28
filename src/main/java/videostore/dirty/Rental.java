@@ -29,6 +29,9 @@ class Rental {
 	}
 
 	public double computePrice() {
+		
+		
+		
 		double thisAmount = 0;
 		switch (getMovie().getCategory()) {
 		case REGULAR:
@@ -44,6 +47,11 @@ class Rental {
 			if (getDaysRented() > 3)
 				thisAmount += (getDaysRented() - 3) * 1.5;
 			break;
+		case VIEJAS: //forget
+			break;
+		default:
+			throw new IllegalArgumentException();
+		
 		}
 		return thisAmount;
 	}
