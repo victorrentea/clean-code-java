@@ -18,14 +18,23 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalPrice = 0;
+		
 		int frequentRenterPoints = 0;
-		String result = formatHeader();
 		for (Rental rental:rentals) {
 			frequentRenterPoints += rental.computeRenterPoints();
+		}
+		
+		String result = formatHeader();
+		for (Rental rental:rentals) {
 			result += formatItem(rental);
+		}
+		
+		double totalPrice = 0;
+		for (Rental rental:rentals) {
 			totalPrice += rental.computeAmount();
 		}
+		
+		
 		result += formatFooter(totalPrice, frequentRenterPoints);
 		return result;
 	}
