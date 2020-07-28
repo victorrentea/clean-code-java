@@ -21,13 +21,11 @@ class Customer {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = formatHeader();
-		
 		for (Rental rental:rentals) {
 			frequentRenterPoints += rental.computeRenterPoints();
-			result += formatItem(rental, computeAmount(rental));
-			totalPrice += computeAmount(rental);
+			result += formatItem(rental);
+			totalPrice += rental.computeAmount();
 		}
-
 		result += formatFooter(totalPrice, frequentRenterPoints);
 		return result;
 	}
@@ -41,27 +39,7 @@ class Customer {
 				+ "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
-	private String formatItem(Rental rental, double currentPrice) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + currentPrice + "\n";
-	}
-
-	private double computeAmount(Rental each) {
-		double thisAmount = 0;
-		switch (each.getMovie().getCategory()) {
-		case REGULAR:
-			thisAmount += 2;
-			if (each.getDaysRented() > 2)
-				thisAmount += (each.getDaysRented() - 2) * 1.5;
-			break;
-		case NEW_RELEASE:
-			thisAmount += each.getDaysRented() * 3;
-			break;
-		case CHILDRENS:
-			thisAmount += 1.5;
-			if (each.getDaysRented() > 3)
-				thisAmount += (each.getDaysRented() - 3) * 1.5;
-			break;
-		}
-		return thisAmount;
+	private String formatItem(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computeAmount() + "\n";
 	}
 }
