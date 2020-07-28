@@ -28,7 +28,7 @@ class Rental {
 		return points;
 	}
 
-	public double computeAmount() {
+	public double computePrice() {
 		double thisAmount = 0;
 		switch (getMovie().getCategory()) {
 		case REGULAR:

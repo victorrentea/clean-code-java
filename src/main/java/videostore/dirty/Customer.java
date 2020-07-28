@@ -39,11 +39,9 @@ class Customer {
 	// unless crypto, digsing, 
 	
 	public String formatStatement() {
-		String result = formatHeader();
-		result += formatBody();
-				
-		result += formatFooter();
-		return result;
+		return formatHeader() + 
+				formatBody() + 
+				formatFooter();
 	}
 
 	private String formatBody() {
@@ -51,19 +49,11 @@ class Customer {
 	}
 
 	private double computeTotalPrice() {
-		double totalPrice = 0;
-		for (Rental rental:rentals) {
-			totalPrice += rental.computeAmount();
-		}
-		return totalPrice;
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
 	private int computeTotalPoints() {
-		int frequentRenterPoints = 0;
-		for (Rental rental:rentals) {
-			frequentRenterPoints += rental.computeRenterPoints();
-		}
-		return frequentRenterPoints;
+		return rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
 	}
 
 	private String formatHeader() {
@@ -76,6 +66,6 @@ class Customer {
 	}
 
 	private String formatItem(Rental rental) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computeAmount() + "\n";
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 }
