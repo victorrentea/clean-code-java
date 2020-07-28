@@ -25,9 +25,7 @@ class Customer {
 		
 		for (Rental rental:rentals) {
 			double currentPrice = computeAmount(rental);
-			
 			frequentRenterPoints += rental.computeRenterPoints();
-			
 			result += showFigures(rental, currentPrice);
 			totalPrice += currentPrice;
 		}
@@ -37,14 +35,12 @@ class Customer {
 	}
 
 	private String formatHeader() {
-		String result = "Rental Record for " + name + "\n";
-		return result;
+		return "Rental Record for " + name + "\n";
 	}
 
 	private String formatFooter(double totalPrice, int frequentRenterPoints) {
-		String result = "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		return "Amount owed is " + totalPrice + "\n"
+				+ "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
 	private String showFigures(Rental rental, double currentPrice) {
