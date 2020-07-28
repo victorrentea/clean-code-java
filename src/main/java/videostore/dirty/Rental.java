@@ -18,4 +18,13 @@ class Rental {
 	public Movie getMovie() {
 		return movie;
 	}
+
+	public int computeRenterPoints() {
+		int points = 1;
+	
+		if (movie.isNewRelease() && daysRented >= 2) {
+			points ++;
+		}
+		return points;
+	}
 }

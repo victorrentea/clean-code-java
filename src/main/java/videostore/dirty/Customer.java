@@ -21,34 +21,28 @@ class Customer {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		
-		String result = "Rental Record for " + getName() + "\n";
+		String result = "Rental Record for " + name + "\n";
 		
 		for (Rental rental:rentals) {
-			double currentPrice = determineAmount(rental);
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			boolean isNewRelease = isNewRelease(rental);
-			if (isNewRelease && rental.getDaysRented() > 1) {
-				frequentRenterPoints++;
-			}
+			double currentPrice = computeAmount(rental);
+			
+			frequentRenterPoints += rental.computeRenterPoints();
+			
 			// show figures for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + currentPrice + "\n";
+			result += showFigures(rental, currentPrice);
 			totalPrice += currentPrice;
 		}
-		//pe master direct
 		// add footer lines
 		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
 
-	private boolean isNewRelease(Rental rental) {
-		Movie movie = rental.getMovie();
-		return movie.isNewRelease();
+	private String showFigures(Rental rental, double currentPrice) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + currentPrice + "\n";
 	}
 
-	private double determineAmount(Rental each) {
+	private double computeAmount(Rental each) {
 		double thisAmount = 0;
 		switch (each.getMovie().getCategory()) {
 		case REGULAR:
