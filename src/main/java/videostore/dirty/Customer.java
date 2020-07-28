@@ -20,14 +20,12 @@ class Customer {
 	public String statement() {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
-		
 		String result = formatHeader();
 		
 		for (Rental rental:rentals) {
-			double currentPrice = computeAmount(rental);
 			frequentRenterPoints += rental.computeRenterPoints();
-			result += showFigures(rental, currentPrice);
-			totalPrice += currentPrice;
+			result += formatItem(rental, computeAmount(rental));
+			totalPrice += computeAmount(rental);
 		}
 
 		result += formatFooter(totalPrice, frequentRenterPoints);
@@ -43,7 +41,7 @@ class Customer {
 				+ "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
-	private String showFigures(Rental rental, double currentPrice) {
+	private String formatItem(Rental rental, double currentPrice) {
 		return "\t" + rental.getMovie().getTitle() + "\t" + currentPrice + "\n";
 	}
 
