@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import static java.util.Arrays.asList;
+
 public class PersonName {
 	private final String firstName;
 	private final String lastName;
