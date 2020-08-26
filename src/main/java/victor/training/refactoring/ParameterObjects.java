@@ -1,7 +1,6 @@
 package victor.training.refactoring;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import lombok.NonNull;
 
 public class ParameterObjects {
    public static void main(String[] args) {
@@ -44,13 +43,32 @@ class PersonName { // not precise. A company has a Name too
    public String getLastName() {
       return lastName;
    }
+
+   public String toEnterpriseName() {
+      return firstName + " " + lastName.toUpperCase();
+   }
 }
 
 
 // code of ANOTHER DEVELOPER OMG!
 class AnotherClass {
-   public void otherMethod(PersonName personName, int x) {
+   public void otherMethod(/*@NonNull*/ PersonName personName, int x) {
+//      if (personName == null) {
+//         throw new IllegalArgumentException();
+//      }
       System.out.println("Another distant Logic " + x);
+      m(personName);
+   }
+
+   private void m(PersonName personName) {
+      n(personName);
+   }
+
+   private void n(PersonName personName) {
+      p(personName);
+   }
+
+   private void p(PersonName personName) {
       System.out.println("Person: " + personName.getLastName());
    }
 }
@@ -59,11 +77,11 @@ class AnotherClass {
 class Person {
    private Long id;
    //   @Embedded
-   private PersonName personName;
+   private PersonName name;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      this.personName = new PersonName(firstName, lastName);
+      this.name = new PersonName(firstName, lastName);
    }
 
    // TODO hard-core: implement setter
@@ -71,19 +89,14 @@ class Person {
 //      this.lastName = lastName;
 //   }
 
-   public String getFirstName() {
-      return personName.getFirstName();
-   }
-
-   public String getLastName() {
-      return personName.getLastName();
+   public PersonName getName() {
+      return name;
    }
 }
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println(person.getName().toEnterpriseName());
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
