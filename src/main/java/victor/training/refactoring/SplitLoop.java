@@ -10,16 +10,25 @@ import static org.junit.Assert.assertEquals;
 public class SplitLoop {
 
    private String computeStats(List<Employee> employees) {
-      long averageAge = 0;
+      return "avg age = " + computeAverageAge(employees) +
+             "; avg sal = " + computeAverageSalary(employees);
+   }
+
+   private double computeAverageSalary(List<Employee> employees) {
       double averageSalary = 0;
       for (Employee employee : employees) {
-         if (!employee.isConsultant())
-            averageAge += employee.getAge();
          averageSalary += employee.getSalary();
       }
-      averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
       averageSalary = averageSalary / employees.size();
-      return "avg age = " + averageAge + "; avg sal = " + averageSalary;
+      return averageSalary;
+   }
+
+   private long computeAverageAge(List<Employee> employees) {
+      long totalAge = employees.stream()
+          .filter(Employee::isNotConsultant)
+          .mapToLong(Employee::getAge)
+          .sum();
+      return totalAge / employees.stream().filter(Employee::isNotConsultant).count();
    }
 
    @Test
@@ -54,5 +63,9 @@ class Employee {
 
    public boolean isConsultant() {
       return consultant;
+   }
+
+   public boolean isNotConsultant() {
+      return !isConsultant();
    }
 }
