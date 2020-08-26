@@ -36,10 +36,6 @@ class PersonName { // not precise. A company has a Name too
 
    }
 
-   public String getFirstName() {
-      return firstName;
-   }
-
    public String getLastName() {
       return lastName;
    }
