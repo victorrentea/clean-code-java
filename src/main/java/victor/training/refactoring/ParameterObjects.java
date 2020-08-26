@@ -40,15 +40,16 @@ class PersonName { // not precise. A company has a Name too
 }
 
 
-
+// code of ANOTHER DEVELOPER OMG!
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(PersonName personName, int x) {
+      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + personName.getLastName());
    }
 }
+
 
 class Person {
    private Long id;
