@@ -1,5 +1,8 @@
 package victor.training.refactoring;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 public class ParameterObjects {
    public static void main(String[] args) {
       PersonName name = new PersonName("John", "Doe");
@@ -7,8 +10,6 @@ public class ParameterObjects {
    }
 
    public void placeOrder(PersonName name, String city, String streetName, Integer streetNumber) {
-      if (name.getFirstName() == null || name.getLastName() == null) throw new IllegalArgumentException();
-
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
 
@@ -21,13 +22,19 @@ public class ParameterObjects {
 //class Name { // not precise. A company has a Name too
 //@Data :)
 // record java 13
+
+//@Embeddable
 class PersonName { // not precise. A company has a Name too
    private final String firstName;
    private final String lastName;
 
    public PersonName(String firstName, String lastName) {
+      if (firstName == null || lastName == null) {
+         throw new IllegalArgumentException();
+      }
       this.firstName = firstName;
       this.lastName = lastName;
+
    }
 
    public String getFirstName() {
@@ -43,8 +50,6 @@ class PersonName { // not precise. A company has a Name too
 // code of ANOTHER DEVELOPER OMG!
 class AnotherClass {
    public void otherMethod(PersonName personName, int x) {
-      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException();
-
       System.out.println("Another distant Logic " + x);
       System.out.println("Person: " + personName.getLastName());
    }
@@ -53,31 +58,25 @@ class AnotherClass {
 
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
+   //   @Embedded
+   private PersonName personName;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-   }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
+      this.personName = new PersonName(firstName, lastName);
    }
 
    // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
+//   public void setLastName(String lastName) {
+//      this.lastName = lastName;
+//   }
 
    public String getFirstName() {
-      return firstName;
+      return personName.getFirstName();
    }
 
    public String getLastName() {
-      return lastName;
+      return personName.getLastName();
    }
 }
 
