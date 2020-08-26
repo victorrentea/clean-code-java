@@ -1,16 +1,15 @@
 package victor.training.refactoring;
 
-import lombok.NonNull;
-
 public class ParameterObjects {
    public static void main(String[] args) {
       PersonName name = new PersonName("John", "Doe");
-      new ParameterObjects().placeOrder(name, "St. Albergue", "Paris", 99);
+      Address address = new Address("St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder(name, address);
    }
 
-   public void placeOrder(PersonName name, String city, String streetName, Integer streetNumber) {
+   public void placeOrder(PersonName name, Address address) {
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
 
    }
 }

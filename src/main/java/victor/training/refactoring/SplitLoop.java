@@ -15,12 +15,11 @@ public class SplitLoop {
    }
 
    private double computeAverageSalary(List<Employee> employees) {
-      double averageSalary = 0;
+      double totalSallary = 0;
       for (Employee employee : employees) {
-         averageSalary += employee.getSalary();
+         totalSallary += employee.getSalary();
       }
-      averageSalary = averageSalary / employees.size();
-      return averageSalary;
+      return totalSallary / employees.size();
    }
 
    private long computeAverageAge(List<Employee> employees) {
