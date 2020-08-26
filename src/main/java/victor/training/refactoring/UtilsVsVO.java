@@ -4,20 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtilsVsVO {
+    // Ford Focus Mk2 [ 2002 - 2010 ]
+    // User searches for a model  [ 2015 - 2019 ]
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! intervalsIntersect(
-                model.getStartYear(), model.getEndYear(),
-                criteria.getStartYear(), criteria.getEndYear()));
+            Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+        results.removeIf(model -> !new Interval(model.getStartYear(), model.getEndYear()).intersects(criteriaInterval));
         System.out.println("More filtering logic");
         return results;
     }
-    private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        // http://world.std.com/~swmcd/steven/tech/interval.html
-        return start1 <= end2 && start2 <= end1;
-    }
 }
 
+class Interval {
+    private final int start;
+    private final int end;
+
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+}
 
 
 
