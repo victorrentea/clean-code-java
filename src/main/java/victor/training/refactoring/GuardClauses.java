@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,17 +20,13 @@ class GuardService {
          throw new IllegalStateException("Any marine should have the years of service set");
       }
       int result = marine.getYearsService() * 100;
-      if (wasAwarded(marine)) {
+      if (marine.wasAwarded()) {
          result += 1000;
       }
       if (marine.getAwards().size() >= 3) {
          result += 2000;
       }
       return result;
-   }
-
-   private boolean wasAwarded(Marine marine) {
-      return !marine.getAwards().isEmpty();
    }
 
    private int deadAmount() {
@@ -140,6 +135,10 @@ class Marine {
    public Marine setYearsService(Integer yearsService) {
       this.yearsService = yearsService;
       return this;
+   }
+
+   public boolean wasAwarded() {
+      return !awards.isEmpty();
    }
 }
 
