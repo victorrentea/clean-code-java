@@ -11,6 +11,7 @@ public class BooleanParameters {
       bigUglyMethod(4, 2);
       bigUglyMethod(5, 1);
 
+
       // TODO From my use-case, I call it too, to do more within:
       bigUglyMethod(2, 1);
 
