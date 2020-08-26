@@ -42,7 +42,11 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevelStuffFluff(List<Integer> tasks) {
+   public void bossLevelStuffFluffOldOne(List<Integer> tasks) {
+      beforeBoss(tasks);
+      afterBoss(tasks);
+   }
+   public void bossLevelStuffFluffYours(List<Integer> tasks) {
       beforeBoss(tasks);
       for (int task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
