@@ -26,6 +26,7 @@ public class Rental {
 	}
 
 	public double determinePrice() {
+		double price = 0;
 		switch (getMovie().getCategory()) {
 			case REGULAR:
 				return computeRegularPrice();
