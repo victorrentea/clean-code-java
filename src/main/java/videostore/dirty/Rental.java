@@ -26,24 +26,36 @@ public class Rental {
 	}
 
 	public double determinePrice() {
-		double price = 0;
 		switch (getMovie().getCategory()) {
 			case REGULAR:
-				price += 2;
-				if (getDaysRented() > 2) {
-					price += (getDaysRented() - 2) * 1.5;
-				}
-				break;
+				return computeRegularPrice();
 			case NEW_RELEASE:
-				price += getDaysRented() * 3;
-				break;
+				return computeNewReleasePrice();
 			case CHILDRENS:
-				price += 1.5;
-				if (getDaysRented() > 3) {
-					price += (getDaysRented() - 3) * 1.5;
-				}
-				break;
+				return computeChildrenPrice();
+			default:
+				throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
 		}
+	}
+
+	private double computeChildrenPrice() {
+		double price = 1.5;
+		if (getDaysRented() > 3) {
+			price += (getDaysRented() - 3) * 1.5;
+		}
+		return price;
+	}
+
+	private int computeNewReleasePrice() {
+		return getDaysRented() * 3;
+	}
+
+	private double computeRegularPrice() {
+		double price = 2;
+		if (getDaysRented() > 2) {
+			price += (getDaysRented() - 2) * 1.5;
+		}
+		// Gigel Torn si eu aicea 10 linii de cod, ca n-am un sa le pun
 		return price;
 	}
 }
