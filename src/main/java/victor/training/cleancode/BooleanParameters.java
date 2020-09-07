@@ -87,6 +87,54 @@ public class BooleanParameters {
       System.out.println("Logic7");
    }
 
+
+   // Dar Norbert a vazut ca: cele 2 au outputuri diferite!!! Daca conta,==> buba
+//   public void bossLevelStuffFluff(List<Integer> tasks) {
+//      int i = 0;
+//      for (int task : tasks) {
+//         System.out.println("Logic4: Validate " + task);
+//
+//         // TODO When **I** call this method, I want this to run HERE, too:
+//         System.out.println("My Logic: " + task);
+//
+//         i++;
+//         System.out.println("Logic5 " + i + " on " + task);
+//      }
+//   }
+//
+//   public void bossLevelStuffFluff(List<Integer> tasks) {
+//      for (int task : tasks) {
+//         System.out.println("Logic4: Validate " + task);
+//      }
+//      for (int task : tasks) {
+//         // TODO When **I** call this method, I want this to run HERE, too:
+//         System.out.println("My Logic: " + task);
+//      }
+//      int i = 0;
+//      for (int task : tasks) {
+//         i++;
+//         System.out.println("Logic5 " + i + " on " + task);
+//      }
+//   }
+
+
+      //DAR : ======================
+      //
+      //1) set current user 1
+      //2) place order for current user: O1
+      //
+      //3) set current user 2
+      //4) place order for current user: O2
+      //
+      //
+      //
+      //Cand operatia schimba date intr-un mod stateful ==> BUM
+      //1) set current user 1
+      //2) set current user 2
+      //3) place order for current user: O1
+      //4) place order for current user: O2
+      //
+
 }
 
 
