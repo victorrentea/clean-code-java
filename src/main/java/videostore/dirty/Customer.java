@@ -1,4 +1,6 @@
 package videostore.dirty;
+import videostore.dirty.Movie.Category;
+
 import java.util.*;
 
 class Customer {
@@ -11,37 +13,47 @@ class Customer {
 	public void addRental(Rental rental) {
 		rentals.add(rental);
 	}
-	public String getName() {
-		return name;
-	}
+
 	public String generateStatement() {
 		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-
-		String result = "Rental Record for " + getName() + "\n";
-
+		int frequentRenterPoints = 0; // TODO =.size()
+		String result = formatHeader();
 		for (Rental rental : rentals) {
-			double price = 0;
-			price = determinePrice(rental, price);
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE)
-				 && rental.getDaysRented() > 1)
-				frequentRenterPoints++;
-			// show figures for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t"
-						 + price + "\n";
-			totalPrice += price;
+			frequentRenterPoints += determineFrequentRenterPoints(rental);
+			// E BUG daca repeti un apel care 1) are side effect eg INSERT 2) nu da acelasi result
+			    // Adica daca nu e Pure
+			// Cand nu e bine sa repeti un apel: scump (timp mare)
+			result += formatRentalLine(rental, determinePrice(rental));
+			totalPrice += determinePrice(rental);
 		}
-		//pe master direct
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+		result += formatFooter(totalPrice, frequentRenterPoints);
 		return result;
 	}
 
-	private double determinePrice(Rental rental, double price) {
+	private String formatHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String formatFooter(double totalPrice, int frequentRenterPoints) {
+		return "Amount owed is " + totalPrice + "\n"
+				 + "You earned " + frequentRenterPoints + " frequent renter points";
+	}
+
+	private String formatRentalLine(Rental rental, double price) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	}
+
+	private int determineFrequentRenterPoints(Rental rental) {
+		int frequentRenterPoints = 1;
+		boolean isNewRelease = rental.getMovie().getCategory() == Category.NEW_RELEASE;
+		if (isNewRelease && rental.getDaysRented() >= 2) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
+
+	private double determinePrice(Rental rental) {
+		double price = 0;
 		switch (rental.getMovie().getCategory()) {
 			case REGULAR:
 				price += 2;
@@ -61,4 +73,5 @@ class Customer {
 		}
 		return price;
 	}
+
 }
