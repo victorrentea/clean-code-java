@@ -20,10 +20,7 @@ class Customer {
 		String result = formatHeader();
 		for (Rental rental : rentals) {
 			frequentRenterPoints += determineFrequentRenterPoints(rental);
-			// E BUG daca repeti un apel care 1) are side effect eg INSERT 2) nu da acelasi result
-			    // Adica daca nu e Pure
-			// Cand nu e bine sa repeti un apel: scump (timp mare)
-			result += formatRentalLine(rental, determinePrice(rental));
+			result += formatRentalLine(rental);
 			totalPrice += determinePrice(rental);
 		}
 		result += formatFooter(totalPrice, frequentRenterPoints);
@@ -39,8 +36,8 @@ class Customer {
 				 + "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
-	private String formatRentalLine(Rental rental, double price) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	private String formatRentalLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + determinePrice(rental) + "\n";
 	}
 
 	private int determineFrequentRenterPoints(Rental rental) {
