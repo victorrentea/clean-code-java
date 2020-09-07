@@ -2,6 +2,7 @@ package videostore.dirty;
 
 import org.junit.Assert;
 import org.junit.Test;
+import videostore.dirty.Movie.Category;
 
 
 public class CustomerTest {
@@ -9,9 +10,9 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Rental(new Movie("Star Wars", Movie.CATEGORY_NEW_RELEASE), 6));
-        customer.addRental(new Rental(new Movie("Sofia", Movie.CATEGORY_CHILDRENS), 7));
-        customer.addRental(new Rental(new Movie("Inception", Movie.CATEGORY_REGULAR), 5));
+        customer.addRental(new Rental(new Movie("Star Wars", Category.NEW_RELEASE), 6));
+        customer.addRental(new Rental(new Movie("Sofia", Category.CHILDRENS), 7));
+        customer.addRental(new Rental(new Movie("Inception", Category.REGULAR), 5));
         
         String expected = "Rental Record for John Doe\n"
                 + "	Star Wars	18.0\n"
