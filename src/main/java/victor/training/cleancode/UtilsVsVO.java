@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UtilsVsVO {
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
@@ -27,7 +28,30 @@ class Interval {
    public boolean intersects(Interval other) {
       return start <= other.end && other.start <= end;
    }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Interval interval = (Interval) o;
+      return start == interval.start &&
+             end == interval.end;
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(start, end);
+   }
 }
+
+//@Document
+//class Incident {
+//   Long id;
+//   String name;
+//   Status status;
+//   Interval fixIntervalDays;
+//}
+
 class MathUtil {
 
 }
