@@ -17,15 +17,20 @@ public class BooleanParameters {
    }
 
    static void bigUglyMethod(int b, int a, boolean cr323) {
-      System.out.println("Complex Logic 1 " + a + " and " + b);
-      System.out.println("Complex Logic 2 " + a);
-      System.out.println("Complex Logic 3 " + a);
-
-      // X aici
+      beforeLogic(b, a);
       if (cr323) {
          System.out.println("Si asta " + a + b);
       }
+      afterLogic(b);
+   }
 
+   private static void beforeLogic(int b, int a) {
+      System.out.println("Complex Logic 1 " + a + " and " + b);
+      System.out.println("Complex Logic 2 " + a);
+      System.out.println("Complex Logic 3 " + a);
+   }
+
+   private static void afterLogic(int b) {
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
