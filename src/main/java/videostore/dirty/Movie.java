@@ -1,6 +1,7 @@
 package videostore.dirty;
 
 public class Movie {
+
    enum Category {
       CHILDRENS,
       REGULAR,
@@ -20,6 +21,9 @@ public class Movie {
       this.category = category;
    }
 
+   public boolean isNewRelease() {
+      return category == Category.NEW_RELEASE;
+   }
    public Category getCategory() {
       return category;
    }
