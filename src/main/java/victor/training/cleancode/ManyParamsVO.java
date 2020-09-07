@@ -37,8 +37,16 @@ class FullName {
       return lastName;
    }
 
-   public String getFirstName() {
-      return firstName;
+   @Override
+   public String toString() {
+      return "FullName{" +
+             "firstName='" + firstName + '\'' +
+             ", lastName='" + lastName + '\'' +
+             '}';
+   }
+
+   public String asEnterpriseName() {
+      return firstName + " " + lastName.toUpperCase();
    }
 }
 
@@ -56,8 +64,8 @@ class Person {
    private FullName fullName;
    private String phone;
 
-   public Person(String firstName, String lastName) {
-      this.fullName = new FullName(firstName, lastName);
+   public Person(FullName fullName) {
+      this.fullName = fullName;
 
    }
 
@@ -74,25 +82,10 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
-
-
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-
-
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase());
-      System.out.println(fullNameStr);
+      System.out.println(person.getFullName().asEnterpriseName());
    }
 
-   public void p(String city, String streetName, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
