@@ -15,7 +15,7 @@ class Customer {
 	}
 
 	public List<Rental> getRentals() {
-		return rentals;
+		return Collections.unmodifiableList(rentals);
 	}
 
 	public void addRental(Rental rental) {
