@@ -13,9 +13,15 @@ public class BooleanParameters {
 
       // TODO From my use-case, I call it too, to do more within:
       bigUglyMethod323(2, 1);
+      // TODO From my use-case 325, I call it too, to do more within:
+      bigUglyMethod325(2, 1);
 
    }
 
+   static void bigUglyMethod325(int b, int a) {
+      System.out.println("PT 325");
+      bigUglyMethod(b, a);
+   }
    static void bigUglyMethod(int b, int a) {
       beforeLogic(b, a);
 
