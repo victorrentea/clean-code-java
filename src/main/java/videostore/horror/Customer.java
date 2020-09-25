@@ -37,7 +37,7 @@ class Customer {
 			case NEW_RELEASE:
 				thisAmount += dr * 3;
 				break;
-			case CHILDRENS:
+			case CHILDREN:
 				thisAmount += 1.5;
 				if (dr > 3)
 					thisAmount += (dr - 3) * 1.5;

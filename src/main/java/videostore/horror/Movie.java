@@ -6,7 +6,7 @@ public class Movie {
    enum Category {
       REGULAR,
       NEW_RELEASE,
-      CHILDRENS
+      CHILDREN
    }
 
    private final String title;
