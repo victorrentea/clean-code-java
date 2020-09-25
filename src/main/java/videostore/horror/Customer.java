@@ -1,6 +1,9 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 class Customer {
    private String name;
@@ -32,12 +35,16 @@ class StatementGenerator {
              formatFooter(rentals);
    }
 
+   private String formatHeader(String customerName) {
+      return "Rental Record for " + customerName + "\n";
+   }
+
    private String formatBody(List<Rental> rentals) {
-      String statement = "";
-      for (Rental rental : rentals) {
-         statement += formatStatementLine(rental);
-      }
-      return statement;
+      return rentals.stream().map(this::formatStatementLine).collect(joining());
+   }
+
+   private String formatStatementLine(Rental rental) {
+      return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
    }
 
    private String formatFooter(List<Rental> rentals) {
@@ -45,33 +52,12 @@ class StatementGenerator {
              + "You earned " + computeTotalRenterPoints(rentals) + " frequent renter points";
    }
 
-   private int computeTotalRenterPoints(List<Rental> rentals) {
-      int frequentRenterPoints = 0;
-      for (Rental rental : rentals) {
-         frequentRenterPoints += rental.computeFrequentRenterPoints();
-      }
-      return frequentRenterPoints;
-   }
-
    private double computeTotalPrice(List<Rental> rentals) {
-      double totalPrice = 0;
-      for (Rental rental : rentals) {
-         totalPrice +=  rental.computePrice();
-      }
-      return totalPrice;
+      return rentals.stream().mapToDouble(Rental::computePrice).sum();
    }
 
-   private String formatHeader(String customerName) {
-      return "Rental Record for " + customerName + "\n";
-   }
-
-   private String formatFooter(double totalAmount, int frequentRenterPoints) {
-      return "Amount owed is " + totalAmount + "\n"
-             + "You earned " + frequentRenterPoints + " frequent renter points";
-   }
-
-   private String formatStatementLine(Rental rental) {
-      return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+   private int computeTotalRenterPoints(List<Rental> rentals) {
+      return rentals.stream().mapToInt(Rental::computeFrequentRenterPoints).sum();
    }
 
 }
