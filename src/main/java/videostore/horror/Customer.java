@@ -27,16 +27,38 @@ class Customer {
 class StatementGenerator {
 
    public String generateStatement(String customerName, List<Rental> rentals) {
-      double totalAmount = 0;
+      return formatHeader(customerName) +
+             formatBody(rentals) +
+             formatFooter(rentals);
+   }
+
+   private String formatBody(List<Rental> rentals) {
+      String statement = "";
+      for (Rental rental : rentals) {
+         statement += formatStatementLine(rental);
+      }
+      return statement;
+   }
+
+   private String formatFooter(List<Rental> rentals) {
+      return "Amount owed is " + computeTotalPrice(rentals) + "\n"
+             + "You earned " + computeTotalRenterPoints(rentals) + " frequent renter points";
+   }
+
+   private int computeTotalRenterPoints(List<Rental> rentals) {
       int frequentRenterPoints = 0;
-      String statement = formatHeader(customerName);
       for (Rental rental : rentals) {
          frequentRenterPoints += rental.computeFrequentRenterPoints();
-         statement += formatStatementLine(rental);
-         totalAmount +=  rental.computePrice();
       }
-      statement += formatFooter(totalAmount, frequentRenterPoints);
-      return statement;
+      return frequentRenterPoints;
+   }
+
+   private double computeTotalPrice(List<Rental> rentals) {
+      double totalPrice = 0;
+      for (Rental rental : rentals) {
+         totalPrice +=  rental.computePrice();
+      }
+      return totalPrice;
    }
 
    private String formatHeader(String customerName) {
