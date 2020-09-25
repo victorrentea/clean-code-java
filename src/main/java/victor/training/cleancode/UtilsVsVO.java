@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +25,12 @@ class AltColeg {
         System.out.println(b);
     }
 }
+@Embeddable
 class Interval {
-    private final int start;
-    private final int end;
+    private int start;
+    private int end;
 
+    protected Interval() {}
     public Interval(int start, int end) {
         this.start = start;
         this.end = end;
@@ -81,11 +86,14 @@ class CarSearchCriteria {
     }
 }
 
+@Entity
 class CarModel {
     private final String make;
     private final String model;
     private final int startYear;
     private final int endYear;
+    @Embedded
+    private Interval yearInterval;
 
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
