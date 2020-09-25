@@ -14,12 +14,19 @@ public class UtilsVsVO {
     }
 }
 
-
 class AltColeg {
     {
         MathUtil.intervalsIntersect(1, 3, 2, 4);
     }
+}
+class Interval {
+    private final int start;
+    private final int end;
 
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
 }
 
 class MathUtil {
