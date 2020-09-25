@@ -1,7 +1,7 @@
 package videostore.horror;
 
 
-// Daniel, dupa 2 min: "nu facem si noi Movie abstract" <- extinsa de ChildrenMovie, RegularMovie...
+// Daniel, dupa 2 min: "nu facem si noi Movie abstract" <- extinsa de ChildrenMovie, RegularMovie...   polimorfic sa contina metode diferite de a face compute>XXX
 public class Movie {
    enum Category {
       REGULAR,
