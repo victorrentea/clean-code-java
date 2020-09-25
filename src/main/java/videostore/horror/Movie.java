@@ -1,6 +1,5 @@
 package videostore.horror;
 
-
 // Daniel, dupa 2 min: "nu facem si noi Movie abstract" <- extinsa de ChildrenMovie, RegularMovie...   polimorfic sa contina metode diferite de a face compute>XXX
 public class Movie {
    enum Category {
@@ -13,6 +12,9 @@ public class Movie {
    private final Category category;
 
    public Movie(String title, Category category) {
+      if (category == null) {
+         throw new IllegalArgumentException();
+      }
       this.title = title;
       this.category = category;
    }
