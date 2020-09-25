@@ -1,62 +1,66 @@
 package victor.training.cleancode;
 
+import javax.persistence.Entity;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ManyParamsVO().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
-
+   public void placeOrder(FullName fullName, Address address) {
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
 
    }
 }
+
+// PersonData - nu zice nimic
+// PersonInfo - nu zice nimic
+// PersonBAISJSAIDHIA
+// PersonDetails OK
+
+// Person{fn, ln, address, ssn, telefon, tiwtterhandle, fb acocunt, } prea vag numele. Poti pune orice in asa clasa
+
+// Address (c,sname, snumber)
+// PersonName {fn, ln} OK
+// FullName {fn, ln} OK
+
+// Folk
+// Customer
+
+
+
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-
+   public void otherMethod(FullName fullName, int x) {
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getLastName());
    }
 }
 
+@Entity
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
+   private FullName fullName;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+      fullName = new FullName(firstName, lastName);
    }
 
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
+//   // TODO hard-core: implement setter
+//   public void setLastName(String lastName) {
+//      this.lastName = lastName;
+//   }
 
-   // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
-
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
+   public FullName getFullName() {
+      return fullName;
    }
 }
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println(person.getFullName().toEnterpriseName());
    }
 
    public void p(String city, String streetName, Integer streetNumber) {
