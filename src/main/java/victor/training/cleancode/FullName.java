@@ -12,11 +12,19 @@ public class FullName {
       this.lastName = lastName;
    }
 
+   public String getFirstName() {
+      return firstName;
+   }
+
    public String getLastName() {
       return lastName;
    }
 
    public String toEnterpriseName() {
       return firstName + " " + lastName.toUpperCase();
+   }
+
+   public FullName withLastName(String newLastName) {
+      return new FullName(firstName, newLastName);
    }
 }

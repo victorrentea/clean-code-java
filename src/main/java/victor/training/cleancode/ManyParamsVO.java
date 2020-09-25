@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
@@ -52,6 +53,11 @@ class Person {
 //   public void setLastName(String lastName) {
 //      this.lastName = lastName;
 //   }
+
+
+   public void marita(Person printul) {
+      fullName = fullName.withLastName(printul.getFullName().getLastName());
+   }
 
    public FullName getFullName() {
       return fullName;
