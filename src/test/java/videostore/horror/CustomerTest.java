@@ -19,7 +19,8 @@ public class CustomerTest {
                 + "	Inception	6.5\n"
                 + "Amount owed is 32.0\n"
                 + "You earned 4 frequent renter points";
-        
-        Assert.assertEquals(expected, customer.statement());
+
+        StatementGenerator generator = new StatementGenerator();
+        Assert.assertEquals(expected, generator.generateStatement(customer.getName(), customer.getRentals()));
     }
 }
