@@ -4,14 +4,14 @@ import java.util.List;
 
 public class BooleanParameters {
    public static void main(String[] args) {
-      // The method is called from various foreign places in the codebase
+      // The big method is called from various foreign places in the codebase
       bigUglyMethod(1, 5);
       bigUglyMethod(2, 4);
       bigUglyMethod(3, 3);
       bigUglyMethod(4, 2);
       bigUglyMethod(5, 1);
 
-      // TODO From my use-case, I call it too, to do more within:
+      // TODO From my use-case #323, I call it too, to do more within:
       bigUglyMethod(2, 1);
 
    }
