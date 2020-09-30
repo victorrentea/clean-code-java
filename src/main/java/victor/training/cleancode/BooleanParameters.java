@@ -42,21 +42,35 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
+   class ClasaStateful {
+      int task; // CODE SMELL: TEMPORARY FIELD
+
+      public void setCurrentTask(int task) {
+         this.task = task;
+      }
+      public void callMethodForCurrentTask() {
+         System.out.println("processing task " + task);
+      }
+   }
+
    public void bossLevelStuffFluff(List<Integer> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
       System.out.println("Logic3");
-      int i = 0;
+      ClasaStateful clasaStateful = new ClasaStateful();
       for (int task : tasks) { // <1000 elemente nu conteaza perf. Daca ai peste 10000, ce cauti cu ele in memorie?!
          System.out.println("Logic4: Validate " + task);
+         clasaStateful.setCurrentTask(task);
       }
       for (int task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
+      int i = 0;
       for (int task : tasks) {
          i++;
          System.out.println("Logic5 " + i + " on " + task);
+         clasaStateful.callMethodForCurrentTask();// BUG!
       }
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Logic7");
