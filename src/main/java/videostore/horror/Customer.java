@@ -23,35 +23,7 @@ class Customer {
 		return name;
 	}
 
-	public String statement() {
-		return formatHeader() +
-				 formatBody() +
-				 formatFooter();
+	public List<Rental> getRentals() {
+		return rentals;
 	}
-
-	private String formatHeader() {
-		return "Rental Record for " + name + "\n";
-	}
-
-	private String formatBody() {
-		return rentals.stream().map(this::formatBodyLine).collect(Collectors.joining());
-	}
-
-	private double computeTotalPrice() {
-		return rentals.stream().mapToDouble(Rental::computePrice).sum();
-	}
-
-	private int computeTotalFrequentRenterPoints() {
-		return rentals.stream().mapToInt(Rental::computeFrequentRenterPoints).sum();
-	}
-
-	private String formatBodyLine(Rental rental) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
-	}
-
-	private String formatFooter() {
-		return "Amount owed is " + computeTotalPrice() + "\n" +
-				 "You earned " + computeTotalFrequentRenterPoints() + " frequent renter points";
-	}
-
 }
