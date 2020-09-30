@@ -13,6 +13,7 @@ public class CumPierziCopilulLaMoldovaMall {
 
       puiiMei.add(childOne);
 
+      System.out.println(puiiMei.contains(childOne));      System.out.println(puiiMei.contains(childOne));      System.out.println(puiiMei.contains(childOne));
       System.out.println(puiiMei.contains(childOne));
       System.out.println(childOne.hashCode());
 
