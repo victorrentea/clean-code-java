@@ -29,12 +29,16 @@ public class Rental {
    }
 
    public double computePrice() {
-      return switch (movie.getCategory()) {
-         case REGULAR -> computeRegularPrice();
-         case NEW_RELEASE -> computeNewReleasePrice();
-         case CHILDREN -> computeChildrenPrice();
-         default -> throw new IllegalArgumentException();
-      };
+      switch (movie.getCategory()) {
+         case REGULAR:
+            return computeRegularPrice();
+         case NEW_RELEASE:
+            return computeNewReleasePrice();
+         case CHILDREN:
+            return computeChildrenPrice();
+         default:
+            throw new IllegalArgumentException();
+      }
    }
 
 
