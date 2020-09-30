@@ -1,7 +1,5 @@
 package videostore.horror;
 
-import videostore.horror.Movie.Category;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,15 +38,15 @@ class Customer {
 	}
 
 	private double computeTotalPrice() {
-		return rentals.stream().mapToDouble(this::computePrice).sum();
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
 	private int computeTotalFrequentRenterPoints() {
-		return rentals.stream().mapToInt(this::computeFrequentRenterPoints).sum();
+		return rentals.stream().mapToInt(Rental::computeFrequentRenterPoints).sum();
 	}
 
 	private String formatBodyLine(Rental rental) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + computePrice(rental) + "\n";
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 	private String formatFooter() {
@@ -56,33 +54,4 @@ class Customer {
 				 "You earned " + computeTotalFrequentRenterPoints() + " frequent renter points";
 	}
 
-	private int computeFrequentRenterPoints(Rental rental) {
-		int frequentRenterPoints = 1;
-		boolean isNewRelease = rental.getMovie().getCategory() == Category.NEW_RELEASE;
-		if (isNewRelease && rental.getDaysRented() >= 2) {
-			frequentRenterPoints++;
-		}
-		return frequentRenterPoints;
-	}
-
-	private double computePrice(Rental rental) {
-		double price = 0;
-
-		switch (rental.getMovie().getCategory()) {
-			case REGULAR:
-				price += 2;
-				if (rental.getDaysRented() > 2)
-					price += (rental.getDaysRented() - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				price += rental.getDaysRented() * 3;
-				break;
-			case CHILDREN:
-				price += 1.5;
-				if (rental.getDaysRented() > 3)
-					price += (rental.getDaysRented() - 3) * 1.5;
-				break;
-		}
-		return price;
-	}
 }
