@@ -1,5 +1,9 @@
 package videostore.horror;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 public class Movie {
    public enum Category {
       REGULAR,
@@ -12,7 +16,7 @@ public class Movie {
 
    public Movie(String title, Category category) {
       this.title = title;
-      this.category = category;
+      this.category = requireNonNull(category);
    }
 
    public Category getCategory() {

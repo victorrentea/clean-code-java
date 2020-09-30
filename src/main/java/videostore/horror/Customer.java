@@ -1,7 +1,8 @@
 package videostore.horror;
 
+import videostore.horror.Movie.Category;
+
 import java.util.*;
-import java.util.Map.Entry;
 
 class Customer {
 	private final String name;
@@ -20,46 +21,51 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
+		double totalPrice = 0;
+		int totalFrequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 
 		for (Rental rental : rentals) {
-			int daysRented = rental.getDaysRented();
+			double price = computePrice(rental);
 
-			double thisAmount = 0;
-
-			switch (rental.getMovie().getCategory()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (daysRented > 2)
-						thisAmount += (daysRented - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += daysRented * 3;
-					break;
-				case CHILDREN:
-					thisAmount += 1.5;
-					if (daysRented > 3)
-						thisAmount += (daysRented - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (rental.getMovie().getCategory() != null &&
-				 (rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE)
-				 && daysRented > 1)
-				frequentRenterPoints++;
+			totalFrequentRenterPoints += computeFrequentRenterPoints(rental);
 			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t"
-						 + String.valueOf(thisAmount) + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+			totalPrice += price;
 		}
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
+		result += "Amount owed is " + totalPrice + "\n";
+		result += "You earned " + totalFrequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private int computeFrequentRenterPoints(Rental rental) {
+		int frequentRenterPoints = 1;
+		boolean isNewRelease = rental.getMovie().getCategory() == Category.NEW_RELEASE;
+		if (isNewRelease && rental.getDaysRented() >= 2) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
+
+	private double computePrice(Rental rental) {
+		double price = 0;
+
+		switch (rental.getMovie().getCategory()) {
+			case REGULAR:
+				price += 2;
+				if (rental.getDaysRented() > 2)
+					price += (rental.getDaysRented() - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				price += rental.getDaysRented() * 3;
+				break;
+			case CHILDREN:
+				price += 1.5;
+				if (rental.getDaysRented() > 3)
+					price += (rental.getDaysRented() - 3) * 1.5;
+				break;
+		}
+		return price;
 	}
 }
