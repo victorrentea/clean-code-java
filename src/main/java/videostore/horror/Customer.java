@@ -3,6 +3,11 @@ package videostore.horror;
 import videostore.horror.Movie.Category;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+
+// ADvanced: enum cu Function<> ---
+// Alexandr: Nu e ok sa calculezi treburi cand si formateze >>
 
 class Customer {
 	private final String name;
@@ -21,22 +26,34 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalPrice = 0;
-		int totalFrequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		return formatHeader() +
+				 formatBody() +
+				 formatFooter();
+	}
 
-		for (Rental rental : rentals) {
-			double price = computePrice(rental);
+	private String formatHeader() {
+		return "Rental Record for " + name + "\n";
+	}
 
-			totalFrequentRenterPoints += computeFrequentRenterPoints(rental);
-			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
-			totalPrice += price;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + totalFrequentRenterPoints + " frequent renter points";
-		return result;
+	private String formatBody() {
+		return rentals.stream().map(this::formatBodyLine).collect(Collectors.joining());
+	}
+
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(this::computePrice).sum();
+	}
+
+	private int computeTotalFrequentRenterPoints() {
+		return rentals.stream().mapToInt(this::computeFrequentRenterPoints).sum();
+	}
+
+	private String formatBodyLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + computePrice(rental) + "\n";
+	}
+
+	private String formatFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n" +
+				 "You earned " + computeTotalFrequentRenterPoints() + " frequent renter points";
 	}
 
 	private int computeFrequentRenterPoints(Rental rental) {
