@@ -31,22 +31,22 @@ public class Rental {
    public double computePrice() {
       switch (movie.getCategory()) {
          case REGULAR:
-            return computeRegularPrice();
+            return computeRegularPrice(daysRented);
          case NEW_RELEASE:
-            return computeNewReleasePrice();
+            return computeNewReleasePrice(daysRented);
          case CHILDREN:
-            return computeChildrenPrice();
+            return computeChildrenPrice(daysRented);
          default:
             throw new IllegalArgumentException();
       }
    }
 
 
-   private int computeNewReleasePrice() {
+   private static int computeNewReleasePrice(int daysRented) {
       return daysRented * 3;
    }
 
-   private double computeChildrenPrice() {
+   private static double computeChildrenPrice(int daysRented) {
       double price2 = 1.5;
       if (daysRented > 3) {
          price2 += (daysRented - 3) * 1.5;
@@ -54,7 +54,7 @@ public class Rental {
       return price2;
    }
 
-   private double computeRegularPrice() {
+   private static double computeRegularPrice(int daysRented) {
       double price = 2;
       if (daysRented > 2) {
          price += (daysRented - 2) * 1.5;
