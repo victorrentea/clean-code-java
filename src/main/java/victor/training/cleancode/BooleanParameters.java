@@ -54,18 +54,15 @@ public class BooleanParameters {
    }
 
    public void bossLevelStuffFluff(List<Integer> tasks) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      ClasaStateful clasaStateful = new ClasaStateful();
-      for (int task : tasks) { // <1000 elemente nu conteaza perf. Daca ai peste 10000, ce cauti cu ele in memorie?!
-         System.out.println("Logic4: Validate " + task);
-         clasaStateful.setCurrentTask(task);
-      }
+      ClasaStateful clasaStateful = beforeBoss(tasks);
       for (int task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
+      afterBoss(tasks, clasaStateful);
+   }
+
+   private void afterBoss(List<Integer> tasks, ClasaStateful clasaStateful) {
       int i = 0;
       for (int task : tasks) {
          i++;
@@ -75,6 +72,19 @@ public class BooleanParameters {
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Logic7");
    }
+
+   private ClasaStateful beforeBoss(List<Integer> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      ClasaStateful clasaStateful = new ClasaStateful();
+      for (int task : tasks) { // <1000 elemente nu conteaza perf. Daca ai peste 10000, ce cauti cu ele in memorie?!
+         System.out.println("Logic4: Validate " + task);
+         clasaStateful.setCurrentTask(task);
+      }
+      return clasaStateful;
+   }
+
    public void bossLevelStuffNoFluff(List<Integer> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
