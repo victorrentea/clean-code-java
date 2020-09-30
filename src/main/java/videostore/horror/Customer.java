@@ -5,16 +5,14 @@ import java.util.Map.Entry;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentalsMap = new LinkedHashMap<>(); // preserves order
 	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie movie, int daysRented) {
-		rentalsMap.put(movie, daysRented);
-		rentals.add(new Rental(movie, daysRented));
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
 	public String getName() {
@@ -27,13 +25,11 @@ class Customer {
 		String result = "Rental Record for " + getName() + "\n";
 
 		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
 			int daysRented = rental.getDaysRented();
-
 
 			double thisAmount = 0;
 
-			switch (movie.getCategory()) {
+			switch (rental.getMovie().getCategory()) {
 				case REGULAR:
 					thisAmount += 2;
 					if (daysRented > 2)
@@ -51,12 +47,12 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (movie.getCategory() != null &&
-				 (movie.getCategory() == Movie.Category.NEW_RELEASE)
+			if (rental.getMovie().getCategory() != null &&
+				 (rental.getMovie().getCategory() == Movie.Category.NEW_RELEASE)
 				 && daysRented > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t"
+			result += "\t" + rental.getMovie().getTitle() + "\t"
 						 + String.valueOf(thisAmount) + "\n";
 			totalAmount += thisAmount;
 		}
