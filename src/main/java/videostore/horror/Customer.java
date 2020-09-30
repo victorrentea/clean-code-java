@@ -1,17 +1,20 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final Map<Movie, Integer> rentalsMap = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentals.put(movie, daysRented);
+		rentalsMap.put(movie, daysRented);
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -23,24 +26,12 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 
-		for (Movie movie : rentals.keySet()) {
+		for (Rental rental : rentals) {
+			Movie movie = rental.getMovie();
+			int daysRented = rental.getDaysRented();
+
+
 			double thisAmount = 0;
-			// determine amounts for each line
-			int daysRented = rentals.get(movie);
-
-
-			/**
-			 * abstract class Movie{
-			 *    public abstract computeAmount(daysRented);
-			 * }
-			 * class NewReleaseMovie extends Movie {
-			 * 	public computeAmount(daysRented) {
-			 * 		return daysRented * 3;
-			 * 	}
-			 * }
-			 *
-			 * movie.computeAmount(daysRented); // polymorphic dispatch
-			 */
 
 			switch (movie.getCategory()) {
 				case REGULAR:
