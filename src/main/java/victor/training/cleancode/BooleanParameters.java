@@ -30,7 +30,7 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
-      int i = 0; // TODO move closer to usages
+      int index = 0; // TODO move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
       if (stuff) {
@@ -44,7 +44,8 @@ public class BooleanParameters {
                // TODO When **I** call this method, I want this to run HERE, too:
                // System.out.println("My Logic: " + task);
 
-               System.out.println("Logic5 " + (i++) + " on " + task.isRunning());
+               index++;
+               System.out.println("Logic5 " + index + " on " + task.isRunning());
             }
             System.out.println("Logic6 " + j);
          } else {
