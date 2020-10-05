@@ -1,9 +1,17 @@
 package victor.training.refactoring;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UtilsVsVO {
+
+    public static void main(String[] args) {
+        new UtilsVsVO().filterCarModels(new CarSearchCriteria(2006, 2016, "Ford"), Arrays.asList(
+            new CarModel("Ford", "Focus", 2008, 2018)
+        ));
+    }
+
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
         results.removeIf(model -> ! intervalsIntersect(
@@ -13,7 +21,6 @@ public class UtilsVsVO {
         return results;
     }
     private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        // http://world.std.com/~swmcd/steven/tech/interval.html
         return start1 <= end2 && start2 <= end1;
     }
 }
