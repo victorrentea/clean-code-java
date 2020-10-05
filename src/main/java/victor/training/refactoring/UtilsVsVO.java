@@ -7,20 +7,25 @@ import java.util.List;
 public class UtilsVsVO {
 
     public static void main(String[] args) {
-        new UtilsVsVO().filterCarModels(new CarSearchCriteria(2006, 2016, "Ford"), Arrays.asList(
+        CarSearchCriteria criteria = new CarSearchCriteria(2006, 2016, "Ford");
+        new UtilsVsVO().filterCarModels(criteria, Arrays.asList(
             new CarModel("Ford", "Focus", 2008, 2018)
         ));
     }
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! intervalsIntersect(
+        results.removeIf(model -> ! MathUtil.intervalsIntersect(
                 model.getStartYear(), model.getEndYear(),
                 criteria.getStartYear(), criteria.getEndYear()));
         System.out.println("More filtering logic");
         return results;
     }
-    private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
+}
+
+class MathUtil {
+
+    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
         return start1 <= end2 && start2 <= end1;
     }
 }
