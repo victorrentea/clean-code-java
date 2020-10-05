@@ -5,19 +5,18 @@ class ParameterizeAndExtract {
     // existing
     public void f() {
         System.out.println("Logic F");
-        for (int i = 0; i < 4; i++) {
-            System.out.println("Code " + i * (i - 1));
-        }
+        common(4);
     }
 
-}
-class MyStory {
     public void g() {
         System.out.println("Logic G");
-        for (int i = 0; i < 3; i++) {
+        common(3);
+    }
+
+    private void common(int n) {
+        for (int i = 0; i < n; i++) {
             int temp = i * (i - 1);
-            String x = "Code " + temp;
-            System.out.println(x);
+            System.out.println("Code " + temp);
         }
     }
 
