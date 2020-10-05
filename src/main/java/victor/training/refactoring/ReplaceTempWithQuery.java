@@ -58,6 +58,7 @@ class PriceCalculator {
         return (int) (computeBasePrice() / 2);
     }
 
+    //getPrice() is pure only if returns always the same price, so equivalent to a constant
     private double computeBasePrice() {
         return quantity * itemPrice;
     }
