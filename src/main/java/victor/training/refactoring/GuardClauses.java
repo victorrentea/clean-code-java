@@ -5,31 +5,26 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
 class GuardService {
    public int getPayAmount(Marine marine) {
-      int result;
-      if (!marine.isDead()) {
-         if (!marine.isRetired()) {
-            if (marine.getYearsService() != null) {
-               result = marine.getYearsService() * 100;
-               if (!marine.getAwards().isEmpty()) {
-                  result += 1000;
-               }
-               if (marine.getAwards().size() >= 3) {
-                  result += 2000;
-               }
-            } else {
-               throw new IllegalStateException("Any marine should have the years of service set");
-            }
-         } else {
-            result = retiredAmount();
-         }
-      } else {
-         result = deadAmount();
+      if (marine.isDead()) {
+         return deadAmount();
+      }
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+      if (marine.getYearsService() == null) {
+         throw new IllegalStateException("Any marine should have the years of service set");
+      }
+      int result = marine.getYearsService() * 100;
+      if (marine.isAwarded()) {
+         result += 1000;
+      }
+      if (marine.isHighlyAwarded()) {
+         result += 2000;
       }
       return result;
    }
@@ -90,7 +85,6 @@ public class GuardClauses {
 }
 
 
-
 class Marine {
    private boolean dead;
    private boolean retired;
@@ -140,6 +134,14 @@ class Marine {
    public Marine setYearsService(Integer yearsService) {
       this.yearsService = yearsService;
       return this;
+   }
+
+   public boolean isHighlyAwarded() {
+      return awards.size() >= 3;
+   }
+
+   public boolean isAwarded() {
+      return !getAwards().isEmpty();
    }
 }
 
