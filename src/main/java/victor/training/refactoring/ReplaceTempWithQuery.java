@@ -34,21 +34,32 @@ class PriceCalculator {
         this.itemPrice = itemPrice;
     }
 
+    // Replace Temp with Query Function
     public double computePrice() {
-        double basePrice = quantity * itemPrice;
         if (quantity > 10)
-            return basePrice * 0.95;
+            return computeBasePrice() * 0.95;
         else
-            return computeNormalPrice(basePrice);
+            return computeNormalPrice();
     }
 
-    private double computeNormalPrice(double basePrice) {
-        double factor = (basePrice > 1000) ? 0.95: 0.98;
-        return factor * basePrice;
+    private double computeNormalPrice() {
+        return getNormalPriceFactor() * computeBasePrice();
+    }
+
+    private double getNormalPriceFactor() {
+        if (computeBasePrice() > 1000) {
+            return 0.95;
+        } else {
+            return 0.98;
+        }
     }
 
     public int computeFidelityPoints() {
-        return (int) (quantity * itemPrice / 2);
+        return (int) (computeBasePrice() / 2);
+    }
+
+    private double computeBasePrice() {
+        return quantity * itemPrice;
     }
 
 
