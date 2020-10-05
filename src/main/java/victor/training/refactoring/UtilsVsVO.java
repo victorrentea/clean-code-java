@@ -18,8 +18,7 @@ public class UtilsVsVO {
 
 
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> !MathUtil.intervalsIntersect(new Interval(model.getStartYear(), model.getEndYear()),
-            criteriaInterval));
+        results.removeIf(model -> !new Interval(model.getStartYear(), model.getEndYear()).intersects(criteriaInterval));
 
         System.out.println("More filtering logic");
         return results;
@@ -35,22 +34,15 @@ class Interval {
         this.end = end;
     }
 
-    public int getStart() {
-        return start;
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
     }
 
-    public int getEnd() {
-        return end;
-    }
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-        return interval1.getStart() <= interval2.getEnd() &&
-               interval2.getStart() <= interval1.getEnd();
-    }
-//    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    //    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
 }
 
 
