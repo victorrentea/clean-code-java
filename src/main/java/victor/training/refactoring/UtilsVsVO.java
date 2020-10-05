@@ -14,15 +14,14 @@ public class UtilsVsVO {
     }
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
-
-
         List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> !new Interval(model.getStartYear(), model.getEndYear()).intersects(criteriaInterval));
+
+        results.removeIf(model -> !model.getYearInterval().intersects(criteria.getYearInterval()));
 
         System.out.println("More filtering logic");
         return results;
     }
+
 }
 
 class Interval {
@@ -76,6 +75,10 @@ class CarSearchCriteria {
     public String getMake() {
         return make;
     }
+
+    public Interval getYearInterval() {
+        return new Interval(startYear, endYear);
+    }
 }
 
 class CarModel {
@@ -106,5 +109,9 @@ class CarModel {
 
     public String getModel() {
         return model;
+    }
+
+    public Interval getYearInterval() {
+        return new Interval(startYear, endYear);
     }
 }
