@@ -1,22 +1,23 @@
 package victor.training.refactoring;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class UtilsVsVO {
 
     public static void main(String[] args) {
-        CarSearchCriteria criteria = new CarSearchCriteria(2006, 2016, "Ford");
+        CarSearchCriteria criteria = new CarSearchCriteria(new Interval(2006, 2016), "Ford");
         new UtilsVsVO().filterCarModels(criteria, Arrays.asList(
             new CarModel("Ford", "Focus", 2008, 2018)
         ));
     }
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = new ArrayList<>(models);
-
-        results.removeIf(model -> !model.getYearInterval().intersects(criteria.getYearInterval()));
+        List<CarModel> results = models.stream()
+            .filter(model -> model.producedDuring(criteria.getYearInterval()))
+            .collect(toList());
 
         System.out.println("More filtering logic");
         return results;
@@ -53,23 +54,12 @@ class MathUtil {
 
 
 class CarSearchCriteria {
-    private final int startYear;
-    private final int endYear;
+    private final Interval yearInterval;
     private final String make;
 
-    public CarSearchCriteria(int startYear, int endYear, String make) {
+    public CarSearchCriteria(Interval yearInterval, String make) {
         this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public int getEndYear() {
-        return endYear;
+        this.yearInterval = yearInterval;
     }
 
     public String getMake() {
@@ -77,10 +67,10 @@ class CarSearchCriteria {
     }
 
     public Interval getYearInterval() {
-        return new Interval(startYear, endYear);
+        return yearInterval;
     }
 }
-
+// Homework:
 class CarModel {
     private final String make;
     private final String model;
@@ -113,5 +103,9 @@ class CarModel {
 
     public Interval getYearInterval() {
         return new Interval(startYear, endYear);
+    }
+
+    public boolean producedDuring(Interval yearInterval) {
+        return getYearInterval().intersects(yearInterval);
     }
 }
