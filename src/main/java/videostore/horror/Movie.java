@@ -2,15 +2,8 @@ package videostore.horror;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
-import org.apache.commons.lang.StringUtils;
-
-import videostore.horror.Movie.Type;
-
 public class Movie {
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	public static final int CHILDRENS = 2;
-	enum Type {
+	enum Type { // nested as long as this is the only class with a field of this type.
 		REGULAR,
 		NEW_RELEASE,
 		CHILDRENS
