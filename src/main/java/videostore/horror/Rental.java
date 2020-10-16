@@ -16,29 +16,7 @@ public class Rental {
 	}
 
 	public double calculatePrice() {
-		switch (movie.getType()) {
-		case REGULAR: return calculateRegularPrice();
-		case NEW_RELEASE: return daysRented * 3;
-		case CHILDRENS: return calculateChildernPrice();
-		default:
-			throw new IllegalArgumentException(getMovie().getType().name());
-		}
-	}
-	private double calculateChildernPrice() {
-		double price = 0;
-		price += 1.5;
-		if (daysRented > 3) {
-			price += (daysRented - 3) * 1.5;
-		}
-		return price;
-	}
-	private double calculateRegularPrice() {
-		double price = 0;
-		price += 2;
-		if (daysRented > 2) {
-			price += (daysRented - 2) * 1.5;
-		}
-		return price;
+		return movie.getType().priceAlgo.apply(daysRented);
 	}
 	public int calculateRenterPoints() {
 		int points = 1;

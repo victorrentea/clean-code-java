@@ -2,11 +2,20 @@ package videostore.horror;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
+import java.util.function.Function;
+
 public class Movie {
 	enum Type { // nested as long as this is the only class with a field of this type.
-		REGULAR,
-		NEW_RELEASE,
-		CHILDRENS
+		REGULAR(RentalPriceCalculator::calculateRegularPrice),
+		NEW_RELEASE(RentalPriceCalculator::calculateNewRelease),
+		CHILDRENS(RentalPriceCalculator::calculateChildernPrice)
+		;
+		public final Function<Integer, Double> priceAlgo;
+
+		private Type(Function<Integer, Double> priceAlgo) {
+			this.priceAlgo = priceAlgo;
+		}
+		
 	}
 	
 	private final String title;
