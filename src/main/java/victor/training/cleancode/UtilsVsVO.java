@@ -1,50 +1,69 @@
 package victor.training.cleancode;
 
+import static java.util.stream.Collectors.toList;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! intervalsIntersect(
-                model.getStartYear(), model.getEndYear(),
-                criteria.getStartYear(), criteria.getEndYear()));
+    	List<CarModel> results = models.stream()
+    			.filter(model -> model.producedBetweenYears(criteria.getYearInterval()))
+    			.collect(toList());
         System.out.println("More filtering logic");
         return results;
     }
-    private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
-    }
 }
 
+class Interval {
+	private final int start;
+	private final int end;
+	
+	public Interval(int start, int end) {
+		if(start > end) {
+			throw new IllegalArgumentException("End < Start");
+		}
+		this.start = start;
+		this.end = end;
+	}
+	public boolean intersects(Interval other) {
+		return start <= other.end && other.start <= end;
+	}
+//	public String toHumanString() {
+//		return "[" + start + " .. " + end + "]";
+//	}
+}
 
-
-
-
+class Other {
+	private void met() {
+		Interval interval1 = new Interval(1, 3);
+		Interval interval2 = new Interval(2, 4);
+		boolean b = interval1.intersects(interval2);
+		System.out.println(b);
+	}
+}
 
 class CarSearchCriteria {
-    private final int startYear;
-    private final int endYear;
+//    private final int startYear;
+//    private final int endYear;
+	private Interval yearInterval;
     private final String make;
 
-    public CarSearchCriteria(int startYear, int endYear, String make) {
+    public CarSearchCriteria(Interval yearInterval, String make) {
+//    public CarSearchCriteria(int startYear, int endYear, String make) {
         this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        this.yearInterval = yearInterval;
     }
 
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
 
     public String getMake() {
         return make;
     }
+
+	public Interval getYearInterval() {
+		return yearInterval;
+	}
 }
 
 class CarModel {
@@ -61,19 +80,21 @@ class CarModel {
         this.endYear = endYear;
     }
 
-    public int getEndYear() {
-        return endYear;
-    }
 
-    public int getStartYear() {
-        return startYear;
-    }
+    public boolean producedBetweenYears(Interval yearInterval) {
+		return getYearInterval().intersects(yearInterval);
+	}
 
-    public String getMake() {
+
+	public String getMake() {
         return make;
     }
 
     public String getModel() {
         return model;
     }
+
+	Interval getYearInterval() {
+		return new Interval(startYear, endYear);
+	}
 }
