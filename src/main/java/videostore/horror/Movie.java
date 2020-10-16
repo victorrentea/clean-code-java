@@ -2,6 +2,7 @@ package videostore.horror;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Movie {
@@ -10,9 +11,9 @@ public class Movie {
 		NEW_RELEASE(RentalPriceCalculator::calculateNewRelease),
 		CHILDRENS(RentalPriceCalculator::calculateChildernPrice)
 		;
-		public final Function<Integer, Double> priceAlgo;
+		public final BiFunction<RentalPriceCalculator, Integer, Double> priceAlgo;
 
-		private Type(Function<Integer, Double> priceAlgo) {
+		private Type(BiFunction<RentalPriceCalculator, Integer, Double> priceAlgo) {
 			this.priceAlgo = priceAlgo;
 		}
 		

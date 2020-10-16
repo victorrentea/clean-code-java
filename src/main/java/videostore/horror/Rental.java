@@ -16,7 +16,9 @@ public class Rental {
 	}
 
 	public double calculatePrice() {
-		return movie.getType().priceAlgo.apply(daysRented);
+		// got from spring
+		RentalPriceCalculator rentalPriceCalculator = new RentalPriceCalculator();
+		return movie.getType().priceAlgo.apply(rentalPriceCalculator, daysRented);
 	}
 	public int calculateRenterPoints() {
 		int points = 1;

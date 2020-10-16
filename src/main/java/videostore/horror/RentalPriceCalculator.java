@@ -1,12 +1,12 @@
 package videostore.horror;
-
+// <bean>
 public class RentalPriceCalculator {
 
-	public static double calculateNewRelease(int daysRented) {
+	public double calculateNewRelease(int daysRented) {
 		return daysRented * 3;
 	}
 
-	public static double calculateChildernPrice(int daysRented) {
+	public double calculateChildernPrice(int daysRented) {
 		double price = 0;
 		price += 1.5;
 		if (daysRented > 3) {
@@ -15,7 +15,7 @@ public class RentalPriceCalculator {
 		return price;
 	}
 
-	public static double calculateRegularPrice(int daysRented) {
+	public double calculateRegularPrice(int daysRented) {
 		double price = 0;
 		price += 2;
 		if (daysRented > 2) {
