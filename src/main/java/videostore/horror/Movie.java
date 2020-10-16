@@ -1,26 +1,37 @@
 package videostore.horror;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
+
+import org.apache.commons.lang.StringUtils;
+
+import videostore.horror.Movie.Type;
+
 public class Movie {
-	public static final int CHILDRENS = 2;
 	public static final int REGULAR = 0;
 	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
+	public static final int CHILDRENS = 2;
+	enum Type {
+		REGULAR,
+		NEW_RELEASE,
+		CHILDRENS
+	}
+	
+	private final String title;
+	private final Type type;
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+	public Movie(final String title, final Type priceCode) {
+		if (isBlank(title)) {
+			throw new IllegalArgumentException();
+		}
+		this.title = title;
+		this.type = priceCode;
 	}
 
-	public Integer getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
+	public Type getType() {
+		return type;
 	}
 
 	public String getTitle() {
-		return _title;
-	};
+		return title;
+	}
 }
