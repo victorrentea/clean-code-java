@@ -5,32 +5,25 @@ import java.util.List;
 public class BooleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, 5, false);
-      bigUglyMethod(2, 4, false);
-      bigUglyMethod(3, 3, false);
-      bigUglyMethod(4, 2, false);
-      bigUglyMethod(5, 1, false);
+      bigUglyMethod(1, 5);
+      bigUglyMethod(2, 4);
+      bigUglyMethod(3, 3);
+      bigUglyMethod(4, 2);
+      bigUglyMethod(5, 1);
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod323(2, 1, true);
+      bigUglyMethod323(2, 1);
 
    }
 
-   static void bigUglyMethod(int b, int a, boolean cr323) {
+   static void bigUglyMethod(int b, int a) {
 	   preLogic(b, a);
-	   if (cr323) {
-		   System.out.println("MY logic: " + a +" ,,," +b);
-	   }
 	   afterLogic(b);
    }
    
-   static void bigUglyMethod323(int b, int a, boolean cr323) {
+   static void bigUglyMethod323(int b, int a) {
       preLogic(b, a);
-      
-      if (cr323) {
-    	  System.out.println("MY logic: " + a +" ,,," +b);
-      }
-
+	  System.out.println("MY logic: " + a +" ,,," +b);
       afterLogic(b);
    }
 
