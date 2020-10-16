@@ -38,6 +38,16 @@ public class BooleanParameters {
 		System.out.println("Complex Logic 2 " + a);
 		System.out.println("Complex Logic 3 " + a);
 	}
+	
+	
+//	private void met(data) {
+//		// TODO Auto-generated method stub
+//		if (data.stuff == smth) {
+//			met1();
+//		} else {
+//			met2();
+//		}
+//	}
 
 	// ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to
 	// break down =================
