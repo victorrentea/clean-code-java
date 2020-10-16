@@ -26,6 +26,8 @@ public class ImmutablePlay {
 		
         System.out.println(immutable.getX());
         System.out.println(immutable.getNumbers());
+        
+        Immutable newObjec = immutable.withNewX(9);
       
     }
 }
@@ -39,6 +41,9 @@ class Immutable {
 		this.x = x;
 		this.numbers = new ArrayList<>(numbers); // too much for normal cases (?)
 		this.other = other;
+	}
+	public Immutable withNewX(int newX) {
+		return new Immutable(newX, numbers, other);
 	}
 	public int getX() {
 		return x;
