@@ -12,12 +12,9 @@ class GildedRose {
 	private static final String AGED_BRIE_ITEM_NAME = "Aged Brie";
 	private static final String SULFURAS_HAND_OF_RAGNAROS_ITEM_NAME = "Sulfuras, Hand of Ragnaros";
 
-	private static final int ZERRO_QUALITY = 0;
 	private static final int MAX_ITEM_QUALITY = 50;
-	private static final int SULFURAS_QUALITY = 80;
-
 	private static final int CHANGE_BY_ONE = 1;
-	private static final int CHANGE_BY_TWO = 2;
+	private static final int TWO = 2;
 	private static final int CHANGE_BY_THREE = 3;
 	private static final int CHANGE_BY_FOUR = 4;
 
@@ -61,11 +58,7 @@ class GildedRose {
 	}
 
 	public void updateQuality() {
-
-		for (int i = 0; i < items.length; i++) {
-
-			Item item = items[i];
-
+		for (Item item : items) {
 			updateItemSellInDay(item);
 			updateItemQuality(item);
 		}
@@ -120,7 +113,7 @@ class GildedRose {
 
 	private int computeSulfurasQuality(Item item) {
 
-		return SULFURAS_QUALITY;
+		return 80;
 	}
 
 	private int computeAgedBrieQualityBeforeSellByDay(Item item) {
@@ -130,7 +123,7 @@ class GildedRose {
 
 	private int computeAgedBrieQualityAfterSellByDay(Item item) {
 
-		return computeIncreasedQuality(item.quality, CHANGE_BY_TWO);
+		return computeIncreasedQuality(item.quality, TWO);
 	}
 
 	private int computeBackstageQualityBeforeSellByDay(Item item) {
@@ -150,23 +143,20 @@ class GildedRose {
 	}
 
 	private int computeBackstageQualityAfterSellByDay(Item item) {
-
-		return ZERRO_QUALITY;
+		return 0;
 	}
 
 	private int computeBackstageSpecialQuality(Item item) {
-
-		if (HAS_LESS_THAN_5_DAYS.test(item)) {
-
+		if (item.sellIn < 5) {
 			return computeIncreasedQuality(item.quality, CHANGE_BY_THREE);
 		}
 
-		return computeIncreasedQuality(item.quality, CHANGE_BY_TWO);
+		return computeIncreasedQuality(item.quality, TWO);
 	}
 
 	private int computeConjuredQualityBeforeSellByDay(Item item) {
 
-		return computeDecreasedQuality(item.quality, CHANGE_BY_TWO);
+		return computeDecreasedQuality(item.quality, TWO);
 	}
 
 	private int computeConjuredQualityAfterSellByDay(Item item) {
@@ -175,52 +165,23 @@ class GildedRose {
 	}
 
 	private int computeIncreasedQuality(int quality, int delta) {
-
-		int newQuality = quality;
-
-		for (int i = 0; i < delta; i++) {
-
-			if (newQuality + 1 > MAX_ITEM_QUALITY) {
-
-				break;
-			}
-
-			newQuality++;
-		}
-
-		return newQuality;
+		return Math.min(50, quality + delta);
 	}
 
 	private static int defaultSellInUpdate(Item item) {
-
 		return item.sellIn - 1;
 	}
 
 	private static int computeNormalItemQualityBeforeSellByDay(Item item) {
-
 		return computeDecreasedQuality(item.quality, CHANGE_BY_ONE);
 	}
 
 	private static int computeNormalItemQualityAfterSellByDay(Item item) {
-
-		return computeDecreasedQuality(item.quality, CHANGE_BY_TWO);
+		return computeDecreasedQuality(item.quality, 2);
 	}
 
 	private static int computeDecreasedQuality(int quality, int delta) {
-
-		int newQuality = quality;
-
-		for (int i = 0; i < delta; i++) {
-
-			if (newQuality - 1 < 0) {
-
-				break;
-			}
-
-			newQuality--;
-		}
-
-		return newQuality;
+		return Math.max(0, quality - delta);
 	}
 
 }

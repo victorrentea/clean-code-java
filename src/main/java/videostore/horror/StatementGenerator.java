@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.List;
 
+import videostore.horror.Movie.Type;
+
 
 //VIEW component
 public class StatementGenerator {
@@ -33,7 +35,9 @@ public class StatementGenerator {
 	}
 
 	private String createBodyLine(Rental rental) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + rental.calculatePrice() + "\n";
+		String extra = "";
+		if (rental.getMovie().getType() == Type.CHILDRENS)  { extra = "butterfies"; }
+		return "\t" + rental.getMovie().getTitle() + extra + "\t" + rental.calculatePrice() + "\n";
 	}
 
 	private String createHeader(String customerName) {
