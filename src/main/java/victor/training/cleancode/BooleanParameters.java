@@ -12,23 +12,39 @@ public class BooleanParameters {
       bigUglyMethod(5, 1, false);
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod(2, 1, true);
+      bigUglyMethod323(2, 1, true);
 
    }
 
    static void bigUglyMethod(int b, int a, boolean cr323) {
-      System.out.println("Complex Logic 1 " + a + " and " + b);
-      System.out.println("Complex Logic 2 " + a);
-      System.out.println("Complex Logic 3 " + a);
+	   preLogic(b, a);
+	   if (cr323) {
+		   System.out.println("MY logic: " + a +" ,,," +b);
+	   }
+	   afterLogic(b);
+   }
+   
+   static void bigUglyMethod323(int b, int a, boolean cr323) {
+      preLogic(b, a);
       
       if (cr323) {
     	  System.out.println("MY logic: " + a +" ,,," +b);
       }
 
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
+      afterLogic(b);
    }
+
+private static void afterLogic(int b) {
+	System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+}
+
+private static void preLogic(int b, int a) {
+	System.out.println("Complex Logic 1 " + a + " and " + b);
+      System.out.println("Complex Logic 2 " + a);
+      System.out.println("Complex Logic 3 " + a);
+}
 
    
    
