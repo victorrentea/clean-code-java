@@ -22,19 +22,14 @@ class Customer {
 		return name;
 	}
 	
-	// 1) break for. extract to mehods?  maybe use streams?
 	// 2) why is this in customer
 	// 3) SWITCH - extract from it
 	// 4) separate the presentation fro mcomputation : MVC
 
 	public String createStatement() {
-		String result = createHeader();
-		
-		result += createBody();
-		
-		
-		result += createFooter();
-		return result;
+		return createHeader() + 
+				createBody() + 
+				createFooter();
 	}
 
 	private String createBody() {
