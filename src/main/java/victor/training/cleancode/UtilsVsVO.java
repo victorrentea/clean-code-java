@@ -9,8 +9,9 @@ public class UtilsVsVO {
     // Search:              [2014 ---- 2018]
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
+        Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
         List<CarModel> results = models.stream().filter(
-            model -> new Interval(model.getStartYear(), model.getEndYear()).intersects(new Interval(criteria.getStartYear(), criteria.getEndYear())))
+            model -> new Interval(model.getStartYear(), model.getEndYear()).intersects(criteriaInterval))
             .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
