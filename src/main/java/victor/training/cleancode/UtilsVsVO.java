@@ -11,8 +11,11 @@ public class UtilsVsVO {
     // Search:              [2014 ---- 2018]
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
+        // iubim java8. Dar mai mult iubim WHERE din SQL.
+        // #rezist tentatiei de a aduce **tot** in java unde sa-i dau cu filter. NU face asta. Rupi memoria in doua.
         List<CarModel> results = models.stream()
             .filter(criteria::matchesProductionYears)
+            .filter(criteria::matchesMake)
             .collect(toList());
         System.out.println("More filtering logic");
         return results;
@@ -81,6 +84,10 @@ class CarSearchCriteria {
 
     public boolean matchesProductionYears(CarModel model) {
         return productionYears.intersects(model.getProductionYears());
+    }
+
+    public boolean matchesMake(CarModel carModel) {
+        return carModel.getMake().equalsIgnoreCase(make);
     }
 }
 
