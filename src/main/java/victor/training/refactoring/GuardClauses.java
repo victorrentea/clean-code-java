@@ -5,19 +5,16 @@ import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      if (marine == null) {
-         throw new RuntimeException("Marine is null");
-      }
+      validateInput(marine);
+
       if (marine.isRetired()) {
          return retiredAmount();
-      }
-      if (marine.getYearsService() == null) {
-         throw new IllegalArgumentException("Any marine should have the years of service set");
       }
       if (retrieveDeadStatus()) { // network call
          // some logic here
          return deadAmount();
       }
+
       int result = marine.getYearsService() * 100;
       if (!marine.getAwards().isEmpty()) {
          result += 1000;
@@ -27,6 +24,15 @@ public class GuardClauses {
       }
       // much more logic here...
       return result;
+   }
+
+   private void validateInput(Marine marine) {
+      if (marine == null) {
+         throw new RuntimeException("Marine is null");
+      }
+      if (marine.getYearsService() == null) {
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
    }
 
    private boolean retrieveDeadStatus() {
