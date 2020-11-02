@@ -9,9 +9,8 @@ public class UtilsVsVO {
     // Search:              [2014 ---- 2018]
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
-        List<CarModel> results = models.stream().filter(
-            model -> new Interval(model.getStartYear(), model.getEndYear()).intersects(criteriaInterval))
+        List<CarModel> results = models.stream()
+            .filter(model -> model.getProductionYears().intersects(criteria.getProductionYears()))
             .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -30,6 +29,7 @@ class Interval {
     private final int end;
 
     public Interval(int start, int end) {
+        if (start > end) throw new IllegalArgumentException("start larger than end");
         this.start = start;
         this.end = end;
     }
@@ -37,7 +37,6 @@ class Interval {
     public boolean intersects(Interval other) {
         return start <= other.end && other.start <= end;
     }
-
 }
 
 
@@ -57,30 +56,28 @@ class MathUtil {
 
 
 
+class CodClient {
+    public void method() {
 
+        new CarSearchCriteria("Ford", new Interval(2007, 2010));
+    }
+}
 
 class CarSearchCriteria {
-    private final int startYear;
-    private final int endYear;
     private final String make;
+    private final Interval productionYears;
 
-    public CarSearchCriteria(int startYear, int endYear, String make) {
+    public CarSearchCriteria(String make, Interval productionYears) {
         this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public int getEndYear() {
-        return endYear;
+        this.productionYears = productionYears;
     }
 
     public String getMake() {
         return make;
+    }
+
+    public Interval getProductionYears() {
+        return productionYears;
     }
 }
 
@@ -112,5 +109,9 @@ class CarModel {
 
     public String getModel() {
         return model;
+    }
+
+    public Interval getProductionYears() {
+        return new Interval(startYear, endYear);
     }
 }
