@@ -1,7 +1,6 @@
 package victor.training.cleancode;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BouleanParameters {
    public static void main(String[] args) {
@@ -44,21 +43,20 @@ public class BouleanParameters {
 
 //   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks, Consumer<Task> task) {
    public void bossLevelStuffStuff(List<Task> tasks) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate  " + task );
-         task.start();
-      }
-
+      beforeBossLogic(tasks);
+      afterBossLogic(tasks);
+   }
+   public void bossLevelStuffStuff323(List<Task> tasks) {
+      beforeBossLogic(tasks);
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
+      afterBossLogic(tasks);
+   }
 
+   private void afterBossLogic(List<Task> tasks) {
+      int index = 0;
       for (Task task : tasks) {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
@@ -67,6 +65,18 @@ public class BouleanParameters {
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Logic7");
    }
+
+   private void beforeBossLogic(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate  " + task );
+         task.start();
+      }
+   }
+
    public void bossLevelStuffNoFluff(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
