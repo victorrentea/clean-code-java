@@ -3,6 +3,8 @@ package victor.training.cleancode;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class UtilsVsVO {
 
     // Ford Focus:     [2012 ---- 2016]
@@ -11,7 +13,7 @@ public class UtilsVsVO {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
             .filter(criteria::matchesProductionYears)
-            .collect(Collectors.toList());
+            .collect(toList());
         System.out.println("More filtering logic");
         return results;
     }
