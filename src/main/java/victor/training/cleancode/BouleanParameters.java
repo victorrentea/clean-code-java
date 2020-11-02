@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BouleanParameters {
    public static void main(String[] args) {
@@ -41,31 +42,42 @@ public class BouleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO move closer to usages
-      int j = tasks.size();
+//   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks, Consumer<Task> task) {
+   public void bossLevelStuffStuff(List<Task> tasks) {
       System.out.println("Logic1");
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-               System.out.println("Logic4: Validate " + task);
-               task.start();
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      int index = 0;
 
-               // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
-
-               index++;
-               System.out.println("Logic5 " + index + " on " + task.isRunning());
-            }
-            System.out.println("Logic6 " + j);
-         } else {
-            System.out.println("Logic7 " + tasks);
-         }
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate  " + task );
+         task.start();
       }
+
+      for (Task task : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         System.out.println("My Logic: " + task);
+      }
+
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+
+      System.out.println("Logic6 " + tasks.size());
       System.out.println("Logic7");
    }
+   public void bossLevelStuffNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+   public void bossLevelNoStuff() {
+      System.out.println("Logic1");
+      System.out.println("Logic7");
+   }
+//   Clasa Executable: codil meu si dat parametru
 
 }
 
