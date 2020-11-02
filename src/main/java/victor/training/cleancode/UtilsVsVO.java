@@ -10,11 +10,12 @@ public class UtilsVsVO {
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-            .filter(model -> model.getProductionYears().intersects(criteria.getProductionYears()))
+            .filter(criteria::matchesProductionYears)
             .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
+
 }
 
 class Alta {
@@ -76,8 +77,8 @@ class CarSearchCriteria {
         return make;
     }
 
-    public Interval getProductionYears() {
-        return productionYears;
+    public boolean matchesProductionYears(CarModel model) {
+        return productionYears.intersects(model.getProductionYears());
     }
 }
 
