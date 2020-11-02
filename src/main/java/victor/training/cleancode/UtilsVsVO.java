@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UtilsVsVO {
 
@@ -9,10 +9,9 @@ public class UtilsVsVO {
     // Search:              [2014 ---- 2018]
 
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = new ArrayList<>(models);
-        results.removeIf(model -> ! MathUtil.intervalsIntersect(
-                model.getStartYear(), model.getEndYear(),
-                criteria.getStartYear(), criteria.getEndYear()));
+        List<CarModel> results = models.stream().filter(
+            model -> new Interval(model.getStartYear(), model.getEndYear()).intersects(new Interval(criteria.getStartYear(), criteria.getEndYear())))
+            .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
@@ -20,17 +19,29 @@ public class UtilsVsVO {
 
 class Alta {
     public void method() {
-        boolean ok = MathUtil.intervalsIntersect(1, 3, 2, 4);
+        boolean ok = new Interval(1, 3).intersects(new Interval(2, 4));
         System.out.println(ok);
     }
+}
+
+class Interval {
+    private final int start;
+    private final int end;
+
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+
 }
 
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
-    }
 }
 
 
