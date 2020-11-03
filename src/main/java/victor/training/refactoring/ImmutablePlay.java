@@ -1,5 +1,7 @@
 package victor.training.refactoring;
 
+import lombok.Value;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +25,9 @@ public class ImmutablePlay {
     }
 }
 
+//record Immutable(int x, List<Integer> number, Other other) {}
+
+//@Value/
 class Immutable {
     private final int x;
     private final List<Integer> numbers;
