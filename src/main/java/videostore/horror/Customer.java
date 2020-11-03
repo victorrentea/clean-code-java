@@ -19,23 +19,22 @@ class Customer {
       return name;
    }
 
-   public String statement() {
+   public String createStatement() {
       double totalPrice = 0;
       int frequentRenterPoints = 0;
       String result = createHeader();
 
       for (Rental rental : rentals) {
          frequentRenterPoints += rental.computeRenterPoints();
-         result += createBodyLine(rental, rental.determinePrice());
-         totalPrice += rental.determinePrice();
-         // este ok sa repeti un apel de functie daca e pura si rapida.
+         totalPrice += rental.computePrice();
+         result += createBodyLine(rental);
       }
       result += createFooter(totalPrice, frequentRenterPoints);
       return result;
    }
 
-   private String createBodyLine(Rental rental, double price) {
-      return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+   private String createBodyLine(Rental rental) {
+      return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
    }
 
    private String createHeader() {

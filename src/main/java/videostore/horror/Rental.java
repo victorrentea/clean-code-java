@@ -19,7 +19,7 @@ public class Rental {
       return daysRented;
    }
 
-   public double determinePrice() {
+   public double computePrice() {
       double price = 0;
       switch (movie.getType()) {
          case REGULAR:
