@@ -8,7 +8,8 @@ public class Movie {
 	enum Type {
 		CHILDREN,
 		REGULAR,
-		NEW_RELEASE
+		NEW_RELEASE,
+		ELDERS
 	}
 	private final String title;
 	private final Type type;
