@@ -1,26 +1,64 @@
 package victor.training.refactoring;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ImmutablePlay {
     public static void main(String[] args) {
-        Immutable immutable = new Immutable();
-        immutable.x = 2;
-        immutable.numbers = Arrays.asList(1, 2, 3, 4, 5);
-        immutable.other = new Other(13);
-        System.out.println(immutable.x);
+        List<Integer> numbers = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        Immutable immutable = new Immutable(2, numbers, new Other(13));
+        numbers.add(6);
+//        immutable.getNumbers().add(6);
+        System.out.println(immutable.getX());
+
+        for (Integer number : immutable.getNumbers()) {
+            System.out.println(number);
+        }
+
+        if (immutable.getNumbers().contains(4)) {
+            System.out.println("Am luat un 4!");
+        }
     }
 }
 
 class Immutable {
-    public int x;
-    public List<Integer> numbers;
-    public Other other;
+    private final int x;
+    private final List<Integer> numbers;
+    private final Other other;
+
+    public Immutable(int x, List<Integer> numbers, Other other) {
+        this.x = x;
+        this.numbers = new ArrayList<>(numbers); // frica de colegi. Ce mama lui de proces de recrutare aveti voi acolo ?!
+        this.other = other;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+//    public List<Integer> getNumbers() { // waste of memory
+//        return new ArrayList<>(numbers);
+//    }
+//    public List<Integer> getNumbers() { // runtime (unexpected) crash
+//        return Collections.unmodifiableList(numbers);
+//    }
+//    public Iterable<Integer> getNumbers() { // permiti doar iterarea cu for pe el <--- foloseste asta !
+//        return numbers;
+//    }
+    public List<? extends Integer> getNumbers() { // permiti citirea elementelor dar nu update-ul lor.  creepy.
+        return numbers;
+    }
+
+    public Other getOther() {
+        return other;
+    }
+
 }
 
 class Other {
-    private int a;
+    private final int a;
 
     public Other(int a) {
         this.a = a;
@@ -30,7 +68,4 @@ class Other {
         return a;
     }
 
-    public void setA(int a) {
-        this.a = a;
-    }
 }
