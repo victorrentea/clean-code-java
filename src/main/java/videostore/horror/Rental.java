@@ -33,35 +33,6 @@ public class Rental {
 
    public double computePrice() {
       return movie.getType().computePrice(daysRented);
-//      switch (movie.getType()) {
-//         case REGULAR:
-//            return computeRegularPrice();
-//         case NEW_RELEASE:
-//            return computeNewReleasePrice();
-//         case CHILDREN:
-//            return computeChildrensPrice();
-//         default:
-//            throw new IllegalStateException("Unexpected value: " + movie.getType());
-//      }
-   }
-
-   private double computeChildrensPrice() {
-      double price = 1.5;
-      if (daysRented > 3)
-         price += (daysRented - 3) * 1.5;
-      return price;
-   }
-
-   private int computeNewReleasePrice() {
-      return daysRented * 3;
-   }
-
-   private double computeRegularPrice() {
-      double price = 2;
-      if (daysRented > 2) {
-         price += (daysRented - 2) * 1.5;
-      }
-      return price;
    }
 
    public int computeRenterPoints() {
