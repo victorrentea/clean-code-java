@@ -2,10 +2,10 @@ package victor.training.refactoring;
 
 import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
+
+import static java.util.Objects.requireNonNull;
 
 public class ImmutablePlay {
     public static void main(String[] args) {
@@ -22,6 +22,12 @@ public class ImmutablePlay {
         if (immutable.getNumbers().contains(4)) {
             System.out.println("Am luat un 4!");
         }
+
+        immutable = immutable.withX(5);
+
+        System.out.println(immutable.getX());
+
+
     }
 }
 
@@ -36,7 +42,7 @@ class Immutable {
     public Immutable(int x, List<Integer> numbers, Other other) {
         this.x = x;
         this.numbers = new ArrayList<>(numbers); // frica de colegi. Ce mama lui de proces de recrutare aveti voi acolo ?!
-        this.other = other;
+        this.other = requireNonNull(other);
     }
 
     public int getX() {
@@ -58,6 +64,10 @@ class Immutable {
 
     public Other getOther() {
         return other;
+    }
+
+    public Immutable withX(int newX) {
+        return new Immutable(newX, numbers, other);
     }
 
 }
