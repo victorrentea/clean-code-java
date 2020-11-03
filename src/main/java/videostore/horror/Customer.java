@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import videostore.horror.Movie.Type;
+
 import java.util.*;
 
 class Customer {
@@ -19,7 +21,7 @@ class Customer {
    }
 
    public String statement() {
-      double totalAmount = 0;
+      double totalPrice = 0;
       int frequentRenterPoints = 0;
       String result = "Rental Record for " + getName() + "\n";
 
@@ -27,48 +29,22 @@ class Customer {
          Movie movie = rental.getMovie();
          int daysRented = rental.getDaysRented();
 
-         // determine amounts for each line
          // add frequent renter points
          frequentRenterPoints++;
          // add bonus for a two day new release rental
-         if (movie.getType() != null &&
-             (movie.getType() == Movie.Type.NEW_RELEASE)
-             && daysRented > 1)
+         boolean isNewRelease = movie.getType() == Type.NEW_RELEASE;
+         if (isNewRelease && daysRented > 1)
             frequentRenterPoints++;
-         
-         
-         double thisAmount = determineAmount(rental);
+
+         double price = rental.determinePrice();
          // show figures line for this rental
-         result += "\t" + movie.getTitle() + "\t"
-                   + String.valueOf(thisAmount) + "\n";
-         totalAmount += thisAmount;
+         result += "\t" + movie.getTitle() + "\t" + price + "\n";
+         totalPrice += price;
       }
       // add footer lines
-      result += "Amount owed is " + totalAmount + "\n";
+      result += "Amount owed is " + totalPrice + "\n";
       result += "You earned " + frequentRenterPoints + " frequent renter points";
       return result;
    }
 
-   private double determineAmount(Rental rental) {
-      int daysRented = rental.getDaysRented();
-      Movie movie = rental.getMovie();
-
-      double thisAmount = 0;
-      switch (movie.getType()) {
-         case REGULAR:
-            thisAmount += 2;
-            if (daysRented > 2)
-               thisAmount += (daysRented - 2) * 1.5;
-            break;
-         case NEW_RELEASE:
-            thisAmount += daysRented * 3;
-            break;
-         case CHILDREN:
-            thisAmount += 1.5;
-            if (daysRented > 3)
-               thisAmount += (daysRented - 3) * 1.5;
-            break;
-      }
-      return thisAmount;
-   }
 }

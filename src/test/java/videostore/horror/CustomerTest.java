@@ -6,6 +6,10 @@ import org.junit.Test;
 
 public class CustomerTest {
 
+    @Test(expected = NullPointerException.class)
+    public void throwsForNullMovieType() {
+        new Movie("Star Wars",null);
+    }
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");

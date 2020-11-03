@@ -1,5 +1,9 @@
 package videostore.horror;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 public class Movie {
 	enum Type {
 		CHILDREN,
@@ -11,7 +15,7 @@ public class Movie {
 
 	public Movie(String title, Type type) {
 		this.title = title;
-		this.type = type;
+		this.type = requireNonNull(type);
 	}
 
 	public Type getType() {
