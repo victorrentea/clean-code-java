@@ -17,8 +17,8 @@ class Customer {
       return rentals;
    }
 
-   public void addRental(Movie movie, int daysRented) {
-      rentals.add(new Rental(movie, daysRented));
+   public void addRental(Rental rental) {
+      rentals.add(rental);
    }
 
    public String getName() {

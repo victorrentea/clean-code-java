@@ -6,7 +6,7 @@ import static java.util.stream.Collectors.joining;
 
 public class StatementGenerator {
 
-   public String createStatement(String customerName, List<Rental> rentals) {
+   public String generateStatement(String customerName, List<Rental> rentals) {
       return createHeader(customerName) +
              createBody(rentals) +
              createFooter(rentals);
