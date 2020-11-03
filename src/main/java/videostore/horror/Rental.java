@@ -2,6 +2,17 @@ package videostore.horror;
 
 import videostore.horror.Movie.Type;
 
+// Polimorphism:
+// abstract class Movie {
+//   abstract double computePrice();
+// }
+// distrugem enum de tipuri (in practica va ramane ca pa o coloana)
+// class NewReleaseMovie extends Movie {
+//    double computePrice() { return daysRented * 3; }
+// PLUS: cand adaugi un nou tip de film, codul nu va COMPILA pana nu implem metoda
+
+
+
 public class Rental {
    private final Movie movie;
    private final int daysRented;
@@ -36,6 +47,8 @@ public class Rental {
             if (daysRented > 3)
                price += (daysRented - 3) * 1.5;
             break;
+         default:
+            throw new IllegalStateException("Unexpected value: " + movie.getType());
       }
       return price;
    }
