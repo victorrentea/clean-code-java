@@ -32,11 +32,17 @@ public class Rental {
    }
 
    public double computePrice() {
-      return switch (movie.getType()) {
-         case REGULAR -> computeRegularPrice();
-         case NEW_RELEASE -> computeNewReleasePrice();
-         case CHILDREN -> computeChildrensPrice();
-      };
+      return movie.getType().computePrice(daysRented);
+//      switch (movie.getType()) {
+//         case REGULAR:
+//            return computeRegularPrice();
+//         case NEW_RELEASE:
+//            return computeNewReleasePrice();
+//         case CHILDREN:
+//            return computeChildrensPrice();
+//         default:
+//            throw new IllegalStateException("Unexpected value: " + movie.getType());
+//      }
    }
 
    private double computeChildrensPrice() {
