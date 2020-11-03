@@ -13,6 +13,10 @@ class Customer {
       this.name = name;
    }
 
+   public List<Rental> getRentals() {
+      return rentals;
+   }
+
    public void addRental(Movie movie, int daysRented) {
       rentals.add(new Rental(movie, daysRented));
    }
@@ -21,35 +25,5 @@ class Customer {
       return name;
    }
 
-   public String createStatement() {
-      return createHeader() +
-             createBody() +
-             createFooter();
-   }
-
-   private String createBody() {
-      return rentals.stream().map(this::createBodyLine).collect(joining());
-   }
-
-   private String createFooter() {
-      return "Amount owed is " + computeTotalPrice() + "\n"
-             + "You earned " + computeTotalPoints() + " frequent renter points";
-   }
-
-   private double computeTotalPrice() {
-      return rentals.stream().mapToDouble(Rental::computePrice).sum();
-   }
-
-   private int computeTotalPoints() {
-      return rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
-   }
-
-   private String createBodyLine(Rental rental) {
-      return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
-   }
-
-   private String createHeader() {
-      return "Rental Record for " + name + "\n";
-   }
 
 }

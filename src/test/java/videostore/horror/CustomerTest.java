@@ -1,5 +1,4 @@
 package videostore.horror;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,6 +23,7 @@ public class CustomerTest {
                 + "Amount owed is 32.0\n"
                 + "You earned 4 frequent renter points";
         
-        Assert.assertEquals(expected, customer.createStatement());
+        Assert.assertEquals(expected, new StatementGenerator()
+            .createStatement(customer.getName(), customer.getRentals()));
     }
 }
