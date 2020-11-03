@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import videostore.horror.Movie.Type;
+
 public class Rental {
    private final Movie movie;
    private final int daysRented;
@@ -31,11 +33,19 @@ public class Rental {
             break;
          case CHILDREN:
             price += 1.5;
-            if (daysRented > 3) {
+            if (daysRented > 3)
                price += (daysRented - 3) * 1.5;
-            }
             break;
       }
       return price;
+   }
+
+   public int computeRenterPoints() {
+      int frequentRenterPoints = 1;
+      boolean isNewRelease = movie.getType() == Type.NEW_RELEASE;
+      if (isNewRelease && daysRented >= 2) {
+         frequentRenterPoints += 1;
+      }
+      return frequentRenterPoints;
    }
 }
