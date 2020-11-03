@@ -10,6 +10,7 @@ import videostore.horror.Movie.Type;
 // class NewReleaseMovie extends Movie {
 //    double computePrice() { return daysRented * 3; }
 // PLUS: cand adaugi un nou tip de film, codul nu va COMPILA pana nu implem metoda
+// MINUS: daca difera putin, e overkill :clase in plus,factories, horror la mapare, chestii de inteles, mai greu de persistat. Un film  NEW_RELEASE nu poate deveni REGULAR
 
 
 
