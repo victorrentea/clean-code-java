@@ -19,7 +19,7 @@ public class Movie {
 		// requires a db migration: UPDATE MOVIES SET TYPE='CHILDREN' WHERE TYPE IS NULL;
 		// + ALTER TABLE MOVIES SET TYPE NOT NULL;
 
-
+		// daca-s ff multe --> PROCEDURA temporara care migreaza datele. dupa care o stergi.
 	}
 
 	public Type getType() {
