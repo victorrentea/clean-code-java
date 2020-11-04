@@ -12,28 +12,23 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ExtractMethodObject {
     private final EntityManager em;
+    private final MyNewShinyService newShinyService;
 
     public List<Long> search(CustomerSearchCriteria criteria) {
-        String jpql = "SELECT c.id FROM Customer c WHERE 1=1 ";
-        Map<String, Object> params = new HashMap<>();
+        return new SearchMethod(criteria, em).search();
+    }
+    public void altaFunctie() {
+        newShinyService.method();
+    }
 
-        if (StringUtils.isNotBlank(criteria.name)) {
-            jpql += " AND UPPER(c.name) LIKE '%' || UPPER(:name) || '%' ";
-            params.put("name", criteria.name);
-        }
+}
+class MyNewShinyService {
 
-        if (criteria.countryId != null) {
-            jpql += " AND (c.residenceCountry.id = :countryId OR ..<5 lines of JPQL>..)";
-            params.put("countryId", criteria.countryId);
-        }
+    public void method() {
 
-        TypedQuery<Long> query = em.createQuery(jpql + " ", Long.class);
-        for (String param : params.keySet()) {
-            query.setParameter(param, params.get(param));
-        }
-        return query.getResultList();
     }
 }
+
 
 class CustomerSearchCriteria {
 
