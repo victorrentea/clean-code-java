@@ -2,11 +2,11 @@ package victor.training.cleancode;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", new Address("St. Albergue", "Paris", 99));
+      new ManyParamsVO().placeOrder(new PersonName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(String fName, String lName, Address address) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(PersonName personName, Address address) {
+      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException(); // TODO push in PersonName constructor
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
@@ -16,11 +16,11 @@ public class ManyParamsVO {
 
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(PersonName personName, int x) {
+      if (personName.getFirstName() == null || personName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + personName.getLastName());
    }
 }
 
@@ -28,6 +28,7 @@ class Person {
    private Long id;
    private String firstName;
    private String lastName;
+//   private PersonName name;// TODO
    private String phone;
 
    public Person(String firstName, String lastName) {
@@ -60,7 +61,7 @@ class PersonService {
       System.out.println(fullNameStr);
    }
 
-   public void p(String city, String streetName, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
