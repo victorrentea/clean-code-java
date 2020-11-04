@@ -13,7 +13,7 @@ public class ManyParamsOOP {
     }
 
     public void bizLogic() {
-        Validator validator = new Validator(dep);
+        Validator validator = new Validator(dep, new Task());
         validator.m1("a",1);
         validator.m2("b",1);
         validator.m3("file.txt", 1L,"ref");
@@ -28,8 +28,10 @@ public class ManyParamsOOP {
 }
 class Validator {
     private final OtherDependency dep;
-    Validator(OtherDependency dep) {
+    private final Task task;
+    Validator(OtherDependency dep, Task task) {
         this.dep = dep;
+        this.task = task;
     }
 
     private final List<String> errors = new ArrayList<>();
