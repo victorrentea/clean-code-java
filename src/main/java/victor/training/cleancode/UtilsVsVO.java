@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -25,10 +27,12 @@ public class UtilsVsVO {
 class IntervalUtil {
 
 }
+@Embeddable
 class Interval {
-   private final int start;
-   private final int end;
+   private int start;
+   private int end;
 
+   protected Interval() {} // just for hibernate
    public Interval(int start, int end) {
       if (start > end) {
          throw new IllegalArgumentException();
@@ -64,6 +68,7 @@ class Interval {
 
 
 class CarSearchCriteria {
+   @Embedded
    private final Interval yearInterval;
    private final String make;
 
