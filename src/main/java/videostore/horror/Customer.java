@@ -2,6 +2,8 @@ package videostore.horror;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
 	private final String name;
 
@@ -20,22 +22,17 @@ class Customer {
 	}
 
 	public String generateStatement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = generateHeader();
-		for (Rental rental : rentalList) {
-			frequentRenterPoints += rental.computeEarnedFrequentPoints();
-			result += generateBodyLine(rental, rental.computePrice());
-			totalPrice += rental.computePrice();
-			// pure = no side effects + same results
-			// you are safe repeating a method call for pure & fast functions
-		}
-		result += generateFooter(totalPrice, frequentRenterPoints);
-		return result;
+		return generateHeader() +
+				 generateBody() +
+				 generateFooter();
 	}
 
-	private String generateBodyLine(Rental rental, double price) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	private String generateBody() {
+		return rentalList.stream().map(this::generateBodyLine).collect(joining());
+	}
+
+	private String generateBodyLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 
@@ -43,9 +40,17 @@ class Customer {
 		return "Rental Record for " + name + "\n";
 	}
 
-	private String generateFooter(double totalPrice, int frequentRenterPoints) {
-		return "Amount owed is " + totalPrice + "\n"
-				 + "You earned " + frequentRenterPoints + " frequent renter points";
+	private String generateFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n"
+				 + "You earned " + computeTotalPoints() + " frequent renter points";
+	}
+
+	private int computeTotalPoints() {
+		return rentalList.stream().mapToInt(Rental::computeEarnedFrequentPoints).sum();
+	}
+
+	private double computeTotalPrice() {
+		return rentalList.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
 
