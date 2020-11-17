@@ -23,20 +23,20 @@ class Customer {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = generateHeader();
-
 		for (Rental rental : rentalList) {
-
-			double price = rental.computePrice();
 			frequentRenterPoints += rental.computeEarnedFrequentPoints();
-			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
-			totalPrice += price;
+			result += generateBodyLine(rental, rental.computePrice());
+			totalPrice += rental.computePrice();
+			// pure = no side effects + same results
+			// you are safe repeating a method call for pure & fast functions
 		}
 		result += generateFooter(totalPrice, frequentRenterPoints);
 		return result;
 	}
 
-
+	private String generateBodyLine(Rental rental, double price) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	}
 
 
 	private String generateHeader() {
