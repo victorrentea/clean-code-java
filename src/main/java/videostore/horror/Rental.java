@@ -19,21 +19,29 @@ public class Rental {
       return movie;
    }
 
+   // what to do to this:
+   // - extract methods from each case.
+   // - 3 implementations of an interface: computePrice() in the interface -- Strategy Pattern
+   // - enum PriceCode { abstract double computePrice();}  curious: https://www.youtube.com/watch?v=F02LKnWJWF4
+
+
    public double computePrice() {
       double price = 0;
       switch (movie.getPriceCode()) {
          case REGULAR:
             price += 2;
-            if (daysRented > 2)
+            if (daysRented > 2) {
                price += (daysRented - 2) * 1.5;
+            }
             break;
          case NEW_RELEASE:
             price += daysRented * 3;
             break;
          case CHILDRENS:
             price += 1.5;
-            if (daysRented > 3)
+            if (daysRented > 3) {
                price += (daysRented - 3) * 1.5;
+            }
             break;
       }
       return price;
