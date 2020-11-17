@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import java.util.List;
 
@@ -27,18 +26,20 @@ public class UtilsVsVO {
 class IntervalUtil {
 
 }
-@Embeddable
 class Interval {
-   private int start;
-   private int end;
+   private final int start;
+   private final int end;
 
-   protected Interval() {} // just for hibernate
    public Interval(int start, int end) {
       if (start > end) {
          throw new IllegalArgumentException();
       }
       this.start = start;
       this.end = end;
+   }
+
+   public Interval moveToRight(int delta) {
+     return new Interval(start + delta, end + delta);
    }
 
    public boolean intersects(Interval other) {

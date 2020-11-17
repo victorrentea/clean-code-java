@@ -9,9 +9,9 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
-        customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
-        customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
+        customer.addRental(new Movie("Star Wars", PriceCode.NEW_RELEASE), 6);
+        customer.addRental(new Movie("Sofia", PriceCode.CHILDRENS), 7);
+        customer.addRental(new Movie("Inception", PriceCode.REGULAR), 5);
         
         String expected = "Rental Record for John Doe\n"
                 + "	Star Wars	18.0\n"
@@ -20,6 +20,6 @@ public class CustomerTest {
                 + "Amount owed is 32.0\n"
                 + "You earned 4 frequent renter points";
         
-        Assert.assertEquals(expected, customer.statement());
+        Assert.assertEquals(expected, customer.generateStatement());
     }
 }
