@@ -31,7 +31,8 @@ class Rental {
       return frequentRenterPoints;
    }
 
+   // teoretic intr-un service manageuit despsring
    public double calculatePrice() {
-      return movie.getCategory().calculatePrice(daysRented);
+      return movie.getCategory().calculatePrice(new PriceService(), daysRented);
    }
 }
