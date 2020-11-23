@@ -1,5 +1,7 @@
 package videostore.dirty;
 
+import lombok.SneakyThrows;
+
 import static java.util.Objects.requireNonNull;
 
 class Rental {
@@ -31,34 +33,25 @@ class Rental {
       return frequentRenterPoints;
    }
 
+
+
+   @SneakyThrows
    public double calculatePrice() {
-      switch (movie.getCategory()) {
-      case REGULAR:
-         return computeRegularPrice();
-      case NEW_RELEASE:
-         return computeNewReleasePrice();
-      case CHILDREN:
-         return computeChildrenPrice();
-      default:
-            throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
-      }
-   }
-
-   private double computeChildrenPrice() {
-      double price = 1.5;
-      if (daysRented > 3)
-         price += (daysRented - 3) * 1.5;
-      return price;
-   }
-
-   private int computeNewReleasePrice() {
-      return daysRented * 3;
-   }
-
-   private double computeRegularPrice() {
-      double price = 2;
-      if (daysRented > 2)
-         price += (daysRented - 2) * 1.5;
-      return price;
+      PriceCalculator priceCalculator = movie.getCategory().getCalculatorClass().newInstance();
+      return priceCalculator.computePrice(daysRented);
+//      return movie.computePrice(int daysRented); // care e metoda abstract de pe Movie
+//       class RegularMovie extends Movie {
+      // class NewRegularMovie extends Movie {
+//
+//      switch (movie.getCategory()) {
+//      case REGULAR:
+//         return computeRegularPrice();
+//      case NEW_RELEASE:
+//         return computeNewReleasePrice();
+//      case CHILDREN:
+//         return computeChildrenPrice();
+//      default:
+//            throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
+//      }
    }
 }
