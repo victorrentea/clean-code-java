@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -33,6 +34,10 @@ class Interval {
       if (start > end) throw new IllegalArgumentException("start larger than end");
       this.start = start;
       this.end = end;
+   }
+
+   public Interval translate(int delta) {
+      return new Interval(start + delta,      end + delta);
    }
 
    public boolean intersects(Interval other) {

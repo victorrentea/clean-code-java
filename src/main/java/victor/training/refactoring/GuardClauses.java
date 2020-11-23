@@ -19,7 +19,12 @@ public class GuardClauses {
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }
 
+      return computePayRoll(marine);
+   }
 
+
+//   class MarinePayRollService // domain service
+   private int computePayRoll(Marine marine) {
       int result = marine.getYearsService() * 100;
       if (!marine.getAwards().isEmpty()) {
          result += 1000;
@@ -27,7 +32,6 @@ public class GuardClauses {
       if (marine.getAwards().size() >= 3) {
          result += 2000;
       }
-      // much more logic here...
       return result;
    }
 
