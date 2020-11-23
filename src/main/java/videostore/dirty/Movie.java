@@ -19,3 +19,40 @@ public class Movie {
    }
 
 }
+
+
+//
+//
+//class A {
+//   private final B b;
+//
+//   A(B b) {
+//      this.b = b;
+//   }
+//
+//   public void method() {
+//       b.method();
+//   }
+//   public void method2() {
+//       b.method();
+//   }
+//}
+//
+//class A2 {
+//   private final B b;
+//
+//   A2(B b) {
+//      this.b = b;
+//   }
+//
+//   public void method() {
+//       b.method();
+//   }
+//}
+//
+//class B{
+//   public B() {}
+//   public void method() {
+//
+//   }
+//}
