@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -26,14 +29,19 @@ public class UtilsVsVO {
 
 }
 
+@Embeddable
 class Interval {
-   private final int start;
-   private final int end;
+   private int start;
+   private int end;
 
    public Interval(int start, int end) {
       if (start > end) throw new IllegalArgumentException("start larger than end");
       this.start = start;
       this.end = end;
+   }
+
+   protected Interval() { // pentry ochii lui hibernate.
+
    }
 
    public Interval translate(int delta) {
@@ -83,9 +91,14 @@ class CarSearchCriteria {
    }
 }
 
+@Entity
 class CarModel {
-   private final String make;
-   private final String model;
+   private  String make;
+   private  String model;
+   @Embedded
+   private Interval yearInterval;
+
+
    private final int startYear;
    private final int endYear;
 
