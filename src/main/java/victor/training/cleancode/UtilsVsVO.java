@@ -18,6 +18,10 @@ public class UtilsVsVO {
           .filter(criteria::matchesYear)
           .collect(toList());
 
+
+//      PageObjects
+      // SRP->
+
       System.out.println("More filtering logic");
       return results;
    }
@@ -28,6 +32,59 @@ public class UtilsVsVO {
    }
 
 }
+//
+//class ResultPart1 { // prima parte din form
+//   @ById()
+//   private TextField first;
+//   private TextField password;
+//   private Button button;
+//   public void setUsername(String username) {
+//      this.username.setValue(username);
+//   }
+//   public void login() {
+//      this.button.click();
+//   }
+//}
+//
+//class LoginPage {
+//   @ById()
+//   private TextField username;
+//   private TextField password;
+//   private Button button;
+//   private PagePart1 pagePart1;
+//
+//   public void setUsername(String username) {
+//      this.username.setValue(username);
+//   }
+//   public void login() {
+//      this.button.click();
+//   }
+//}
+//class ProductPage {
+//   List<WebElement> produses;
+//
+//   public void deleteProduct(Product product) {
+//      webElement = findProduct();
+//      WebElement.findSubElement("butDelete").click();
+//   }
+//   private WebElement findProduct(Product product) {
+//      // sub /div[id=product]/ ,.. cu id = product.id
+//
+//   }
+//}
+//
+//
+//class PageObject {
+//   ReadPageObject read; // selenium inauntru
+//   // behavopir
+//   click() {
+//      read.set
+//   }
+//
+//   public ReadPageObject getRead() {
+//      return read;
+//   }
+//}
 
 @Embeddable
 class Interval {
