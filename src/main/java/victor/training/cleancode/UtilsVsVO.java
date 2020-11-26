@@ -21,7 +21,7 @@ class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
       List<CarModel> results = models.stream()
-          .filter(model -> MathUtil.intersect(model.getYearInterval(), criteria.getYearInterval()))
+          .filter(model -> model.getYearInterval().intersect(criteria.getYearInterval()))
           .collect(Collectors.toList());
 
 
@@ -32,13 +32,7 @@ class SearchEngine {
    private void applyCapacityFilter() {
       Interval interval1 = new Interval(1000, 1600);
       Interval interval2 = new Interval(1250, 2000);
-      System.out.println(MathUtil.intersect(interval1, interval2));
-   }
-}
-
-class MathUtil {
-   static boolean intersect(Interval interval1, Interval interval2) {
-      return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
+      System.out.println(interval1.intersect(interval2));
    }
 }
 
@@ -46,18 +40,18 @@ class Interval {
    private final int start;
    private final int end;
 
-   Interval(int start, int end) {
+   public Interval(int start, int end) {
+      if (start > end) {
+         throw new IllegalArgumentException("Esti cu capu (la tine ?)");
+      }
       this.start = start;
       this.end = end;
    }
 
-   public int getEnd() {
-      return end;
+   public boolean intersect(Interval other) {
+      return start <= other.end && other.start <= end;
    }
 
-   public int getStart() {
-      return start;
-   }
 }
 
 
@@ -94,26 +88,16 @@ class CarSearchCriteria {
    }
 }
 
+// miroase a entitate. un obiect care-l persisti
 class CarModel {
    private final String make;
    private final String model;
-   private final int startYear;
-   private final int endYear;
+   private final Interval yearInterval;
 
    public CarModel(String make, String model, int startYear, int endYear) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
-   }
-
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
+      yearInterval = new Interval(startYear, endYear);
    }
 
    public String getMake() {
@@ -133,6 +117,6 @@ class CarModel {
    }
 
    public Interval getYearInterval() {
-      return new Interval(startYear, endYear);
+      return yearInterval;
    }
 }
