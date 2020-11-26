@@ -22,6 +22,10 @@ class CarModel {
    private final String make;
    private final String model;
    private final Interval yearInterval;
+   // daca tot  e scris in baza,
+   // oare Year Interval cu m va fi persistat de acum inainte ?
+   // a) in tabela separata (NU)
+   // b) campurile start_year si end_year in aceeasi tablea CAR_MODELS --> DA
 
    public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;

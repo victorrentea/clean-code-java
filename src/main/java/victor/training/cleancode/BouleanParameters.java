@@ -2,7 +2,7 @@ package victor.training.cleancode;
 
 import java.util.List;
 
-public class BooleanParameters {
+public class BouleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
       bigUglyMethod(1, 5);
