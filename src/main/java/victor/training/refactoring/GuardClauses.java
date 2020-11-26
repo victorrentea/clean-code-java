@@ -19,12 +19,18 @@ public class GuardClauses {
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }
 
+      return computeRegularPay(marine);
+   }
+
+   private int computeRegularPay(Marine marine) {
       // aici e cazul cel mai intersant: ci cititorul nu mai e stalcit de if-urile de deasupra. E relaxat.
       int result = marine.getYearsService() * 100;
-      if (!marine.getAwards().isEmpty()) {
+      boolean decorated = !marine.getAwards().isEmpty();
+      if (decorated) {
          result += 1000;
       }
-      if (marine.getAwards().size() >= 3) {
+      boolean hero = marine.getAwards().size() >= 3;
+      if (hero) {
          result += 2000;
       }
       // much more logic here...
