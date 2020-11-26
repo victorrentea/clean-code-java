@@ -1,8 +1,8 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UtilsVsVO {
    // Ford Focus:     [2012 ---- 2016]
@@ -20,26 +20,27 @@ public class UtilsVsVO {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !intervalsIntersect(
-          model.getStartYear(), model.getEndYear(),
-          criteria.getStartYear(), criteria.getEndYear()));
+      List<CarModel> results = models.stream()
+          .filter(model -> MathUtil.intervalsIntersect(
+             model.getStartYear(), model.getEndYear(),
+             criteria.getStartYear(), criteria.getEndYear()))
+          .collect(Collectors.toList());
+
+
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(intervalsIntersect(1000, 1600, 1250, 2000));
-   }
-
-   private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
+      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
    }
 }
 
-
-
-
+class MathUtil {
+   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
+      return start1 <= end2 && start2 <= end1;
+   }
+}
 
 
 
