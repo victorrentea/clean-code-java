@@ -10,9 +10,43 @@ public class UtilsVsVO {
    public static void main(String[] args) {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
-      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", new Interval(2012, 2016));
       List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
       System.out.println(models);
+   }
+}
+
+
+// miroase a entitate. un obiect care-l persisti
+class CarModel {
+   private final String make;
+   private final String model;
+   private final Interval yearInterval;
+
+   public CarModel(String make, String model, Interval yearInterval) {
+      this.make = make;
+      this.model = model;
+      this.yearInterval = yearInterval;
+   }
+
+   public String getMake() {
+      return make;
+   }
+
+   public String getModel() {
+      return model;
+   }
+
+   @Override
+   public String toString() {
+      return "CarModel{" +
+             "make='" + make + '\'' +
+             ", model='" + model + '\'' +
+             '}';
+   }
+
+   public Interval getYearInterval() {
+      return yearInterval;
    }
 }
 
@@ -85,38 +119,5 @@ class CarSearchCriteria {
 
    public Interval getYearInterval() {
       return new Interval(startYear, endYear);
-   }
-}
-
-// miroase a entitate. un obiect care-l persisti
-class CarModel {
-   private final String make;
-   private final String model;
-   private final Interval yearInterval;
-
-   public CarModel(String make, String model, int startYear, int endYear) {
-      this.make = make;
-      this.model = model;
-      yearInterval = new Interval(startYear, endYear);
-   }
-
-   public String getMake() {
-      return make;
-   }
-
-   public String getModel() {
-      return model;
-   }
-
-   @Override
-   public String toString() {
-      return "CarModel{" +
-             "make='" + make + '\'' +
-             ", model='" + model + '\'' +
-             '}';
-   }
-
-   public Interval getYearInterval() {
-      return yearInterval;
    }
 }
