@@ -37,10 +37,21 @@ class DiscountService {
 		System.out.println(discountService.getDiscountLine(new Customer(new MemberCard(60))));
 		System.out.println(discountService.getDiscountLine(new Customer(new MemberCard(10))));
 		System.out.println(discountService.getDiscountLine(new Customer()));
+
+		Data2 d = new Data2();
+		d.x = 1;
+		System.out.println(d.x);
+		f2(d);
+		System.out.println(d.x);
 	}
+
+	public static int f2(Data2 d) {return ++d.x;}
+
 }
 
-
+class Data2 {
+	public int x;
+}
 
 
 
