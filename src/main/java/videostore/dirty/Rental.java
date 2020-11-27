@@ -33,7 +33,9 @@ class Rental {
    }
 
    public double determinePrice() {
-      return movie.getCategory().getCalculator().determinePrice(daysRented);
+      Category category = movie.getCategory();
+      PriceCalculator calculator = category.getCalculator();
+      return calculator.determinePrice(daysRented);
    }
 
 
