@@ -3,23 +3,32 @@ package videostore.dirty;
 
 public class Movie {
    public enum Category {
-      CHILDRENS(new ChildrenPriceCalculator()),
-      REGULAR(new RegularPriceCalculator()),
-      NEW_RELEASE(new NewReleasePriceCalculator());
-      private final PriceCalculator calculator;
+      CHILDRENS {
+         @Override
+         public double determinePrice(int daysRented) {
+            double price = 1.5;
+            if (daysRented > 3)
+               price += (daysRented - 3) * 1.5;
+            return price;
+         }
+      },
+      REGULAR {
+         @Override
+         public double determinePrice(int daysRented) {
+            double price = 2;
+            if (daysRented > 2)
+               price += (daysRented - 2) * 1.5;
+            return price;
+         }
+      },
+      NEW_RELEASE {
+         @Override
+         public double determinePrice(int daysRented) {
+            return daysRented * 3;
+         }
+      };
 
-      Category(PriceCalculator calculator) {
-         this.calculator = calculator;
-      }
-
-      public PriceCalculator getCalculator() {
-         return calculator;
-      }
-// f(daysRented, category): double
-
-//      public void determinePrice(int daysRented) {
-//
-//      }
+      public abstract double determinePrice(int daysRented);
    }
    private final String title;
 

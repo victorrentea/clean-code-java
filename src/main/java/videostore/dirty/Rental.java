@@ -34,15 +34,16 @@ class Rental {
 
    public double determinePrice() {
       Category category = movie.getCategory();
-      PriceCalculator calculator = category.getCalculator();
-      return calculator.determinePrice(daysRented);
+//      PriceCalculator calculator = category.getCalculator();
+//      return calculator.determinePrice(daysRented);
+      return category.determinePrice(daysRented);
    }
 
 
 }
 
 interface PriceCalculator {
-   double determinePrice(int daysRented);
+
 }
 
 class RegularPriceCalculator implements PriceCalculator {
