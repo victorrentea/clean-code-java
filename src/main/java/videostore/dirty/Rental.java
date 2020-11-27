@@ -2,6 +2,8 @@ package videostore.dirty;
 
 import videostore.dirty.Movie.Category;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 
 class Rental {
@@ -16,20 +18,16 @@ class Rental {
       this.daysRented = daysRented;
    }
 
-   public int getDaysRented() {
-      return daysRented;
-   }
-
    public Movie getMovie() {
       return movie;
    }
 
    public int determineFrequentRenterPoints() {
-      int frequentRenterPoints = 1;
+      int result = 1;
       if (movie.isNewRelease() && daysRented >= 2) {
-         frequentRenterPoints++;
+         result++;
       }
-      return frequentRenterPoints;
+      return result;
    }
 
    public double determinePrice() {
@@ -40,6 +38,9 @@ class Rental {
    }
 
 
+//   public List<String> getTags() {
+//
+//   }
 }
 
 interface PriceCalculator {

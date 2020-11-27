@@ -2,10 +2,9 @@ package videostore.dirty;
 
 
 import java.util.function.Function;
-
 public class Movie {
    public enum Category {
-      CHILDRENS {
+      CHILDRENS("Movies for children") {
          @Override
          public double determinePrice(int daysRented) {
             double price = 1.5;
@@ -14,7 +13,7 @@ public class Movie {
             return price;
          }
       },
-      REGULAR {
+      REGULAR("Regular") {
          @Override
          public double determinePrice(int daysRented) {
             double price = 2;
@@ -23,7 +22,7 @@ public class Movie {
             return price;
          }
       },
-      NEW_RELEASE {
+      NEW_RELEASE("File noi") {
          @Override
          public double determinePrice(int daysRented) {
             return daysRented * 3;
@@ -32,6 +31,13 @@ public class Movie {
 
       // daca esti curios: https://www.youtube.com/watch?v=F02LKnWJWF4
 //      private final Function<Integer, Double> algorithm;
+
+      private final String label;
+
+      Category(String label) {
+
+         this.label = label;
+      }
 
       public abstract double determinePrice(int daysRented);
    }

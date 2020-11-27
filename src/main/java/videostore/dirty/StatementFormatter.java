@@ -15,10 +15,10 @@ public class StatementFormatter {
    }
 
    private String formatBody(List<Rental> rentals) {
-      return rentals.stream().map(this::composeRentalTitleAndPrice).collect(joining());
+      return rentals.stream().map(this::formatBodyLine).collect(joining());
    }
 
-   private String composeRentalTitleAndPrice(Rental rental) {
+   private String formatBodyLine(Rental rental) {
       return "\t" + rental.getMovie().getTitle() + "\t" + rental.determinePrice() + "\n";
    }
 
