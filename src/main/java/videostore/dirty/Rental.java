@@ -31,22 +31,33 @@ class Rental {
    }
 
    public double determinePrice() {
-      double price = 0;
       switch (getMovie().getCategory()) {
-      case REGULAR:
-         price += 2;
-         if (getDaysRented() > 2)
-            price += (getDaysRented() - 2) * 1.5;
-         break;
-      case NEW_RELEASE:
-         price += getDaysRented() * 3;
-         break;
-      case CHILDRENS:
-         price += 1.5;
-         if (getDaysRented() > 3)
-            price += (getDaysRented() - 3) * 1.5;
-         break;
+         case REGULAR:
+            return determineRegularPrice();
+         case NEW_RELEASE:
+            return determineNewReleasePrice();
+         case CHILDRENS:
+            return determineChildrensPrice();
+         default:
+            throw new IllegalStateException("JDD: speri ca vreun tester va face aceasta exc sa apara: Unexpected value: " + getMovie().getCategory());
       }
+   }
+
+   private double determineRegularPrice() {
+      double price = 2;
+      if (getDaysRented() > 2)
+         price += (getDaysRented() - 2) * 1.5;
+      return price;
+   }
+
+   private int determineNewReleasePrice() {
+      return getDaysRented() * 3;
+   }
+
+   private double determineChildrensPrice() {
+      double price = 1.5;
+      if (getDaysRented() > 3)
+         price += (getDaysRented() - 3) * 1.5;
       return price;
    }
 }
