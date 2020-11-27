@@ -8,14 +8,6 @@ import static java.util.stream.Collectors.joining;
 
 @Service
 public class StatementFormatter {
-//   private final List<Rental> rentals;
-//   private final String customerName;
-//
-//   public StatementFormatter(List<Rental> rentals, String customerName) {
-//      this.rentals = rentals;
-//      this.customerName = customerName;
-//   }
-
    public String formatStatement(List<Rental> rentals, String customerName) {
       return formatHeader(customerName)
              + formatBody(rentals)

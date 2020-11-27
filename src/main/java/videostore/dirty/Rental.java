@@ -28,8 +28,6 @@ class Rental {
          frequentRenterPoints++;
       }
       return frequentRenterPoints;
-
-//      return movie.isNewRelease() && daysRented >= 2 ? 2 : 1;
    }
 
    public double determinePrice() {
