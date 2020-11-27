@@ -2,13 +2,24 @@ package videostore.dirty;
 
 
 public class Movie {
-
-
    public enum Category {
-      CHILDRENS,
-      REGULAR,
-      NEW_RELEASE,
-      DE_BABACI
+      CHILDRENS(new ChildrenPriceCalculator()),
+      REGULAR(new RegularPriceCalculator()),
+      NEW_RELEASE(new NewReleasePriceCalculator());
+      private final PriceCalculator calculator;
+
+      Category(PriceCalculator calculator) {
+         this.calculator = calculator;
+      }
+
+      public PriceCalculator getCalculator() {
+         return calculator;
+      }
+// f(daysRented, category): double
+
+//      public void determinePrice(int daysRented) {
+//
+//      }
    }
    private final String title;
 

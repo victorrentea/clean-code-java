@@ -1,5 +1,7 @@
 package videostore.dirty;
 
+import videostore.dirty.Movie.Category;
+
 import static java.util.Objects.requireNonNull;
 
 class Rental {
@@ -31,33 +33,36 @@ class Rental {
    }
 
    public double determinePrice() {
-      switch (getMovie().getCategory()) {
-         case REGULAR:
-            return determineRegularPrice();
-         case NEW_RELEASE:
-            return determineNewReleasePrice();
-         case CHILDRENS:
-            return determineChildrensPrice();
-         default:
-            throw new IllegalStateException("JDD: speri ca vreun tester va face aceasta exc sa apara: Unexpected value: " + getMovie().getCategory());
-      }
+      return movie.getCategory().getCalculator().determinePrice(daysRented);
    }
 
-   private double determineRegularPrice() {
+
+}
+
+interface PriceCalculator {
+   double determinePrice(int daysRented);
+}
+
+class RegularPriceCalculator implements PriceCalculator {
+   public double determinePrice(int daysRented) {
       double price = 2;
-      if (getDaysRented() > 2)
-         price += (getDaysRented() - 2) * 1.5;
+      if (daysRented > 2)
+         price += (daysRented - 2) * 1.5;
       return price;
    }
+}
 
-   private int determineNewReleasePrice() {
-      return getDaysRented() * 3;
+class NewReleasePriceCalculator implements PriceCalculator {
+   public double determinePrice(int daysRented) {
+      return daysRented * 3;
    }
+}
 
-   private double determineChildrensPrice() {
+class ChildrenPriceCalculator implements PriceCalculator {
+   public double determinePrice(int daysRented) {
       double price = 1.5;
-      if (getDaysRented() > 3)
-         price += (getDaysRented() - 3) * 1.5;
+      if (daysRented > 3)
+         price += (daysRented - 3) * 1.5;
       return price;
    }
 }
