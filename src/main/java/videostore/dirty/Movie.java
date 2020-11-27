@@ -1,6 +1,8 @@
 package videostore.dirty;
 
 
+import java.util.function.Function;
+
 public class Movie {
    public enum Category {
       CHILDRENS {
@@ -27,6 +29,9 @@ public class Movie {
             return daysRented * 3;
          }
       };
+
+      // daca esti curios: https://www.youtube.com/watch?v=F02LKnWJWF4
+//      private final Function<Integer, Double> algorithm;
 
       public abstract double determinePrice(int daysRented);
    }
