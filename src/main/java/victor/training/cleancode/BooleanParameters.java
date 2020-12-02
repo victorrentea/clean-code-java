@@ -88,7 +88,7 @@ public class BooleanParameters {
       }
 
       bossEnd(tasks, runId, taskIds);
-   }Spl
+   }
 
    private void bossEnd(List<Task> tasks, UUID runId, List<Long> taskIds) {
       int index = 0;
