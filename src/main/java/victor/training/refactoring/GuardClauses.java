@@ -5,34 +5,37 @@ import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      int result;
-      if (!retrieveDeadStatus()) { // network call
-         if (marine != null) {
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // much more logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            throw new RuntimeException("Marine is null");
-         }
-      } else {
+      if (retrieveDeadStatus(marine)) { // network call
          // some logic here
-         result = deadAmount();
+         return deadAmount(); // early return trivial boundary cases
       }
+      if (marine == null) {
+         throw new RuntimeException("Marine is null"); //early throw exceptions
+      }
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+      if (marine.getYearsService() == null) {
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
+
+      return computeRegularPayAmount(marine);
+   }
+
+   private int computeRegularPayAmount(Marine marine) {
+      // main use-cases
+      int result = marine.getYearsService() * 100;
+      if (!marine.getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
+      }
+      // much more logic here...
       return result;
    }
 
-   private boolean retrieveDeadStatus() {
+   private boolean retrieveDeadStatus(Marine marine) {
       // after 500 millis
       return false;
    }

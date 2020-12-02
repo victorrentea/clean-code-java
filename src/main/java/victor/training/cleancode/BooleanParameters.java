@@ -1,6 +1,8 @@
 package victor.training.cleancode;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BooleanParameters {
    public static void main(String[] args) {
@@ -74,29 +76,60 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO move closer to usages
-      int j = tasks.size();
-      System.out.println("Logic1");
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-               System.out.println("Logic4: Validate " + task);
-               task.start();
+   // test : asList(new Task()) -< o lista cu 1 element.
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      UUID runId = altaFunctie();
 
-               // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
+      List<Long> taskIds = bossBeforeReturningTaskIds(tasks);
 
-               index++;
-               System.out.println("Logic5 " + index + " on " + task.isRunning());
-            }
-            System.out.println("Logic6 " + j);
-         } else {
-            System.out.println("Logic7 " + tasks);
-         }
+      for (Task task : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         System.out.println("My Logic: " + task);
       }
+
+      bossEnd(tasks, runId, taskIds);
+   }Spl
+
+   private void bossEnd(List<Task> tasks, UUID runId, List<Long> taskIds) {
+      int index = 0;
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      System.out.println("Send email notification for : " + taskIds);
+      System.out.println("Logic6 " + tasks.size());
+      System.out.println("Logic7  " + runId);
+   }
+
+   private UUID altaFunctie() {
+      return UUID.randomUUID();
+   }
+
+   private List<Long> bossBeforeReturningTaskIds(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate task " + task);
+         task.start();
+      }
+
+      List<Long> taskIds = new ArrayList<>();
+      for (Task task : tasks) {
+         taskIds.add(task.getId() + 3);
+      }
+      return taskIds;
+   }
+
+   public void bossLevelNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+   public void bossLevelNoStuff(List<Task> tasks) {
+      System.out.println("Logic1");
       System.out.println("Logic7");
    }
 
@@ -112,5 +145,9 @@ class Task {
 
    public boolean isRunning() {
       return running;
+   }
+
+   public Long getId() {
+      return null;
    }
 }
