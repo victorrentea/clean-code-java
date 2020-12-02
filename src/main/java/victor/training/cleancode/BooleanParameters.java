@@ -5,28 +5,36 @@ import java.util.List;
 public class BooleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, 5);
-      bigUglyMethod(2, 4);
-      bigUglyMethod(3, 3);
-      bigUglyMethod(4, 2);
       bigUglyMethod(5, 1);
+      bigUglyMethod(4, 2);
+      bigUglyMethod(3, 3);
+      bigUglyMethod(2, 4);
+      bigUglyMethod(1, 5);
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod323(2, 1);
+      bigUglyMethod323(1, 2);
+
+
+      // TODO From my use-case #457, I call it too, to do more within:
+      bigUglyMethod457(1, 2);
 
    }
 
-   static void bigUglyMethod(int b, int a) {
-      beforeLogic(b, a);
+   static void bigUglyMethod457(int a, int b) {
+      System.out.println("Ceva doar pentru cazul CR457");
+      bigUglyMethod(a, b);
+   }
+   static void bigUglyMethod(int a, int b) {
+      beforeLogic(a, b);
       afterLogic(b);
    }
-   static void bigUglyMethod323(int b, int a) {
-      beforeLogic(b, a);
+   static void bigUglyMethod323(int a, int b) {
+      beforeLogic(a, b);
       System.out.println("Ceva doar pentru mine, pe UC 323");
       afterLogic(b);
    }
 
-   private static void beforeLogic(int b, int a) {
+   private static void beforeLogic(int a, int b) {
       System.out.println("Complex Logic 1 " + a + " and " + b);
       System.out.println("Complex Logic 2 " + a);
       System.out.println("Complex Logic 3 " + a);
