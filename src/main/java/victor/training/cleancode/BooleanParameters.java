@@ -17,7 +17,32 @@ public class BooleanParameters {
 
       // TODO From my use-case #457, I call it too, to do more within:
       bigUglyMethod457(1, 2);
+//      BigUgly bigUgly = new BigUglyDefault();
+      BigUgly bigUgly = new BigUglyDefaultCR457(new BigUglyDefault());
+      // la apel, trebuie sa te prinzi pe ce instanta chemi functia; iti ascunde ce chemi de fapt. Asta poate fi BINE sau RAU
+      bigUgly.f(1, 2);
 
+   }
+   interface BigUgly {
+      void f(int a, int b);
+   }
+   static class BigUglyDefaultCR457 implements BigUgly { // decorator design pattern
+      private final BigUgly delegate;
+      BigUglyDefaultCR457(BigUgly delegate) {
+         this.delegate = delegate;
+      }
+      @Override
+      public void f(int a, int b) {
+         System.out.println("Ceva doar pentru cazul CR457 INAINTE");
+
+         delegate.f(a, b);
+         System.out.println("Ceva doar pentru cazul CR457 DUPA");
+      }
+   }
+   static class BigUglyDefault implements BigUgly{
+      public void f(int a, int b) {
+         // logica mare
+      }
    }
 
    static void bigUglyMethod457(int a, int b) {
