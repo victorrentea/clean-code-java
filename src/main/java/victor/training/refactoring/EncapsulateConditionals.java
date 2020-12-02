@@ -7,18 +7,17 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 
 public class EncapsulateConditionals {
-   public double getQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor) {
+   public double computeQuote(Date date, RatesPlan plan, int quantity, float clientFidelityFactor) {
+      return computeBaseCharge(date, plan, quantity) - clientFidelityFactor;
+   }
 
-      List<Date> dates = asList(new Date(), new Date(), new Date(), new Date());
-
-      List<Date> summerDates = dates.stream().filter(plan::isDuringSummer).collect(Collectors.toList());
-
-      double charge;
+//   DAO dao;
+   private double computeBaseCharge(Date date, RatesPlan plan, int quantity) {
+//      dao.query()
       if (plan.isDuringSummer(date))
-         charge = quantity * plan.getSummerRate();
+         return quantity * plan.getSummerRate();
       else
-         charge = quantity * plan.getRegularRate() + plan.getRegularServiceCharge();
-      return charge - clientFidelityFactor;
+         return quantity * plan.getRegularRate() + plan.getRegularServiceCharge();
    }
 
 }

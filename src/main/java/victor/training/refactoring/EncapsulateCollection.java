@@ -3,6 +3,7 @@ package victor.training.refactoring;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class EncapsulateCollection {
@@ -10,24 +11,25 @@ public class EncapsulateCollection {
         HotelCharges hotelCharges = new HotelCharges();
         HotelDayCharge dayCharge = new HotelDayCharge(100, true, 5);
 
-        hotelCharges.days.add(dayCharge);
-        System.out.println("FEE: " + hotelCharges.totalFee + "\n");
+        hotelCharges.addDay(dayCharge);
+        System.out.println("FEE: " + hotelCharges.getTotalFee() + "\n");
 
         // Never forget to do:
         hotelCharges.computeTotal();
-        System.out.println("FEE: " + hotelCharges.totalFee + "\n");
+        System.out.println("FEE: " + hotelCharges.getTotalFee() + "\n");
 
+        hotelCharges.getDays().add(dayCharge);
     }
 }
 
 class HotelCharges {
-    public List<HotelDayCharge> days = new ArrayList<>();
-    public double totalFee;
+    private List<HotelDayCharge> days = new ArrayList<>();
+    private double totalFee;
 
-    public void computeTotal() {
+    public double computeTotal() {
         final double BREAKFAST_FEE = 10;
         final double PARKING_HOUR_RATE = 2;
-        totalFee = 0;
+        double totalFee = 0;
         for (HotelDayCharge day : days) {
             totalFee += day.getDayRate();
             if (day.isBreakfast()) {
@@ -35,7 +37,21 @@ class HotelCharges {
             }
             totalFee += day.getParkingHours() * PARKING_HOUR_RATE;
         }
+        return totalFee;
     }
+
+    public List<HotelDayCharge> getDays() {
+        return Collections.unmodifiableList(days);
+    }
+    public void addDay(HotelDayCharge dayCharge) {
+        days.add(dayCharge);
+        totalFee = computeTotal();
+    }
+
+    public double getTotalFee() {
+        return totalFee;
+    }
+
 }
 
 @Data
