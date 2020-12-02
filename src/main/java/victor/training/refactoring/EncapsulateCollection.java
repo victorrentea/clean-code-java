@@ -77,6 +77,7 @@ class HotelCharges {
     public void addDay(HotelDayCharge dayCharge) {
         days.add(dayCharge);
         totalFee = computeTotal();
+        dayCharge.setHotel(this); // relatie bidirectionala!
     }
 
     public double getTotalFee() {
@@ -85,7 +86,6 @@ class HotelCharges {
 
 }
 
-@Data
 class HotelDayCharge {
     private double dayRate;
     private boolean breakfast;
@@ -96,5 +96,10 @@ class HotelDayCharge {
         this.dayRate = dayRate;
         this.breakfast = breakfast;
         this.parkingHours = parkingHours;
+    }
+
+    HotelDayCharge setHotel(HotelCharges hotel) {
+        this.hotel = hotel;
+        return this;
     }
 }
