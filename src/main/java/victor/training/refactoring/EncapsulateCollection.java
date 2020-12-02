@@ -15,18 +15,33 @@ public class EncapsulateCollection {
         System.out.println("FEE: " + hotelCharges.getTotalFee() + "\n");
 
         // Never forget to do:
-        hotelCharges.computeTotal();
-        System.out.println("FEE: " + hotelCharges.getTotalFee() + "\n");
+        m(hotelCharges, false);
 
-        hotelCharges.getDays().add(dayCharge);
+//        hotelCharges.getDays().add(dayCharge);
+
+//         hotelCharges.getDays().stream().filter(dc -> dc.isBreakfast()).anyMatch();
+
+        for (HotelDayCharge day : hotelCharges.getDays()) {
+            System.out.println("Day charge " + day);
+        }
+    }
+
+    private static void m(HotelCharges hotelCharges, boolean ceva) {
+        if (ceva){ altaFunctie(hotelCharges);}
+
+    }
+
+    private static void altaFunctie(HotelCharges hotelCharges) {
+//        hotelCharges.computeTotal();
+        System.out.println("FEE: " + hotelCharges.getTotalFee() + "\n");
     }
 }
 
 class HotelCharges {
-    private List<HotelDayCharge> days = new ArrayList<>();
+    private final List<HotelDayCharge> days = new ArrayList<>();
     private double totalFee;
 
-    public double computeTotal() {
+    private double computeTotal() {
         final double BREAKFAST_FEE = 10;
         final double PARKING_HOUR_RATE = 2;
         double totalFee = 0;
@@ -40,9 +55,25 @@ class HotelCharges {
         return totalFee;
     }
 
+    // creepy
+//    public void forEach(Consumer<HotelDayCharge> action) {
+//        days.forEach(action);
+//    }
+//    public List<HotelDayCharge> getDays() {
+//        return new ArrayList<>(days); // gc unhappy
+//    }
     public List<HotelDayCharge> getDays() {
-        return Collections.unmodifiableList(days);
+        return Collections.unmodifiableList(days); // cea mai comuna
     }
+//    public Iterable<HotelDayCharge> getDays() {
+//        return days;
+//    }
+//    public Collection<? extends HotelDayCharge> getDays() {
+//        return days;
+//    }
+//    public Iterable<HotelDayCharge> getDays() {
+//        return days;
+//    }
     public void addDay(HotelDayCharge dayCharge) {
         days.add(dayCharge);
         totalFee = computeTotal();
