@@ -102,4 +102,16 @@ class HotelDayCharge {
         this.hotel = hotel;
         return this;
     }
+
+    public double getDayRate() {
+        return dayRate;
+    }
+
+    public int getParkingHours() {
+        return parkingHours;
+    }
+
+    public boolean isBreakfast() {
+        return breakfast;
+    }
 }
