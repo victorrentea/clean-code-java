@@ -35,20 +35,28 @@ class PriceCalculator {
     }
 
     public double computePrice() {
-        double basePrice = quantity * itemPrice;
-        if (quantity > 10)
-            return basePrice * 0.95;
-        else
-            return computeNormalPrice(basePrice);
+        if (quantity > 10) {
+            return computeVolumeDiscountedPrice();
+        } else {
+            return computeNormalPrice();
+        }
     }
 
-    private double computeNormalPrice(double basePrice) {
-        double factor = (basePrice > 1000) ? 0.95: 0.98;
-        return factor * basePrice;
+    private double computeVolumeDiscountedPrice() {
+        return basePrice() * 0.95;
+    }
+
+    private double basePrice() {
+        return quantity * itemPrice;
+    }
+
+    private double computeNormalPrice() {
+        double factor = (basePrice() > 1000) ? 0.95: 0.98;
+        return factor * basePrice();
     }
 
     public int computeFidelityPoints() {
-        return (int) (quantity * itemPrice / 2);
+        return (int) (basePrice() / 2);
     }
 
 
