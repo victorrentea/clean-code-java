@@ -14,18 +14,11 @@ public class ExtractMethodObject {
     private final EntityManager em;
 
     public List<Long> search(CustomerSearchCriteria criteria) {
-        String jpql = "SELECT c.id FROM Customer c WHERE 1=1 ";
-        Map<String, Object> params = new HashMap<>();
+        MethodObject method = new MethodObject(criteria, 1);
+        method.execute();
 
-        if (StringUtils.isNotBlank(criteria.name)) {
-            jpql += " AND UPPER(c.name) LIKE '%' || UPPER(:name) || '%' ";
-            params.put("name", criteria.name);
-        }
-
-        if (criteria.countryId != null) {
-            jpql += " AND (c.residenceCountry.id = :countryId OR ..<5 lines of JPQL>..)";
-            params.put("countryId", criteria.countryId);
-        }
+        String jpql = method.getJpql();
+        Map<String, Object> params = method.getParams();
 
         TypedQuery<Long> query = em.createQuery(jpql + " ", Long.class);
         for (String param : params.keySet()) {
