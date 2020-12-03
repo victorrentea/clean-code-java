@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManyParamsOOP {
+
+
+    public static void main(String[] args) {
+        Double d1=0d;
+        Double d2=0d;
+
+        System.out.println(d1.equals(d2));
+    }
     @Autowired
     private OtherDependency dep;
 
