@@ -14,6 +14,9 @@ public class ImmutableAdvanced {
       System.out.println(immutable);
 
       System.out.println(immutable);
+      for (Integer number : immutable.getNumbers()) {
+         System.out.println("Number: " + number);
+      }
    }
 }
 
