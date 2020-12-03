@@ -58,9 +58,14 @@ class AnotherClass {
 }
 
 // Mutable Entity!!
-class Person {
+class Person { // sa nu aiba peste 8-12 campuri
    private Long id;
+
+   // In baza de date ai in continuare Person {id,first,last,phone} -<<< -- flat structure
    private FullName fullName;
+//   private TrackingInfo lastModified; // {user,time}
+//   private TrackingInfo created; // {user,time}
+   // div-ul 3 din ecranul de create.
    private String phone;
 
    public Person(FullName fullName) {
