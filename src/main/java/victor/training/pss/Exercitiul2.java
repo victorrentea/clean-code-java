@@ -163,24 +163,18 @@
 //            int differenceForeign = absIfNecessary(differentPosNeg, getForeignDifference(tender));
 //
 //
-//            TenderDataForQuery dataForQuery = new TenderDataForQuery(tender);
+//            TenderDataForQuery dataForQuery = new TenderDataForQuery(
+//                tender, storeId,
+//                transactionIdReal,
+//                differenceLocal, differenceForeign);
 //            // SPlit Phase Refactor:
 //
+//            dataForQuery.method();
 //
-//            String sqlMiscXactTnd = "INSERT INTO MISC_XACT_TND (" +
-//                                    "STORE_ID, XACT_DATE, XACT_TIME, TERM_ID," +
-//                                    "XACT_ID, TND_ID, TND_AMT, TND_AMTF, CHANGE_TS ) " +
-//                                    "VALUES (" +
-//                                    storeId + "," +
-//                                    transactionDate + "," +
-//                                    transactionTime + "," +
-//                                    AppConstants.DB_TERMINAL_ID_BO + "," +
-//                                    transactionIdReal + "," +
-//                                    tender.getNumber() + "," +
-//                                    differenceLocal + "," +
-//                                    differenceForeign + "," +
-//                                    dbTimestamp() +
-//                                    ")";
+//            /// de aici in jos va ajunge in Repository
+//
+//
+//            String sqlMiscXactTnd = deMutatInRepo(dataForQuery);
 //            allSql.add(sqlMiscXactTnd);
 //         } //for each tender
 //         //A.2. For a pending period:
@@ -335,6 +329,22 @@
 //         returnCode = ServerResponse.EXC_UNKNOWN;
 //      }
 //      return returnCode;
+//   }
+//
+//   private String deMutatInRepo(TenderDataForQuery dataForQuery) {
+//      String sqlMiscXactTnd = "INSERT INTO MISC_XACT_TND (" +
+//                              "STORE_ID, XACT_DATE, XACT_TIME, TERM_ID," +
+//                              "XACT_ID, TND_ID, TND_AMT, TND_AMTF, CHANGE_TS ) " +
+//                              "VALUES (" +
+//                              dataForQuery.getStoreId() + "," +
+//                              AppConstants.DB_TERMINAL_ID_BO + "," +
+//                              dataForQuery. getTransactionIdReal() + "," +
+//                              dataForQuery.getTenderNumber() + "," +
+//                              dataForQuery.getDifferenceLocal() + "," +
+//                              dataForQuery.getDifferenceForeign() + "," +
+//                              dbTimestamp() +
+//                              ")";
+//      return sqlMiscXactTnd;
 //   }
 //
 //   private int absIfNecessary(boolean differentPosNeg, int localDifference) {

@@ -31,7 +31,12 @@ public class ExtractMethodObject {
         for (String param : params.keySet()) {
             query.setParameter(param, params.get(param));
         }
-        return query.getResultList();
+        List<Long> resultList = query.getResultList();
+        if (true) {
+        resultList = query.getResultList();
+
+        }
+        return resultList;
     }
 }
 
