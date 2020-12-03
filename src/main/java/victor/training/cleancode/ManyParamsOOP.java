@@ -12,7 +12,7 @@ public class ManyParamsOOP {
 
     public void bizLogic() {
         Validator validator = new Validator(dep, 1);
-        validator.getErrors().clear();
+//        validator.getErrors().clear();
         validator.m1("a");
         validator.m2("b");
         validator.m3("file.txt", "ref");

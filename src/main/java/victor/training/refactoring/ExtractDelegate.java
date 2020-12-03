@@ -3,30 +3,25 @@ package victor.training.refactoring;
 public class ExtractDelegate {
     public static void main(String[] args) {
         BigOne one = new BigOne();
-        one.fa();
-        one.fab();
+        one.getAbInteractor().fab();
         one.fcab();
         one.fc();
     }
 }
 class BigOne {
-    private A a = new A();
-    private B b = new B();
+    private final victor.training.refactoring.ABInteractor abInteractor = new ABInteractor();
     private C c = new C();
 
-    public void fa() {
-        a.f();
+    public ABInteractor getAbInteractor() {
+        return abInteractor;
     }
-    public void fab() {
-        a.f();
-        b.f();
-    }
+
     public void fcab() {
         c.f();
-        a.f();
-        b.f();
+        abInteractor.fab();
     }
     public void fc() {
+        abInteractor.fa();
         c.f();
     }
 }
