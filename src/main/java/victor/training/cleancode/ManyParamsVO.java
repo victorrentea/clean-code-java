@@ -30,13 +30,9 @@ class Person {
    private String phone;
 
    public Person(String firstName, String lastName) {
+      if (firstName == null || lastName == null) throw new IllegalArgumentException();
       this.firstName = firstName;
       this.lastName = lastName;
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-   }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
    }
 
    // TODO hard-core: implement setter
@@ -55,11 +51,17 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
+      System.out.println("Hi there, " + person.getFirstName());
+
       String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println("Record for " + fullNameStr);
    }
 
-   public void p(String city, String streetName, Integer streetNumber) {
+   public void p(String streetName, String city, Integer streetNumber) {
       System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   }
+
+   public void pcaller() {
+       p("Dristor", "Bucharest", 91);
    }
 }
