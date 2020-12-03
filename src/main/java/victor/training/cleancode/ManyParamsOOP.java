@@ -8,44 +8,55 @@ import java.util.List;
 
 public class ManyParamsOOP {
     @Autowired
-    private Validator validator;
+    private OtherDependency dep;
 
     public void bizLogic() {
-        List<String> errors = new ArrayList<>();
-        validator.m1("a",1, errors);
-        validator.m2("b",1, errors);
-        validator.m3("file.txt", 1L,"ref", errors);
-        validator.m4("a", 1L,5L, "g", errors);
-        validator.m5(1, errors);
+        Validator validator = new Validator(dep, 1);
+        validator.getErrors().clear();
+        validator.m1("a");
+        validator.m2("b");
+        validator.m3("file.txt", "ref");
+        validator.m4("a", "g");
+        validator.m5();
+        List<String> errors = validator.getErrors();
         if (!errors.isEmpty()) {
             throw new IllegalArgumentException(errors.toString());
         }
     }
 }
-@Service
 class Validator {
-    @Autowired
-	private OtherDependency dep;
+	private final OtherDependency dep;
+    private final int storeId;
+    private final List<String> errors = new ArrayList<>();
 
-    public void m1(String a, int b, List<String> errors) {
+    Validator(OtherDependency dep, int storeId) {
+        this.dep = dep;
+        this.storeId = storeId;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void m1(String a) {
         if (a == null) {
             errors.add("a must not be null");
         }
         // stuff
     }
-    public void m2(String s, int c, List<String> errors) {
-        if (c < 0) {
+    public void m2(String s) {
+        if (storeId < 0) {
             errors.add("negative c");
         }
         // stuff
     }
-    public void m3(String fileName, long versionId, String reference, List<String> errors) {
+    public void m3(String fileName, String reference) {
         // stuff
     }
-    public void m4(String a, long listId, long recordId, String g, List<String> errors) {
+    public void m4(String a, String g) {
         // stuff
     }
-    public void m5(int b, List<String> errors) {
+    public void m5() {
         // stuff
     }
 }
