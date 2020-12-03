@@ -38,6 +38,10 @@ class FullName {
    public String asInternationalName() {
       return firstName + " " + lastName.toUpperCase();
    }
+
+   public FullName withLastName(String newLastName) {
+      return new FullName(firstName, /*middleName,*/ newLastName);
+   }
 }
 
 
@@ -65,9 +69,9 @@ class Person {
 
 
    // TODO hard-core: implement setter
-//   public void setLastName(String lastName) {
-//      this.lastName = lastName;
-//   }
+   public void setLastName(String newLastName) {
+      fullName = fullName.withLastName(newLastName);
+   }
 
    public FullName getFullName() {
       return fullName;
@@ -76,6 +80,12 @@ class Person {
 }
 
 class PersonService {
+
+   public void marita(Person ea, Person el) {
+      if (true) {
+         ea.setLastName(el.getFullName().getLastName());
+      }
+   }
    public void f(Person person) {
       System.out.println("Hi " + person.getFullName().getFirstName());
 
