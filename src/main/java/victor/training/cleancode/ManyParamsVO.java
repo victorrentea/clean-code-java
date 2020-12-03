@@ -1,47 +1,30 @@
 package victor.training.cleancode;
 
+import static java.util.Objects.requireNonNull;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      Address address = new Address("St. Albergue", "Paris", 99);
+      FullName name = new FullName("John", "Doe");
+      new ManyParamsVO().placeOrder(name, address);
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
-
+   public void placeOrder(FullName name, Address address) {
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
-
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
 
-class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+//class Customer {
+//class CustomerName {
+//class OrderCustomer {
+class FullName {
+   private final String firstName;
+   private final String lastName;
 
-      System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
-   }
-}
-
-class Person {
-   private Long id;
-   private String firstName;
-   private String lastName;
-   private String phone;
-
-   public Person(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-   }
-
-   public void setFirstName(String firstName) {
-      this.firstName = firstName;
-   }
-
-   // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
+   public FullName(String firstName, String lastName) {
+      this.firstName = requireNonNull(firstName);
+      this.lastName = requireNonNull(lastName);
    }
 
    public String getFirstName() {
@@ -51,15 +34,57 @@ class Person {
    public String getLastName() {
       return lastName;
    }
+
+   public String asInternationalName() {
+      return firstName + " " + lastName.toUpperCase();
+   }
+}
+
+
+class AnotherClass {
+   {
+      otherMethod(new FullName("a", "b"), -1);
+   }
+
+   public void otherMethod(FullName fullName, int x) {
+      System.out.println("Another distant Logic " + x);
+      System.out.println("Person: " + fullName.getLastName());
+      Person person = new Person(new FullName("Jane", "Doe"));
+   }
+}
+
+// Mutable Entity!!
+class Person {
+   private Long id;
+   private FullName fullName;
+   private String phone;
+
+   public Person(FullName fullName) {
+      this.fullName = fullName;
+   }
+
+
+   // TODO hard-core: implement setter
+//   public void setLastName(String lastName) {
+//      this.lastName = lastName;
+//   }
+
+   public FullName getFullName() {
+      return fullName;
+   }
+
 }
 
 class PersonService {
    public void f(Person person) {
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println(fullNameStr);
+      System.out.println("Hi " + person.getFullName().getFirstName());
+
+
+      String fullNameStr = person.getFullName().asInternationalName();
+      System.out.println("Entries for " + fullNameStr);
    }
 
-   public void p(String city, String streetName, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 }
