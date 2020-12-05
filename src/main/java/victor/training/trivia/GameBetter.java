@@ -3,48 +3,6 @@ package victor.training.trivia;
 import java.util.ArrayList;
 import java.util.List;
 
-class Player {
-   private final String name;
-   private int place;
-   private int purse;
-   private boolean inPenaltyBox;
-
-   public Player(String name) {
-      this.name = name;
-   }
-
-   public String getName() {
-      return name;
-   }
-
-   public int getPlace() {
-      return place;
-   }
-
-   public void advance(int roll) {
-      place += roll;
-      if (place >= GameBetter.BOARD_SIZE) {
-         place -= GameBetter.BOARD_SIZE;
-      }
-   }
-
-   public void reward() {
-      purse++;
-   }
-
-   public int getPurse() {
-      return purse;
-   }
-
-   public void punish() {
-      inPenaltyBox = true;
-   }
-
-   public boolean isInPenaltyBox() {
-      return inPenaltyBox;
-   }
-}
-
 public class GameBetter implements IGame {
    public static final int BOARD_SIZE = 12;
    private final QuestionRepository questionRepository = new QuestionRepository();
@@ -117,11 +75,6 @@ public class GameBetter implements IGame {
       return isGameOver;
    }
 
-   private void nextPlayer() {
-      currentPlayer++;
-      if (currentPlayer == players.size()) currentPlayer = 0;
-   }
-
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(currentPlayer().getName() + " was sent to the penalty box");
@@ -129,6 +82,13 @@ public class GameBetter implements IGame {
 
       nextPlayer();
       return true;
+   }
+
+   private void nextPlayer() {
+      currentPlayer++;
+      if (currentPlayer == players.size()) {
+         currentPlayer = 0;
+      }
    }
 
    private boolean didPlayerWin() {
