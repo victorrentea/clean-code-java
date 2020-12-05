@@ -33,6 +33,7 @@ public class GameBetter implements IGame {
             isGettingOutOfPenaltyBox = false;
             return;
          }
+         currentPlayer().free();
          isGettingOutOfPenaltyBox = true;
          System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
       }
@@ -53,12 +54,8 @@ public class GameBetter implements IGame {
 // TODO e un nume misleading care e ?
    public boolean wasCorrectlyAnswered() {
       if (currentPlayer().isInPenaltyBox()) {
-         if (isGettingOutOfPenaltyBox) {
-            return correctAnswer();
-         } else {
-            nextPlayer();
-            return true;
-         }
+         nextPlayer();
+         return true;
       } else {
          return correctAnswer();
       }
@@ -69,10 +66,10 @@ public class GameBetter implements IGame {
       currentPlayer().reward();
       System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
 
-      boolean isGameOver = !didPlayerWin();
+      boolean isGameNotOver = !didPlayerWin();
       nextPlayer();
 
-      return isGameOver;
+      return isGameNotOver;
    }
 
    public boolean wrongAnswer() {
