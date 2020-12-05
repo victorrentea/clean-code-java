@@ -120,7 +120,7 @@ public class Game implements IGame {
                                + " now has "
                                + purses[currentPlayer]
                                + " Gold Coins.");
-
+            inPenaltyBox[currentPlayer] = false;
             boolean winner = didPlayerWin();
             currentPlayer++;
             if (currentPlayer == players.size()) currentPlayer = 0;
