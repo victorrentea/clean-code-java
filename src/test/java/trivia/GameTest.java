@@ -29,23 +29,22 @@ public class GameTest {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try (PrintStream inmemory = new PrintStream(baos)) {
 			System.setOut(inmemory);
-			
-			
+
 			aGame.addPlayer("Chet");
 			aGame.addPlayer("Pat");
 			aGame.addPlayer("Sue");
 			
-			boolean notAWinner;
+			boolean gameNotOver;
 			do {
 				aGame.roll(rand.nextInt(5) + 1);
 				
 				if (rand.nextInt(9) == 7) {
-					notAWinner = aGame.wrongAnswer();
+					gameNotOver = aGame.wrongAnswer();
 				} else {
-					notAWinner = aGame.wasCorrectlyAnswered();
+					gameNotOver = aGame.wasCorrectlyAnswered();
 				}
 				
-			} while (notAWinner);
+			} while (gameNotOver);
 		}
 		return baos.toString();
 	}

@@ -109,15 +109,12 @@ public class GameBetter implements IGame {
    private boolean correctAnswer() {
       System.out.println("Answer was correct!!!!");
       currentPlayer().reward();
-      System.out.println(currentPlayer().getName()
-          + " now has "
-          + currentPlayer().getPurse()
-          + " Gold Coins.");
+      System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
 
-      boolean winner = didPlayerWin();
+      boolean isGameOver = !didPlayerWin();
       nextPlayer();
 
-      return winner;
+      return isGameOver;
    }
 
    private void nextPlayer() {
@@ -134,8 +131,7 @@ public class GameBetter implements IGame {
       return true;
    }
 
-
    private boolean didPlayerWin() {
-      return !(currentPlayer().getPurse() == 6);
+      return currentPlayer().getPurse() == 6;
    }
 }
