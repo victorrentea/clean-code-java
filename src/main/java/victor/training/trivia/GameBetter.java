@@ -96,40 +96,33 @@ public class GameBetter implements IGame {
    public boolean wasCorrectlyAnswered() {
       if (currentPlayer().isInPenaltyBox()) {
          if (isGettingOutOfPenaltyBox) {
-            System.out.println("Answer was correct!!!!");
-            currentPlayer().reward();
-            System.out.println(currentPlayer().getName()
-                               + " now has "
-                               + currentPlayer().getPurse()
-                               + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
-
-            return winner;
+            return correctAnswer();
          } else {
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            nextPlayer();
             return true;
          }
-
-
       } else {
-
-         System.out.println("Answer was corrent!!!!");
-         currentPlayer().reward();
-         System.out.println(currentPlayer().getName()
-                            + " now has "
-                            + currentPlayer().getPurse()
-                            + " Gold Coins.");
-
-         boolean winner = didPlayerWin();
-         currentPlayer++;
-         if (currentPlayer == players.size()) currentPlayer = 0;
-
-         return winner;
+         return correctAnswer();
       }
+   }
+
+   private boolean correctAnswer() {
+      System.out.println("Answer was correct!!!!");
+      currentPlayer().reward();
+      System.out.println(currentPlayer().getName()
+          + " now has "
+          + currentPlayer().getPurse()
+          + " Gold Coins.");
+
+      boolean winner = didPlayerWin();
+      nextPlayer();
+
+      return winner;
+   }
+
+   private void nextPlayer() {
+      currentPlayer++;
+      if (currentPlayer == players.size()) currentPlayer = 0;
    }
 
    public boolean wrongAnswer() {
@@ -137,8 +130,7 @@ public class GameBetter implements IGame {
       System.out.println(currentPlayer().getName() + " was sent to the penalty box");
       currentPlayer().punish();
 
-      currentPlayer++;
-      if (currentPlayer == players.size()) currentPlayer = 0;
+      nextPlayer();
       return true;
    }
 
