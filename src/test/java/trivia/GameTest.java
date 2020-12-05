@@ -35,7 +35,7 @@ public class GameTest {
 			aGame.addPlayer("Pat");
 			aGame.addPlayer("Sue");
 			
-			boolean notAWinner = false;
+			boolean notAWinner;
 			do {
 				aGame.roll(rand.nextInt(5) + 1);
 				
@@ -47,7 +47,6 @@ public class GameTest {
 				
 			} while (notAWinner);
 		}
-		String output = new String(baos.toByteArray());
-		return output;
+		return baos.toString();
 	}
 }

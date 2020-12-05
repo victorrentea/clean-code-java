@@ -27,6 +27,22 @@ class Player {
          place -= GameBetter.BOARD_SIZE;
       }
    }
+
+   public void reward() {
+      purse++;
+   }
+
+   public int getPurse() {
+      return purse;
+   }
+
+   public void punish() {
+      inPenaltyBox = true;
+   }
+
+   public boolean isInPenaltyBox() {
+      return inPenaltyBox;
+   }
 }
 
 public class GameBetter implements IGame {
@@ -43,9 +59,6 @@ public class GameBetter implements IGame {
 
    public void addPlayer(String playerName) {
       players.add(new Player(playerName));
-      purses[players.size()] = 0; // TODO
-      inPenaltyBox[players.size()] = false; // TODO
-
       // TODO e un bug ascuns in cod. Gaseste-l
 
       System.out.println(playerName + " was added");
@@ -56,7 +69,7 @@ public class GameBetter implements IGame {
       System.out.println(currentPlayer().getName() + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayer().isInPenaltyBox()) {
          if (roll % 2 == 0) {
             System.out.println(currentPlayer().getName() + " is not getting out of the penalty box");
             isGettingOutOfPenaltyBox = false;
@@ -81,13 +94,13 @@ public class GameBetter implements IGame {
 
 // TODO e un nume misleading care e ?
    public boolean wasCorrectlyAnswered() {
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayer().isInPenaltyBox()) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
-            purses[currentPlayer]++;
+            currentPlayer().reward();
             System.out.println(currentPlayer().getName()
                                + " now has "
-                               + purses[currentPlayer]
+                               + currentPlayer().getPurse()
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -105,10 +118,10 @@ public class GameBetter implements IGame {
       } else {
 
          System.out.println("Answer was corrent!!!!");
-         purses[currentPlayer]++;
+         currentPlayer().reward();
          System.out.println(currentPlayer().getName()
                             + " now has "
-                            + purses[currentPlayer]
+                            + currentPlayer().getPurse()
                             + " Gold Coins.");
 
          boolean winner = didPlayerWin();
@@ -122,7 +135,7 @@ public class GameBetter implements IGame {
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(currentPlayer().getName() + " was sent to the penalty box");
-      inPenaltyBox[currentPlayer] = true;
+      currentPlayer().punish();
 
       currentPlayer++;
       if (currentPlayer == players.size()) currentPlayer = 0;
@@ -131,6 +144,6 @@ public class GameBetter implements IGame {
 
 
    private boolean didPlayerWin() {
-      return !(purses[currentPlayer] == 6);
+      return !(currentPlayer().getPurse() == 6);
    }
 }
