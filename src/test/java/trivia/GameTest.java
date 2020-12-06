@@ -34,15 +34,17 @@ public class GameTest {
 			aGame.addPlayer("Pat");
 			aGame.addPlayer("Sue");
 			
-			boolean gameNotOver;
+			boolean gameNotOver = false;
 			do {
 				aGame.roll(rand.nextInt(5) + 1);
 				
 				if (rand.nextInt(9) == 7) {
-					gameNotOver = aGame.wrongAnswer();
+					aGame.wrongAnswer();
 				} else {
-					gameNotOver = aGame.wasCorrectlyAnswered();
+					aGame.correctAnswer();
 				}
+
+				gameNotOver = !aGame.isGameOver();
 				
 			} while (gameNotOver);
 		}

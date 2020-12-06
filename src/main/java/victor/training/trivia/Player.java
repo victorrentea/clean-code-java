@@ -41,7 +41,11 @@ class Player {
     return inPenaltyBox;
   }
 
-   public void free() {
+  public void free() {
     inPenaltyBox = false;
    }
+
+  public boolean isWinner() {
+    return purse == 6;
+  }
 }

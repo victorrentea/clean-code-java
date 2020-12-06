@@ -13,7 +13,6 @@ public class GameBetter implements IGame {
    private boolean[] inPenaltyBox = new boolean[6];
 
    int currentPlayer = 0;
-   boolean isGettingOutOfPenaltyBox;
 
    public void addPlayer(String playerName) {
       players.add(new Player(playerName));
@@ -30,11 +29,9 @@ public class GameBetter implements IGame {
       if (currentPlayer().isInPenaltyBox()) {
          if (roll % 2 == 0) {
             System.out.println(currentPlayer().getName() + " is not getting out of the penalty box");
-            isGettingOutOfPenaltyBox = false;
             return;
          }
          currentPlayer().free();
-         isGettingOutOfPenaltyBox = true;
          System.out.println(currentPlayer().getName() + " is getting out of the penalty box");
       }
       currentPlayer().advance(roll);
@@ -51,34 +48,39 @@ public class GameBetter implements IGame {
       System.out.println(questionRepository.nextQuestion(currentPlayer().getPlace()));
    }
 
-// TODO e un nume misleading care e ?
-   public boolean wasCorrectlyAnswered() {
-      if (currentPlayer().isInPenaltyBox()) {
-         nextPlayer();
-         return true;
-      } else {
-         return correctAnswer();
+   public void correctAnswer() {
+      if (isGameOver()) {
+         return;
       }
-   }
 
-   private boolean correctAnswer() {
-      System.out.println("Answer was correct!!!!");
-      currentPlayer().reward();
-      System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
+      if (!currentPlayer().isInPenaltyBox()) {
+         System.out.println("Answer was correct!!!!");
+         currentPlayer().reward();
+         System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
 
-      boolean isGameNotOver = !didPlayerWin();
+         if (isGameOver()) {
+            return;
+         }
+      }
       nextPlayer();
-
-      return isGameNotOver;
    }
 
-   public boolean wrongAnswer() {
+   @Override
+   public boolean isGameOver() {
+      return currentPlayer().isWinner();
+   }
+
+
+   public void wrongAnswer() {
+      if (isGameOver()) {
+         return;
+      }
+
       System.out.println("Question was incorrectly answered");
       System.out.println(currentPlayer().getName() + " was sent to the penalty box");
       currentPlayer().punish();
 
       nextPlayer();
-      return true;
    }
 
    private void nextPlayer() {
@@ -86,9 +88,5 @@ public class GameBetter implements IGame {
       if (currentPlayer == players.size()) {
          currentPlayer = 0;
       }
-   }
-
-   private boolean didPlayerWin() {
-      return currentPlayer().getPurse() == 6;
    }
 }
