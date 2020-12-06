@@ -111,7 +111,7 @@ public class Game implements IGame {
       return "Rock";
    }
 
-   public boolean wasCorrectlyAnswered() {
+   public void correctAnswer() {
       if (inPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
@@ -120,22 +120,22 @@ public class Game implements IGame {
                                + " now has "
                                + purses[currentPlayer]
                                + " Gold Coins.");
-
+            inPenaltyBox[currentPlayer] = false;
             boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            if (winner) {
+               currentPlayer++;
+               if (currentPlayer == players.size()) currentPlayer = 0;
+            }
 
-            return winner;
          } else {
             currentPlayer++;
             if (currentPlayer == players.size()) currentPlayer = 0;
-            return true;
          }
 
 
       } else {
 
-         System.out.println("Answer was corrent!!!!");
+         System.out.println("Answer was correct!!!!");
          purses[currentPlayer]++;
          System.out.println(players.get(currentPlayer)
                             + " now has "
@@ -143,21 +143,26 @@ public class Game implements IGame {
                             + " Gold Coins.");
 
          boolean winner = didPlayerWin();
-         currentPlayer++;
-         if (currentPlayer == players.size()) currentPlayer = 0;
+         if (winner) {
+            currentPlayer++;
+            if (currentPlayer == players.size()) currentPlayer = 0;
+         }
 
-         return winner;
       }
    }
 
-   public boolean wrongAnswer() {
+   @Override
+   public boolean isGameOver() {
+      return !didPlayerWin();
+   }
+
+   public void wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
       inPenaltyBox[currentPlayer] = true;
 
       currentPlayer++;
       if (currentPlayer == players.size()) currentPlayer = 0;
-      return true;
    }
 
 
