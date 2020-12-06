@@ -12,12 +12,10 @@ public class GameBetter implements IGame {
    private int[] purses = new int[6];
    private boolean[] inPenaltyBox = new boolean[6];
 
-   int currentPlayer = 0;
+   private int currentPlayer = 0;
 
    public void addPlayer(String playerName) {
       players.add(new Player(playerName));
-      // TODO e un bug ascuns in cod. Gaseste-l
-
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
    }
@@ -40,36 +38,23 @@ public class GameBetter implements IGame {
       askQuestion();
    }
 
-   private Player currentPlayer() {
-      return players.get(currentPlayer);
-   }
-
-   private void askQuestion() {
-      System.out.println(questionRepository.nextQuestion(currentPlayer().getPlace()));
-   }
-
    public void correctAnswer() {
       if (isGameOver()) {
          return;
       }
 
-      if (!currentPlayer().isInPenaltyBox()) {
+      if (currentPlayer().isInPenaltyBox()) {
+         nextPlayer();
+      } else {
          System.out.println("Answer was correct!!!!");
          currentPlayer().reward();
          System.out.println(currentPlayer().getName() + " now has " + currentPlayer().getPurse() + " Gold Coins.");
 
-         if (isGameOver()) {
-            return;
+         if (!isGameOver()) {
+            nextPlayer();
          }
       }
-      nextPlayer();
    }
-
-   @Override
-   public boolean isGameOver() {
-      return currentPlayer().isWinner();
-   }
-
 
    public void wrongAnswer() {
       if (isGameOver()) {
@@ -81,6 +66,19 @@ public class GameBetter implements IGame {
       currentPlayer().punish();
 
       nextPlayer();
+   }
+
+   @Override
+   public boolean isGameOver() {
+      return currentPlayer().isWinner();
+   }
+
+   private Player currentPlayer() {
+      return players.get(currentPlayer);
+   }
+
+   private void askQuestion() {
+      System.out.println(questionRepository.nextQuestion(currentPlayer().getPlace()));
    }
 
    private void nextPlayer() {
