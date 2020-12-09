@@ -77,9 +77,9 @@ class CarSearchCriteria {
 
 // Entity miroase a baza de date - merge in CAR_MODELS
 class CarModel {
-   private final String make;
-   private final String model;
-   private final Interval yearInterval;
+   private String make;
+   private String model;
+   private Interval yearInterval;
 
    public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
