@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BooleanParameters {
@@ -33,6 +34,7 @@ public class BooleanParameters {
       int index = 0; // TODO move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
+      List<Long> taskIds = new ArrayList<>();
       if (stuff) {
          System.out.println("Logic2");
          if (fluff) {
@@ -41,6 +43,8 @@ public class BooleanParameters {
                System.out.println("Logic4: Validate " + task);
                task.start();
 
+               taskIds.add(task.getId());
+
                // TODO When **I** call this method, I want this to run HERE, too:
                // System.out.println("My Logic: " + task);
 
@@ -48,6 +52,7 @@ public class BooleanParameters {
                System.out.println("Logic5 " + index + " on " + task.isRunning());
             }
             System.out.println("Logic6 " + j);
+            System.out.println("Task Ids: " + taskIds);
          } else {
             System.out.println("Logic7 " + tasks);
          }
@@ -59,6 +64,7 @@ public class BooleanParameters {
 
 
 class Task {
+   private Long id;
    private boolean running;
 
    public void start() {
@@ -67,5 +73,9 @@ class Task {
 
    public boolean isRunning() {
       return running;
+   }
+
+   public Long getId() {
+      return id;
    }
 }
