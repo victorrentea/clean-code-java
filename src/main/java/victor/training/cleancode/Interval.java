@@ -18,8 +18,8 @@ public class Interval {
       this.end = end;
    }
 
-   public boolean intersects(Interval interval1) {
-      return start <= interval1.getEnd() && interval1.getStart() <= getEnd();
+   public boolean intersects(Interval other) {
+      return start <= other.getEnd() && other.getStart() <= getEnd();
    }
 
    public int getStart() {
