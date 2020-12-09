@@ -21,7 +21,7 @@ class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
       List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !intervalsIntersect(
+      results.removeIf(model -> !MathUtil.intervalsIntersect(
           model.getStartYear(), model.getEndYear(),
           criteria.getStartYear(), criteria.getEndYear()));
       System.out.println("More filtering logic");
@@ -29,15 +29,23 @@ class SearchEngine {
    }
 
    private void applyCapacityFilter() {
-      System.out.println(intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
    }
 
-   private boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
+}
+class Alta {
+   private void applyCapacityFilter() {
+      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+   }
+
+}
+
+class MathUtil {
+
+   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
       return start1 <= end2 && start2 <= end1;
    }
 }
-
-
 
 
 
