@@ -49,10 +49,14 @@ public class BouleanParameters {
       for (Task task : tasks) {
          System.out.println("Logic4: Validate " + task);
          task.start();
-
+      }
+      for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
-         System.out.println("My Logic: " + task);
-
+         if (cr323) {
+            System.out.println("My Logic: " + task);
+         }
+      }
+      for (Task task : tasks) {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
