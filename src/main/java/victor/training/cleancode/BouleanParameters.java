@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class BouleanParameters {
@@ -20,6 +21,7 @@ public class BouleanParameters {
       beforeLogic(b, a);
       afterLogic(b);
    }
+
    static void bigUglyMethodCR323(int b, int a) {
       beforeLogic(b, a);
       System.out.println("Doar pentru CR323 " + a);
@@ -41,21 +43,26 @@ public class BouleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevelStuffFluff(List<Task> tasks) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.start();
-      }
+   public void bossLevelStuffFluffCr323(List<Task> tasks) {
+      beforeLogic(tasks);
+      intermediateLogicCr323(tasks);
+      afterLogic(tasks);
+   }
+
+   private void intermediateLogicCr323(List<Task> tasks) {
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
-         if (cr323) {
-            System.out.println("My Logic: " + task);
-         }
+         System.out.println("My Logic: " + task);
       }
+   }
+
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      beforeLogic(tasks);
+      afterLogic(tasks);
+   }
+
+   private void afterLogic(List<Task> tasks) {
+      int index = 0;
       for (Task task : tasks) {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
@@ -64,6 +71,18 @@ public class BouleanParameters {
       System.out.println("Logic7");
    }
 
+   private void beforeLogic(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      //      long id = 0; // daca modifici stare in afara for-ului pe care apoi o citesti, faci buguri cand spargi forul.
+      for (Task task : tasks) {
+         System.out.println("Logic4: remote system. authenticate(task.getUser) " + task);
+         task.start();
+//          id = task.getId();
+
+      }
+   }
 
 
    public void bossLevelStuffNoFluff(List<Task> tasks) {
@@ -84,6 +103,11 @@ public class BouleanParameters {
 
 class Task {
    private boolean running;
+   private Long id;
+
+   public Long getId() {
+      return id;
+   }
 
    public void start() {
       running = true;
