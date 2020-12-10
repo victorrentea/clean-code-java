@@ -46,7 +46,7 @@ public class Rental {
 
 	public int computeFrequentRenterPoints() {
 		int frequentRenterPoints = 1;
-		boolean isNewRelease = movie.getCategory() == Category.NEW_RELEASE;
+		boolean isNewRelease = movie.isNewRelease();
 		if (isNewRelease && daysRented >= 2) {
 			frequentRenterPoints++;
 		}

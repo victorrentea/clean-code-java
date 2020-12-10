@@ -35,15 +35,22 @@ class SearchEngine {
 }
 
 class Alta {
+
+
    private void applyCapacityFilter() {
-      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+      System.out.println(new Interval(UIConstants.OMIE, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 
-class MathUtil {
+class Constants {
 
-   }
+}
+
+class UIConstants {
+
+   public static final int OMIE = 1000;
+}
 
 
 class CarSearchCriteria {

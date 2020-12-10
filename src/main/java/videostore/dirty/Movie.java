@@ -3,6 +3,10 @@ package videostore.dirty;
 import static java.util.Objects.requireNonNull;
 
 public class Movie {
+   public boolean isNewRelease() {
+      return category == Category.NEW_RELEASE;
+   }
+
    public enum Category {
       CHILDRENS,
       REGULAR,
