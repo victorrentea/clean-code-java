@@ -1,5 +1,7 @@
 package videostore.dirty;
 
+import static java.util.Objects.requireNonNull;
+
 public class Movie {
    public enum Category {
       CHILDRENS,
@@ -8,15 +10,15 @@ public class Movie {
    }
 
    private final String title;
-   private final Category priceCode;
+   private final Category category;
 
-   public Movie(String title, Category priceCode) {
-      this.title = title;
-      this.priceCode = priceCode;
+   public Movie(String title, Category category) {
+      this.title = requireNonNull(title);
+      this.category = requireNonNull(category);
    }
 
-   public Category getPriceCode() {
-      return priceCode;
+   public Category getCategory() {
+      return category;
    }
 
    public String getTitle() {
