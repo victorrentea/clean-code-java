@@ -52,7 +52,6 @@ class Customer {
 					+ thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
-		//pe master direct
 		// add footer lines
 		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
 		result += "You earned " + String.valueOf(frequentRenterPoints)
