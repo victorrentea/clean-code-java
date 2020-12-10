@@ -52,4 +52,5 @@ public class Rental {
 		}
 		return frequentRenterPoints;
 	}
+
 }
