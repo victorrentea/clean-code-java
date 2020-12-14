@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class LostInSet {
    public static void main(String[] args) {
+      // UC-123: Loosing you child at the Mall
       Set<Child> set = new HashSet<>();
 
       Child childOne = new Child("Emma");
