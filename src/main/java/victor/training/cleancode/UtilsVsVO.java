@@ -23,29 +23,31 @@ class SearchEngine {
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
       Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
       List<CarModel> results = models.stream()
-          .filter(model -> {
-             Interval modelInterval = new Interval(model.getStartYear(), model.getEndYear());
-             return modelInterval.intersects(criteriaInterval);
-          })
+          .filter(model -> model.getYearInterval().intersects(criteriaInterval))
           .collect(toList());
       System.out.println("More filtering logic");
+
+//      new MathUtil().method();
+
+
       return results;
    }
 
    private void applyCapacityFilter() {
       System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
-
 }
 
 class Alta {
    private void applyCapacityFilter() {
       System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
-
 }
 
 class MathUtil {
+   private MathUtil() {}
+//   public static void method() {
+//   }
 }
 
 
@@ -110,5 +112,9 @@ class CarModel {
              "make='" + make + '\'' +
              ", model='" + model + '\'' +
              '}';
+   }
+
+   public Interval getYearInterval() {
+      return new Interval(startYear, endYear);
    }
 }
