@@ -1,8 +1,9 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 public class UtilsVsVO {
    // Ford Focus:     [2012 ---- 2016]
@@ -11,7 +12,7 @@ public class UtilsVsVO {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
       CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
-      List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
+      List<CarModel> models = new SearchEngine().filterCarModels(criteria, asList(fordFocusMk2));
       System.out.println(models);
    }
 }
@@ -20,40 +21,32 @@ public class UtilsVsVO {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          model.getStartYear(), model.getEndYear(),
-          criteria.getStartYear(), criteria.getEndYear()));
+      Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+      List<CarModel> results = models.stream()
+          .filter(model -> {
+             Interval modelInterval = new Interval(model.getStartYear(), model.getEndYear());
+             return modelInterval.intersects(criteriaInterval);
+          })
+          .collect(toList());
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
-
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
-   }
 }
-
-
-
-
-
-
-
-
 
 
 class CarSearchCriteria {

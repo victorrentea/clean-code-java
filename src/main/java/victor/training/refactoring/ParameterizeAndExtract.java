@@ -4,13 +4,11 @@ class ParameterizeAndExtract {
 
     public void f() {
         System.out.println("Logic F");
-
         common(4);
     }
 
     public void g() {
         System.out.println("Logic G");
-
         common(3);
     }
 
