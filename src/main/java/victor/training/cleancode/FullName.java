@@ -1,10 +1,15 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+
 import static java.util.Objects.requireNonNull;
 
+@Embeddable
 public class FullName {
-   private final String firstName;
-   private final String lastName;
+   private String firstName;
+   private String lastName;
+
+   protected FullName() {}
 
    public FullName(String firstName, String lastName) {
       this.firstName = requireNonNull(firstName);

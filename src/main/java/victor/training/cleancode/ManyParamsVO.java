@@ -1,5 +1,9 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
@@ -29,9 +33,13 @@ class PersonClient {
       System.out.println(person.getFullName().getFirstName());
    }
 }
+
 // smell of an Entity: DATABASE
+@Entity
 class Person {
+   @Id
    private Long id;
+   @Embedded
    private FullName fullName;
    private String phone;
 
