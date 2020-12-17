@@ -27,6 +27,9 @@ public class FullName {
    public String asEnterpriseName() {
       return firstName + " " + lastName.toUpperCase();
    }
+//   public String asCsv() {
+//      return firstName + ";" + lastName.toUpperCase();
+//   }
 
    public FullName withLastName(String newLastName) {
       return new FullName(firstName, newLastName);
