@@ -1,18 +1,10 @@
 package videostore.horror;
 
-import videostore.horror.Movie.Category;
-
-import java.io.FileInputStream;
 import java.util.*;
-
-class Rental {
-	private final Movie movie;
-	private final int daysRented;
-}
+import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentalsMap = new LinkedHashMap<>(); // preserves order
 	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
@@ -20,7 +12,7 @@ class Customer {
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentalsMap.put(movie, daysRented);
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -31,57 +23,31 @@ class Customer {
 	// - switchul din computePrice
 	// - sparge forul
 
-	// array (lista secventiala dupa index)
-	// map (key -> value)
-
 	public String createStatement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String statement = "Rental Record for " + getName() + "\n";
 
-		for (Movie movie : rentalsMap.keySet()) {
-			int daysRented = rentalsMap.get(movie);
+		int frequentRenterPoints = rentals.stream().mapToInt(Rental::computeBonusFrequentRenterPoints).sum();
 
-			double price = computePrice(movie, daysRented);
+		double totalPrice = rentals.stream().mapToDouble(Rental::computePrice).sum();
 
-			frequentRenterPoints += addFrequentRenterPoints(movie, daysRented);
 
-			// show figures line for this rental
-			statement += "\t" + movie.getTitle() + "\t" + price + "\n";
-			totalPrice += price;
-		}
-		// add footer lines
-		statement += "Amount owed is " + totalPrice + "\n";
-		statement += "You earned " + frequentRenterPoints + " frequent renter points";
+		String statement = formatHeader();
+
+		statement += rentals.stream().map(this::formatStatementLine).collect(Collectors.joining());
+		statement += formatFooter(totalPrice, frequentRenterPoints);
 		return statement;
 	}
 
-	private int addFrequentRenterPoints(Movie movie, int daysRented) {
-		int frequentRenterPoints = 1;
-		boolean isNewRelease = movie.getCategory() == Category.NEW_RELEASE;
-		if (isNewRelease && daysRented >= 2) {
-			frequentRenterPoints++;
-		}
-		return frequentRenterPoints;
+	private String formatHeader() {
+		return "Rental Record for " + getName() + "\n";
 	}
 
-	private double computePrice(Movie movie, int dr) {
-		double price;
-		switch (movie.getCategory()) {
-			case REGULAR:
-				price = 2;
-				if (dr > 2)
-					price += (dr - 2) * 1.5;
-				return price;
-			case NEW_RELEASE:
-				return dr * 3;
-			case CHILDREN:
-				price = 1.5;
-				if (dr > 3)
-					price += (dr - 3) * 1.5;
-				return price;
-			default:
-				throw new IllegalStateException("Unexpected value: " + movie.getCategory());
-		}
+	private String formatFooter(double totalPrice, int frequentRenterPoints) {
+		return "Amount owed is " + totalPrice + "\n" +
+				 "You earned " + frequentRenterPoints + " frequent renter points";
 	}
+
+	private String formatStatementLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+	}
+
 }
