@@ -1,4 +1,4 @@
-package victor.training;
+package victor.training.mindit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.math.BigDecimal.ZERO;
-import static victor.training.BigUtils.smartEquals;
-import static victor.training.ConditionType.Turnover;
-import static victor.training.DiscountUnit.Percentage;
+import static victor.training.mindit.BigUtils.smartEquals;
+import static victor.training.mindit.ConditionType.Turnover;
+import static victor.training.mindit.DiscountUnit.Percentage;
 
 @Slf4j
 public class Sample1 {

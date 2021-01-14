@@ -1,4 +1,4 @@
-package victor.training;
+package victor.training.mindit;
 
 public class Play {
    public static void main(String[] args) {

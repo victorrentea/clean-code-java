@@ -1,4 +1,4 @@
-package victor.training;
+package victor.training.mindit;
 
 import java.math.BigDecimal;
 import java.util.Map;
