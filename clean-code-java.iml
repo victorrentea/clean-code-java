@@ -30,6 +30,7 @@
     <orderEntry type="library" name="Maven: org.jooq:jool:0.9.14" level="project" />
     <orderEntry type="library" name="Maven: io.vavr:vavr:0.10.3" level="project" />
     <orderEntry type="library" name="Maven: io.vavr:vavr-match:0.10.3" level="project" />
+    <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
   </component>
 </module>
