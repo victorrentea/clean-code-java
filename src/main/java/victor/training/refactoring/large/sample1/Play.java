@@ -1,4 +1,4 @@
-package victor.training;
+package victor.training.refactoring.large.sample1;
 
 public class Play {
    public static void main(String[] args) {

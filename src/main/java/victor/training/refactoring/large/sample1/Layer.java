@@ -1,4 +1,4 @@
-package victor.training;
+package victor.training.refactoring.large.sample1;
 
 import java.math.BigDecimal;
 import java.util.Map;
