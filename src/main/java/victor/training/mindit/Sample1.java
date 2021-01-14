@@ -59,23 +59,11 @@ public class Sample1 {
             optionB = currencyList.stream().map(cur -> "Special Price xx.xx " + cur).collect(Collectors.joining(", "));
             break;
          case MULTI_UNIT_SIMQTY_LOWEST_PRICE:
-            CommunicationView.withOptionA("Buy Item A, Item B, Item C,...Item N and get the lowest price for free.");
-            break;
+            return "Buy Item A, Item B, Item C,...Item N and get the lowest price for free.";
          case MULTI_UNIT_SIMQTY_HIGHEST_PRICE:
-            optionA = "Buy Item A, Item B, Item C,...Item N and get the highest price for free.";
-            break;
+            return  "Buy Item A, Item B, Item C,...Item N and get the highest price for free.";
          case MULTI_UNIT_SIMQTY_EVERY_ITEM: {
-            if (percentage.compareTo(BigDecimal.TEN) < 0) {
-               comMsg = "No percentage below 10% can be displayed in the communication - " +
-                        "Please communicate the saving amount and final price in local currency instead";
-            } else if (smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) {
-               optionA = "Buy item A, B, ...N & get the lowest one for Free";
-            } else if (smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25)) {
-               optionA = "Buy 2 & get 50% off the 2nd item";
-            } else {
-               optionA = "Buy item A, B, ...N and SAVE " + displayedPercentage + "% on the lowest price";
-            }
-            break;
+            return multiUnit(mechanic, percentage, displayedPercentage);
          }
          case MULTI_UNIT_FIXED_COMBINATION: {
             if (mechanic.getHasGiftOutsideAssortment()) {
@@ -94,104 +82,7 @@ public class Sample1 {
             break;
          }
          case MULTI_UNIT_VARIO_COMBINATION: {
-            ConditionType conditionType = mechanic.getVarioConditionType();
-            BigDecimal conditionQuantity = mechanic.getVarioConditionValueQuantity();
-            DiscountUnit discountUnit;
-            BigDecimal conditionValue; // _self.promotionData.mechanic.varioConditionValueTurnover[currency]
-            discountUnit = mechanic.getVarioDiscountUnit();
-            BigDecimal discountPercentage = mechanic.getVarioDiscountPercentage();
-            BigDecimal discoutDisplayPercentage = round(discountPercentage);
-            BigDecimal discountValue; // _self.promotionData.mechanic.varioDiscountValue[currency];
-            List<String> partsOptionA = new ArrayList<>();
-            List<String> partsOptionB = new ArrayList<>();
-
-//            String optionA;
-//            String optionB;
-//            String comMsg;
-            if (conditionType == ConditionType.Quantity) {
-               if (mechanic.getHasGiftOutsideAssortment()) {
-                  optionA = "FREE Gift when you buy " + conditionQuantity + " products Multi-Unit";
-                  optionB = "Buy " + conditionQuantity + " products & receive a FREE Gift Multi-Unit";
-               } else if (discountUnit == DiscountUnit.Value) {
-                  for (String currency : currencyList) {
-                     conditionValue = mechanic.getVarioDiscountValue().get(currency);
-                     if (mechanic.getHasGiftInAssortment()) {
-                        partsOptionA.add("SAVE " + currency + (conditionQuantity.multiply(conditionValue)) + " when you buy " + conditionQuantity + " products & receive a FREE Gift Multi-Unit");
-                        partsOptionB.add("Buy " + conditionQuantity + " & SAVE " + currency + conditionValue + " on each product & receive a FREE Gift Multi-Unit");
-                     } else if (!(smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) &&
-                                !(smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25))) {
-                        partsOptionA.add("SAVE " + currency + (conditionQuantity.multiply(conditionValue)) + " when you buy " + conditionQuantity + " Multi-Unit");
-                        partsOptionB.add("Buy " + conditionQuantity + " & SAVE " + currency + conditionValue + " on each product Multi-Unit");
-                     }
-                  }
-                  optionA = String.join("\n", partsOptionA);
-                  optionB = String.join("\n", partsOptionB);
-               } else if (discountUnit == Percentage) {
-                  if (discountPercentage.compareTo(BigDecimal.TEN) < 0) {
-                     comMsg = "No percentage below 10% can be displayed in the communication - " +
-                              "Please communicate the saving amount and final price in local currency instead";
-                  } else if (mechanic.getHasGiftInAssortment()) {
-                     if (smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) {
-                        optionA = "Buy 2, get 1 item FREE and get a GIFT";
-                     } else if (smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25)) {
-                        optionA = "Buy 2, get 50% off the 2nd item and get a GIFT";
-                     } else {
-                        optionA = "SAVE " + discoutDisplayPercentage + "% when you buy " + conditionQuantity + " products & receive a FREE Gift Multi-Unit";
-                        optionB = "Buy " + conditionQuantity + " & SAVE " + discoutDisplayPercentage + "% on each product & receive a FREE Gift Multi-Unit";
-                     }
-                  } else {
-                     if (smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) {
-                        optionA = "Buy 2 & get 1 item FREE";
-                     } else if (smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25)) {
-                        optionA = "Buy 2 & get 50% off the 2nd item";
-                     } else {
-                        optionA = "Buy " + conditionQuantity + " & SAVE " + discoutDisplayPercentage + "% Multi-Unit";
-                        optionB = "SAVE " + discoutDisplayPercentage + "% when you buy " + conditionQuantity + " Multi-Unit";
-                     }
-                  }
-               }
-            } else if (conditionType == Turnover) {
-               if (mechanic.getHasGiftOutsideAssortment()) {
-                  for (String currency : currencyList) {
-                     partsOptionA.add("FREE Gift for each " + currency + mechanic.getVarioDiscountValue().get(currency) + " spent on X");
-                  }
-                  optionA = String.join("\n", partsOptionA);
-               } else {
-                  if (discountUnit == DiscountUnit.Value) {
-                     for (String currency : currencyList) {
-                        discountValue = mechanic.getVarioDiscountValue().get(currency);
-                        conditionValue = mechanic.getVarioConditionValueTurnover().get(currency);
-                        if (mechanic.getHasGiftInAssortment()) {
-                           partsOptionA.add("SAVE " + currency + discountValue + " for each " + currency + conditionValue + " spent on X & receive a FREE Gift");
-                           partsOptionB.add("SAVE " + currency + discountValue + " & receive a FREE Gift for each " + currency + conditionValue + " spent");
-                        } else {
-                           partsOptionA.add("SAVE " + currency + discountValue + " for each " + currency + conditionValue + " spent on X");
-                        }
-                     }
-
-                     optionA = String.join("\n", partsOptionA);
-                     optionB = String.join("\n", partsOptionB);
-                  } else if (discountUnit == Percentage) {
-                     if (discountPercentage.compareTo(BigDecimal.TEN) < 0) {
-                        comMsg = "No percentage below 10% can be displayed in the communication - " +
-                                 "Please communicate the saving amount and final price in local currency instead";
-                     } else {
-                        for (String currency : currencyList) {
-                           conditionValue = mechanic.getVarioConditionValueTurnover().get(currency);
-                           if (mechanic.getHasGiftInAssortment()) {
-                              partsOptionA.add("SAVE " + discoutDisplayPercentage + "% when you spend " + currency + conditionValue + " on X & receive a FREE Gift");
-                           } else {
-                              partsOptionA.add("SAVE " + discoutDisplayPercentage + "% for each " + currency + conditionValue + " spent on X");
-                           }
-                        }
-                        optionA = String.join("\n", partsOptionA);
-                     }
-
-                  }
-               }
-            }
-
-            break;
+            return theBigOne(mechanic, currencyList, percentage).asFormattedMessage();
          }
          case MULTI_UNIT_POOL_COMBINATION: {
             BigDecimal noItems2 = mechanic.getPoolConditionValueQuantity();
@@ -214,26 +105,8 @@ public class Sample1 {
             optionA = String.join("\n", partOptionA);
             break;
          }
-         case MULTI_UNIT_LAYERED_COMBINATION: {
-            if (mechanic.getLayerType() == LayerType.Quantity_Value) {
-               List<String> partsOptionA = new ArrayList<>();
-               for (String currency : currencyList) {
-                  List<String> parts = getCommunicationPartsForCurrency(currency, mechanic.getValueLayers());
-                  if (parts.size() > 0) {
-                     partsOptionA.add(String.join(", ", parts) + " Multi-Unit");
-                  }
-               }
-               optionA = String.join("\n", partsOptionA);
-            } else if (mechanic.getLayerType() == LayerType.Quantity_Percentage) {
-               List<String> partsOptionA = mechanic.getPercentageLayers().stream()
-                   .map(layer -> "Buy " + layer.getQuantity() + " & SAVE " + round(layer.getPercentage()) + "%")
-                   .collect(toList());
-               if (partsOptionA.size() > 0) {
-                  optionA = String.join(", ", partsOptionA) + " Multi-Unit";
-               }
-            }
-            break;
-         }
+         case MULTI_UNIT_LAYERED_COMBINATION:
+            return  forMultiUnitLayeredCombination(mechanic, currencyList, optionA);
          case MULTI_UNIT_PACK_AND_COMBO:
          case NON_VALUE_NO_DISCOUNT:
          case NON_VALUE_SMALL:
@@ -245,6 +118,143 @@ public class Sample1 {
       }
 
       return new CommunicationView(comMsg, optionA, optionB).asFormattedMessage();
+   }
+
+   private static String multiUnit(MechanicDTO mechanic, BigDecimal percentage, BigDecimal displayedPercentage) {
+      if (percentage.compareTo(BigDecimal.TEN) < 0) {
+         return  "No percentage below 10% can be displayed in the communication - " +
+                  "Please communicate the saving amount and final price in local currency instead";
+      } else if (smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) {
+         return "Buy item A, B, ...N & get the lowest one for Free";
+      } else if (smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25)) {
+         return "Buy 2 & get 50% off the 2nd item";
+      } else {
+         return "Buy item A, B, ...N and SAVE " + displayedPercentage + "% on the lowest price";
+      }
+   }
+
+   private static CommunicationView theBigOne(MechanicDTO mechanic, List<String> currencyList, BigDecimal percentage) {
+      ConditionType conditionType = mechanic.getVarioConditionType();
+      BigDecimal conditionQuantity = mechanic.getVarioConditionValueQuantity();
+      DiscountUnit discountUnit;
+      BigDecimal conditionValue; // _self.promotionData.mechanic.varioConditionValueTurnover[currency]
+      discountUnit = mechanic.getVarioDiscountUnit();
+      BigDecimal discountPercentage = mechanic.getVarioDiscountPercentage();
+      BigDecimal discoutDisplayPercentage = round(discountPercentage);
+      BigDecimal discountValue; // _self.promotionData.mechanic.varioDiscountValue[currency];
+      List<String> partsOptionA = new ArrayList<>();
+      List<String> partsOptionB = new ArrayList<>();
+
+      // TODO vrentea 2021-01-14 :
+      //
+
+      String optionA = "";
+      String optionB = "";
+      String comMsg = "";
+      if (conditionType == ConditionType.Quantity) {
+         if (mechanic.getHasGiftOutsideAssortment()) {
+            optionA = "FREE Gift when you buy " + conditionQuantity + " products Multi-Unit";
+            optionB = "Buy " + conditionQuantity + " products & receive a FREE Gift Multi-Unit";
+         } else if (discountUnit == DiscountUnit.Value) {
+            for (String currency : currencyList) {
+               conditionValue = mechanic.getVarioDiscountValue().get(currency);
+               if (mechanic.getHasGiftInAssortment()) {
+                  partsOptionA.add("SAVE " + currency + (conditionQuantity.multiply(conditionValue)) + " when you buy " + conditionQuantity + " products & receive a FREE Gift Multi-Unit");
+                  partsOptionB.add("Buy " + conditionQuantity + " & SAVE " + currency + conditionValue + " on each product & receive a FREE Gift Multi-Unit");
+               } else if (!(smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) &&
+                          !(smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25))) {
+                  partsOptionA.add("SAVE " + currency + (conditionQuantity.multiply(conditionValue)) + " when you buy " + conditionQuantity + " Multi-Unit");
+                  partsOptionB.add("Buy " + conditionQuantity + " & SAVE " + currency + conditionValue + " on each product Multi-Unit");
+               }
+            }
+            optionA = String.join("\n", partsOptionA);
+            optionB = String.join("\n", partsOptionB);
+         } else if (discountUnit == Percentage) {
+            if (discountPercentage.compareTo(BigDecimal.TEN) < 0) {
+               comMsg = "No percentage below 10% can be displayed in the communication - " +
+                        "Please communicate the saving amount and final price in local currency instead";
+            } else if (mechanic.getHasGiftInAssortment()) {
+               if (smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) {
+                  optionA = "Buy 2, get 1 item FREE and get a GIFT";
+               } else if (smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25)) {
+                  optionA = "Buy 2, get 50% off the 2nd item and get a GIFT";
+               } else {
+                  optionA = "SAVE " + discoutDisplayPercentage + "% when you buy " + conditionQuantity + " products & receive a FREE Gift Multi-Unit";
+                  optionB = "Buy " + conditionQuantity + " & SAVE " + discoutDisplayPercentage + "% on each product & receive a FREE Gift Multi-Unit";
+               }
+            } else {
+               if (smartEquals(mechanic.getNoItems(), 3) && isOneThird(percentage)) {
+                  optionA = "Buy 2 & get 1 item FREE";
+               } else if (smartEquals(mechanic.getNoItems(), 2) && smartEquals(percentage, 25)) {
+                  optionA = "Buy 2 & get 50% off the 2nd item";
+               } else {
+                  optionA = "Buy " + conditionQuantity + " & SAVE " + discoutDisplayPercentage + "% Multi-Unit";
+                  optionB = "SAVE " + discoutDisplayPercentage + "% when you buy " + conditionQuantity + " Multi-Unit";
+               }
+            }
+         }
+      } else if (conditionType == Turnover) {
+         if (mechanic.getHasGiftOutsideAssortment()) {
+            for (String currency : currencyList) {
+               partsOptionA.add("FREE Gift for each " + currency + mechanic.getVarioDiscountValue().get(currency) + " spent on X");
+            }
+            optionA = String.join("\n", partsOptionA);
+         } else {
+            if (discountUnit == DiscountUnit.Value) {
+               for (String currency : currencyList) {
+                  discountValue = mechanic.getVarioDiscountValue().get(currency);
+                  conditionValue = mechanic.getVarioConditionValueTurnover().get(currency);
+                  if (mechanic.getHasGiftInAssortment()) {
+                     partsOptionA.add("SAVE " + currency + discountValue + " for each " + currency + conditionValue + " spent on X & receive a FREE Gift");
+                     partsOptionB.add("SAVE " + currency + discountValue + " & receive a FREE Gift for each " + currency + conditionValue + " spent");
+                  } else {
+                     partsOptionA.add("SAVE " + currency + discountValue + " for each " + currency + conditionValue + " spent on X");
+                  }
+               }
+
+               optionA = String.join("\n", partsOptionA);
+               optionB = String.join("\n", partsOptionB);
+            } else if (discountUnit == Percentage) {
+               if (discountPercentage.compareTo(BigDecimal.TEN) < 0) {
+                  comMsg = "No percentage below 10% can be displayed in the communication - " +
+                           "Please communicate the saving amount and final price in local currency instead";
+               } else {
+                  for (String currency : currencyList) {
+                     conditionValue = mechanic.getVarioConditionValueTurnover().get(currency);
+                     if (mechanic.getHasGiftInAssortment()) {
+                        partsOptionA.add("SAVE " + discoutDisplayPercentage + "% when you spend " + currency + conditionValue + " on X & receive a FREE Gift");
+                     } else {
+                        partsOptionA.add("SAVE " + discoutDisplayPercentage + "% for each " + currency + conditionValue + " spent on X");
+                     }
+                  }
+                  optionA = String.join("\n", partsOptionA);
+               }
+
+            }
+         }
+      }
+      return new CommunicationView(comMsg, optionA, optionB);
+   }
+
+   private static String forMultiUnitLayeredCombination(MechanicDTO mechanic, List<String> currencyList, String optionA) {
+      if (mechanic.getLayerType() == LayerType.Quantity_Value) {
+         List<String> partsOptionA = new ArrayList<>();
+         for (String currency : currencyList) {
+            List<String> parts = getCommunicationPartsForCurrency(currency, mechanic.getValueLayers());
+            if (parts.size() > 0) {
+               partsOptionA.add(String.join(", ", parts) + " Multi-Unit");
+            }
+         }
+         optionA = String.join("\n", partsOptionA);
+      } else if (mechanic.getLayerType() == LayerType.Quantity_Percentage) {
+         List<String> partsOptionA = mechanic.getPercentageLayers().stream()
+             .map(layer -> "Buy " + layer.getQuantity() + " & SAVE " + round(layer.getPercentage()) + "%")
+             .collect(toList());
+         if (partsOptionA.size() > 0) {
+            optionA = String.join(", ", partsOptionA) + " Multi-Unit";
+         }
+      }
+      return optionA;
    }
 
    private static CommunicationView computeDiscountCommunication(BigDecimal percentage, BigDecimal displayedPercentage) {
