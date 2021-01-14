@@ -6,8 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.math.BigDecimal.ZERO;
+
 public class MechanicDTO {
    private BigDecimal per;
+
+   public void capThePercentageOff(MechanicType type) {
+      BigDecimal max = BigDecimal.valueOf(type == MechanicType.MULTI_UNIT_SIMQTY_EVERY_ITEM ? 100 : 99);
+      if (getPercentageOff().orElse(ZERO).compareTo(max) > 0) {
+         setPercentageOff(max);
+      }
+   }
 
    public MechanicType getSelectedMechanicType() {
       return null;

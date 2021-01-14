@@ -19,7 +19,16 @@ public class Play {
 
             System.out.println("x " + x);
             break;
-         }      }
+         }
+      }
+
+      int a = 1, b = 2;
+      if (a > 0 && b > 0) {
+      } else if (a > 0) {
+      } else if (b > 0) {
+      } else if (a <= 0 && b <= 0)
+        {
+      }
 
    }
 }
