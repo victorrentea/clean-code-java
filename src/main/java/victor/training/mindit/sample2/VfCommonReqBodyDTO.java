@@ -21,4 +21,8 @@ public class VfCommonReqBodyDTO {
    public List<Long> getCategoryIds() {
       return null;
    }
+
+   public DateInterval getDateInterval() {
+      return new DateInterval(getStartDate(), getEndDate());
+   }
 }

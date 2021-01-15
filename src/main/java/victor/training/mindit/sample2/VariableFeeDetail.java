@@ -16,4 +16,8 @@ public class VariableFeeDetail {
    public LocalDate getEndDate() {
       return null;
    }
+
+   public DateInterval getDateInterval() {
+      return new DateInterval(getStartDate(), getEndDate());
+   }
 }

@@ -1,10 +1,7 @@
 package victor.training.mindit;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.math.BigDecimal.ZERO;
 
@@ -93,5 +90,12 @@ public class MechanicDTO {
 
    public List<Layer> getValueLayers() {
       return null;
+   }
+
+   public void setVarioConditionValueTurnover(HashMap<Object, Object> objectObjectHashMap) {
+
+   }
+
+   public void setVarioDiscountValue(HashMap<Object, Object> objectObjectHashMap) {
    }
 }
