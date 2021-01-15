@@ -21,6 +21,7 @@ public class Sample2 {
    private static final Object ENTITY_VF_DETAIL_NAME = 1;
 
    {
+
       // imperative shell
       List<VfCommonReqBodyDTO> stuff = new ArrayList<>();
       for (VfCommonReqBodyDTO variableFee : stuff) {
