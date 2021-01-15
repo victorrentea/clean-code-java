@@ -1,5 +1,7 @@
 package victor.training.refactoring;
 
+import lombok.*;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -26,25 +28,14 @@ public class ImmutablePlay {
     }
 
 }
+@Value
 class Immutable {
-    private final int x;
-    private final List<Integer> numbers;
-    private final Other other;
+    @With
+    int x;
+    List<Integer> numbers;
+    @NonNull
+    Other other;
 
-    Immutable(int x, List<Integer> numbers, Other other) {
-        this.x = x;
-//        this.numbers =  Arrays.asList(numbers.toArray(new Integer[0])); // too much to do!! malloc +
-        this.numbers =  numbers;
-        this.other = Objects.requireNonNull(other);
-    }
-
-    public Immutable withX(int x) { //withers
-        return new Immutable(x, numbers, other); // Feature Envy
-    }
-
-    public int getX() {
-        return x;
-    }
 //    public Iterable<Integer> getNumbers() { // geek zone <1%
 //        return numbers;
 //    }
@@ -54,18 +45,6 @@ class Immutable {
 //    public List<Integer> getNumbers() { // 4%
 //        return new ArrayList<>(numbers);
 //    }
-    public Other getOther() {
-        return other;
-    }
-
-    @Override
-    public String toString() {
-        return "Immutable{" +
-               "x=" + x +
-               ", numbers=" + numbers +
-               ", other=" + other +
-               '}';
-    }
 }
 class Other {
     private final int a;
