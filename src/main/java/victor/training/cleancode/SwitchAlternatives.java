@@ -29,7 +29,7 @@ class NewReleaseMovie  extends Movie {
 }
 class Movie {
     enum Type {
-        REGULAR, NEW_RELEASE, CHILDREN
+        REGULAR, NEW_RELEASE, CHILDREN, ELDERS
     }
     private final Type type;
     private final String name;
@@ -37,15 +37,22 @@ class Movie {
         this.type = type;
         this.name = name;
     }
+
     public String getName() {
         return name;
     }
     public double calculatePrice(int daysRented) {
         switch (type) {
-            case CHILDREN: return daysRented + 1;
-            case REGULAR: return daysRented * 2;
-            case NEW_RELEASE: return daysRented * 3;
-            default: throw new IllegalStateException("Unexpected value: " + type);
+            case CHILDREN:
+                return daysRented + 1;
+            case REGULAR:
+                return daysRented * 2;
+            case NEW_RELEASE:
+                return daysRented * 3;
+            case ELDERS:
+                return 0.0;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
