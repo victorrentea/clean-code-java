@@ -1,5 +1,7 @@
 package victor.training.mindit;
 
+import lombok.Value;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -98,4 +100,30 @@ public class MechanicDTO {
 
    public void setVarioDiscountValue(HashMap<Object, Object> objectObjectHashMap) {
    }
+
+   public DiscountUnit getSpendDiscountUnit() {
+      return null;
+   }
+
+   public BigDecimal getSpendDiscountPercentage() {
+      return null;
+   }
+
+//   public Map<Currency, BigDecimal> getSpendDiscountValue() {
+   public Map<String, BigDecimal> getSpendDiscountValue() {
+      return null;
+   }
 }
+//@Value
+//class Currency {
+//   String value;
+//
+//   private Currency(String value) {
+//      this.value = value;
+//   }
+//
+//   public static Currency forString(String value) {
+//      map.if there is alreadu a currency with this value IN MEMORY NOW (WeakHashMap) - > reuse it.
+//   }
+//
+//}

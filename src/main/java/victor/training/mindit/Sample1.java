@@ -47,12 +47,16 @@ public class Sample1 {
       BigDecimal displayedPercentage = round(percentage);
 
 
+//      return type.getPresenter().computeMarketingCommunication(mechanic, currencyList);
       switch (type) {
          case DISCOUNT:
-            CommunicationView dto = computeDiscountCommunication(percentage, displayedPercentage);
+            CommunicationView dto =
+
+                computeDiscountCommunication(percentage, displayedPercentage);
             comMsg = dto.getComMsg();
             optionA = dto.getOptionA();
             optionB = dto.getOptionB();
+
             break;
          case PROMOTION_PRICE:
             optionA = currencyList.stream().map(cur -> "Only xx.xx " + cur).collect(Collectors.joining(", "));

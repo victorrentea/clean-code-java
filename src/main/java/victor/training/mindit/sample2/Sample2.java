@@ -21,12 +21,16 @@ public class Sample2 {
    private static final Object ENTITY_VF_DETAIL_NAME = 1;
 
    {
+      // imperative shell
       List<VfCommonReqBodyDTO> stuff = new ArrayList<>();
       for (VfCommonReqBodyDTO variableFee : stuff) {
          validateNewAndRetrieveVariableFee(variableFee, getVariableFee(null));
       }
    }
-   protected void validateNewAndRetrieveVariableFee(
+
+   // you who enter, abdon all bad practices.
+   // pure core
+    void validateNewAndRetrieveVariableFee(
        VfCommonReqBodyDTO variableFee, VariableFee output
    ) {
       validateDates(variableFee.getStartDate(), variableFee.getEndDate());

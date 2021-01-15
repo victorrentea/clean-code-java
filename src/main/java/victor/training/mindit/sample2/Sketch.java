@@ -8,5 +8,7 @@ public class Sketch {
       for (int i = 0; i < 200; i++) {
 
       }
+
+      System.out.println("  a  b    c".replace("  ", " "));
    }
 }
