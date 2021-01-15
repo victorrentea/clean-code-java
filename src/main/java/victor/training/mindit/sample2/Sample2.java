@@ -2,11 +2,14 @@ package victor.training.mindit.sample2;
 
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.Collections.asLifoQueue;
 import static java.util.Collections.disjoint;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
@@ -26,8 +29,9 @@ public class Sample2 {
    protected void validateNewAndRetrieveVariableFee(
        VfCommonReqBodyDTO variableFee, VariableFee output
    ) {
-      requireNonNull(variableFee.getStartDate());
-      requireNonNull(variableFee.getEndDate());
+      validateDates(variableFee.getStartDate(), variableFee.getEndDate());
+//      requireNonNull(variableFee.getStartDate());
+//      requireNonNull(variableFee.getEndDate());
 
       log.debug("check if VF exists in contract details, otherwise, create a new one");
 
@@ -93,6 +97,14 @@ public class Sample2 {
    }
 
    private void validateDates(LocalDate startDate, LocalDate endDate) {
+//      Stream.of(startDate, endDate).anyMatch(Objects::isNull);
+      if (ObjectUtils.anyNull(startDate, endDate)          ) {
+         throw new ServiceException(
+             "When category and brand are not set, the time period must be unique",
+             ENTITY_VF_DETAIL_NAME,
+             "datesDuplicate"
+         );
+      }
 
    }
 
