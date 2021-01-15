@@ -1,9 +1,7 @@
 package victor.training.refactoring;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableList;
@@ -14,12 +12,19 @@ public class ImmutablePlay {
         List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
         Immutable immutable = new Immutable(2, numbers, new Other(13));
+
+        numbers.clear();
+
 //        immutable.getNumbers().clear();
         for (Integer number : immutable.getNumbers()) {
             System.out.println(number);
         }
+
+        immutable = immutable.withX(3);
+
         System.out.println(immutable);
     }
+
 }
 class Immutable {
     private final int x;
@@ -28,10 +33,15 @@ class Immutable {
 
     Immutable(int x, List<Integer> numbers, Other other) {
         this.x = x;
-//        this.numbers =  Arrays.asList(numbers.toArray(new Integer[0]));
+//        this.numbers =  Arrays.asList(numbers.toArray(new Integer[0])); // too much to do!! malloc +
         this.numbers =  numbers;
-        this.other = other;
+        this.other = Objects.requireNonNull(other);
     }
+
+    public Immutable withX(int x) { //withers
+        return new Immutable(x, numbers, other); // Feature Envy
+    }
+
     public int getX() {
         return x;
     }
