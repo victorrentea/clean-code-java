@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import org.jooq.lambda.Seq;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,6 +76,12 @@ public class BooleanParameters {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
+
+
+//      Seq.seq(tasks).zipWithIndex().forEach(tp -> {
+////         index++;
+//         System.out.println("Logic5 " + tp.v2 + " on " + tp.v1.isRunning());
+//      });
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
 

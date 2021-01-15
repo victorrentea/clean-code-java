@@ -120,6 +120,12 @@ public class Sample1 {
       return new CommunicationView(comMsg, optionA, optionB).asFormattedMessage();
    }
 
+//   public Duty getDutyForCurrency(Layer layer, String currency) {
+//      BigDecimal dutyFree = layer.getValues().get(currency).getDutyFree();
+//      BigDecimal dutyPaid = layer.getValues().get(currency).getDutyPaid();
+//      return new Duty(dutyFree, dutyPaid);
+//   }
+
    private static String multiUnit(MechanicDTO mechanic, BigDecimal percentage, BigDecimal displayedPercentage) {
       if (percentage.compareTo(BigDecimal.TEN) < 0) {
          return  "No percentage below 10% can be displayed in the communication - " +

@@ -24,4 +24,5 @@ public class Duty {
    public BigDecimal getDutyPaid() {
       return dutyPaid;
    }
+
 }

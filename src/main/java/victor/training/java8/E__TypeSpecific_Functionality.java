@@ -1,8 +1,42 @@
 package victor.training.java8;
 
+
+import java.util.function.BiFunction;
+
+class PriceService {
+//	private final FactorRepo repo;
+
+	public int computePrice(Movie.Type type, int days) {
+		return type.getPriceAlgorithm().apply(this, days);
+	}
+
+	public int computeChildrenPrice(int days) {
+		return 5;
+	}
+
+	public int computeNewReleasePrice(int days) {
+		return days * 2;
+	}
+
+	public int computeRegularPrice(int days) {
+		return days + 1;
+	}
+}
+
 class Movie {
 	enum Type {
-		REGULAR, NEW_RELEASE, CHILDREN
+		REGULAR(PriceService::computeRegularPrice),
+		NEW_RELEASE(PriceService::computeNewReleasePrice),
+		CHILDREN(PriceService::computeChildrenPrice);
+		private final BiFunction<PriceService, Integer, Integer> priceAlgorithm;
+
+		Type(BiFunction<PriceService, Integer, Integer> priceAlgorithm) {
+			this.priceAlgorithm = priceAlgorithm;
+		}
+
+		public BiFunction<PriceService, Integer, Integer> getPriceAlgorithm() {
+			return priceAlgorithm;
+		}
 	}
 
 	private final Type type;
@@ -11,23 +45,15 @@ class Movie {
 		this.type = type;
 	}
 
-	public int computePrice(int days) {
-		switch (type) {
-		case REGULAR:
-			return days + 1;
-		case NEW_RELEASE:
-			return days * 2;
-		case CHILDREN:
-			return 5;
-		}
-		return 0; // ?!.. Free!! Deducted from your salary!
-	}
+
+
+
 }
 
 public class E__TypeSpecific_Functionality {
 	public static void main(String[] args) {
-		System.out.println(new Movie(Movie.Type.REGULAR).computePrice(2));
-		System.out.println(new Movie(Movie.Type.NEW_RELEASE).computePrice(2));
-		System.out.println(new Movie(Movie.Type.CHILDREN).computePrice(2));
+		System.out.println(new PriceService().computePrice(Movie.Type.REGULAR, 2));
+		System.out.println(new PriceService().computePrice(Movie.Type.NEW_RELEASE, 2));
+		System.out.println(new PriceService().computePrice(Movie.Type.CHILDREN, 2));
 	}
 }
