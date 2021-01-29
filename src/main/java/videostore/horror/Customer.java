@@ -1,32 +1,17 @@
 package videostore.horror;
 
 import java.util.*;
-import java.util.Map.Entry;
-
-class Rental {
-	private final Movie movie;
-	private final int daysRented;
-
-	public Rental(Movie movie, int daysRented) {
-		this.movie = movie;
-		this.daysRented = daysRented;
-
-	}
-
-
-
-}
 
 class Customer {
 	private final String name;
-	private final Map<Movie,Integer> rentals = new HashMap<>();
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie movie, int daysRented) {
-		rentals.put(movie, daysRented);
+	public void addRental(Movie m, int d) {
+		rentals.put(m, d);
 	}
 
 	public String getName() {
@@ -34,48 +19,43 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalPrice = 0;
+		double totalAmount = 0;
 		int frequentRenterPoints = 0;
+		Iterator<Movie> rentals = this.rentals.keySet().iterator();
 		String result = "Rental Record for " + getName() + "\n";
-
-		for (Entry<Movie, Integer> entry : rentals.entrySet()) {
-
-			Movie movie = entry.getKey();
-			int daysRented = entry.getValue();
-
-			double price = computePrice(daysRented, movie.getCategory());
+		while (rentals.hasNext()) {
+			double thisAmount = 0;
+			Movie each = rentals.next();
+			// determine amounts for each line
+			int dr = this.rentals.get(each);
+			switch (each.getCategory()) {
+			case REGULAR:
+				thisAmount += 2;
+				if (dr > 2)
+					thisAmount += (dr - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				thisAmount += dr * 3;
+				break;
+			case CHILDREN:
+				thisAmount += 1.5;
+				if (dr > 3)
+					thisAmount += (dr - 3) * 1.5;
+				break;
+			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if ((movie.getCategory() == MovieCategory.NEW_RELEASE) && daysRented > 1)
+			if ((each.getCategory() == MovieCategory.NEW_RELEASE)
+					&& dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + price + "\n";
-			totalPrice += price;
+			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			totalAmount += thisAmount;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
+		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
-	}
-
-	private double computePrice(int daysRented, MovieCategory category) {
-		double price = 0;
-		switch (category) {
-		case REGULAR:
-			price += 2;
-			if (daysRented > 2)
-				price += (daysRented - 2) * 1.5;
-			break;
-		case NEW_RELEASE:
-			price += daysRented * 3;
-			break;
-		case CHILDREN:
-			price += 1.5;
-			if (daysRented > 3)
-				price += (daysRented - 3) * 1.5;
-			break;
-		}
-		return price;
 	}
 }
