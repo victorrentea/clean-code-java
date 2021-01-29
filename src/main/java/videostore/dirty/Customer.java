@@ -1,17 +1,16 @@
-package videostore.horror;
-
+package videostore.dirty;
 import java.util.*;
 
 class Customer {
 	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private List rentals = new ArrayList();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Rental arg) {
+		rentals.add(arg);
 	}
 
 	public String getName() {
@@ -21,38 +20,36 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		Iterator<Movie> rentals = this.rentals.keySet().iterator();
+		Iterator rentals = this.rentals.iterator();
 		String result = "Rental Record for " + getName() + "\n";
 		while (rentals.hasNext()) {
 			double thisAmount = 0;
-			Movie each = (Movie) rentals.next();
+			Rental each = (Rental) rentals.next();
 			// determine amounts for each line
-			int dr = this.rentals.get(each);
-			switch (each.getPriceCode()) {
-			case Movie.REGULAR:
+			switch (each.getMovie().getPriceCode()) {
+			case Movie.CATEGORY_REGULAR:
 				thisAmount += 2;
-				if (dr > 2)
-					thisAmount += (dr - 2) * 1.5;
+				if (each.getDaysRented() > 2)
+					thisAmount += (each.getDaysRented() - 2) * 1.5;
 				break;
-			case Movie.NEW_RELEASE:
-				thisAmount += dr * 3;
+			case Movie.CATEGORY_NEW_RELEASE:
+				thisAmount += each.getDaysRented() * 3;
 				break;
-			case Movie.CHILDRENS:
+			case Movie.CATEGORY_CHILDRENS:
 				thisAmount += 1.5;
-				if (dr > 3)
-					thisAmount += (dr - 3) * 1.5;
+				if (each.getDaysRented() > 3)
+					thisAmount += (each.getDaysRented() - 3) * 1.5;
 				break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-					(each.getPriceCode() == Movie.NEW_RELEASE)
-					&& dr > 1)
+			if ((each.getMovie().getPriceCode() == Movie.CATEGORY_NEW_RELEASE)
+					&& each.getDaysRented() > 1)
 				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
+			// show figures for this rental
+			result += "\t" + each.getMovie().getTitle() + "\t"
+					+ thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
 		// add footer lines
