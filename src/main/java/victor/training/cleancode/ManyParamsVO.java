@@ -2,65 +2,58 @@ package victor.training.cleancode;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
+      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
    }
 
-   public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
+   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
+      if (fName == null || lName == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
 
    }
 }
-//class Person {5} -- too broad
-//class FullName []
-//class Address {
-//   String city, String streetName, Integer streetNumber
-//}
 
 class AnotherClass {
-   public void otherMethod(FullName fullName, int x) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
+   public void otherMethod(String firstName, String lastName, int x) {
+      if (firstName == null || lastName == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + fullName.getLastName());
+      System.out.println("Person: " + lastName);
    }
 }
 
 class Person {
    private Long id;
-   private FullName fullName;
+   private String firstName;
+   private String lastName;
    private String phone;
 
-   public Person(FullName fullName) {
-      this.fullName = fullName;
+   public Person(String firstName, String lastName) {
+      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+      this.firstName = firstName;
+      this.lastName = lastName;
    }
 
-   public FullName getFullName() {
-      return fullName;
+   // TODO hard-core: implement setter
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
    }
 
-}
+   public String getFirstName() {
+      return firstName;
+   }
 
-class Client {
-   public static void main(String[] args) {
-
-      Person person = new Person(new FullName("John", "Doe"));
+   public String getLastName() {
+      return lastName;
    }
 }
 
 class PersonService {
    public void f(Person person) {
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFirstName());
 
-      String fullNameStr = person.getFullName().asEnterpriseName();
-
-
+      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
       System.out.println("Record for " + fullNameStr);
    }
 
