@@ -4,6 +4,7 @@ import io.vavr.collection.Seq;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BooleanParameters {
    public static void main(String[] args) {
@@ -44,37 +45,45 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevelStuffFluff(List<Task> tasks) {
-      System.out.println("Logic1");
-      List<Long> taskIds = new ArrayList<>();
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-
-      for (Task task : tasks) {  // Performance ?  1_000_000 --> what are you doing with them in memory
-
-         // if the 2nd task had to start AFTER the first one FINISHED --> BUG: there is a hidden temporary coupling between === side effects around
-
-         System.out.println("Logic4: Validate " + task);
-         task.start(); // NOT BUG since the change is on my current item.
-
-         index++;// BUG ==> did side effects to global state (outside of the current item)
-         taskIds.add(task.getId());
-      }
-
+   public void bossLevelStuffFluffCR323(List<Task> tasks) {
+      bossStart(tasks);
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
+      bossEnd(tasks);
+   }
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      bossStart(tasks);
+      bossEnd(tasks);
+   }
 
+   private void bossEnd(List<Task> tasks) {
+      int index = 0;
       for (Task task : tasks) {
          System.out.println("Logic5 " + index + " on " + task.isRunning());
+         index++;
       }
 
       System.out.println("Logic6 " + tasks.size());
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
+
+   private void bossStart(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      int index = 0;
+
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + index + "  " + task);
+         task.start();
+         index++;
+      }
+   }
+
    public void bossLevelStuffNoFluff(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
