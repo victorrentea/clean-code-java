@@ -1,10 +1,11 @@
 package victor.training.java8;
 
 import lombok.Data;
+import lombok.Value;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.*;
 
@@ -14,18 +15,40 @@ import static java.util.stream.Collectors.*;
 class ProductService {
 	private ProductRepo productRepo;
 
+
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
-				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
-				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
-				.entrySet()
+		// mark a variable as lazy
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
+
+		Predicate<Product> notHidden = p -> !hiddenProductIds.contains(p.getId());
+
+		return getProductOrderCounts(orders)
 				.stream()
-				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey)
-				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.filter(ProductCount::isFrequent)
+				.map(ProductCount::getProduct)
+				.filter(Product::isNotDeleted)
+				.filter(notHidden)
 				.collect(toList());
+	}
+
+	private List<ProductCount> getProductOrderCounts(List<Order> orders) {
+		return orders.stream()
+			.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
+			.flatMap(o -> o.getOrderLines().stream())
+			.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
+			.entrySet()
+			.stream()
+			.map(e -> new ProductCount(e.getKey(), e.getValue()))
+			.collect(toList());
+	}
+}
+@Value
+class ProductCount {
+	 Product product;
+	 int count;
+
+	public boolean isFrequent() {
+		return getCount() >= 10;
 	}
 }
 
@@ -35,6 +58,10 @@ class ProductService {
 class Product {
 	private Long id;
 	private boolean deleted;
+
+	public boolean isNotDeleted() {
+		return !deleted;
+	}
 }
 
 @Data
@@ -51,5 +78,6 @@ class OrderLine {
 }
 
 interface ProductRepo {
+//	@Cacheable("thread-local-hid-product-cache")
 	List<Long> getHiddenProductIds();
 }
