@@ -1,8 +1,13 @@
 package victor.training.pure;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
+import static java.util.Collections.*;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
@@ -11,7 +16,16 @@ public class ImmutableAdvanced {
 
       Immutable immutable = new Immutable(1, numbers, new Other(15));
 
+//      numbers.clear();
+
+//      immutable.getNumbers().clear();
+      for (Integer number : immutable.getNumbers()) {
+         System.out.println(number);
+      }
+      immutable = immutable.withX(3);
+
       System.out.println(immutable);
+
 
    }
 }
@@ -23,27 +37,37 @@ class Immutable {
 
    Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public List<Integer> getNumbers() {
-      return numbers;
-   }
-   public int getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
+      this.numbers = requireNonNull(numbers);
+      this.other = requireNonNull(other);
    }
 
    @Override
    public String toString() {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
+
+   public int getX() {
+      return x;
+   }
+
+//   public List<Integer> getNumbers() {
+//      return unmodifiableList(numbers);
+//   }
+   public Iterable<Integer> getNumbers() {
+      return numbers;
+   }
+
+   public Other getOther() {
+      return other;
+   }
+
+   public Immutable withX(int newX) {
+      return new Immutable(newX, numbers, other);
+   }
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -53,7 +77,10 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
+   @Override
+   public String toString() {
+      return "Other{" +
+             "a=" + a +
+             '}';
    }
 }
