@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.Value;
 import lombok.With;
 
+import javax.persistence.Embeddable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,12 +20,13 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
+
       Immutable immutable = new Immutable(1, numbers, new Other(15));
 
 //      numbers.clear();
 
 //      immutable.getNumbers().clear();
-      for (Integer number : immutable.getNumbers()) {
+      for (Integer number : immutable.numbers()) {
          System.out.println(number);
       }
       immutable = immutable.withX(3);
@@ -34,17 +36,14 @@ public class ImmutableAdvanced {
 
    }
 }
-@Value
-class Immutable {
-   @With
-   int x;
-   @NonNull
-   List<Integer> numbers;
-   @NonNull
-   Other other;
+record Immutable(int x, List<Integer> numbers, Other other) {
 
-   public List<Integer> getNumbers() {
+   public List<Integer> numbers() {
       return unmodifiableList(numbers);
+   }
+
+   public Immutable withX(int i) {
+      return new Immutable(i, numbers,other);
    }
 }
 
