@@ -2,6 +2,8 @@ package victor.training.cleancode;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
@@ -36,15 +38,19 @@ class ClientCode {
    }
 }
 // The Holy @Entity
+@Entity
 class Person {
+   @Id
    private Long id;
 
 
    // TODO persist full name
+   @Embedded
    private FullName fullName;
 
    private String phone;
 
+   protected Person() {}
    public Person(FullName fullName) {
       this.fullName = fullName;
    }
