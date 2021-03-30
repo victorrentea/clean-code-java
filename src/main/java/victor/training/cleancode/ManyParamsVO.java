@@ -1,9 +1,6 @@
 package victor.training.cleancode;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
@@ -37,9 +34,15 @@ class ClientCode {
       Person person = new Person(new FullName("John", "Doe"));
    }
 }
+//@Embeddable
+//class PersonId {
+//   private long value;
+//}
 // The Holy @Entity
 @Entity
 class Person {
+//   @EmbeddedId
+//   private PersonId id;
    @Id
    private Long id;
 
@@ -69,7 +72,7 @@ class PersonService {
    public void f(Person person) {
       System.out.println("Hi there, " + person.getFullName().getFirstName());
 
-      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
+      String fullNameStr = person.getFullName().asCorporateName();
       System.out.println("Record for " + fullNameStr);
    }
 

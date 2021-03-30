@@ -1,9 +1,6 @@
 package victor.training.cleancode;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,5 +25,9 @@ public class FullName {
 
    public FullName withLastName(String newLastname) {
       return new FullName(firstName, newLastname);
+   }
+
+   public String asCorporateName() {
+      return firstName + " " + lastName.toUpperCase();
    }
 }
