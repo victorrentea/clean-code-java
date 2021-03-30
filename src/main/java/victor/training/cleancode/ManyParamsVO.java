@@ -52,10 +52,6 @@ class Person {
 //      this.lastName = lastName;
 //   }
 
-   public String getFirstName() {
-      return getFullName().getFirstName();
-   }
-
    public FullName getFullName() {
       return fullName;
    }
@@ -67,16 +63,16 @@ class Person {
 
 class PersonService {
    public void f(Person person) {
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
-      System.out.println("Hi there, " + person.getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
 
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+      String fullNameStr = person.getFullName().getFirstName() + " " + person.getLastName().toUpperCase();
       System.out.println("Record for " + fullNameStr);
    }
 
