@@ -11,6 +11,7 @@ public class SwitchAlternatives {
                 new Movie(Movie.Type.CHILDREN, "Sofia"),
                 new Movie(Movie.Type.REGULAR, "Inception"));
         System.out.println(computeTotalPrice(movies));
+//        movies = null;
     }
     public static double computeTotalPrice(List<Movie> movies) {
         return movies.stream().mapToDouble(m -> m.calculatePrice(3)).sum();
