@@ -49,10 +49,9 @@ class Person {
       this.fullName = fullName;
    }
 
-   // TODO hard-core: implement setter
-//   public void setLastName(String lastName) {
-//      this.lastName = lastName;
-//   }
+   public void marry(Person him) {
+      fullName = fullName.withLastName(him.getFullName().getLastName());
+   }
 
    public FullName getFullName() {
       return fullName;
