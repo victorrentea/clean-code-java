@@ -1,12 +1,16 @@
 package victor.training.cleancode;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 public class FullName {
    private final String firstName;
    private final String lastName;
 
    public FullName(String firstName, String lastName) {
-      this.firstName = firstName;
-      this.lastName = lastName;
+      this.firstName = requireNonNull(firstName);
+      this.lastName = requireNonNull(lastName);
    }
 
    public String getFirstName() {

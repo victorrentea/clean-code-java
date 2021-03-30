@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       Address address = new Address("St. Albergue", "Paris", 99);
@@ -8,8 +11,6 @@ public class ManyParamsVO {
    }
 
    public void placeOrder(FullName fullName, Address address) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
-
       System.out.println("Some Logic");
       System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
 
@@ -24,27 +25,28 @@ public class ManyParamsVO {
 
 class AnotherClass {
    public void otherMethod(FullName fullName, int x) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
-
       System.out.println("Another distant Logic " + x);
       System.out.println("Person: " + fullName.getLastName());
+   }
+}
+
+class ClientCode {
+   public void method() {
+      Person person = new Person(new FullName("John", "Doe"));
    }
 }
 // The Holy @Entity
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
 
+
+   // TODO persist full name
    private FullName fullName;
 
    private String phone;
 
-   public Person(String firstName, String lastName) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.fullName = new FullName(firstName, lastName);
+   public Person(FullName fullName) {
+      this.fullName = fullName;
    }
 
    // TODO hard-core: implement setter
@@ -56,23 +58,13 @@ class Person {
       return fullName;
    }
 
-   public String getLastName() {
-      return lastName;
-   }
 }
 
 class PersonService {
    public void f(Person person) {
       System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
-      System.out.println("Hi there, " + person.getFullName().getFirstName());
 
-      String fullNameStr = person.getFullName().getFirstName() + " " + person.getLastName().toUpperCase();
+      String fullNameStr = person.getFullName().getFirstName() + " " + person.getFullName().getLastName().toUpperCase();
       System.out.println("Record for " + fullNameStr);
    }
 
