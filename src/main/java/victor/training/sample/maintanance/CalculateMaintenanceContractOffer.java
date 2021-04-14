@@ -29,6 +29,7 @@ public class CalculateMaintenanceContractOffer {
         // 2 cant' you pass the entire CurrentUser
 //        Partner partner = getPartner.execute(currentUser);
 
+//        String s="a", b="a";
         offers.add(maintenancePlanRequest.getSessionId(), calculate(maintenancePlanRequest, partner));
     }
 
@@ -55,9 +56,6 @@ public class CalculateMaintenanceContractOffer {
         MaintenanceContractOffer offer = new MaintenanceContractOffer(maintenancePlanRequest, maintenancePlanResponse, warrantyProgram, partner);
         offer.setNumberOfMaintenance(maintenancePlanStore.getByMaintenancePlanDocumentId(offer.getDocId()).getNumberOfMaintenance());
         store.create(offer);
-//        BigDecimal offerPeriod = BigDecimal.valueOf(offer.getPeriod());
-//        BigDecimal monthlyCost = offer.getGrossPrice().divide(offerPeriod, 2, HALF_UP);
-//        offer.setMonthlyCost(monthlyCost);
         return offer;
     }
 
