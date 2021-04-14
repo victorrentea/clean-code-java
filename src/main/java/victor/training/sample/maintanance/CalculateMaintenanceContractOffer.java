@@ -6,23 +6,29 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.RoundingMode.HALF_UP;
+
 public class CalculateMaintenanceContractOffer {
 
     @Inject
-    GetWarrantyProgram getWarrantyProgram;
+    GetWarrantyProgram getWarrantyProgram; // usecase
     @Inject
-    MaintenanceContractOfferStore store;
+    MaintenanceContractOfferStore store; // ~ REPOSITORY
     @Inject
-    MaintenanceContractOffers offers;
+    MaintenanceContractOffers offers; // ojbect storing data (mutates) stored on session
     @Inject
-    GetPartner getPartner;
+    GetPartner getPartner; // usecase
     @Inject @Core
     CurrentUser currentUser;
-    @Inject SaveMaintenancePlan saveMaintenancePlan;
-    @Inject MaintenancePlanStore maintenancePlanStore;
+    @Inject SaveMaintenancePlan saveMaintenancePlan; //usecases
+    @Inject MaintenancePlanStore maintenancePlanStore;//repo
 
     public void execute(GetMaintenancePlanRequest maintenancePlanRequest) throws Exception {
         Partner partner = getPartner.execute(currentUser.getWorkingTenantId(), currentUser.getWorkingCompanyId(), currentUser.getWorkingDealerId());
+        // 1 can't these move to the getPartner.execute()
+        // 2 cant' you pass the entire CurrentUser
+//        Partner partner = getPartner.execute(currentUser);
+
         offers.add(maintenancePlanRequest.getSessionId(), calculate(maintenancePlanRequest, partner));
     }
 
@@ -31,63 +37,61 @@ public class CalculateMaintenanceContractOffer {
 
         validate(warrantyProgram.getAmendment());
 
+        GetMaintenancePlanRequestWarranted warranted = new GetMaintenancePlanRequestWarranted(maintenancePlanRequest, warrantyProgram);
+
+
         maintenancePlanRequest.setOilPrice(warrantyProgram.getAmendment().getMaintenanceOilPrice());
         maintenancePlanRequest.setWagePrice(warrantyProgram.getAmendment().getMaintenanceWagePrice());
         maintenancePlanRequest.setMaterialPartPercent(warrantyProgram.getAmendment().getMaterialPartPercent());
         maintenancePlanRequest.setWorkHour(warrantyProgram.getAmendment().getWorkHour());
 
         SaveMaintenancePlanResponse maintenancePlanResponse = saveMaintenancePlan.execute(maintenancePlanRequest);
+        // TODO (est 6 mo work) separate conversion from API models (...Request and ... Response objects). Keep it out,
+        //  peripheral to your central biz logic that you might want to reuse.
 
-        MaintenanceContractOffer offer = init(maintenancePlanRequest, maintenancePlanResponse, warrantyProgram, partner);
+        // in other words, whenever you want to call some existing domain logic, make sure you talk (send/return ) only
+        // data structures that are 'private' internal to your application, not some API models that your REST clients "controls"
+
+        MaintenanceContractOffer offer = new MaintenanceContractOffer(maintenancePlanRequest, maintenancePlanResponse, warrantyProgram, partner);
         offer.setNumberOfMaintenance(maintenancePlanStore.getByMaintenancePlanDocumentId(offer.getDocId()).getNumberOfMaintenance());
         store.create(offer);
-        offer.setMonthlyCost(offer.getGrossPrice().divide(BigDecimal.valueOf(offer.getPeriod()), 2, RoundingMode.HALF_UP));
+//        BigDecimal offerPeriod = BigDecimal.valueOf(offer.getPeriod());
+//        BigDecimal monthlyCost = offer.getGrossPrice().divide(offerPeriod, 2, HALF_UP);
+//        offer.setMonthlyCost(monthlyCost);
         return offer;
     }
 
-    private MaintenanceContractOffer init(GetMaintenancePlanRequest maintenancePlanRequest,
-                                          GetMaintenancePlanResponse maintenancePlanResponse,
-                                          WarrantyProgram warrantyProgram,
-                                          Partner partner) {
-        MaintenanceContractOffer offer = new MaintenanceContractOffer();
-        offer.setTenantId(partner.getTenantId());
-        offer.setCompanyNumber(partner.getCompanyNumber());
-        offer.setDealerNumber(partner.getDealerNumber());
-        offer.setMakeGroup(warrantyProgram.getMakeGroup());
-        offer.setKind(warrantyProgram.getKind());
-        offer.setProduct(warrantyProgram.getProduct());
-        offer.setProductName(warrantyProgram.getProductName() + " - " + warrantyProgram.getKind() + " (" + warrantyProgram.getProduct() + ")");
-        offer.setValidFrom(warrantyProgram.getValidFrom());
-        offer.setPeriod(maintenancePlanRequest.getMonthTo() - maintenancePlanRequest.getMonthFrom());
-        offer.setMileage(maintenancePlanRequest.getMileageTo() - maintenancePlanRequest.getMileageFrom());
-        offer.setOilQuantity(maintenancePlanResponse.getOilQuantity());
-        offer.setWorkHours(maintenancePlanResponse.getWorkHours());
-        offer.setPartsCost(maintenancePlanResponse.getPartsCost());
-        offer.setDocId(maintenancePlanResponse.getDocId());
-        offer.setModules(maintenancePlanRequest.getModules());
-        offer.setModulesName(maintenancePlanRequest.getModulesName().split(";"));
-        offer.setFirstRegistration(maintenancePlanRequest.getFirstRegistration());
-        offer.setMileageFrom(maintenancePlanRequest.getMileageFrom());
-        offer.setVehicleCode(maintenancePlanRequest.getVehicleCode());
-        offer.setWarrantyProgramId(maintenancePlanRequest.getWarrantyProgramId());
-        return offer;
-    }
 
     private void validate(Amendment amendment) throws ApplicationException {
         List<String> messages = new ArrayList<>();
         List<String> nonValidFields = new ArrayList<>();
 
-        if (amendment.getMaintenanceOilPrice() == null || amendment.getMaintenanceOilPrice() == 0) {
+        // may be room for an util for != && != 0
+        if (positive(amendment.getMaintenanceOilPrice())) {
             messages.add("Oil price is not set!");
-            nonValidFields.add("oilPrice");
+            nonValidFields.add("oilPrice"); // to keep in sync with the REST api model ! OMG!! "OMG!!!
+//            WarrantyProgramFields.oilPrice << enum
+//            WarrantyProgram.getOilPrice();
         }
 
-        if (amendment.getMaintenanceWagePrice() == null || amendment.getMaintenanceWagePrice() == 0) {
+        if (positive(amendment.getMaintenanceWagePrice())) {
             messages.add("Wage price is not set!");
             nonValidFields.add("wagePrice");
         }
 
+
+//        Validator validator;
+//        Set<ConstraintViolation<Amendment>> validate = validator.validate(amendment);
+//        for (ConstraintViolation<Amendment> violation : validate) {
+//            violation.get
+//        }
         if (!nonValidFields.isEmpty())
             throw new ApplicationException(460, messages, nonValidFields);
     }
+
+    private boolean positive(Integer maintenanceOilPrice) {
+        return maintenanceOilPrice == null || maintenanceOilPrice == 0;
+    }
 }
+
+

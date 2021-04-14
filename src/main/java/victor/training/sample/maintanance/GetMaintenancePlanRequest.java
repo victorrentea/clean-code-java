@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class GetMaintenancePlanRequest {
+   private Long sessionId;
+   private Long warrantyProgramId;
+
    public Long getSessionId() {
       return null;
    }

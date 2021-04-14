@@ -1,9 +1,17 @@
 package victor.training.sample.maintanance;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 
 public class WarrantyProgram {
+
+//   @NotNull
+//    @Positive(message = )
+   Integer oilPrice;
+
+
    public Amendment getAmendment() {
       return null;
    }

@@ -1,10 +1,38 @@
 package victor.training.sample.maintanance;
 
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import static java.math.BigDecimal.valueOf;
+import static java.math.RoundingMode.HALF_UP;
+
 public class MaintenanceContractOffer {
+   public MaintenanceContractOffer(GetMaintenancePlanRequest maintenancePlanRequest, SaveMaintenancePlanResponse maintenancePlanResponse, WarrantyProgram warrantyProgram, Partner partner) {
+      this.setTenantId(partner.getTenantId());
+      this.setCompanyNumber(partner.getCompanyNumber());
+      this.setDealerNumber(partner.getDealerNumber());
+      this.setMakeGroup(warrantyProgram.getMakeGroup());
+      this.setKind(warrantyProgram.getKind());
+      this.setProduct(warrantyProgram.getProduct());
+      this.setProductName(warrantyProgram.getProductName() + " - " + warrantyProgram.getKind() + " (" + warrantyProgram.getProduct() + ")");
+      this.setValidFrom(warrantyProgram.getValidFrom());
+      this.setPeriod(maintenancePlanRequest.getMonthTo() - maintenancePlanRequest.getMonthFrom());
+      this.setMileage(maintenancePlanRequest.getMileageTo() - maintenancePlanRequest.getMileageFrom());
+      this.setOilQuantity(maintenancePlanResponse.getOilQuantity());
+      this.setWorkHours(maintenancePlanResponse.getWorkHours());
+      this.setPartsCost(maintenancePlanResponse.getPartsCost());
+      this.setDocId(maintenancePlanResponse.getDocId());
+      this.setModules(maintenancePlanRequest.getModules());
+      this.setModulesName(maintenancePlanRequest.getModulesName().split(";"));
+      this.setFirstRegistration(maintenancePlanRequest.getFirstRegistration());
+      this.setMileageFrom(maintenancePlanRequest.getMileageFrom());
+      this.setVehicleCode(maintenancePlanRequest.getVehicleCode());
+      this.setWarrantyProgramId(maintenancePlanRequest.getWarrantyProgramId());
+   }
+
+
    public Long getDocId() {
       return null;
    }
@@ -13,16 +41,26 @@ public class MaintenanceContractOffer {
 
    }
 
+   BigDecimal grossPrice;
+   int period;
    public BigDecimal getGrossPrice() {
-      return null;
+      return grossPrice;
    }
 
    public long getPeriod() {
-      return 0;
+      return period;
    }
 
-   public void setMonthlyCost(BigDecimal divide) {
-      
+   @Transient
+   BigDecimal monthlyCost;
+//   public void setMonthlyCost(BigDecimal divide) {
+//
+//
+//   }
+
+   @Transient
+   public BigDecimal getMonthlyCost() {
+      return grossPrice.divide(valueOf(period), 2, HALF_UP);
    }
 
    public void setTenantId(String tenantId) {
