@@ -1,8 +1,14 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
+import lombok.Data;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UtilsVsVO {
    // Ford Focus:     [2012 ---- 2016]
@@ -10,7 +16,7 @@ public class UtilsVsVO {
    public static void main(String[] args) {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
-      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", new Interval(2012, 2016));
       List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
       System.out.println(models);
    }
@@ -20,40 +26,52 @@ public class UtilsVsVO {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          model.getStartYear(), model.getEndYear(),
-          criteria.getStartYear(), criteria.getEndYear()));
+      final Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+
+      List<CarModel> results = models.stream()
+          .filter(model -> model.getYearInterval().intersects(criteriaInterval))
+          .collect(Collectors.toList());
+
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      Interval interval1 = new Interval(1000, 1600);
+      Interval interval2 = new Interval(1250, 2000);
+      System.out.println(interval1.intersects(interval2));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
-
 }
 
 class MathUtil {
 
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
-   }
 }
 
+@Data
+//@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Embeddable
+class Interval {
+   private int start;
+   private int end;
+   protected Interval() {} // for hibernate
 
+   public Interval(int start, int end) {
+      if (start > end) throw new IllegalArgumentException("start larger than end");
+      this.start = start;
+      this.end = end;
+   }
 
-
-
-
-
-
+   public boolean intersects(Interval other) {
+      return start <= other.end && other.start <= end;
+   }
+}
 
 
 class CarSearchCriteria {
@@ -81,27 +99,22 @@ class CarSearchCriteria {
    }
 }
 
+@Entity
 class CarModel {
-   private final String make;
-   private final String model;
-   private final int startYear;
-   private final int endYear;
+   @Id
+   private Long id;
+   private  String make;
+   private  String model;
+   @Embedded
+   private  Interval yearInterval;
 
-   public CarModel(String make, String model, int startYear, int endYear) {
+   protected CarModel() {}
+   public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      this.yearInterval = yearInterval;
    }
 
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
-   }
 
    public String getMake() {
       return make;
@@ -117,5 +130,9 @@ class CarModel {
              "make='" + make + '\'' +
              ", model='" + model + '\'' +
              '}';
+   }
+
+   public Interval getYearInterval() {
+      return yearInterval;
    }
 }
