@@ -2,6 +2,9 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class BooleanParameters {
    public static void main(String[] args) {
@@ -43,25 +46,37 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevelStuffFluff(List<Task> tasks) {
-      bossHeader();
-      List<Long> taskIds = new ArrayList<>();
-      int index = 0;
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.start();
-
-         taskIds.add(task.getId());
-      }
+   public void bossLevelStuffFluff323(List<Task> tasks) {
+      List<Long> taskIds = bossBefore(tasks);
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
-      for (Task task : tasks) {
-         index++;
+      bossAfter(tasks, taskIds);
+   }
+
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      List<Long> taskIds = bossBefore(tasks);
+      bossAfter(tasks, taskIds);
+   }
+
+   private void bossAfter(List<Task> tasks, List<Long> taskIds) {
+      for (int index = 0, tasksSize = tasks.size(); index < tasksSize; index++) {
+         Task task = tasks.get(index);
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
       bossFooter(tasks, taskIds);
+   }
+
+   private List<Long> bossBefore(List<Task> tasks) {
+      bossHeader();
+
+      for (Task task : tasks) {
+         task.start();
+      }
+
+      //const taskIds = someArr.map(task => task.id);
+      return tasks.stream().map(Task::getId).collect(toList());
    }
 
    private void bossFooter(List<Task> tasks, List<Long> taskIds) {
