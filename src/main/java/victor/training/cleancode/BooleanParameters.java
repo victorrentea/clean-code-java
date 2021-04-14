@@ -6,30 +6,38 @@ import java.util.List;
 public class BooleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, 5,false);
-      bigUglyMethod(2, 4,false);
-      bigUglyMethod(3, 3,false);
-      bigUglyMethod(4, 2,false);
-      bigUglyMethod(5, 1,false);
+      bigUglyMethod(1, 5);
+      bigUglyMethod(2, 4);
+      bigUglyMethod(3, 3);
+      bigUglyMethod(4, 2);
+      bigUglyMethod(5, 1);
 
       // TODO From my use-case #323, I call it too, to do more within:
 
-      bigUglyMethod(2, 1, true);
+      bigUglyMethod323(2, 1);
 
    }
 
-   static void bigUglyMethod(int b, int a, boolean cr323) { // 521
+   static void bigUglyMethod(int b, int a) { // 521
+      beforeLogic(b, a);
+      afterLogic(b);
+   }
+   static void bigUglyMethod323(int b, int a) { // 521
+      beforeLogic(b, a);
+      System.out.println("LOGIC Just for me : ");
+      afterLogic(b);
+   }
+
+   private static void afterLogic(int b) {
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+   }
+
+   private static void beforeLogic(int b, int a) {
       System.out.println("Complex Logic 1 " + a + " and " + b);
       System.out.println("Complex Logic 2 " + a);
       System.out.println("Complex Logic 3 " + a);
-
-      if (cr323) {
-         System.out.println("LOGIC Just for me : ");
-      }
-
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
    }
 
 
