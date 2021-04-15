@@ -1,6 +1,7 @@
 package victor.training.refactoring;
 
 import lombok.Data;
+import lombok.NonNull;
 import lombok.Value;
 import lombok.With;
 
@@ -22,7 +23,11 @@ public class ImmutablePlay {
       System.out.println(immutable);
 
 
-      Immutable immutable2 = immutable.addNumber(1);
+      Immutable immutable2 = immutable.addNumber(1)
+         .addNumber(12)
+         .addNumber(13)
+         .addNumber(14)
+         .addNumber(15);
 
 
 //      String s = "a";
@@ -41,6 +46,7 @@ public class ImmutablePlay {
 class Immutable {
    int x;
    List<Integer> numbers;
+   @NonNull
    Other other;
 
 

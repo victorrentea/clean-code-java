@@ -25,43 +25,14 @@ class AnotherClass {
 
 class Person {
    private Long id;
-   private String firstName;
-   private String lastName;
+   private FullName fullName;
    private String phone;
 
-   public Person(String firstName, String lastName) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-      this.firstName = firstName;
-      this.lastName = lastName;
+   public Person() {
    }
 
-   // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
+   public void marryHim(Person husband) {
+      this.fullName = fullName.withLastName(husband.fullName.getLastName());
    }
 
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
-   }
-}
-
-class PersonService {
-   public void f(Person person) {
-      System.out.println("Hi there, " + person.getFirstName());
-
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println("Record for " + fullNameStr);
-   }
-
-   public void p(String streetName, String city, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
-   }
-
-   public void pcaller() {
-       p("Dristor", "Bucharest", 91);
-   }
 }

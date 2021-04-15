@@ -1,5 +1,9 @@
 package victor.training.java8;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 public class C__Optional_Chain {
 	public static void main(String[] args) {
 		MyMapper mapper = new MyMapper();
@@ -11,6 +15,11 @@ public class C__Optional_Chain {
 class MyMapper {
 	public DeliveryDto convert(Delivery entity) {
 		DeliveryDto dto = new DeliveryDto();
+
+		if (entity.getAddress() != null &&
+			 entity.getAddress().getContactPerson() != null &&
+			 entity.getAddress().getContactPerson().getName() != null
+			 )
 		dto.setRecipientPerson(entity.getAddress().getContactPerson().getName().toUpperCase());
 		return dto;
 	}
@@ -44,7 +53,7 @@ class Address {
 	private final ContactPerson contactPerson; // can be null
 
 	public Address(ContactPerson contactPerson) {
-		this.contactPerson = contactPerson;
+		this.contactPerson = requireNonNull(contactPerson);
 	}
 
 	public ContactPerson getContactPerson() {
