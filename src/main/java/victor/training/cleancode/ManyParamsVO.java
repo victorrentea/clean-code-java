@@ -1,5 +1,13 @@
 package victor.training.cleancode;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
@@ -23,7 +31,12 @@ class AnotherClass {
    }
 }
 
+//@Entity
+//@Data
 class Person {
+//   @Id
+//   @GeneratedValue
+//   @Setter(AccessLevel.NONE)
    private Long id;
    private FullName fullName;
    private String phone;
