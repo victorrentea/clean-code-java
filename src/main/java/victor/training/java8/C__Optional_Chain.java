@@ -23,8 +23,7 @@ class MyMapper {
 //		dto.setRecipientPerson(entity.getAddress().getContactPerson().getName().toUpperCase());
 		dto.setRecipientPerson(entity.getAddress()
 			.flatMap(Address::getContactPerson)
-			.map(ContactPerson::getName)
-			.map(String::toUpperCase)
+			.map(contactPerson -> contactPerson.getName().toUpperCase())
 			.orElse("aaa"));
 		return dto;
 	}
