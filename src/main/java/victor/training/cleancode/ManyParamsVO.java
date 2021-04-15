@@ -2,11 +2,11 @@ package victor.training.cleancode;
 
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ManyParamsVO().placeOrder(new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
@@ -15,11 +15,11 @@ public class ManyParamsVO {
 }
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getLastName());
    }
 }
 
