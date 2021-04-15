@@ -1,6 +1,6 @@
 package victor.training.java8;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -16,11 +16,16 @@ class MyMapper {
 	public DeliveryDto convert(Delivery entity) {
 		DeliveryDto dto = new DeliveryDto();
 
-		if (entity.getAddress() != null &&
-			 entity.getAddress().getContactPerson() != null &&
-			 entity.getAddress().getContactPerson().getName() != null
-			 )
-		dto.setRecipientPerson(entity.getAddress().getContactPerson().getName().toUpperCase());
+//		if (entity.getAddress() != null &&
+//			 entity.getAddress().getContactPerson() != null &&
+//			 entity.getAddress().getContactPerson().getName() != null
+//			 )
+//		dto.setRecipientPerson(entity.getAddress().getContactPerson().getName().toUpperCase());
+		dto.setRecipientPerson(entity.getAddress()
+			.flatMap(Address::getContactPerson)
+			.map(ContactPerson::getName)
+			.map(String::toUpperCase)
+			.orElse("aaa"));
 		return dto;
 	}
 }
@@ -45,8 +50,8 @@ class Delivery {
 		this.address = address;
 	}
 
-	public Address getAddress() {
-		return address;
+	public Optional<Address> getAddress() {
+		return Optional.ofNullable(address);
 	}
 }
 class Address {
@@ -56,8 +61,8 @@ class Address {
 		this.contactPerson = requireNonNull(contactPerson);
 	}
 
-	public ContactPerson getContactPerson() {
-		return contactPerson;
+	public Optional<ContactPerson> getContactPerson() {
+		return Optional.ofNullable(contactPerson);
 	}
 }
 
