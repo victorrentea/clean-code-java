@@ -1,5 +1,7 @@
 package victor.training.sample.maintanance;
 
+import java.util.Locale;
+
 public class CurrentUser {
    public String getWorkingTenantId() {
       return null;
@@ -11,6 +13,10 @@ public class CurrentUser {
    }
 
    public Long getWorkingDealerId() {
+      return null;
+   }
+
+   public Locale getWorkingLocale() {
       return null;
    }
 }
