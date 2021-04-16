@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Customer {
 	private final String name;
@@ -19,22 +20,30 @@ public class Customer {
 	}
 
 	public String statement() {
-		String result = "Rental Record for " + getName() + "\n";
-		double totalPrice = 0;
+		return formatHeader() +
+				 formatBody() +
+				 formatFooter(computeTotalPoints(), computeTotalPrice());
+	}
 
-		int frequentRenterPoints = computeTotalPoints();
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::getPrice).sum();
+	}
 
-		for (Rental rental : rentals) {
-			double price = rental.calculatePrice();
+	private String formatBody() {
+		return rentals.stream().map(this::formatRental).collect(Collectors.joining());
+	}
 
-			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
-			totalPrice += price;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+	private String formatRental(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.getPrice() + "\n";
+	}
+
+	private String formatHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String formatFooter(int frequentRenterPoints, double totalPrice) {
+		return "Amount owed is " + totalPrice + "\n" +
+				 "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
 	private int computeTotalPoints() {
