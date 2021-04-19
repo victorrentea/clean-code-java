@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,6 @@ class SearchEngine {
    private void applyCapacityFilter() {
       System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
-
 }
 class Alta {
    private void applyCapacityFilter() {
@@ -139,11 +139,9 @@ class CarModel {
       this.yearInterval = yearInterval;
    }
 
-
    public Interval getYearInterval() {
       return yearInterval;
    }
-
 
    public String getMake() {
       return make;
@@ -161,3 +159,4 @@ class CarModel {
              '}';
    }
 }
+
