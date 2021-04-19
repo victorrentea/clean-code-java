@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,9 +46,11 @@ class Alta {
 
 }
 
+@Embeddable
 class Interval {
-   private final int start;
-   private final int end;
+   private int start;
+   private int end;
+   protected  Interval() {} // Love for EclipseLink
 
    public Interval(int start, int end) {
       if (start > end) {
@@ -117,11 +120,18 @@ class CarSearchCriteria {
 }
 
 // THe HOLY ENTITY MODEL !!!!!!!
+@Entity
 class CarModel {
-   private final String make;
-   private final String model;
+   @Id
+   @GeneratedValue
+   private Long id;
+   private String make;
+   private String model;
 
-   private final Interval yearInterval;
+   @Embedded
+   private Interval yearInterval; // in the same CAR_MODELS table
+
+   protected CarModel() {}
 
    public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
