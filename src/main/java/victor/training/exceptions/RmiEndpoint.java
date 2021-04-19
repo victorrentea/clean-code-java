@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.decorator.Decorator;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InterceptorBinding;
-import javax.interceptor.InvocationContext;
+import javax.interceptor.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
@@ -39,10 +36,13 @@ public class RmiEndpoint {
    }
 }
 
+// If the bellow solution does not work for you, try using EJB Interceptors : https://docs.oracle.com/javaee/6/tutorial/doc/gkeed.html
+
+// CDI interceptors : --------
+
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @interface  ExceptionLogging {
-
 }
 
 @Interceptor
