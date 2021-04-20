@@ -53,6 +53,11 @@
 			<version>1.7.30</version>
 		</dependency>
 		<dependency>
+			<groupId>com.diffplug.guava</groupId>
+			<artifactId>guava-collect</artifactId>
+			<version>19.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>8.0.1</version>
