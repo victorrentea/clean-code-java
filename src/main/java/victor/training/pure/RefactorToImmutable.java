@@ -21,20 +21,25 @@ class PriceService {
       BigDecimal deliveryCosts = logisticsService.estimateDeliveryCosts(product.getSupplierId());
       product.setPrice(cost.add(deliveryCosts));
 
-      applySupplierDiscount(product);
-      applyDeliveryDiscount(product);
+
+      BigDecimal supplierDiscount = applySupplierDiscount(new DiscountComputationInput(product));
+      BigDecimal deliveryDiscount = applyDeliveryDiscount(new DiscountComputationInput(product));
+
+      BigDecimal newPrice = product.getPrice()
+          .subtract(supplierDiscount)
+          .subtract(deliveryDiscount);
+      product.setPrice(newPrice);
    }
 
-   private void applyDeliveryDiscount(Product product) {
-      System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId());
-      BigDecimal discount = BigDecimal.ONE;
-      product.setPrice(product.getPrice().subtract(discount));
+   private BigDecimal applyDeliveryDiscount(DiscountComputationInput product) {
+      System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getProductId());
+      return BigDecimal.ONE;
    }
 
-   private void applySupplierDiscount(Product product) {
-      System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId() + " and " + product.getCategory());
-      BigDecimal discount = BigDecimal.valueOf(2);
-      product.setPrice(product.getPrice().subtract(discount));
+   private BigDecimal applySupplierDiscount(DiscountComputationInput input) {
+      System.out.println("criminally complex logic (200 LOC) using " +
+             input.getSupplierId() + " " + input.getProductId() + " and " + input.getCategory());
+      return BigDecimal.valueOf(2);
    }
 }
 
