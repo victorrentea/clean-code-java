@@ -2,13 +2,6 @@ package victor.training.refactoring;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
-
 public class ImmutablePlay {
    public static void main(String[] args) {
 //      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
@@ -21,51 +14,16 @@ public class ImmutablePlay {
 
       System.out.println(immutable);
 
-//      immutable.getNumbers().add(-1);
+//      immutable.numbers().add(-1);
 
-      for (Integer number : immutable.getNumbers()) {
+      for (Integer number : immutable.numbers()) {
          System.out.println("El: " + number);
       }
       System.out.println(immutable);
    }
 }
 
-class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
-   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
-
-   public int getX() {
-      return x;
-   }
-
-   // most usual
-//   public List<Integer> getNumbers() {
-//      return Collections.unmodifiableList(numbers);
-//   }
-
-   // a bit too geek
-//   public Iterable<Integer> getNumbers() {
-//      return numbers;
-//   }
-
-   public ImmutableList<Integer> getNumbers() {
-      return numbers;
-   }
-
-
-
-   public Other getOther() {
-      return other;
-   }
+record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
 }
 
 class Other {
