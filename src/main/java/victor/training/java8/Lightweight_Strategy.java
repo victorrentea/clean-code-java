@@ -24,7 +24,7 @@ class Movie {
 	}
 }
 
-public class E__TypeSpecific_Functionality {
+public class Lightweight_Strategy {
 	public static void main(String[] args) {
 		System.out.println(new Movie(Movie.Type.REGULAR).computePrice(2));
 		System.out.println(new Movie(Movie.Type.NEW_RELEASE).computePrice(2));

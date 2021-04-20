@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +24,8 @@ class SearchEngine {
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
       List<CarModel> results = new ArrayList<>(models);
       results.removeIf(model -> !MathUtil.intervalsIntersect(
-          model.getStartYear(), model.getEndYear(),
-          criteria.getStartYear(), criteria.getEndYear()));
+          criteria.getStartYear(), criteria.getEndYear(),
+          model.getStartYear(), model.getEndYear()));
       System.out.println("More filtering logic");
       return results;
    }
@@ -81,11 +83,14 @@ class CarSearchCriteria {
    }
 }
 
+//@Entity
 class CarModel {
-   private final String make;
-   private final String model;
-   private final int startYear;
-   private final int endYear;
+//   @Id
+   private Long id;
+   private String make;
+   private String model;
+   private int startYear;
+   private int endYear;
 
    public CarModel(String make, String model, int startYear, int endYear) {
       this.make = make;
@@ -93,6 +98,10 @@ class CarModel {
       if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
       this.startYear = startYear;
       this.endYear = endYear;
+   }
+
+   public Long getId() {
+      return id;
    }
 
    public int getEndYear() {
@@ -109,6 +118,14 @@ class CarModel {
 
    public String getModel() {
       return model;
+   }
+
+   public void setMake(String make) {
+      this.make = make;
+   }
+
+   public void setModel(String model) {
+      this.model = model;
    }
 
    @Override
