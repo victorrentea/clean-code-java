@@ -1,25 +1,27 @@
 package videostore.horror;
+
+import java.util.Objects;
+
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
+   public enum Category {
+      REGULAR,
+      NEW_RELEASE,
+      CHILDREN
+   }
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
-	}
+   private final String title;
+   private final Category category;
 
-	public Integer getPriceCode() {
-		return _priceCode;
-	}
+   public Movie(String title, Category category) {
+      this.title = title;
+      this.category = Objects.requireNonNull(category);
+   }
 
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
-	}
+   public Category getCategory() {
+      return category;
+   }
 
-	public String getTitle() {
-		return _title;
-	};
+   public String getTitle() {
+      return title;
+   }
 }
