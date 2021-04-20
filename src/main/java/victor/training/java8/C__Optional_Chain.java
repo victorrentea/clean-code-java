@@ -1,5 +1,8 @@
 package victor.training.java8;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,10 +43,23 @@ class DeliveryDto {
 
 
 class Delivery {
-	private final Address address; // NOT NULL IN DB
+	@NotNull
+	private Address address; // NOT NULL IN DB
 
 	public Delivery(Address address) {
+		this.setAddress(address);
+
+//		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//		validator.validate(this);
+
+	}
+
+	public void setAddress(Address address) {
 		this.address = Objects.requireNonNull(address);
+		// or
+		this.address = address;
+//		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//		validator.validate(this);
 	}
 
 	public Address getAddress() {
