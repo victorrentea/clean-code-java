@@ -1,11 +1,11 @@
 package victor.training.refactoring;
 
 
-class Cheese {
+class BadCheese {
     private int discountedTotal;
     private int discount = 0;
 
-    public Cheese(int basePrice) {
+    public BadCheese(int basePrice) {
         this.discountedTotal = basePrice;
     }
 
@@ -17,6 +17,22 @@ class Cheese {
         int old = this.discount;
         this.discount = aNumber;
         this.discountedTotal += old - aNumber;
+    }
+}
+class Cheese {
+    private final int basePrice;
+    private int discount = 0;
+
+    public Cheese(int basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public int getDiscountedTotal() { // synthetic getter;
+        return basePrice - discount;
+    }
+
+    public void discount(int aNumber) {
+        this.discount = aNumber;
     }
 
     public static void main(String[] args) {
