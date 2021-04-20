@@ -25,7 +25,7 @@ public class StatementFormatterTest {
                 + "Amount owed is 32.0\n"
                 + "You earned 4 frequent renter points";
 
-        StatementFormatter formatter = new StatementFormatter(rentals);
+        StatementFormatter formatter = new StatementFormatter();
         Assert.assertEquals(expected, formatter.formatStatement("John Doe", rentals));
     }
 }
