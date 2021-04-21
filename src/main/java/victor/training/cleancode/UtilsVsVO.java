@@ -1,10 +1,9 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class UtilsVsVO {
    // Ford Focus:     [2012 ---- 2016]
@@ -22,40 +21,56 @@ public class UtilsVsVO {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+      List<CarModel> results = models.stream()
+          .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
+          .collect(toList());
+
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
 
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
-   }
 }
 
+class Interval {
+   private final int start;
+   private final int end;
 
+   Interval(int start, int end) {
+      if (start > end) {
+         throw new IllegalArgumentException();
+      }
+      this.start = start;
+      this.end = end;
+   }
 
+   public boolean intersects(Interval other) {
+      return start <= other.end && other.start <= end;
+   }
 
+   public int getEnd() {
+      return end;
+   }
 
-
-
-
+   public int getStart() {
+      return start;
+   }
+}
 
 
 class CarSearchCriteria {
@@ -85,43 +100,42 @@ class CarSearchCriteria {
 
 //@Entity
 class CarModel {
-//   @Id
+   //   @Id
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+   private Interval yearInterval;
 
    public CarModel(String make, String model, int startYear, int endYear) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      yearInterval = new Interval(startYear, endYear);
+   }
+
+   public Interval getYearInterval() {
+      return yearInterval;
    }
 
    public Long getId() {
       return id;
    }
 
-   public int getEndYear() {
-      return endYear;
-   }
 
-   public int getStartYear() {
-      return startYear;
-   }
+//   {
+//      CarModel model;
+//      model.getYearInterval().getEnd()
+//   }
 
    public String getMake() {
       return make;
    }
 
-   public String getModel() {
-      return model;
-   }
-
    public void setMake(String make) {
       this.make = make;
+   }
+
+   public String getModel() {
+      return model;
    }
 
    public void setModel(String model) {
