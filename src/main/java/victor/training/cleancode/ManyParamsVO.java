@@ -1,30 +1,55 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import java.util.List;
+import java.util.Map;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
-      new ManyParamsVO().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      FullName fullName = new FullName("John", "Doe");
+      new ManyParamsVO().placeOrder(fullName, new Address("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, Address address) {
+      if (fullName.getfName() == null || fullName.getlName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
 
    }
 }
 
+
+
+
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getfName() == null || fullName.getlName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getlName());
    }
+}
+
+class Incident {
+
+   Map<PersonId, List<IncidentId>> map;
+   PersonId personId;
+}
+
+@Embeddable
+class PersonId {
+   private Long id;
+}
+@Embeddable
+class IncidentId {
+   private Long id;
 }
 
 class Person {
-   private Long id;
+   @EmbeddedId
+   private PersonId id;
    private String firstName;
    private String lastName;
    private String phone;
