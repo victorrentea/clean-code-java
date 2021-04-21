@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BouleanParameters {
 
@@ -44,23 +45,22 @@ public class BouleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    public void bossLevelStuffFluff(List<Task> tasks) {
-      System.out.println("Logic1");
-      List<Long> taskIds = new ArrayList<>();
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.start();
+      List<Long> taskIds = primaParteBoss(tasks);
+      aDouaParteBoss(tasks, taskIds);
+   }
+   public void bossLevelStuffFluff323(List<Task> tasks) {
+      List<Long> taskIds = primaParteBoss(tasks);
 
-         taskIds.add(task.getId());
-      }
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
-      for (Task task : tasks) {
+      aDouaParteBoss(tasks, taskIds);
+   }
 
+   private void aDouaParteBoss(List<Task> tasks, List<Long> taskIds) {
+      int index = 0;
+      for (Task task : tasks) {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
@@ -68,6 +68,17 @@ public class BouleanParameters {
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
+
+   private List<Long> primaParteBoss(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      tasks.forEach(Task::start);
+
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+      return taskIds;
+   }
+
    public void bossLevelStuffNoFluff(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
