@@ -1,6 +1,10 @@
 package victor.training.pure;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.Value;
+import lombok.With;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,35 +25,33 @@ public class ImmutableAdvanced {
       System.out.println(immutable);
 //      numbers.clear();
 //      immutable.getNumbers().clear();
+      Immutable immutable2 = immutable.withX(2);
       System.out.println(immutable);
 
    }
 }
 
+//@Data
+//class A {
+//   private String a;
+//   private String b;
+//
+//   static {
+//      new A().setA("a").setB("b");
+//   }
+//}
+
+@Value
 class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
+   @With
+   int x;
+   ImmutableList<Integer> numbers;
+   @NonNull
+   Other other;
 
-   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = requireNonNull(other);
-   }
-   public ImmutableList<Integer> getNumbers() {
-      return numbers;
-   }
-   public int getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
-   }
-
-   @Override
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+//   public Immutable withX(int newX) {
+//      return new Immutable(newX, numbers, other);
+//   }
 }
 
 class Other {
