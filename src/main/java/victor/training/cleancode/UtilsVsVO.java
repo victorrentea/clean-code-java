@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,8 @@ public class UtilsVsVO {
    public static void main(String[] args) {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
-      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+//      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", new Interval(2012, 2016));
       List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
       System.out.println(models);
    }
@@ -47,9 +49,10 @@ class MathUtil {
 
 }
 
+@Embeddable
 class Interval {
-   private final int start;
-   private final int end;
+   private int start;
+   private int end;
 
    Interval(int start, int end) {
       if (start > end) {
@@ -57,6 +60,9 @@ class Interval {
       }
       this.start = start;
       this.end = end;
+   }
+
+   protected Interval() {
    }
 
    public boolean intersects(Interval other) {
@@ -98,18 +104,21 @@ class CarSearchCriteria {
    }
 }
 
-//@Entity
+@Entity
 class CarModel {
-   //   @Id
+   @Id
+   @GeneratedValue
    private Long id;
    private String make;
    private String model;
+   @Embedded
    private Interval yearInterval;
 
-   public CarModel(String make, String model, int startYear, int endYear) {
+   protected CarModel() {} // de dragu lui Hibernate
+   public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
       this.model = model;
-      yearInterval = new Interval(startYear, endYear);
+      this.yearInterval = yearInterval;
    }
 
    public Interval getYearInterval() {
