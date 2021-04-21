@@ -18,6 +18,10 @@ public class GuardClauses {
       if (marine.getYearsService() == null) {
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }
+      return computeRegularPay(marine);
+   }
+
+   private int computeRegularPay(Marine marine) {
       int result = marine.getYearsService() * 100;
       if (!marine.getAwards().isEmpty()) {
          result += 1000;
