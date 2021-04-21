@@ -125,6 +125,10 @@ class CarModel {
       return yearInterval;
    }
 
+   public void setYearInterval(Interval yearInterval) {
+      this.yearInterval = yearInterval;
+   }
+
    public Long getId() {
       return id;
    }
