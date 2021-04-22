@@ -1,5 +1,6 @@
 package videostore.dirty;
 
+import org.junit.Test;
 import videostore.dirty.Movie.Category;
 
 import java.util.Map;
@@ -57,6 +58,12 @@ public class Rental {
 		// @Autowired
 		PriceCalculator priceCalculator = new PriceCalculator();
 		return movie.getPriceCode().getPriceFunction().apply(priceCalculator,daysRented);
+	}
+	@Test
+	public void test() {
+		for (Category value : Category.values()) {
+			// incearca sa chem functia cu switchul si vezi daca sare vreo exceptie de ille
+		}
 	}
 
 //	Map<Category, Supplier<Double>> priceFunctions = fromPropertiesFile ofEntries(
