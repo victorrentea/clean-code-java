@@ -1,25 +1,39 @@
 package videostore.dirty;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
+
 public class Movie {
-	public static final int CATEGORY_CHILDRENS = 2;
-	public static final int CATEGORY_REGULAR = 0;
-	public static final int CATEGORY_NEW_RELEASE = 1;
-	private String _title;
-	private int _priceCode;
+	public enum Category {
+		CHILDREN(PriceCalculator::computeChildrenPrice),
+		REGULAR(PriceCalculator::computeRegularPrice),
+		NEW_RELEASE(PriceCalculator::computeNewReleasePrice);
+		//		PT_BABACI
+		private final BiFunction<PriceCalculator, Integer, Double> priceFunction;
 
-	public Movie(String title, int priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+		Category(BiFunction<PriceCalculator, Integer, Double> priceFunction) {
+			this.priceFunction = priceFunction;
+		}
+
+		public BiFunction<PriceCalculator, Integer, Double> getPriceFunction() {
+			return priceFunction;
+		}
+	}
+	private final String title;
+	private final Category priceCode;
+
+	public Movie(String title, Category priceCode) {
+		this.title = title;
+		this.priceCode = requireNonNull(priceCode);
 	}
 
-	public int getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(int arg) {
-		_priceCode = arg;
+	public Category getPriceCode() {
+		return priceCode;
 	}
 
 	public String getTitle() {
-		return _title;
-	};
+		return title;
+	}
 }
