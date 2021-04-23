@@ -7,7 +7,32 @@ component accessors="true" output="false"{
 
 //...
 
-	private struct function warrantyData(){
+	public struct function printAndCheck(contractNumber){
+		out = print(contractNumber);
+
+		callJavaToCheckOutIsTheExceptedJSONvs(contractNumber);
+	}
+	public struct function print(contractNumber){
+		///
+		//
+		//
+		writeToFile(contractNumber, ....);
+
+		// find some use-cases which cover AS MANY BRANCHES BELLOW;
+		// measuring the coveage (with
+
+
+//!!!  VERY IMPORTANT:
+
+
+
+// There are RPG .=> you can;t know WHAT to save from that huge DB.
+// if java queries one extra column --> BUM ,
+
+
+
+	}
+	public struct function warrantyData(){
 		//globalToComponent = 1;
 		var aLabel = ArrayNew(1);
 		var aData = ArrayNew(1);
@@ -330,16 +355,8 @@ component accessors="true" output="false"{
 
 		if (isModulesVisibleInWP(warrantyProgram.id)) {
 
-			queryService = new Query(datasource = "#application.dsn#");
+			getWarrantyProgramDescriptions = /*stuf( function ()  ->  */queryStuff(warrantyProgram, contract);
 
-			getWarrantyProgramDescriptions = queryService.execute(sql = "
-				SELECT * FROM vtrwtmod vm JOIN modules mo
-				ON  vm.hdmarkbaid =  mo.HDMARKBAID
-				AND vm.MODULEID = mo.MODULEID
-				where vm.HDMARKBAID = #warrantyProgram.id#
-				AND vm.vtnr = #contract.id#
-				AND vm.version = #contract.version#
-			").getResult();
 
 			if (getWarrantyProgramDescriptions.RecordCount neq 0) {
 
@@ -354,3 +371,42 @@ component accessors="true" output="false"{
 
 		return remapts(conditions, locale);
 	}
+
+	public struct function queryStuff() {
+
+	}
+
+	public struct function queryStuff() {
+if (replay) {
+getWarrantyProgramDescriptions = getReplayDataFromJava(params);
+//getWarrantyProgramDescriptions = {
+	//":"
+//:
+//}
+} else {
+		queryService = new Query(datasource = "#application.dsn#");
+
+
+		getWarrantyProgramDescriptions = queryService.execute(sql = "
+				SELECT * FROM vtrwtmod vm JOIN modules mo
+				ON  vm.hdmarkbaid =  mo.HDMARKBAID
+				AND vm.MODULEID = mo.MODULEID
+				where vm.HDMARKBAID = #warrantyProgram.id#
+				AND vm.vtnr = #contract.id#
+				AND vm.version = #contract.version#
+			").getResult();
+
+
+	recordViaJava(params, getWarrantyProgramDescriptions);
+}
+
+		writeToDiskAsJson("query-vtrwtmod-#warrantyProgram.id#-#contract.id#-#contract.version#.json", getWarrantyProgramDescriptions)
+	}
+}
+
+component ContractPrintBaseOverridenToTest extends="ContractPrintBase"{
+	public struct function queryStuff() {
+
+	}
+
+}
