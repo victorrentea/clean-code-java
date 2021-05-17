@@ -41,7 +41,7 @@ public class BooleanParameters {
             System.out.println("Logic3");
             for (Task task : tasks) {
                System.out.println("Logic4: Validate " + task);
-               task.start();
+               task.setRunning();
 
                taskIds.add(task.getId());
 
@@ -67,7 +67,7 @@ class Task {
    private Long id;
    private boolean running;
 
-   public void start() {
+   public void setRunning() {
       running = true;
    }
 
