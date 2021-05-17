@@ -1,6 +1,7 @@
 package victor.training.pure;
 
 import com.google.common.collect.ImmutableList;
+import lombok.With;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,8 +14,10 @@ public class ImmutableAdvanced {
 
       Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
 
-      immutable.getNumbers().clear();
+//      immutable.getNumbers().clear();
       System.out.println(immutable);
+
+      immutable.withOther(new Other(16));
 
    }
 }
@@ -22,6 +25,7 @@ public class ImmutableAdvanced {
 class Immutable {
    private final int x;
    private final ImmutableList<Integer> numbers;
+   @With
    private final Other other; // shallow vs deep immutability
 
    Immutable(int x, ImmutableList<Integer> numbers, Other other) {
@@ -38,6 +42,7 @@ class Immutable {
    public Other getOther() {
       return other;
    }
+
 
    @Override
    public String toString() {
