@@ -2,9 +2,20 @@ package victor.training.refactoring;
 
 class ParameterizeAndExtract {
 
+    public static  void g(int n) {
+        System.out.println("Logic G");
+
+        common(n, 3);
+    }
+
     public void f(int n) {
         System.out.println("Logic F");
-        for (int i = 0; i < 4; i++) {
+
+        common(n, 4);
+    }
+
+    private static void common(int n, int i2) {
+        for (int i = 0; i < i2; i++) {
             if (n + i < 0) {
                 System.out.println("Code " + i);
             } else {
@@ -17,16 +28,4 @@ class ParameterizeAndExtract {
 }
 class AnotherClass {
 
-    public void g(int n) {
-        System.out.println("Logic G");
-        for (int j = 0; j < 3; j++) {
-            if (n + j < 0) {
-                String x = "Code" +
-                        " " + j;
-                System.out.println(x);
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
 }
