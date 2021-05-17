@@ -1,5 +1,7 @@
 package victor.training.pure;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -9,8 +11,9 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = new Immutable(1, numbers, new Other(15));
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
 
+      immutable.getNumbers().clear();
       System.out.println(immutable);
 
    }
@@ -18,15 +21,15 @@ public class ImmutableAdvanced {
 
 class Immutable {
    private final int x;
-   private final List<Integer> numbers;
-   private final Other other;
+   private final ImmutableList<Integer> numbers;
+   private final Other other; // shallow vs deep immutability
 
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
    }
-   public List<Integer> getNumbers() {
+   public ImmutableList<Integer> getNumbers() {
       return numbers;
    }
    public int getX() {
@@ -43,7 +46,7 @@ class Immutable {
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -53,7 +56,4 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
 }
