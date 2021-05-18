@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import org.junit.Test;
+
 public class ManyParamsVO {
    public static void main(String[] args) {
       new ManyParamsVO().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
@@ -15,13 +17,6 @@ public class ManyParamsVO {
 }
 
 
-
-
-
-
-
-
-
 class AnotherClass {
    public void otherMethod(FullName fullName, int x) {
       if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
@@ -33,12 +28,11 @@ class AnotherClass {
 
 class Person {
    private Long id;
-  private FullName fullName;
+   private FullName fullName;
    private String phone;
 
    public Person(String firstName, String lastName) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-     this.fullName = new FullName(firstName,lastName);
+      this.fullName = new FullName(firstName, lastName);
    }
 
    // TODO hard-core: implement setter
@@ -46,10 +40,26 @@ class Person {
       this.fullName = fullName.withLastName(him.getFullName().getLastName());
    }
 
+   public Person setPhone(String phone) {
+      this.phone = phone;
+      return this;
+   }
+
    public FullName getFullName() {
       return fullName;
    }
 
+
+
+}
+class StupidTest {
+
+   @Test
+   public void test() {
+
+      Person person = new Person("John", "Doe")
+          .setPhone("00000000");
+   }
 }
 
 class PersonService {
@@ -65,6 +75,6 @@ class PersonService {
    }
 
    public void pcaller() {
-       p("Dristor", "Bucharest", 91);
+      p("Dristor", "Bucharest", 91);
    }
 }
