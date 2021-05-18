@@ -8,15 +8,15 @@ public class Movie {
    }
 
    private final String title;
-   private final Type priceCode;
+   private final Type type;
 
-   public Movie(String title, Type priceCode) {
+   public Movie(String title, Type type) {
       this.title = title;
-      this.priceCode = priceCode;
+      this.type = type;
    }
 
-   public Type getPriceCode() {
-      return priceCode;
+   public Type getType() {
+      return type;
    }
 
    public String getTitle() {
