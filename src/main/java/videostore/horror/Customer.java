@@ -1,6 +1,9 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 public class Customer {
 	private final String name;
@@ -14,31 +17,37 @@ public class Customer {
 		rentals.add(rental);
 	}
 
-	public String getName() {
-		return name;
+	public String generateStatement() {
+		int frequentRenterPoints = computeTotalPoints();
+		double totalPrice = computeTotalPrice();
+
+		String result = generateHeader();
+
+		result += rentals.stream().map(this::generateStatementLine).collect(joining());
+
+		result += generateFooter(totalPrice, frequentRenterPoints);
+		return res`u`lt;
 	}
 
-	public String generateStatement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + name + "\n";
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
+	}
 
-		for (Rental rental : rentals) {
-			frequentRenterPoints += rental.computeFrequentRenterPoints();
-			result += "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
-			totalPrice += rental.computePrice();
-			// Inline a method call is a
-			// - BUG if the return value is different = referential transparency: for same inputs -> same outputs
-			// - BUG if it has side effects (counts the number of times it's called)
-			// - BAD idea if expensive in time
+	private int computeTotalPoints() {
+		return rentals.stream().mapToInt(Rental::computeFrequentRenterPoints).sum();
+	}
 
+	private String generateHeader() {
+		return "Rental Record for " + name + "\n";
+	}
 
-		}
-		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalPrice) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
-		return result;
+	private String generateFooter(double totalPrice, int frequentRenterPoints) {
+		return "Amount owed is " + totalPrice + "\n" +
+				 "You earned " + frequentRenterPoints + " frequent renter points";
+	}
+
+	private String generateStatementLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 }
