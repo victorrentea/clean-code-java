@@ -1,7 +1,11 @@
 package videostore.horror;
 
+import lombok.SneakyThrows;
+import org.jetbrains.annotations.Contract;
 import videostore.horror.Movie.Type;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Objects;
 
 public class Rental {
