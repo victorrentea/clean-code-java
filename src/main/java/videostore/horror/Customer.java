@@ -2,63 +2,43 @@ package videostore.horror;
 
 import java.util.*;
 
-class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+public class Customer {
+	private final String name;
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
-		double totalAmount = 0;
+	public String generateStatement() {
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
-		Iterator<Movie> rentals = this.rentals.keySet().iterator();
-		String result = "Rental Record for " + getName() + "\n";
-		while (rentals.hasNext()) {
-			double thisAmount = 0;
-			Movie each = (Movie) rentals.next();
-			// determine amounts for each line
-			int dr = this.rentals.get(each);
-			switch (each.getType()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (dr > 2)
-					thisAmount += (dr - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += dr * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (dr > 3)
-					thisAmount += (dr - 3) * 1.5;
-				break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getType() != null &&
-				 (each.getType() == Movie.Type.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
-			totalAmount += thisAmount;
+		String result = "Rental Record for " + name + "\n";
+
+		for (Rental rental : rentals) {
+			frequentRenterPoints += rental.computeFrequentRenterPoints();
+			result += "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+			totalPrice += rental.computePrice();
+			// Inline a method call is a
+			// - BUG if the return value is different = referential transparency: for same inputs -> same outputs
+			// - BUG if it has side effects (counts the number of times it's called)
+			// - BAD idea if expensive in time
+
+
 		}
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+		result += "Amount owed is " + String.valueOf(totalPrice) + "\n";
 		result += "You earned " + String.valueOf(frequentRenterPoints)
 				+ " frequent renter points";
 		return result;
 	}
+
 }

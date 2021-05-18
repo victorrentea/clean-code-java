@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import java.util.Objects;
+
 public class Movie {
    public enum Type {
       REGULAR,
@@ -11,8 +13,8 @@ public class Movie {
    private final Type type;
 
    public Movie(String title, Type type) {
-      this.title = title;
-      this.type = type;
+      this.title = Objects.requireNonNull(title);
+      this.type = Objects.requireNonNull(type); // + ALTER TABLE SET NOT NULL + check prod DB
    }
 
    public Type getType() {

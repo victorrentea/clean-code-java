@@ -1,5 +1,7 @@
 package victor.training.pure;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -10,15 +12,24 @@ public class LostInSet {
       Set<Child> set = new HashSet<>();
 
       Child childOne = new Child("Emma");
+
       set.add(childOne);
 
+      System.out.println(set.contains(childOne));
+
+      System.out.println(childOne.hashCode());
+//      childOne.setName("Emma-Simona");
+      System.out.println(childOne.hashCode());
       System.out.println(set.contains(childOne));
    }
 }
 
 
+@Entity
 class Child {
-   private String name;
+   @Id
+   private Long id;
+   private final String name;
 
    public Child(String name) {
       this.name = name;
@@ -28,9 +39,9 @@ class Child {
       return name;
    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+//   public void setName(String name) {
+//      this.name = name;
+//   }
 
    @Override
    public boolean equals(Object o) {
