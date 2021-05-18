@@ -1,11 +1,5 @@
 package videostore.horror;
 
-import lombok.SneakyThrows;
-import org.jetbrains.annotations.Contract;
-import videostore.horror.Movie.Type;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Objects;
 
 public class Rental {
@@ -29,22 +23,39 @@ public class Rental {
    }
 
    public double computePrice() {
-      double price = 0;
+      //return switch (movie.getType()) {
+      //         case REGULAR -> computeRegularPrice();
+      //         case NEW_RELEASE -> computeNewReleasePrice();
+      //         case CHILDREN -> computeChildrenPrice();
+      //         case ELDERS -> -1;
+      //      };
       switch (movie.getType()) {
          case REGULAR:
-            price += 2;
-            if (daysRented > 2)
-               price += (daysRented - 2) * 1.5;
-            break;
+            return computeRegularPrice();
          case NEW_RELEASE:
-            price += daysRented * 3;
-            break;
+            return computeNewReleasePrice();
          case CHILDREN:
-            price += 1.5;
-            if (daysRented > 3)
-               price += (daysRented - 3) * 1.5;
-            break;
+            return computeChildrenPrice();
+         default:
+            throw new IllegalStateException("Unexpected value: " + movie.getType());
       }
+   }
+
+   private double computeChildrenPrice() {
+      double price = 1.5;
+      if (daysRented > 3)
+         price += (daysRented - 3) * 1.5;
+      return price;
+   }
+
+   private double computeNewReleasePrice() {
+      return daysRented * 3;
+   }
+
+   private double computeRegularPrice() {
+      double price = 2;
+      if (daysRented > 2)
+         price += (daysRented - 2) * 1.5;
       return price;
    }
 
@@ -57,10 +68,7 @@ public class Rental {
    }
 
    private boolean winsBonus() {
-      return isNewRelease() && getDaysRented() >= 2;
+      return movie.isNewRelease() && getDaysRented() >= 2;
    }
 
-   private boolean isNewRelease() {
-      return movie.getType() == Type.NEW_RELEASE;
-   }
 }
