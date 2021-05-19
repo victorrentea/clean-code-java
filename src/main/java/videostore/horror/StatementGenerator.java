@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.stream.Collectors.joining;
 
@@ -9,6 +10,20 @@ public class StatementGenerator {
 
 
    public String generateStatement(String customerName, List<Rental> rentals) {
+
+//      AtomicReference<Double> totalPrice = new AtomicReference<>((double) 0);
+
+//      for (Rental rental : rentals) {
+//      rentals.forEach(rental -> {
+//         totalPrice.updateAndGet(v -> new Double((double) (v + rental.computePrice())));
+//      });
+      for (Rental r : rentals) {
+         if (r.getMovie().isNewRelease()) {
+            System.out.println(r);
+         }
+      }
+//      Tuple5<String,String,String,Double, Integer>
+
       return generateHeader(customerName) +
              generateBody(rentals) +
              generateFooter(rentals);

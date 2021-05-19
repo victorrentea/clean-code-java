@@ -1,5 +1,9 @@
 package videostore.horror;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 public class Rental {
@@ -22,6 +26,11 @@ public class Rental {
       return movie;
    }
 
+   public void method() throws ParseException, FileNotFoundException {
+      new FileReader("a");
+      new SimpleDateFormat("yyyy-MM-dd").parse("2021-02-05");
+   }
+
    public double computePrice() {
       //return switch (movie.getType()) {
       //         case REGULAR -> computeRegularPrice();
@@ -29,6 +38,9 @@ public class Rental {
       //         case CHILDREN -> computeChildrenPrice();
       //         case ELDERS -> -1;
       //      };
+
+
+
       switch (movie.getType()) {
          case REGULAR:
             return computeRegularPrice();
