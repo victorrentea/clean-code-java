@@ -5,9 +5,14 @@ import victor.training.cleancode.pretend.Autowired;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
+import static videostore.horror.Movie.Category.NEW_RELEASE;
 
 //@Configurable
 public class Movie {
+   public boolean isNewRelease() {
+      return getCategory() == NEW_RELEASE;
+   }
+
    public enum Category {
       CHILDREN,
       REGULAR,
@@ -22,7 +27,7 @@ public class Movie {
 
    public Movie(String title, Category category) {
       this.title = requireNonNull(title);
-      this.category = requireNonNull(category);
+      this.category = requireNonNull(category); // + NOT NULL
 //      validator.validate(this);
    }
 

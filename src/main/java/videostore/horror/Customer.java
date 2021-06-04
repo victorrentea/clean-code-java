@@ -1,9 +1,9 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
-import static videostore.horror.Movie.Category.NEW_RELEASE;
 
 class Customer {
 	private final String name;
@@ -23,33 +23,35 @@ class Customer {
 		return name;
 	}
 
-	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+	public String generateStatement() {
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
+	}
 
-		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
+	private String formatHeader() {
+		return "Rental Record for " + name + "\n";
+	}
 
-			double thisAmount = rental.computePrice();
+	private String formatBody() {
+		return rentals.stream().map(this::formatRental).collect(Collectors.joining());
+	}
 
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (movie.getCategory() != null &&
-				 (movie.getCategory() == NEW_RELEASE)
-				 && daysRented >= 2)
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints
-					 + " frequent renter points";
-		return result;
+	private String formatFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n"
+				 + "You earned " + computeTotalPoints() + " frequent renter points";
+	}
+
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
+	}
+
+	private int computeTotalPoints() {
+		return rentals.stream().mapToInt(Rental::computeBonusPoints).sum();
+	}
+
+	private String formatRental(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 }

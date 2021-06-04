@@ -3,6 +3,7 @@ package videostore.horror;
 import static java.util.Objects.requireNonNull;
 
 public class Rental {
+   public static final int MIN_DAYS_FOR_BONUS_FOR_NEW_RELEASE = 2;
    private final Movie movie;
    private final int daysRented;
 
@@ -38,4 +39,13 @@ public class Rental {
       }
       return result;
    }
+
+   public int computeBonusPoints() {
+      int frequentRenterPoints = 1;
+      if (movie.isNewRelease() && getDaysRented() >= 2) {
+         frequentRenterPoints++;
+      }
+      return frequentRenterPoints;
+   }
+
 }
