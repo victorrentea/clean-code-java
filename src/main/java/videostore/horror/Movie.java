@@ -1,7 +1,5 @@
 package videostore.horror;
 
-import victor.training.cleancode.pretend.Autowired;
-
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
