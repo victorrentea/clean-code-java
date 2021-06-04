@@ -1,25 +1,49 @@
 package videostore.horror;
+
+import victor.training.cleancode.pretend.Autowired;
+
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
+//@Configurable
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
+   public enum Category {
+      CHILDREN,
+      REGULAR,
+      NEW_RELEASE;
+   }
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
-	}
+//   @Autowired
+//   private javax.validator.Validator validator;
+//   @Size(min =2)
+   private final String title;
+   private final Category category;
 
-	public Integer getPriceCode() {
-		return _priceCode;
-	}
+   public Movie(String title, Category category) {
+      this.title = requireNonNull(title);
+      this.category = requireNonNull(category);
+//      validator.validate(this);
+   }
 
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
-	}
+   public Category getCategory() {
+      return category;
+   }
 
-	public String getTitle() {
-		return _title;
-	};
+   public String getTitle() {
+      return title;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Movie movie = (Movie) o;
+      return Objects.equals(title, movie.title) && category == movie.category;
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(title, category);
+   }
 }
