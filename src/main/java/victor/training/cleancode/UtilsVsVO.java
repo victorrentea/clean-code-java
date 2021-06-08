@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 
+import javax.persistence.Embedded;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class UtilsVsVO {
    public static void main(String[] args) {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
-      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", new Interval(2012, 2016));
       List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
       System.out.println(models);
    }
@@ -22,33 +23,28 @@ public class UtilsVsVO {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = models.stream()
-          .filter(model -> MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear())))
+      return models.stream()
+          .filter(model -> criteria.getYearInterval().intersect(model.getYearInterval()))
           .collect(toList());
-
-      System.out.println("More filtering logic");
-      return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+      System.out.println(new Interval(1000, 1600).intersect(new Interval(1250, 2000)));
    }
 
 }
 
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+      System.out.println(new Interval(1000, 1600).intersect(new Interval(1250, 2000)));
    }
 
 }
+class AltUtil {
 
+}
 class MathUtil {
 
-   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-      return interval1.getStart() <= interval2.getEnd() && interval2.getStart()<= interval1.getEnd();
-
-   }
 }
 
 class Interval {
@@ -56,8 +52,14 @@ class Interval {
    private final int end;
 
    Interval(int start, int end) {
+      if (start > end) throw new IllegalArgumentException("start larger than end");
+
       this.start = start;
       this.end = end;
+   }
+
+   public boolean intersect(Interval other) {
+      return start <= other.end && other.start <= end;
    }
 
    public int getEnd() {
@@ -67,7 +69,20 @@ class Interval {
    public int getStart() {
       return start;
    }
+
+   public Interval shiftLeft(int delta) {
+      return new Interval(getStart() - delta, getEnd() - delta);
+   }
 }
+class CumTranslatezIntervalul {
+   public void method(Interval interval) {
+      Interval laStangaCu1 = interval.shiftLeft(1);
+      System.out.println("Mutat la stanga cu 1: " + laStangaCu1);
+   }
+
+}
+
+
 
 
 class CarSearchCriteria {
@@ -93,6 +108,10 @@ class CarSearchCriteria {
    public String getMake() {
       return make;
    }
+
+   public Interval getYearInterval() {
+      return new Interval(startYear, endYear);
+   }
 }
 
 //@Entity
@@ -101,28 +120,32 @@ class CarModel {
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+//   private int startYear; // START_YEAR
+//   private int endYear;
+   @Embedded // JPA: face ca cele 2 campuri din yearInterval sa se adauge la tabela CAR_MODELS
+   private Interval yearInterval;
 
-   public CarModel(String make, String model, int startYear, int endYear) {
+   public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      this.yearInterval = yearInterval;
+   }
+
+   public Interval getYearInterval() {
+      return yearInterval;
    }
 
    public Long getId() {
       return id;
    }
 
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
-   }
+//   public int getEndYear() {
+//      return yearInterval.getEnd();
+//   }
+//
+//   public int getStartYear() {
+//      return yearInterval.getStart();
+//   }
 
    public String getMake() {
       return make;
@@ -147,4 +170,19 @@ class CarModel {
              ", model='" + model + '\'' +
              '}';
    }
+
+
+}
+
+class UndevaDeparte{
+   public void method(CarModel carModel) {
+      CarModelDto carModelDto = new CarModelDto();
+      carModelDto.startYear = carModel.getYearInterval().getStart();
+      carModelDto.endYear = carModel.getYearInterval().getEnd();
+   }
+}
+class CarModelDto {
+   public int startYear;
+
+   public int endYear;
 }
