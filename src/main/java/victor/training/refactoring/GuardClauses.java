@@ -2,33 +2,36 @@ package victor.training.refactoring;
 
 import java.util.ArrayList;
 import java.util.List;
+//      if (marine == null) {
+//         throw new RuntimeException("Marine is null");
+//      }
+//      if (marine.getYearsService() == null) { //
+//         throw new IllegalArgumentException("Any marine should have the years of service set");
+//      }
 
 public class GuardClauses {
+   // daca asta e business logic rule implemention
+   // cel mai sacru loc din cod. Gradina Imparatului.
    public int getPayAmount(Marine marine) {
-      int result;
-      if (!retrieveDeadStatus()) { // network call
-         if (marine != null) {
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // much more logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            throw new RuntimeException("Marine is null");
-         }
-      } else {
+      if (retrieveDeadStatus()) {
          // some logic here
-         result = deadAmount();
+         return deadAmount();
+      } // network call
+      if (marine.isRetired()) {
+         return retiredAmount();
       }
+      return computePayAmount(marine);
+   }
+
+   private int computePayAmount(Marine marine) {
+      int result = marine.getYearsService() * 100;
+      if (!marine.getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
+      }
+      // much more logic here...
       return result;
    }
 
