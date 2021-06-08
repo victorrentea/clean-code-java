@@ -1,10 +1,10 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class UtilsVsVO {
    // Ford Focus:     [2012 ---- 2016]
@@ -22,10 +22,12 @@ public class UtilsVsVO {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      List<CarModel> results = models.stream()
+          .filter(model -> MathUtil.intervalsIntersect(
+                 criteria.getStartYear(), criteria.getEndYear(),
+                 model.getStartYear(), model.getEndYear()))
+          .collect(toList());
+
       System.out.println("More filtering logic");
       return results;
    }
@@ -35,6 +37,7 @@ class SearchEngine {
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
       System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
@@ -44,18 +47,31 @@ class Alta {
 
 class MathUtil {
 
+//   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+//
+//   }
    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
       return start1 <= end2 && start2 <= end1;
    }
 }
 
+class Interval {
+   private final int start;
+   private final int end;
 
+   Interval(int start, int end) {
+      this.start = start;
+      this.end = end;
+   }
 
+   public int getEnd() {
+      return end;
+   }
 
-
-
-
-
+   public int getStart() {
+      return start;
+   }
+}
 
 
 class CarSearchCriteria {
@@ -85,7 +101,7 @@ class CarSearchCriteria {
 
 //@Entity
 class CarModel {
-//   @Id
+   //   @Id
    private Long id;
    private String make;
    private String model;
