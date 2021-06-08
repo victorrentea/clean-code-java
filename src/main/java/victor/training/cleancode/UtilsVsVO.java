@@ -23,9 +23,7 @@ class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
       List<CarModel> results = models.stream()
-          .filter(model -> MathUtil.intervalsIntersect(
-                 criteria.getStartYear(), criteria.getEndYear(),
-                 model.getStartYear(), model.getEndYear()))
+          .filter(model -> MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear())))
           .collect(toList());
 
       System.out.println("More filtering logic");
@@ -33,25 +31,23 @@ class SearchEngine {
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
    }
 
 }
 
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
 
-//   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-//
-//   }
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
+   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+      return interval1.getStart() <= interval2.getEnd() && interval2.getStart()<= interval1.getEnd();
+
    }
 }
 
