@@ -1,5 +1,10 @@
 package victor.training.refactoring;
 
+import lombok.Data;
+import lombok.NonNull;
+import lombok.Value;
+import lombok.With;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,41 +40,53 @@ public class ImmutableBasic {
    }
 }
 
+@Value
 class Immutable {
-   private final int x;
-   private final List<Integer> numbers;
-   private final Other other;
-
-   public Immutable(int x, List<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = new ArrayList<>( numbers);
-      this.other = Objects.requireNonNull(other);
-   }
-
-   public int getX() {
-      return x;
-   }
+   @With
+   int x;
+   List<Integer> numbers;
+   @NonNull
+   Other other;
 
    public List<Integer> getNumbers() {
       return Collections.unmodifiableList(numbers);
    }
-   //   public List<Integer> getNumbers() {
-//      return new ArrayList<>(numbers);
-//   }
-//   public ImmutableList<Integer> getNumbers() {
-//      return numbers;
-//   }
-   public Immutable withX(int newX) {
-      return new Immutable(newX, numbers, other);
-   }
-   
-   public Other getOther() {
-      return other;
-   }
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-   }
 }
+//class Immutable {
+//   private final int x;
+//   private final List<Integer> numbers;
+//   private final Other other;
+//
+//   public Immutable(int x, List<Integer> numbers, Other other) {
+//      this.x = x;
+//      this.numbers = new ArrayList<>( numbers);
+//      this.other = Objects.requireNonNull(other);
+//   }
+//
+//   public int getX() {
+//      return x;
+//   }
+//
+//   public List<Integer> getNumbers() {
+//      return Collections.unmodifiableList(numbers);
+//   }
+//   //   public List<Integer> getNumbers() {
+////      return new ArrayList<>(numbers);
+////   }
+////   public ImmutableList<Integer> getNumbers() {
+////      return numbers;
+////   }
+//   public Immutable withX(int newX) {
+//      return new Immutable(newX, numbers, other);
+//   }
+//
+//   public Other getOther() {
+//      return other;
+//   }
+//   public String toString() {
+//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
+//   }
+//}
 
 
 class Other {
