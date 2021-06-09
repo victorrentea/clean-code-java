@@ -20,4 +20,12 @@ public class ClassifiedPortfolioPerformance {
    public ClassifiedPortfolioPerformance copy() {
       return null;
    }
+
+   public void calculatePercentage() {
+
+   }
+
+   public Object getAssetPerformances() {
+      return null;
+   }
 }

@@ -7,4 +7,7 @@ public class AssetClassRepo {
    public ClassifiedPortfolioPerformance calculatePortfolioAndAccountPerformanceTemp(Date startDate, Date endDate, List<Account> finalAccounts, Long rodCode, String contractNo, victor.training.samples.one.other.ReportInstrumentScopeType instrumentTypePerf) {
       return null;
    }
+
+   public void save(ClassifiedPortfolioPerformance acClassPerfWithLiq, Date startDate, Date endDate, Long rodCode) {
+   }
 }

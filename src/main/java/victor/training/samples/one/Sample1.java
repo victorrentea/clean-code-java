@@ -22,6 +22,7 @@
 //   private MovementsRepoAsync movementsRepoAsync;
 //   private AssetClassRepoAsync assetClassRepoAsync;
 //   private CurrentOrderRepoAsync currentOrderRepoAsync;
+//   private ProductRepository productRepository;
 //
 //
 //   private void loadAsyncContract(Long rodCode, DefaultDataSet dataset, List<Account> finalAccounts,
@@ -69,7 +70,7 @@
 //      List<Account> liquidityAccounts = accountLists.get(3);
 //      List<Account> securityDepositAccounts = accountLists.get(4);
 //
-//      dataset.setNdgAccountsMap(ndgAccountsMap(finalAccounts));
+////      dataset.setNdgAccountsMap(ndgAccountsMap(finalAccounts)); FIXME
 //
 //      // Start the Futures to retrieve all the informations at start date,
 //      // because
@@ -247,6 +248,32 @@
 //            U4RAsyncUtils.cancelExecution(acClassificationPerformanceFuture);
 //         }
 //      }
+//   }
+//
+//   private BigDecimal computeTotalInflightOrder(List<AccountFlightOrder> startAccountsFlightOrders) {
+//      return null;
+//   }
+//
+//   private void setMovementsSituation(DefaultDataSet dataset, List<AccountMovements> resultFromAsyncTask) {
+//   }
+//
+//   private void addVirtualCashflowToResult(DefaultDataSet dataset, List<AccountBalance> resultFromAsyncTask) {
+//   }
+//
+//   private void setInvestmentsAndWithdrawals(DefaultDataSet dataset, List<AccountMovements> resultFromAsyncTask) {
+//   }
+//
+//   private void filterByCashAccountOfFlightOrders(DefaultDataSet dataset) {
+//
+//   }
+//
+//   private boolean areCashAccountsSelected(DefaultDataSet dataset) {
+//      return false;
+//   }
+//
+//   private void setStartAccountsSituation(DefaultDataSet dataset, List<Account> resultFromAsyncTask) {
+//
+//
 //   }
 //
 //   private void setEndAccountsSituation(DefaultDataSet dataset, List<Account> resultFromAsyncTask) {
