@@ -25,8 +25,7 @@ public class Sample1 {
    private ProductRepository productRepository;
 
 
-   private void loadAsyncContract(Long rodCode, DefaultDataSet dataset, List<Account> finalAccounts,
-                                  Contract contract) {
+   private void loadAsyncContract(Long rodCode, DefaultDataSet dataset, List<Account> finalAccounts, Contract contract) {
       RequestContext ctx = RequestContextThreadLocal.getRequestContext();
       Date startDate = dataset.getStartDate().toDate();
       Date endDate = dataset.getEndDate().toDate();
