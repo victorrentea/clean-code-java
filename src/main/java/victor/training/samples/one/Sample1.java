@@ -2,13 +2,27 @@
 //
 //import org.apache.commons.collections.CollectionUtils;
 //import org.apache.commons.lang.time.DateUtils;
+//import org.joda.time.LocalDate;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 //
 //import java.math.BigDecimal;
-//import java.time.LocalDate;
+//import java.text.ParseException;
 //import java.util.*;
+//import java.util.concurrent.Future;
 //
 //public class Sample1 {
+//   private static final Logger LOGGER = LoggerFactory.getLogger(Sample1.class);
+//   private static final String ISO_8601_DATE_FORMAT = "FORMAT";
+//   private static final String FIRST_AUGUST_2016 = "";
 //   private AssetClassRepo assetClassRepo;
+//   private UtilRepo utilRepo;
+//   private AccountRepoAsync accountRepoAsync;
+//   private PortfolioIncomeRepoAsync portfolioIncomeRepoAsync;
+//   private MovementsRepoAsync movementsRepoAsync;
+//   private AssetClassRepoAsync assetClassRepoAsync;
+//   private CurrentOrderRepoAsync currentOrderRepoAsync;
+//
 //
 //   private void loadAsyncContract(Long rodCode, DefaultDataSet dataset, List<Account> finalAccounts,
 //                                  Contract contract) {
@@ -84,7 +98,7 @@
 //         LOGGER.debug(e.getMessage());
 //      }
 //      // Start the Future to retrieve investments and withdrawals
-//      Future<List<AccountMovements>> investmentsWithdrawalsFuture = movementsRepoAsync
+//      Future<List<AccountMovements>> investmentsWithdrawalsFuture =  movementsRepoAsync
 //          .findInvestmentWithdrawalsRealCashflow(ctx, rodCode, finalAccounts, startDate, endDate, contractNo,
 //              instrumentType);
 //      // Start the Future to retrieve liquidity movements between N periods
@@ -179,8 +193,7 @@
 //                   startIfo);
 //               // Add cash accounts classification at end date
 //
-//               cashClassification = new CashAccountsClassification(endDate,
-//                   dataset.getFinalCashAccounts().getAccounts(), dataset.getCurrencyMap());
+//               cashClassification = new CashAccountsClassification(endDate, dataset.getFinalCashAccounts().getAccounts(), dataset.getCurrencyMap());
 //               acClassPerfWithLiq.getAssetPerformances().addCashClassification(cashClassification, true, endIfo);
 //               // Balances retrieved from Balance ws, should be aligned
 //               // with the totals
@@ -234,5 +247,13 @@
 //            U4RAsyncUtils.cancelExecution(acClassificationPerformanceFuture);
 //         }
 //      }
+//   }
+//
+//   private void setEndAccountsSituation(DefaultDataSet dataset, List<Account> resultFromAsyncTask) {
+//
+//   }
+//
+//   private List<List<Account>> buildAccountLists(List<Account> finalAccounts, boolean b, Date startDate, Date endDate) {
+//      return null;
 //   }
 //}

@@ -1,4 +1,5 @@
 package victor.training.samples.one.other;
 
-public class ReportInstrumentScopeType {
+public enum ReportInstrumentScopeType {
+   ALL
 }
