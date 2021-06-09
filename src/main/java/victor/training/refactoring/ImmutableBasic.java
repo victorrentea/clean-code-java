@@ -1,5 +1,6 @@
 package victor.training.refactoring;
 
+import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Value;
@@ -17,7 +18,7 @@ public class ImmutableBasic {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
-      Immutable immutable = new Immutable(2, numbers, new Other(13));
+      Immutable immutable = new Immutable(2, ImmutableList.copyOf(numbers), new Other(13));
 //
 
       System.out.println(immutable);
@@ -27,7 +28,7 @@ public class ImmutableBasic {
 //      immutable.getNumbers().clear();
 
 
-      for (Integer number : immutable.getNumbers()) {
+      for (Integer number : immutable.numbers()) {
          System.out.println(number);
       }
 
@@ -35,23 +36,34 @@ public class ImmutableBasic {
 
       // LOTS OF BUSINESS LOGIC HERE
 
+
       System.out.println(immutable);
       System.out.println(immutable.withX(999));
    }
 }
 
-@Value
-class Immutable {
-   @With
-   int x;
-   List<Integer> numbers;
-   @NonNull
-   Other other;
+record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
 
-   public List<Integer> getNumbers() {
-      return Collections.unmodifiableList(numbers);
+   public Immutable withX(int newX) {
+      return new Immutable(newX, numbers, other);
    }
 }
+
+//@Value
+//class Immutable {
+//   @With
+//   int x;
+//   List<Integer> numbers;
+//   @NonNull
+//   Other other;
+//
+//   public List<Integer> getNumbers() {
+//      return Collections.unmodifiableList(numbers);
+//   }
+//}
+
+
+
 //class Immutable {
 //   private final int x;
 //   private final List<Integer> numbers;
