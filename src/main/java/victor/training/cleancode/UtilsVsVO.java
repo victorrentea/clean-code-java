@@ -2,6 +2,8 @@ package victor.training.cleancode;
 
 
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,12 +49,15 @@ class MathUtil {
 
 }
 
+//@Embedded
 class Interval {
-   private final int start;
-   private final int end;
+   private int start;
+   private int end;
 
+   private Interval() {} // doar pt Hibernate
    Interval(int start, int end) {
       if (start > end) throw new IllegalArgumentException("start larger than end");
+//      Interval.class.getDeclaredField("start").set(obj, 6);y
 
       this.start = start;
       this.end = end;
@@ -114,16 +119,16 @@ class CarSearchCriteria {
    }
 }
 
-//@Entity
+@Entity
 class CarModel {
-   //   @Id
+      @Id
    private Long id;
    private String make;
    private String model;
 //   private int startYear; // START_YEAR
 //   private int endYear;
    @Embedded // JPA: face ca cele 2 campuri din yearInterval sa se adauge la tabela CAR_MODELS
-   private Interval yearInterval;
+   private Interval yearInterval ;
 
    public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;

@@ -1,7 +1,6 @@
 package victor.training.samples.one;
 
 import org.joda.time.LocalDate;
-import sun.security.krb5.internal.KerberosTime;
 
 import java.util.Date;
 import java.util.Map;
