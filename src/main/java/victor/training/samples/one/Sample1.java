@@ -98,6 +98,7 @@ public class Sample1 {
       Future<List<Account>> startAccountsFuture = accountRepoAsync.addBalancesAndProducts(ctx, rodCode, startAccounts,
           startDate, contractNo, ReportInstrumentScopeType.ALL);
       // Start the Futures to retrieve inflight orders at start date and end
+
       // date
       Future<List<AccountFlightOrder>> startAccountsFlightOrdersFuture = null;
       Future<List<AccountFlightOrder>> endAccountsFlightOrdersFuture = null;
