@@ -28,7 +28,7 @@ public class ImmutableBasic {
 //      immutable.getNumbers().clear();
 
 
-      for (Integer number : immutable.numbers()) {
+      for (Integer number : immutable.getNumbers()) {
          System.out.println(number);
       }
 
@@ -42,12 +42,12 @@ public class ImmutableBasic {
    }
 }
 
-record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-
-   public Immutable withX(int newX) {
-      return new Immutable(newX, numbers, other);
-   }
-}
+//record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//
+//   public Immutable withX(int newX) {
+//      return new Immutable(newX, numbers, other);
+//   }
+//}
 
 //@Value
 //class Immutable {
@@ -64,41 +64,41 @@ record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
 
 
 
-//class Immutable {
-//   private final int x;
-//   private final List<Integer> numbers;
-//   private final Other other;
-//
-//   public Immutable(int x, List<Integer> numbers, Other other) {
-//      this.x = x;
-//      this.numbers = new ArrayList<>( numbers);
-//      this.other = Objects.requireNonNull(other);
+class Immutable {
+   private final int x;
+   private final ImmutableList<Integer> numbers;
+   private final Other other;
+
+   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+      this.x = x;
+      this.numbers = numbers;
+      this.other = Objects.requireNonNull(other);
+   }
+
+   public int getX() {
+      return x;
+   }
+
+   public ImmutableList<Integer> getNumbers() {
+      return numbers;
+   }
+   //   public List<Integer> getNumbers() {
+//      return new ArrayList<>(numbers);
 //   }
-//
-//   public int getX() {
-//      return x;
+//   public ImmutableList<Integer> getNumbers() {
+//      return numbers;
 //   }
-//
-//   public List<Integer> getNumbers() {
-//      return Collections.unmodifiableList(numbers);
-//   }
-//   //   public List<Integer> getNumbers() {
-////      return new ArrayList<>(numbers);
-////   }
-////   public ImmutableList<Integer> getNumbers() {
-////      return numbers;
-////   }
-//   public Immutable withX(int newX) {
-//      return new Immutable(newX, numbers, other);
-//   }
-//
-//   public Other getOther() {
-//      return other;
-//   }
-//   public String toString() {
-//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-//   }
-//}
+   public Immutable withX(int newX) {
+      return new Immutable(newX, numbers, other);
+   }
+
+   public Other getOther() {
+      return other;
+   }
+   public String toString() {
+      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
+   }
+}
 
 
 class Other {
