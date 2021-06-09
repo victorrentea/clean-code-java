@@ -38,7 +38,9 @@ public class ImmutableBasic {
 
 
       System.out.println(immutable);
-      System.out.println(immutable.withX(999));
+//      System.out.println();
+
+      Immutable immutable999 = immutable.withX(999);
    }
 }
 
