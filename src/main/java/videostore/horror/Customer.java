@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
@@ -19,16 +20,15 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = formatHeader();
-		for (Rental rental : rentals) {
-			frequentRenterPoints += rental.calculateBonus();
-			result += formatBodyLine(rental);
-			totalPrice += rental.calculatePrice();
-		}
-		result += formatFooter(totalPrice, frequentRenterPoints);
-		return result;
+
+
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
+	}
+
+	private String formatBody() {
+		return rentals.stream().map(this::formatBodyLine).collect(Collectors.joining());
 	}
 
 	private String formatBodyLine(Rental rental) {
@@ -39,7 +39,10 @@ class Customer {
 		return "Rental Record for " + name + "\n";
 	}
 
-	private String formatFooter(double totalPrice, int frequentRenterPoints) {
+	private String formatFooter() {
+		int frequentRenterPoints = rentals.stream().mapToInt(Rental::calculateBonus).sum();
+		double totalPrice = rentals.stream().mapToDouble(Rental::calculatePrice).sum();
+
 		return "Amount owed is " + totalPrice + "\n"
 				 + "You earned " + frequentRenterPoints + " frequent renter points";
 	}
