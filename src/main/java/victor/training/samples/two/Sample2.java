@@ -1,5 +1,13 @@
 //package victor.training.samples.two;
 //
+//import org.apache.commons.lang.StringUtils;
+//import victor.training.samples.one.RequestContext;
+//import victor.training.samples.one.RequestContextThreadLocal;
+//
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.List;
+//
 //public class Sample2 {
 //   @NotLoggable
 //   public String createExAnteCostOverviewReport(
@@ -17,18 +25,16 @@
 //      List<Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>>> futureTasks = new ArrayList<>();
 //
 //      for (ExAnteCostOverviewReportRequest exAnteCostOverviewReportRequest : exAnteCostOverviewReportRequestList) {
-//         if (!exAnteCostOverviewReportRequest.getChapterSelection()
-//             .contains(ExAnteCostChapterDefinition.COST_OVERVIEW)) {
+//         if (!exAnteCostOverviewReportRequest.getChapterSelection().contains(ExAnteCostChapterDefinition.COST_OVERVIEW)) {
 //            continue;
 //         }
-//         exAnteCostOverviewReportRequest
-//             .setChapterSelection(Arrays.asList(ExAnteCostChapterDefinition.COST_OVERVIEW));
+//         exAnteCostOverviewReportRequest.setChapterSelection(Arrays.asList(ExAnteCostChapterDefinition.COST_OVERVIEW));
 //
 //         Future<ExAnteCostOverviewReport> exAnteCostOverviewReportTask = exAnteAsyncBABean
 //             .createAsyncExAnteCostOverviewReport(context, exAnteCostOverviewReportRequest);
 //
-//         Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>> pair = new Pair<>(
-//             exAnteCostOverviewReportRequest, exAnteCostOverviewReportTask);
+//         Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>> pair =
+//             new Pair<>(exAnteCostOverviewReportRequest, exAnteCostOverviewReportTask);
 //         futureTasks.add(pair);
 //      }
 //
