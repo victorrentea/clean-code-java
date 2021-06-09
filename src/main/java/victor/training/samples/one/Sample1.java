@@ -7,14 +7,50 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.Future;
+
+class AccountLists {
+   private final List<Account> startAccounts;
+   private final List<Account> performanceAccounts;
+   private final List<Account> accountsWithInflightOrders;
+   private final List<Account> liquidityAccounts;
+   private final List<Account> securityDepositAccounts;
+
+   AccountLists(List<Account> startAccounts, List<Account> performanceAccounts, List<Account> accountsWithInflightOrders, List<Account> liquidityAccounts, List<Account> securityDepositAccounts) {
+      this.startAccounts = startAccounts;
+      this.performanceAccounts = performanceAccounts;
+      this.accountsWithInflightOrders = accountsWithInflightOrders;
+      this.liquidityAccounts = liquidityAccounts;
+      this.securityDepositAccounts = securityDepositAccounts;
+   }
+
+   public List<Account> getAccountsWithInflightOrders() {
+      return accountsWithInflightOrders;
+   }
+
+   public List<Account> getPerformanceAccounts() {
+      return performanceAccounts;
+   }
+
+   public List<Account> getLiquidityAccounts() {
+      return liquidityAccounts;
+   }
+
+   public List<Account> getSecurityDepositAccounts() {
+      return securityDepositAccounts;
+   }
+
+   public List<Account> getStartAccounts() {
+      return startAccounts;
+   }
+}
 
 public class Sample1 {
    private static final Logger LOGGER = LoggerFactory.getLogger(Sample1.class);
    private static final String ISO_8601_DATE_FORMAT = "FORMAT";
    private static final String FIRST_AUGUST_2016 = "";
+   public static final Date START_BALANCE_DATE = U4RDateUtil.getStringAsDate(FIRST_AUGUST_2016, ISO_8601_DATE_FORMAT);
    private AssetClassRepo assetClassRepo;
    private UtilRepo utilRepo;
    private AccountRepoAsync accountRepoAsync;
@@ -26,226 +62,244 @@ public class Sample1 {
 
 
    private void loadAsyncContract(Long rodCode, DefaultDataSet dataset, List<Account> finalAccounts, Contract contract) {
-      RequestContext ctx = RequestContextThreadLocal.getRequestContext();
-      Date startDate = dataset.getStartDate().toDate();
-      Date endDate = dataset.getEndDate().toDate();
-      Date startDatePlusOneDay = DateUtils.addDays(startDate, 1);
-      Map<Date, String> cashDateMap;
-      List<Date> cashDateList;
-      Long perfPeriod = dataset.getPerfPeriods();
 
-      String contractNo = null;
-      if (contract != null) {
-         contractNo = String.valueOf(contract.getContractNumber());
-      }
-      ReportInstrumentScopeType instrumentType = ReportInstrumentScopeType.ALL;
+      RequestContext ctx = RequestContextThreadLocal.getRequestContext();
+      // Orice ai pe un ThreadLocal se poate PROPAGA pe orice metode chemat cu ajutorul ThreadLocalTaskExecutor.setTaskDecorator
+
+      Date startDate = dataset.getStartDate().toDate();
+
+      String contractNo = contract != null ? String.valueOf(contract.getContractNumber()) : null;
+
       victor.training.samples.one.other.ReportInstrumentScopeType instrumentTypePerf = victor.training.samples.one.other.ReportInstrumentScopeType.ALL;
 
-      // Temporary fix for MIP
-      ClassifiedPortfolioPerformance classifiedPortofolioPerformanceTemp = assetClassRepo
-          .calculatePortfolioAndAccountPerformanceTemp(startDate, endDate, finalAccounts, rodCode, contractNo,
-              instrumentTypePerf);
+      Date effectiveEndDate = getEffectiveEndDate(rodCode, contractNo, dataset, finalAccounts);
 
-      if (classifiedPortofolioPerformanceTemp.isHasWarning()) {
-         endDate = classifiedPortofolioPerformanceTemp.getEndDate();
-         dataset.setEndDate(LocalDate.fromDateFields(endDate));
-      }
+      DateInterval dateInterval = new DateInterval(startDate, effectiveEndDate);
 
-      try {
-         cashDateMap = utilRepo.calculateDates(startDate, endDate, ctx.getUserLocale(), perfPeriod.intValue());
-         dataset.setLiquidityMovementsDateMap(cashDateMap);
+      dataset.setLiquidityMovementsDateMap(getCashDateMap(dataset.getPerfPeriods(), dateInterval));
 
-         cashDateList = Arrays.asList(endDate);
 
-      } catch (Exception e) {
-         throw new GALException(MessageCode.UNEXPECTED, e);
-      }
+      List<Date> cashDateList = Arrays.asList(effectiveEndDate);
 
-      List<List<Account>> accountLists = buildAccountLists(finalAccounts, true, startDate, endDate);
-      List<Account> startAccounts = accountLists.get(0);
-      List<Account> performanceAccounts = accountLists.get(1);
+      AccountLists accountLists = buildAccountLists(finalAccounts, true, dateInterval);
+      List<Account> startAccounts = accountLists.getStartAccounts();
+      List<Account> performanceAccounts = accountLists.getPerformanceAccounts();
 
-      List<Account> accountsWithInflightOrders = accountLists.get(2);
-      List<Account> liquidityAccounts = accountLists.get(3);
-      List<Account> securityDepositAccounts = accountLists.get(4);
-
-//      dataset.setNdgAccountsMap(ndgAccountsMap(finalAccounts)); FIXME
+      List<Account> accountsWithInflightOrders = accountLists.getAccountsWithInflightOrders();
+      List<Account> liquidityAccounts = accountLists.getLiquidityAccounts();
+      List<Account> securityDepositAccounts = accountLists.getSecurityDepositAccounts();
 
       // Start the Futures to retrieve all the informations at start date,
       // because
       // the view contains data at T-1, but user could select another end date
       Future<List<Account>> finalAccountsFuture = accountRepoAsync.addBalancesAndProducts(ctx, rodCode, finalAccounts,
-          endDate, contractNo, instrumentType);
+          effectiveEndDate, contractNo, ReportInstrumentScopeType.ALL);
       // Start the Futures to retrieve all the informations at start date
       Future<List<Account>> startAccountsFuture = accountRepoAsync.addBalancesAndProducts(ctx, rodCode, startAccounts,
-          startDate, contractNo, instrumentType);
+          startDate, contractNo, ReportInstrumentScopeType.ALL);
       // Start the Futures to retrieve inflight orders at start date and end
       // date
       Future<List<AccountFlightOrder>> startAccountsFlightOrdersFuture = null;
       Future<List<AccountFlightOrder>> endAccountsFlightOrdersFuture = null;
-      try {
-         if (!accountsWithInflightOrders.isEmpty()) {
-            if (startDate.after(U4RDateUtil.getStringAsDate(FIRST_AUGUST_2016, ISO_8601_DATE_FORMAT))) {
-               startAccountsFlightOrdersFuture = currentOrderRepoAsync.findInflightOrders(ctx, startDate,
-                   accountsWithInflightOrders, rodCode, contractNo, instrumentType);
-            }
-            if (endDate.after(U4RDateUtil.getStringAsDate(FIRST_AUGUST_2016, ISO_8601_DATE_FORMAT))) {
-               endAccountsFlightOrdersFuture = currentOrderRepoAsync.findInflightOrders(ctx, endDate,
-                   accountsWithInflightOrders, rodCode, contractNo, instrumentType);
-            }
+      if (!accountsWithInflightOrders.isEmpty()) {
+         if (startDate.after(START_BALANCE_DATE)) {
+            startAccountsFlightOrdersFuture = currentOrderRepoAsync.findInflightOrders(ctx, startDate,
+                accountsWithInflightOrders, rodCode, contractNo, ReportInstrumentScopeType.ALL);
          }
-      } catch (ParseException e) {
-         LOGGER.debug(e.getMessage());
-      }
-      // Start the Future to retrieve investments and withdrawals
-      Future<List<AccountMovements>> investmentsWithdrawalsFuture =  movementsRepoAsync
-          .findInvestmentWithdrawalsRealCashflow(ctx, rodCode, finalAccounts, startDate, endDate, contractNo,
-              instrumentType);
-      // Start the Future to retrieve liquidity movements between N periods
-      Future<List<AccountMovements>> liquidityAccountMovementsFuture = movementsRepoAsync
-          .findAccountMovementsRealCashflow(ctx, rodCode, liquidityAccounts, startDatePlusOneDay, cashDateList,
-              contractNo, instrumentType);
-      // Start the Future to retrieve portfolio incomes, aka coupon and
-      // dividends
-
-      Future<List<AccountCouponDividend>> portfolioIncomesFuture = null;
-      if (!securityDepositAccounts.isEmpty()) {
-         portfolioIncomesFuture = portfolioIncomeRepoAsync.findCouponDividends(ctx, securityDepositAccounts,
-             startDate, startDate, rodCode, contractNo, instrumentType);
-      }
-
-      // request for virtual CashFlow
-      Future<List<AccountBalance>> balancesOfAccounts = accountRepoAsync.findVirtualCashflow(ctx, rodCode,
-          liquidityAccounts, startDate, endDate, contractNo, instrumentType);
-
-      Future<ClassifiedPortfolioPerformance> acClassificationPerformanceFuture = null;
-      if (!performanceAccounts.isEmpty()) {
-         // Start the Future to retrieve Asset Class classification at
-         // start date and end
-         // date with relative performancessa n
-         acClassificationPerformanceFuture = assetClassRepoAsync.calculatePortfolioAndAccountPerformance(ctx,
-             startDate, endDate, performanceAccounts, rodCode, contractNo, instrumentTypePerf);
-
-      }
-
-      // Begin the get of Futures to fill dataset
-      try {
-         // Update balances at end date
-         setEndAccountsSituation(dataset, AsyncUtils.getResultFromAsyncTask(finalAccountsFuture));
-         // Get Accounts balances, movements, flight orders and so on
-         setStartAccountsSituation(dataset, AsyncUtils.getResultFromAsyncTask(startAccountsFuture));
-         dataset.setCashAccountSelected(areCashAccountsSelected(dataset));
-
-         if (!accountsWithInflightOrders.isEmpty() && dataset.isCashAccountSelected()) {
-            dataset.setStartAccountsFlightOrders(
-                AsyncUtils.getResultFromAsyncTask(startAccountsFlightOrdersFuture));
-            LOGGER.debug("DATASET START INFLIGHT {}", dataset.getStartAccountsFlightOrders());
-            dataset.setEndAccountsFlightOrders(AsyncUtils.getResultFromAsyncTask(endAccountsFlightOrdersFuture));
-            LOGGER.debug("DATASET END INFLIGHT {}", dataset.getEndAccountsFlightOrders());
+         if (effectiveEndDate.after(START_BALANCE_DATE)) {
+            endAccountsFlightOrdersFuture = currentOrderRepoAsync.findInflightOrders(ctx, effectiveEndDate,
+                accountsWithInflightOrders, rodCode, contractNo, ReportInstrumentScopeType.ALL);
          }
+         // Start the Future to retrieve investments and withdrawals
+         Future<List<AccountMovements>> investmentsWithdrawalsFuture = movementsRepoAsync
+             .findInvestmentWithdrawalsRealCashflow(ctx, rodCode, finalAccounts, startDate, effectiveEndDate, contractNo,
+                 ReportInstrumentScopeType.ALL);
+         // Start the Future to retrieve liquidity movements between N periods
 
-         filterByCashAccountOfFlightOrders(dataset);
+         Date startDatePlusOneDay = DateUtils.addDays(startDate, 1);
+         Future<List<AccountMovements>> liquidityAccountMovementsFuture = movementsRepoAsync
+             .findAccountMovementsRealCashflow(ctx, rodCode, liquidityAccounts, startDatePlusOneDay, cashDateList,
+                 contractNo, ReportInstrumentScopeType.ALL);
+         // Start the Future to retrieve portfolio incomes, aka coupon and
+         // dividends
 
-         setInvestmentsAndWithdrawals(dataset, AsyncUtils.getResultFromAsyncTask(investmentsWithdrawalsFuture));
-
-         addVirtualCashflowToResult(dataset, AsyncUtils.getResultFromAsyncTask(balancesOfAccounts));
-
-         setMovementsSituation(dataset, AsyncUtils.getResultFromAsyncTask(liquidityAccountMovementsFuture));
-
+         Future<List<AccountCouponDividend>> portfolioIncomesFuture = null;
          if (!securityDepositAccounts.isEmpty()) {
-            dataset.setAccountCouponAndDividends(AsyncUtils.getResultFromAsyncTask(portfolioIncomesFuture));
-            Map<String, List<Product>> dividedProducts;
-            for (Account account : securityDepositAccounts) {
-               if (CollectionUtils.isNotEmpty(account.getProducts())) {
-                  dividedProducts = productRepository.divideProducts(account.getProducts());
-                  account.setDividedProducts(dividedProducts);
-               }
-            }
+            portfolioIncomesFuture = portfolioIncomeRepoAsync.findCouponDividends(ctx, securityDepositAccounts,
+                startDate, startDate, rodCode, contractNo, ReportInstrumentScopeType.ALL);
          }
 
+         // request for virtual CashFlow
+      Future<List<AccountBalance>> balancesOfAccounts = accountRepoAsync.findVirtualCashflow(ctx, rodCode,
+          liquidityAccounts, startDate, effectiveEndDate, contractNo, ReportInstrumentScopeType.ALL);
+//         Future<List<AccountBalance>> balancesOfAccounts = accountRepoAsync.findVirtualCashflow(
+//             rodContract, liquidityAccounts, dateInterval);
+
+         Future<ClassifiedPortfolioPerformance> acClassificationPerformanceFuture = null;
          if (!performanceAccounts.isEmpty()) {
-            // Get Asset Class classifications and performances
-            // As normal case it contains only asset accounts data
-            ClassifiedPortfolioPerformance acClassPerf = AsyncUtils
-                .getResultFromAsyncTask(acClassificationPerformanceFuture);
-            dataset.setAcClassificationPerformances(acClassPerf);
+            // Start the Future to retrieve Asset Class classification at
+            // start date and end
+            // date with relative performancessa n
+            acClassificationPerformanceFuture = assetClassRepoAsync.calculatePortfolioAndAccountPerformance(ctx,
+                startDate, effectiveEndDate, performanceAccounts, rodCode, contractNo, instrumentTypePerf);
 
-            if (acClassPerf != null) {
-               BigDecimal startIfo = BigDecimal.ZERO;
-               BigDecimal endIfo = BigDecimal.ZERO;
-               if (dataset.isCashAccountSelected()) {
-                  startIfo = computeTotalInflightOrder(dataset.getStartAccountsFlightOrders());
-                  endIfo = computeTotalInflightOrder(dataset.getEndAccountsFlightOrders());
+         }
+
+         // Begin the get of Futures to fill dataset
+         try {
+            // Update balances at end date
+            setEndAccountsSituation(dataset, AsyncUtils.getResultFromAsyncTask(finalAccountsFuture));
+            // Get Accounts balances, movements, flight orders and so on
+            setStartAccountsSituation(dataset, AsyncUtils.getResultFromAsyncTask(startAccountsFuture));
+            dataset.setCashAccountSelected(areCashAccountsSelected(dataset));
+
+            if (!accountsWithInflightOrders.isEmpty() && dataset.isCashAccountSelected()) {
+               dataset.setStartAccountsFlightOrders(
+                   AsyncUtils.getResultFromAsyncTask(startAccountsFlightOrdersFuture));
+               LOGGER.debug("DATASET START INFLIGHT {}", dataset.getStartAccountsFlightOrders());
+               dataset.setEndAccountsFlightOrders(AsyncUtils.getResultFromAsyncTask(endAccountsFlightOrdersFuture));
+               LOGGER.debug("DATASET END INFLIGHT {}", dataset.getEndAccountsFlightOrders());
+            }
+
+            filterByCashAccountOfFlightOrders(dataset);
+
+            setInvestmentsAndWithdrawals(dataset, AsyncUtils.getResultFromAsyncTask(investmentsWithdrawalsFuture));
+
+            // ne imaginam ca in met de mai sus se atribuie pe dataset minim 5 campuri.
+//            Daca asa e:
+            // dataset.investmentWithdrawals = AsyncUtils.getResultFromAsyncTask(investmentsWithdrawalsFuture);
+
+            addVirtualCashflowToResult(dataset, AsyncUtils.getResultFromAsyncTask(balancesOfAccounts));
+
+            setMovementsSituation(dataset, AsyncUtils.getResultFromAsyncTask(liquidityAccountMovementsFuture));
+
+            if (!securityDepositAccounts.isEmpty()) {
+               dataset.setAccountCouponAndDividends(AsyncUtils.getResultFromAsyncTask(portfolioIncomesFuture));
+               Map<String, List<Product>> dividedProducts;
+               for (Account account : securityDepositAccounts) {
+                  if (CollectionUtils.isNotEmpty(account.getProducts())) {
+                     dividedProducts = productRepository.divideProducts(account.getProducts());
+                     account.setDividedProducts(dividedProducts);
+                  }
                }
-               acClassPerf.calculatePercentage();
+            }
 
-               // Build the Asset Class classifications and performances
-               // object that consider
-               // Monetary / Liquidity cash accounts counter values to the
-               // relative Asset Class
-               ClassifiedPortfolioPerformance acClassPerfWithLiq = acClassPerf.copy();
-               dataset.setAcClassificationPerformancesWithLiquidity(acClassPerfWithLiq);
-               // Add cash accounts classification at start date
+            if (!performanceAccounts.isEmpty()) {
+               // Get Asset Class classifications and performances
+               // As normal case it contains only asset accounts data
+               ClassifiedPortfolioPerformance acClassPerf = AsyncUtils
+                   .getResultFromAsyncTask(acClassificationPerformanceFuture);
+               dataset.setAcClassificationPerformances(acClassPerf);
 
-               CashAccountsClassification cashClassification = new CashAccountsClassification(startDate,
-                   dataset.getStartCashAccounts().getAccounts(), dataset.getCurrencyMap());
-               acClassPerfWithLiq.getAssetPerformances().addCashClassification(cashClassification, false, startIfo);
-               // Add cash accounts classification at end date
+               if (acClassPerf != null) {
+                  BigDecimal startIfo = BigDecimal.ZERO;
+                  BigDecimal endIfo = BigDecimal.ZERO;
+                  if (dataset.isCashAccountSelected()) {
+                     startIfo = computeTotalInflightOrder(dataset.getStartAccountsFlightOrders());
+                     endIfo = computeTotalInflightOrder(dataset.getEndAccountsFlightOrders());
+                  }
+                  acClassPerf.calculatePercentage();
 
-               cashClassification = new CashAccountsClassification(endDate, dataset.getFinalCashAccounts().getAccounts(), dataset.getCurrencyMap());
-               acClassPerfWithLiq.getAssetPerformances().addCashClassification(cashClassification, true, endIfo);
-               // Balances retrieved from Balance ws, should be aligned
-               // with the totals
-               // retrieved from the Asset Class Classification ws. The
-               // method will fix the
-               // misleading error if present, till 2 EUR.
-               ClassificationPerformanceUtil.calculatePerformanceTotals(acClassPerfWithLiq,
-                   dataset.getStartAccounts().getTotalCtv(), dataset.getFinalAccounts().getTotalCtv());
-               // Calculate the percentages of classification
-               dataset.getAcClassificationPerformancesWithLiquidity().updateWithInflightOrders(startIfo, endIfo);
-               acClassPerfWithLiq.calculatePercentage();
+                  // Build the Asset Class classifications and performances
+                  // object that consider
+                  // Monetary / Liquidity cash accounts counter values to the
+                  // relative Asset Class
+                  ClassifiedPortfolioPerformance performanceWithLiquidities = acClassPerf.copy();
+                  dataset.setAcClassificationPerformancesWithLiquidity(performanceWithLiquidities);
+                  // Add cash accounts classification at start date
 
-               // Dump the Asset Class classifications and performances
+                  CashAccountsClassification cashClassification = new CashAccountsClassification(startDate,
+                      dataset.getStartCashAccounts().getAccounts(), dataset.getCurrencyMap());
+                  performanceWithLiquidities.getAssetPerformances().addCashClassification(cashClassification, false, startIfo);
+                  // Add cash accounts classification at end date
 
-               if (acClassPerfWithLiq != null && contractNo == null) {
-                  assetClassRepo.save(acClassPerfWithLiq, startDate, endDate, rodCode);
+                  cashClassification = new CashAccountsClassification(effectiveEndDate, dataset.getFinalCashAccounts().getAccounts(), dataset.getCurrencyMap());
+                  performanceWithLiquidities.getAssetPerformances().addCashClassification(cashClassification, true, endIfo);
+                  // Balances retrieved from Balance ws, should be aligned
+                  // with the totals
+                  // retrieved from the Asset Class Classification ws. The
+                  // method will fix the
+                  // misleading error if present, till 2 EUR.
+                  ClassificationPerformanceUtil.calculatePerformanceTotals(performanceWithLiquidities,
+                      dataset.getStartAccounts().getTotalCtv(), dataset.getFinalAccounts().getTotalCtv());
+                  // Calculate the percentages of classification
+                  dataset.getAcClassificationPerformancesWithLiquidity().updateWithInflightOrders(startIfo, endIfo);
+                  performanceWithLiquidities.calculatePercentage();
+
+                  // Dump the Asset Class classifications and performances
+
+                  if (performanceWithLiquidities != null && contractNo == null) {
+                     assetClassRepo.save(performanceWithLiquidities, startDate, effectiveEndDate, rodCode);
+                  }
+
+                  LOGGER.debug("DATASET AC ORIGINAL {}", acClassPerf);
+                  LOGGER.debug("DATASET AC MODIFIED {}", dataset.getAcClassificationPerformancesWithLiquidity());
                }
+            }
 
-               LOGGER.debug("DATASET AC ORIGINAL {}", acClassPerf);
-               LOGGER.debug("DATASET AC MODIFIED {}", dataset.getAcClassificationPerformancesWithLiquidity());
-            }
-         }
+            setAccountsDescription(dataset);
+         } catch (Exception e) {
 
-         setAccountsDescription(dataset);
-      } catch (GALException e) {
-         LOGGER.error(e.getMessage(), e);
-         if (finalAccountsFuture != null) {
-            U4RAsyncUtils.cancelExecution(finalAccountsFuture);
-         }
-         if (startAccountsFuture != null) {
-            U4RAsyncUtils.cancelExecution(startAccountsFuture);
-         }
-         if (!accountsWithInflightOrders.isEmpty()) {
-            if (startAccountsFlightOrdersFuture != null) {
-               U4RAsyncUtils.cancelExecution(startAccountsFlightOrdersFuture);
+//       } finally {
+            LOGGER.error(e.getMessage(), e);
+            if (finalAccountsFuture != null) {
+               U4RAsyncUtils.cancelExecution(finalAccountsFuture);
             }
-            if (endAccountsFlightOrdersFuture != null) {
-               U4RAsyncUtils.cancelExecution(endAccountsFlightOrdersFuture);
+            if (startAccountsFuture != null) {
+               U4RAsyncUtils.cancelExecution(startAccountsFuture);
             }
-         }
-         if (investmentsWithdrawalsFuture != null) {
-            U4RAsyncUtils.cancelExecution(investmentsWithdrawalsFuture);
-         }
-         if (liquidityAccountMovementsFuture != null) {
-            U4RAsyncUtils.cancelExecution(liquidityAccountMovementsFuture);
-         }
-         if (!securityDepositAccounts.isEmpty() && portfolioIncomesFuture != null) {
-            U4RAsyncUtils.cancelExecution(portfolioIncomesFuture);
-         }
-         if (!performanceAccounts.isEmpty() && acClassificationPerformanceFuture != null) {
-            U4RAsyncUtils.cancelExecution(acClassificationPerformanceFuture);
+            if (!accountsWithInflightOrders.isEmpty()) {
+               if (startAccountsFlightOrdersFuture != null) {
+                  U4RAsyncUtils.cancelExecution(startAccountsFlightOrdersFuture);
+               }
+               if (endAccountsFlightOrdersFuture != null) {
+                  U4RAsyncUtils.cancelExecution(endAccountsFlightOrdersFuture);
+               }
+            }
+            if (investmentsWithdrawalsFuture != null) {
+               U4RAsyncUtils.cancelExecution(investmentsWithdrawalsFuture);
+            }
+            if (liquidityAccountMovementsFuture != null) {
+               U4RAsyncUtils.cancelExecution(liquidityAccountMovementsFuture);
+            }
+            if (!securityDepositAccounts.isEmpty() && portfolioIncomesFuture != null) {
+               U4RAsyncUtils.cancelExecution(portfolioIncomesFuture);
+            }
+            if (!performanceAccounts.isEmpty() && acClassificationPerformanceFuture != null) {
+               U4RAsyncUtils.cancelExecution(acClassificationPerformanceFuture);
+            }
          }
       }
+   }
+   private AccountLists buildAccountLists(List<Account> finalAccounts, boolean b, DateInterval dateInterval) {
+      return null;
+   }
+
+   private Map<Date, String> getCashDateMap(Long perfPeriod, DateInterval dateInterval) {
+      try {
+         RequestContext ctx = RequestContextThreadLocal.getRequestContext();
+         return utilRepo.calculateDates(dateInterval, ctx.getUserLocale(), perfPeriod.intValue());
+      } catch (Exception e) {
+         throw new GALException(MessageCode.UNEXPECTED, e);
+      }
+   }
+
+   private Date getEffectiveEndDate(Long rodCode, String contractNo, DefaultDataSet dataset, List<Account> finalAccounts) {
+      Date startDate = dataset.getStartDate().toDate();
+      Date userEndDate = dataset.getEndDate().toDate();
+      DateInterval dateInterval = new DateInterval(startDate, userEndDate);
+      // Temporary fix for MIP
+      ClassifiedPortfolioPerformance classifiedPortofolioPerformanceTemp = assetClassRepo
+          .calculatePortfolioAndAccountPerformanceTemp(dateInterval, finalAccounts, rodCode, contractNo, victor.training.samples.one.other.ReportInstrumentScopeType.ALL);
+
+      Date endDate2;
+      if (classifiedPortofolioPerformanceTemp.hasWarning()) {
+         endDate2 = classifiedPortofolioPerformanceTemp.getEndDate();
+         dataset.setEndDate(LocalDate.fromDateFields(endDate2));
+      } else {
+         endDate2 = dateInterval.getEndDate();
+      }
+      return endDate2;
    }
 
    private void setAccountsDescription(DefaultDataSet dataset) {

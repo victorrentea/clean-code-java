@@ -1,10 +1,12 @@
 package victor.training.samples.one;
 
+import victor.training.samples.one.other.ReportInstrumentScopeType;
+
 import java.util.Date;
 import java.util.List;
 
 public class AssetClassRepo {
-   public ClassifiedPortfolioPerformance calculatePortfolioAndAccountPerformanceTemp(Date startDate, Date endDate, List<Account> finalAccounts, Long rodCode, String contractNo, victor.training.samples.one.other.ReportInstrumentScopeType instrumentTypePerf) {
+   public ClassifiedPortfolioPerformance calculatePortfolioAndAccountPerformanceTemp(DateInterval dateInterval, List<Account> finalAccounts, Long rodCode, String contractNo, ReportInstrumentScopeType instrumentTypePerf) {
       return null;
    }
 

@@ -5,7 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class UtilRepo {
-   public Map<Date, String> calculateDates(Date startDate, Date endDate, Locale userLocale, int intValue) {
+   public Map<Date, String> calculateDates(DateInterval dateInterval, Locale userLocale, int intValue) {
       return null;
    }
 }

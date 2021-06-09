@@ -6,7 +6,7 @@ import java.util.Date;
 public class ClassifiedPortfolioPerformance {
    private boolean hasWarning;
 
-   public boolean isHasWarning() {
+   public boolean hasWarning() {
       return hasWarning;
    }
 
