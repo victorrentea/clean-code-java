@@ -17,6 +17,8 @@ public class DefaultDataSet {
    private List<AccountCouponDividend> accountCouponAndDividends;
    private ClassifiedPortfolioPerformance acClassificationPerformances;
    private ClassifiedPortfolioPerformance acClassificationPerformancesWithLiquidity;
+   private CashAccounts finalCashAccounts;
+   private Accounts finalAccounts;
 
    public LocalDate getStartDate() {
       return startDate;
@@ -100,5 +102,25 @@ public class DefaultDataSet {
 
    public Map<Object, Object> getCurrencyMap() {
       return null;
+   }
+
+   public CashAccounts getFinalCashAccounts() {
+      return finalCashAccounts;
+   }
+
+   public void setFinalCashAccounts(CashAccounts finalCashAccounts) {
+      this.finalCashAccounts = finalCashAccounts;
+   }
+
+   public Accounts getStartAccounts() {
+      return null;
+   }
+
+   public Accounts getFinalAccounts() {
+      return finalAccounts;
+   }
+
+   public void setFinalAccounts(Accounts finalAccounts) {
+      this.finalAccounts = finalAccounts;
    }
 }

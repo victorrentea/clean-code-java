@@ -1,5 +1,6 @@
 package victor.training.samples.one;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ClassifiedPortfolioPerformance {
@@ -25,7 +26,10 @@ public class ClassifiedPortfolioPerformance {
 
    }
 
-   public Object getAssetPerformances() {
+   public AssetPerformances getAssetPerformances() {
       return null;
+   }
+
+   public void updateWithInflightOrders(BigDecimal startIfo, BigDecimal endIfo) {
    }
 }
