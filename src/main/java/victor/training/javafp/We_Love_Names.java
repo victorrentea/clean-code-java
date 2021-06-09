@@ -1,4 +1,4 @@
-package victor.training.java8;
+package victor.training.javafp;
 
 import lombok.Data;
 
