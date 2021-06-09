@@ -187,8 +187,7 @@ public class Sample1 {
             if (!performanceAccounts.isEmpty()) {
                // Get Asset Class classifications and performances
                // As normal case it contains only asset accounts data
-               ClassifiedPortfolioPerformance acClassPerf = AsyncUtils
-                   .getResultFromAsyncTask(acClassificationPerformanceFuture);
+               ClassifiedPortfolioPerformance acClassPerf = AsyncUtils.getResultFromAsyncTask(acClassificationPerformanceFuture);
                dataset.setAcClassificationPerformances(acClassPerf);
 
                if (acClassPerf != null) {
