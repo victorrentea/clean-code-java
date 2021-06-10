@@ -48,6 +48,7 @@ public class Sample2 {
 
          // Detailed
          String detailedReportId = getDetailedReportId(aggregatedReport.getReportId());
+         // MUST hapen after generating aggretare report (temporal coupling)
          Report detailedReport = createDetailedReport(request, report, detailedReportId);
 
          detailedMap.put(new Pair<>(request, detailedReport), detailedReport.getXml());
@@ -120,9 +121,13 @@ public class Sample2 {
       List<byte[]> aggregatedReports = new ArrayList<>();
       for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> detailedPdfResponse : detailedPdfResponsePairs) {
          for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> aggregatedPdfResponse : aggregatedPdfResponsePairs) {
-            String detailedIsin = detailedPdfResponse.getFirst().getFirst().getIsin();
+            ExAnteCostOverviewReportRequest toate = detailedPdfResponse.getFirst().getFirst();
+            String detailedIsin = toate.getIsin();
+            String detailedIsin2 = toate.getIsin();
+            String detailedIsin3 = toate.getIsin();
+            String detailedIsin4 = toate.getIsin();
             String aggregateIsin = aggregatedPdfResponse.getFirst().getFirst().getIsin();
-
+//detailedPdfResponse.getFirst().getFirst().setIsin("Altu");
             if (StringUtils.equals(detailedIsin, aggregateIsin)) {
                byte[] aggregatedWithDisclaimerPdf = buildDocumentBABean
                    .mergePdfs(new byte[][]{aggregatedPdfResponse.getSecond(), disclaimerPdf}, true);
