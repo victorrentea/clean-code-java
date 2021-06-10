@@ -1,70 +1,100 @@
 package videostore.horror;
 
-class RegularMovie extends Movie {
-   public RegularMovie(String title, Category category) {
-      super(title, category);
-   }
-   @Override
-   public double calculatePrice(int daysRented) {
-      double price;
-      price = 2;
-      if (daysRented > 2)
-         price += (daysRented - 2) * 1.5;
-      return price;
-   }
-   @Override
-   public int maxAllowedRentDays() {
-      return 5;
-   }
-}
-class NewReleaseMovie extends Movie {
-   public NewReleaseMovie(String title, Category category) {
-      super(title, category);
-   }
-   @Override
-   public double calculatePrice(int daysRented) {
-      return daysRented * 3;
-   }
+//class RegularMovie extends Movie {
+//   public RegularMovie(String title, Category category) {
+//      super(title, category);
+//   }
+//   @Override
+//   public double calculatePrice(int daysRented) {
+//      double price;
+//      price = 2;
+//      if (daysRented > 2)
+//         price += (daysRented - 2) * 1.5;
+//      return price;
+//   }
+//   @Override
+//   public int maxAllowedRentDays() {
+//      return 5;
+//   }
+//}
+//class NewReleaseMovie extends Movie {
+//   public NewReleaseMovie(String title) {
+//      super(title, category);
+//   }
+//   @Override
+//   public double calculatePrice(int daysRented) {
+//      return daysRented * 3;
+//   }
+//
+//   @Override
+//   public int maxAllowedRentDays() {
+//      return 2;
+//   }
+//}
+//
+//class ChildrenMovie extends Movie {
+//   private final boolean dublat;
+//   public ChildrenMovie(String title, Category category, boolean dublat) {
+//      super(title, category);
+//      this.dublat = dublat;
+//   }
+//
+//   @Override
+//   public double calculatePrice(int daysRented) {
+//      double price;
+//      price = 1.5;
+//      if (daysRented > 3)
+//         price += (daysRented - 3) * 1.5;
+//      return price;
+//   }
+//
+//   @Override
+//   public int maxAllowedRentDays() {
+//      return 14;
+//   }
+//}
 
-   @Override
-   public int maxAllowedRentDays() {
-      return 2;
-   }
-}
-
-class ChildrenMovie extends Movie {
-   private final boolean dublat;
-   public ChildrenMovie(String title, Category category, boolean dublat) {
-      super(title, category);
-      this.dublat = dublat;
-   }
-
-   @Override
-   public double calculatePrice(int daysRented) {
-      double price;
-      price = 1.5;
-      if (daysRented > 3)
-         price += (daysRented - 3) * 1.5;
-      return price;
-   }
-
-   @Override
-   public int maxAllowedRentDays() {
-      return 14;
-   }
-}
-
-
-public abstract class Movie {
+public /*abstract*/ class Movie {
    public enum Category {
-      CHILDREN,
-      REGULAR,
-      NEW_RELEASE
+      CHILDREN{
+         @Override
+         public double calculatePrice(int daysRented) {
+            double price;
+            price = 1.5;
+            if (daysRented > 3)
+               price += (daysRented - 3) * 1.5;
+            return price;
+         }
+      },
+      REGULAR {
+         @Override
+         public double calculatePrice(int daysRented) {
+            double price;
+            price = 2;
+            if (daysRented > 2)
+               price += (daysRented - 2) * 1.5;
+            return price;
+         }
+      },
+      NEW_RELEASE {
+         @Override
+         public double calculatePrice(int daysRented) {
+            return daysRented * 3;
+         }
+      },
+      ELDERS {
+         @Override
+         public double calculatePrice(int daysRented) {
+            return 1;
+         }
+      };
 //      ,       ELDERS
+
+      public abstract double calculatePrice(int daysRented);
    }
 
-   public abstract double calculatePrice(int daysRented);
-   public abstract int maxAllowedRentDays();
+//   public abstract double calculatePrice(int daysRented);
+//   public abstract int maxAllowedRentDays();
 
    private final String title;
    private final Category category;

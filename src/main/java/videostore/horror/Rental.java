@@ -20,7 +20,10 @@ public class Rental {
    }
 
    public double calculatePrice() {
-      return movie.calculatePrice(daysRented);
+//      return movie.calculatePrice(daysRented);
+
+      return movie.getCategory().calculatePrice(daysRented);
+
 //      switch (movie.getCategory()) {
 //         case REGULAR: return calculateRegularPrice();
 //         case NEW_RELEASE: return computeNewReleasePrice();
