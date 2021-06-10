@@ -6,6 +6,10 @@ import java.util.*;
 import java.util.concurrent.Future;
 
 public class Sample2 {
+
+//   static private class ClasaMea {
+//      private final ...
+//   }
    private ExAnteAsyncBABean exAnteAsyncBABean;
    private RequestReportBABean requestReportBABean;
    private CreateReportXmlBABean createReportXmlBABean;
@@ -17,8 +21,6 @@ public class Sample2 {
          return null;
       }
 
-      List<byte[]> detailedReports = new ArrayList<>();
-      List<byte[]> aggregatedReports = new ArrayList<>();
       byte[] disclaimerPdf = getDisclaimerPdf(requestList);
 
       List<Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>>> futureTasks = new ArrayList<>();
@@ -71,26 +73,9 @@ public class Sample2 {
 
       sortRequestTaskList(aggregatedPdfResponsePairs);
 
-      for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> detailedPdfResponse : detailedPdfResponsePairs) {
-         for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> aggregatedPdfResponse : aggregatedPdfResponsePairs) {
-            if (StringUtils.equals(detailedPdfResponse.getFirst().getFirst().getIsin(),
-                aggregatedPdfResponse.getFirst().getFirst().getIsin())) {
-               byte[] aggregatedWithDisclaimerPdf = buildDocumentBABean
-                   .mergePdfs(new byte[][] { aggregatedPdfResponse.getSecond(), disclaimerPdf }, true);
+      List<byte[]> aggregatedReports = getAggreteReportr(disclaimerPdf, detailedPdfResponsePairs, aggregatedPdfResponsePairs);
 
-               saveOrUpdateAndPostProcessReport(aggregatedPdfResponse.getFirst().getSecond(),
-                   aggregatedWithDisclaimerPdf, aggregatedPdfResponse.getFirst().getFirst());
-               aggregatedReports.add(aggregatedPdfResponse.getSecond());
-
-               byte[] detailedWithDisclaimerPdf = buildDocumentBABean
-                   .mergePdfs(new byte[][] { detailedPdfResponse.getSecond(), disclaimerPdf }, true);
-
-               saveOrUpdateAndPostProcessReport(detailedPdfResponse.getFirst().getSecond(),
-                   detailedWithDisclaimerPdf, detailedPdfResponse.getFirst().getFirst());
-               detailedReports.add(detailedPdfResponse.getSecond());
-            }
-         }
-      }
+      List<byte[]> detailedReports = getDetailReports(disclaimerPdf, detailedPdfResponsePairs, aggregatedPdfResponsePairs);
 
       ExAnteCostOverviewReportRequest decePrima = requestList.get(0);
 
@@ -106,6 +91,47 @@ public class Sample2 {
       buildAndSaveMergedReport(detailedReports, disclaimerPdf, detailedMergedReport);
 
       return aggregatedMergedReport.getReportId();
+   }
+
+   private List<byte[]> getDetailReports(byte[] disclaimerPdf, List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]>> detailedPdfResponsePairs, List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]>> aggregatedPdfResponsePairs) {
+      List<byte[]> detailedReports = new ArrayList<>();
+      for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> detailedPdfResponse : detailedPdfResponsePairs) {
+         for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> aggregatedPdfResponse : aggregatedPdfResponsePairs) {
+            if (StringUtils.equals(detailedPdfResponse.getFirst().getFirst().getIsin(),
+                aggregatedPdfResponse.getFirst().getFirst().getIsin())) {
+
+//            }}}
+//      List<S {detailedPdfRespnse, aggregatedPdfResponse}>
+//      for ()
+
+               byte[] detailedWithDisclaimerPdf = buildDocumentBABean
+                   .mergePdfs(new byte[][] { detailedPdfResponse.getSecond(), disclaimerPdf}, true);
+
+               saveOrUpdateAndPostProcessReport(detailedPdfResponse.getFirst().getSecond(),
+                   detailedWithDisclaimerPdf, detailedPdfResponse.getFirst().getFirst());
+               detailedReports.add(detailedPdfResponse.getSecond());
+            }
+         }
+      }
+      return detailedReports;
+   }
+
+   private List<byte[]> getAggreteReportr(byte[] disclaimerPdf, List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]>> detailedPdfResponsePairs, List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]>> aggregatedPdfResponsePairs) {
+      List<byte[]> aggregatedReports = new ArrayList<>();
+      for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> detailedPdfResponse : detailedPdfResponsePairs) {
+         for (Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]> aggregatedPdfResponse : aggregatedPdfResponsePairs) {
+            String detailedIsin = detailedPdfResponse.getFirst().getFirst().getIsin();
+            String aggregateIsin = aggregatedPdfResponse.getFirst().getFirst().getIsin();
+
+            if (StringUtils.equals(detailedIsin, aggregateIsin)) {
+               byte[] aggregatedWithDisclaimerPdf = buildDocumentBABean
+                   .mergePdfs(new byte[][]{aggregatedPdfResponse.getSecond(), disclaimerPdf}, true);
+
+               saveOrUpdateAndPostProcessReport(aggregatedPdfResponse.getFirst().getSecond(),
+                   aggregatedWithDisclaimerPdf, aggregatedPdfResponse.getFirst().getFirst());
+               aggregatedReports.add(aggregatedPdfResponse.getSecond());
+            }}}
+      return aggregatedReports;
    }
 
    private String getDetailedReportId(String reportId) {
