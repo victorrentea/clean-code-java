@@ -1,10 +1,16 @@
 package videostore.horror;
 
+import org.junit.Test;
+import videostore.horror.Movie.Category;
+
+
+
 public class Movie {
    public enum Category {
       CHILDREN,
       REGULAR,
       NEW_RELEASE
+//      ,       ELDERS
    }
 
    private final String title;
