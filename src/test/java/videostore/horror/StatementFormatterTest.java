@@ -18,9 +18,9 @@ public class StatementFormatterTest {
 //        customer.addRental(new Rental(new Movie("Inception", Movie.Category.REGULAR), 5));
 //
         List<Rental> rentals = Arrays.asList(
-            new Rental(new Movie("Star Wars", Category.NEW_RELEASE), 6),
-            new Rental(new Movie("Sofia", Category.CHILDREN), 7),
-            new Rental(new Movie("Inception", Category.REGULAR), 5));
+            new Rental(new NewReleaseMovie("Star Wars", Category.NEW_RELEASE), 6),
+            new Rental(new ChildrenMovie("Sofia", Category.CHILDREN), 7),
+            new Rental(new RegularMovie("Inception", Category.REGULAR), 5));
 
         String expected = "Rental Record for John Doe\n"
                 + "	Star Wars	18.0\n"

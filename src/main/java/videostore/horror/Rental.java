@@ -20,12 +20,13 @@ public class Rental {
    }
 
    public double calculatePrice() {
-      switch (movie.getCategory()) {
-         case REGULAR: return calculateRegularPrice();
-         case NEW_RELEASE: return computeNewReleasePrice();
-         case CHILDREN: return computeChildrenPrice();
-         default: throw new IllegalStateException("Unexpected value: " + movie.getCategory());
-      }
+      return movie.calculatePrice(daysRented);
+//      switch (movie.getCategory()) {
+//         case REGULAR: return calculateRegularPrice();
+//         case NEW_RELEASE: return computeNewReleasePrice();
+//         case CHILDREN: return computeChildrenPrice();
+//         default: throw new IllegalStateException("Unexpected value: " + movie.getCategory());
+//      }
    }
    public int maxAllowedRentDays() {
       switch (movie.getCategory()) {
@@ -36,25 +37,25 @@ public class Rental {
       }
    }
 
-   private int computeNewReleasePrice() {
-      return daysRented * 3;
-   }
-
-   private double computeChildrenPrice() {
-      double price;
-      price = 1.5;
-      if (daysRented > 3)
-         price += (daysRented - 3) * 1.5;
-      return price;
-   }
-
-   private double calculateRegularPrice() {
-      double price;
-      price = 2;
-      if (daysRented > 2)
-         price += (daysRented - 2) * 1.5;
-      return price;
-   }
+//   private int computeNewReleasePrice() {
+//      return daysRented * 3;
+//   }
+//
+//   private double computeChildrenPrice() {
+//      double price;
+//      price = 1.5;
+//      if (daysRented > 3)
+//         price += (daysRented - 3) * 1.5;
+//      return price;
+//   }
+//
+//   private double calculateRegularPrice() {
+//      double price;
+//      price = 2;
+//      if (daysRented > 2)
+//         price += (daysRented - 2) * 1.5;
+//      return price;
+//   }
 
    public int calculateBonus() {
       int frequentRenterPoints = 1;
