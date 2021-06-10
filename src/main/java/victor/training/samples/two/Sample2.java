@@ -1,8 +1,6 @@
 package victor.training.samples.two;
 
 import org.apache.commons.lang.StringUtils;
-import victor.training.samples.one.RequestContext;
-import victor.training.samples.one.RequestContextThreadLocal;
 
 import java.util.*;
 import java.util.concurrent.Future;
@@ -14,8 +12,7 @@ public class Sample2 {
    private BuildDocumentBABean buildDocumentBABean;
 
    @NotLoggable
-   public String createExAnteCostOverviewReport(
-       List<ExAnteCostOverviewReportRequest> exAnteCostOverviewReportRequestList) {
+   public String createExAnteCostOverviewReport(List<ExAnteCostOverviewReportRequest> exAnteCostOverviewReportRequestList) {
       if (exAnteCostOverviewReportRequestList == null || exAnteCostOverviewReportRequestList.isEmpty()) {
          return null;
       }
@@ -23,8 +20,6 @@ public class Sample2 {
       List<byte[]> detailedReports = new ArrayList<>();
       List<byte[]> aggregatedReports = new ArrayList<>();
       byte[] disclaimerPdf = getDisclaimerPdf(exAnteCostOverviewReportRequestList);
-
-      RequestContext context = RequestContextThreadLocal.getRequestContext();
 
       List<Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>>> futureTasks = new ArrayList<>();
 
@@ -35,7 +30,7 @@ public class Sample2 {
          exAnteCostOverviewReportRequest.setChapterSelection(Arrays.asList(ExAnteCostChapterDefinition.COST_OVERVIEW));
 
          Future<ExAnteCostOverviewReport> exAnteCostOverviewReportTask = exAnteAsyncBABean
-             .createAsyncExAnteCostOverviewReport(context, exAnteCostOverviewReportRequest);
+             .createAsyncExAnteCostOverviewReport(exAnteCostOverviewReportRequest);
 
          Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>> pair =
              new Pair<>(exAnteCostOverviewReportRequest, exAnteCostOverviewReportTask);
@@ -90,10 +85,10 @@ public class Sample2 {
       }
 
       List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, Future<byte[]>>> detailedTasks = new ArrayList<>();
-      createTasksForPdfCreation(context, detailedMap, detailedTasks);
+      createTasksForPdfCreation(detailedMap, detailedTasks);
 
       List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, Future<byte[]>>> aggregatedTask = new ArrayList<>();
-      createTasksForPdfCreation(context, aggregatedMap, aggregatedTask);
+      createTasksForPdfCreation(aggregatedMap, aggregatedTask);
 
       List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, byte[]>> detailedPdfResponsePairs = extractByteFromAsyncResult(
           detailedTasks);
@@ -153,7 +148,7 @@ public class Sample2 {
       return null;
    }
 
-   private void createTasksForPdfCreation(RequestContext context, Map<Pair<ExAnteCostOverviewReportRequest, Report>, String> detailedMap, List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, Future<byte[]>>> detailedTasks) {
+   private void createTasksForPdfCreation(Map<Pair<ExAnteCostOverviewReportRequest, Report>, String> detailedMap, List<Pair<Pair<ExAnteCostOverviewReportRequest, Report>, Future<byte[]>>> detailedTasks) {
    }
 
    private void disableDetailedChapterInExAnteReport(ExAnteCostOverviewReport exAnteCostReport) {
