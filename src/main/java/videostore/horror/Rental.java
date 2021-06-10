@@ -26,22 +26,22 @@ public class Rental {
 
 //      return movie.getCategory().calculatePrice(daysRented);
 
-//      switch (movie.getCategory()) {
-//         case REGULAR:
-//            return calculateRegularPrice();
-//         case NEW_RELEASE:
-//            return computeNewReleasePrice();
-//         case CHILDREN:
-//            return computeChildrenPrice();
-//         default:
-//            throw new IllegalArgumentException();
-//      }
+      switch (movie.getCategory()) {
+         case REGULAR:
+            return calculateRegularPrice();
+         case NEW_RELEASE:
+            return computeNewReleasePrice();
+         case CHILDREN:
+            return computeChildrenPrice();
+         default:
+            throw new IllegalArgumentException();
+      }
       // java 17 frate!
-      return switch (movie.getCategory()) {
-         case REGULAR -> calculateRegularPrice();
-         case NEW_RELEASE -> computeNewReleasePrice();
-         case CHILDREN -> computeChildrenPrice();
-      };
+//      return switch (movie.getCategory()) {
+//         case REGULAR -> calculateRegularPrice();
+//         case NEW_RELEASE -> computeNewReleasePrice();
+//         case CHILDREN -> computeChildrenPrice();
+//      };
    }
    public int maxAllowedRentDays() {
       switch (movie.getCategory()) {
