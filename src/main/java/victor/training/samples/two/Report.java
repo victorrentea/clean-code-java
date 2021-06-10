@@ -7,4 +7,8 @@ public class Report {
 
    public void setXml(String detailedReportXml) {
    }
+
+   public String getXml() {
+      return null;
+   }
 }

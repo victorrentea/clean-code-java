@@ -12,72 +12,43 @@ public class Sample2 {
    private BuildDocumentBABean buildDocumentBABean;
 
    @NotLoggable
-   public String createExAnteCostOverviewReport(List<ExAnteCostOverviewReportRequest> exAnteCostOverviewReportRequestList) {
-      if (exAnteCostOverviewReportRequestList == null || exAnteCostOverviewReportRequestList.isEmpty()) {
+   public String createExAnteCostOverviewReport(List<ExAnteCostOverviewReportRequest> requestList) {
+      if (requestList == null || requestList.isEmpty()) {
          return null;
       }
 
       List<byte[]> detailedReports = new ArrayList<>();
       List<byte[]> aggregatedReports = new ArrayList<>();
-      byte[] disclaimerPdf = getDisclaimerPdf(exAnteCostOverviewReportRequestList);
+      byte[] disclaimerPdf = getDisclaimerPdf(requestList);
 
       List<Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>>> futureTasks = new ArrayList<>();
 
-      for (ExAnteCostOverviewReportRequest exAnteCostOverviewReportRequest : exAnteCostOverviewReportRequestList) {
-         if (!exAnteCostOverviewReportRequest.getChapterSelection().contains(ExAnteCostChapterDefinition.COST_OVERVIEW)) {
-            continue;
-         }
-         exAnteCostOverviewReportRequest.setChapterSelection(Arrays.asList(ExAnteCostChapterDefinition.COST_OVERVIEW));
+//      requestList.stream().filter(ExAnteCostOverviewReportRequest::isCostOverview)
+      hack(requestList);
 
-         Future<ExAnteCostOverviewReport> exAnteCostOverviewReportTask = exAnteAsyncBABean
-             .createAsyncExAnteCostOverviewReport(exAnteCostOverviewReportRequest);
 
-         Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>> pair =
-             new Pair<>(exAnteCostOverviewReportRequest, exAnteCostOverviewReportTask);
-         futureTasks.add(pair);
-      }
+      List<Pair<ExAnteCostOverviewReportRequest, ExAnteCostOverviewReport>> responsePairs = extractOverviewReports(requestList, futureTasks);
 
-      List<Pair<ExAnteCostOverviewReportRequest, ExAnteCostOverviewReport>> responsePairs = extractResponsesFromAsyncResult(
-          futureTasks);
-
-      int reportsGenerated = 0;
 
       Map<Pair<ExAnteCostOverviewReportRequest, Report>, String> detailedMap = new HashMap<>();
+      // TODO
+//      List<ReportWithXml {request, report, xml}>
       Map<Pair<ExAnteCostOverviewReportRequest, Report>, String> aggregatedMap = new HashMap<>();
 
+      int reportsGenerated = 0;
       for (Pair<ExAnteCostOverviewReportRequest, ExAnteCostOverviewReport> pair : responsePairs) {
-         if (pair.getSecond() != null) {
-            reportsGenerated++;
-            ExAnteCostOverviewReportRequest exAnteCostOverviewReportRequest = pair.getFirst();
+         reportsGenerated++;
+         ExAnteCostOverviewReportRequest request = pair.getFirst();
+         ExAnteCostOverviewReport report = pair.getSecond();
 
-            ExAnteCostOverviewReport exAnteCostReport = pair.getSecond();
+         Report aggregatedReport = createAggregateReport(request, report);
+         aggregatedMap.put(new Pair<>(request, aggregatedReport), aggregatedReport.getXml());
 
-            Report aggregatedReport = requestReportBABean.createInitialReportForNdg(
-                exAnteCostOverviewReportRequest.getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT);
+         // Detailed
+         String detailedReportId = getDetailedReportId(aggregatedReport.getReportId());
+         Report detailedReport = createDetailedReport(request, report, detailedReportId);
 
-            String aggregatedReportId = aggregatedReport.getReportId();
-            String detailedReportId = aggregatedReportId + "_D";
-
-            Report detailedReport = requestReportBABean.createInitialReportForNdgWithReportId(
-                exAnteCostOverviewReportRequest.getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT,
-                detailedReportId);
-
-            // Detailed
-            setReportNumberInExAnteCostReport(exAnteCostReport, detailedReportId);
-            setHeadlineTextForExAnte(exAnteCostReport, false);
-            String detailedReportXml = createReportXmlBABean.createReportXML(exAnteCostReport);
-            detailedReport.setXml(detailedReportXml);
-            detailedMap.put(new Pair<>(exAnteCostOverviewReportRequest, detailedReport), detailedReportXml);
-
-            // Aggregated
-            setReportNumberInExAnteCostReport(exAnteCostReport, aggregatedReportId);
-            setHeadlineTextForExAnte(exAnteCostReport, true);
-            disableDetailedChapterInExAnteReport(exAnteCostReport);
-            String aggregatedReportXml = createReportXmlBABean.createReportXML(exAnteCostReport);
-            aggregatedReport.setXml(aggregatedReportXml);
-            aggregatedMap.put(new Pair<>(exAnteCostOverviewReportRequest, aggregatedReport), aggregatedReportXml);
-
-         }
+         detailedMap.put(new Pair<>(request, detailedReport), detailedReport.getXml());
       }
 
       if (reportsGenerated == 0) {
@@ -121,18 +92,88 @@ public class Sample2 {
          }
       }
 
+      ExAnteCostOverviewReportRequest decePrima = requestList.get(0);
+
       Report aggregatedMergedReport = requestReportBABean.createInitialReportForNdg(
-          exAnteCostOverviewReportRequestList.get(0).getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT);
+          decePrima.getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT);
 
       Report detailedMergedReport = requestReportBABean.createInitialReportForNdgWithReportId(
-          exAnteCostOverviewReportRequestList.get(0).getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT,
-          aggregatedMergedReport.getReportId() + "_D");
+          decePrima.getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT,
+          getDetailedReportId(aggregatedMergedReport.getReportId()));
 
       buildAndSaveMergedReport(aggregatedReports, disclaimerPdf, aggregatedMergedReport);
 
       buildAndSaveMergedReport(detailedReports, disclaimerPdf, detailedMergedReport);
 
       return aggregatedMergedReport.getReportId();
+   }
+
+   private String getDetailedReportId(String reportId) {
+      return reportId + "_D";
+   }
+
+   private Report createDetailedReport(ExAnteCostOverviewReportRequest request, ExAnteCostOverviewReport report, String detailedReportId) {
+      Report detailedReport = requestReportBABean.createInitialReportForNdgWithReportId(
+          request.getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT,
+          detailedReportId);
+
+      setReportNumberInExAnteCostReport(report, detailedReportId);
+      setHeadlineTextForExAnte(report, false);
+      String detailedReportXml = createReportXmlBABean.createReportXML(report);
+      detailedReport.setXml(detailedReportXml);
+      return detailedReport;
+   }
+
+   private Report createAggregateReport(ExAnteCostOverviewReportRequest request, ExAnteCostOverviewReport report) {
+      // Aggregated
+      Report aggregatedReport = requestReportBABean.createInitialReportForNdg(
+          request.getNdg(), ReportTypeDefinition.EX_ANTE_COST_REPORT);
+
+      setReportNumberInExAnteCostReport(report, aggregatedReport.getReportId());
+      setHeadlineTextForExAnte(report, true);
+      disableDetailedChapterInExAnteReport(report);
+      String aggregatedReportXml = createReportXmlBABean.createReportXML(report);
+      aggregatedReport.setXml(aggregatedReportXml);
+      return aggregatedReport;
+   }
+
+   private List<Pair<ExAnteCostOverviewReportRequest, ExAnteCostOverviewReport>> extractOverviewReports(List<ExAnteCostOverviewReportRequest> requestList, List<Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>>> futureTasks) {
+      for (ExAnteCostOverviewReportRequest request : requestList) {
+         if (!request.isCostOverview()) {
+            continue;
+         }
+
+         Future<ExAnteCostOverviewReport> future = exAnteAsyncBABean.createAsyncExAnteCostOverviewReport(request);
+
+         Pair<ExAnteCostOverviewReportRequest, Future<ExAnteCostOverviewReport>> pair = new Pair<>(request, future);
+         futureTasks.add(pair);
+      }
+
+      List<Pair<ExAnteCostOverviewReportRequest, ExAnteCostOverviewReport>> responsePairs =
+          extractResponsesFromAsyncResult(futureTasks);
+//      responsePairs.removeIf(r -> r.getSecond() == null);
+
+
+      for (Pair<ExAnteCostOverviewReportRequest, ExAnteCostOverviewReport> pair : responsePairs) {
+         if (pair.getSecond() == null) {
+            throw new RuntimeException("AFARA!");
+         }
+      }
+      return responsePairs;
+   }
+
+   private void hack(List<ExAnteCostOverviewReportRequest> requestList) {
+      for (ExAnteCostOverviewReportRequest request : requestList) {
+//         if (!request.getChapterSelection().contains(ExAnteCostChapterDefinition.COST_OVERVIEW)) {
+//            continue;
+//         }
+//         if (request.getChapterSelection().contains(ExAnteCostChapterDefinition.COST_OVERVIEW)) {
+
+         if (!request.isCostOverview()) {
+            continue;
+         }
+         request.setChapterSelection(Arrays.asList(ExAnteCostChapterDefinition.COST_OVERVIEW)); // hack
+      }
    }
 
    private void buildAndSaveMergedReport(List<byte[]> aggregatedReports, byte[] disclaimerPdf, Report aggregatedMergedReport) {

@@ -21,4 +21,8 @@ public class ExAnteCostOverviewReportRequest {
    public String getIsin() {
       return null;
    }
+
+   public boolean isCostOverview() {
+      return getChapterSelection().contains(ExAnteCostChapterDefinition.COST_OVERVIEW);
+   }
 }
