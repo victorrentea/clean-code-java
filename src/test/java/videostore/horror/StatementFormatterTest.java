@@ -2,7 +2,6 @@ package videostore.horror;
 
 import org.junit.Assert;
 import org.junit.Test;
-import videostore.horror.Movie.Category;
 
 import java.util.Arrays;
 import java.util.List;

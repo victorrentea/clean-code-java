@@ -1,7 +1,6 @@
 package videostore.horror;
 
 import org.junit.Test;
-import videostore.horror.Movie.Category;
 
 public class CalculatePriceTest {
    @Test

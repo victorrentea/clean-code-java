@@ -22,7 +22,9 @@ public class Rental {
    public double calculatePrice() {
 //      return movie.calculatePrice(daysRented);
 
-      return movie.getCategory().calculatePrice(daysRented);
+      return new PriceService().calculatePrice(this); // in mod normal sta afara din entity
+
+//      return movie.getCategory().calculatePrice(daysRented);
 
 //      switch (movie.getCategory()) {
 //         case REGULAR: return calculateRegularPrice();
@@ -63,7 +65,7 @@ public class Rental {
    public int calculateBonus() {
       int frequentRenterPoints = 1;
       // add bonus for a two day new release rental
-      if ((getMovie().getCategory() == Movie.Category.NEW_RELEASE) && getDaysRented() >= 2) {
+      if ((getMovie().getCategory() == Category.NEW_RELEASE) && getDaysRented() >= 2) {
          frequentRenterPoints++;
       }
       return frequentRenterPoints;
