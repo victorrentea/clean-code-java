@@ -1,8 +1,5 @@
 package videostore.horror;
 
-import org.junit.Test;
-import videostore.horror.Movie.Category;
-
 class RegularMovie extends Movie {
    public RegularMovie(String title, Category category) {
       super(title, category);
@@ -36,9 +33,10 @@ class NewReleaseMovie extends Movie {
 }
 
 class ChildrenMovie extends Movie {
-
-   public ChildrenMovie(String title, Category category) {
+   private final boolean dublat;
+   public ChildrenMovie(String title, Category category, boolean dublat) {
       super(title, category);
+      this.dublat = dublat;
    }
 
    @Override

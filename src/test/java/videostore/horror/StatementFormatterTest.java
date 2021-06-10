@@ -19,7 +19,7 @@ public class StatementFormatterTest {
 //
         List<Rental> rentals = Arrays.asList(
             new Rental(new NewReleaseMovie("Star Wars", Category.NEW_RELEASE), 6),
-            new Rental(new ChildrenMovie("Sofia", Category.CHILDREN), 7),
+            new Rental(new ChildrenMovie("Sofia", Category.CHILDREN, dublat), 7),
             new Rental(new RegularMovie("Inception", Category.REGULAR), 5));
 
         String expected = "Rental Record for John Doe\n"
