@@ -10,6 +10,7 @@ public enum Category {
    CHILDREN(PriceService::computeChildrenPrice),
    REGULAR(PriceService::calculateRegularPrice),
    NEW_RELEASE(PriceService::computeNewReleasePrice),
+//   ELDER(null)
    ;
 
    private final BiFunction<PriceService, Integer, Double> priceAlgo;

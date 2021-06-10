@@ -22,16 +22,26 @@ public class Rental {
    public double calculatePrice() {
 //      return movie.calculatePrice(daysRented);
 
-      return new PriceService().calculatePrice(this); // in mod normal sta afara din entity
+//      return new PriceService().calculatePrice(this); // in mod normal sta afara din entity
 
 //      return movie.getCategory().calculatePrice(daysRented);
 
 //      switch (movie.getCategory()) {
-//         case REGULAR: return calculateRegularPrice();
-//         case NEW_RELEASE: return computeNewReleasePrice();
-//         case CHILDREN: return computeChildrenPrice();
-//         default: throw new IllegalStateException("Unexpected value: " + movie.getCategory());
+//         case REGULAR:
+//            return calculateRegularPrice();
+//         case NEW_RELEASE:
+//            return computeNewReleasePrice();
+//         case CHILDREN:
+//            return computeChildrenPrice();
+//         default:
+//            throw new IllegalArgumentException();
 //      }
+      // java 17 frate!
+      return switch (movie.getCategory()) {
+         case REGULAR -> calculateRegularPrice();
+         case NEW_RELEASE -> computeNewReleasePrice();
+         case CHILDREN -> computeChildrenPrice();
+      };
    }
    public int maxAllowedRentDays() {
       switch (movie.getCategory()) {
@@ -42,25 +52,25 @@ public class Rental {
       }
    }
 
-//   private int computeNewReleasePrice() {
-//      return daysRented * 3;
-//   }
-//
-//   private double computeChildrenPrice() {
-//      double price;
-//      price = 1.5;
-//      if (daysRented > 3)
-//         price += (daysRented - 3) * 1.5;
-//      return price;
-//   }
-//
-//   private double calculateRegularPrice() {
-//      double price;
-//      price = 2;
-//      if (daysRented > 2)
-//         price += (daysRented - 2) * 1.5;
-//      return price;
-//   }
+   private int computeNewReleasePrice() {
+      return daysRented * 3;
+   }
+
+   private double computeChildrenPrice() {
+      double price;
+      price = 1.5;
+      if (daysRented > 3)
+         price += (daysRented - 3) * 1.5;
+      return price;
+   }
+
+   private double calculateRegularPrice() {
+      double price;
+      price = 2;
+      if (daysRented > 2)
+         price += (daysRented - 2) * 1.5;
+      return price;
+   }
 
    public int calculateBonus() {
       int frequentRenterPoints = 1;
