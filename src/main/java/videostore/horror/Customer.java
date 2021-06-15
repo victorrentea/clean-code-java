@@ -44,7 +44,8 @@ class Customer {
 	}
 
 	private String formatFooter(int totalPoints, double totalPrice) {
-		return "Amount owed is " + totalPrice + "\n" + "You earned " + totalPoints + " frequent renter points";
+		return "Amount owed is " + totalPrice + "\n"
+				 + "You earned " + totalPoints + " frequent renter points";
 	}
 
 	private String formatLine(Rental rental) {
