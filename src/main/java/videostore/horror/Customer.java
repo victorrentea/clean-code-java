@@ -1,17 +1,23 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.Map.Entry;
+
+import static videostore.horror.Movie.Category.NEW_RELEASE;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+
+	private final String name;
+	private final Map<Movie, Integer> rentalMap = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentalMap.put(movie, daysRented);
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -19,46 +25,59 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		Iterator<Movie> rentals = this.rentals.keySet().iterator();
-		String result = "Rental Record for " + getName() + "\n";
-		while (rentals.hasNext()) {
-			double thisAmount = 0;
-			Movie each = (Movie) rentals.next();
-			// determine amounts for each line
-			int dr = this.rentals.get(each);
-			switch (each.getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (dr > 2)
-					thisAmount += (dr - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += dr * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (dr > 3)
-					thisAmount += (dr - 3) * 1.5;
-				break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getCategory() != null &&
-				 (each.getCategory() == Movie.Category.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
+		double totalPrice = 0;
+		int totalPoints = 0;
+		StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
+
+//		for (Movie movie : rentals.keySet()) { // THIS LINE HAS A SUBTLE PROBLEM
+//			int daysRented = rentals.get(movie);
+
+//		for (Entry<Movie, Integer> entry : rentalMap.entrySet()) { // THIS LINE HAS A SUBTLE DESIGN PROBLEM
+
+		for (Rental rental : rentals) {
+			int daysRented = rental.getDaysRented();
+			Movie movie = rental.getMovie();
+
+
+			double price = computePrice(movie, daysRented);
+
+			totalPoints += calculateRenterPoints(movie, daysRented);
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
-			totalAmount += thisAmount;
+			result.append("\t").append(movie.getTitle()).append("\t").append(price).append("\n");
+			totalPrice += price;
 		}
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
+		result.append("Amount owed is ").append(totalPrice).append("\n");
+		result.append("You earned ").append(totalPoints).append(" frequent renter points");
+		return result.toString();
+	}
+
+	private int calculateRenterPoints(Movie movie, int daysRented) {
+		int result = 1;
+		boolean isNewRelease = movie.getCategory() == NEW_RELEASE;
+		if (isNewRelease && daysRented >= 2) {
+			result ++;
+		}
 		return result;
+	}
+
+	private double computePrice(Movie movie, int daysRented) {
+		double price = 0;
+		switch (movie.getCategory()) {
+			case REGULAR:
+				price += 2;
+				if (daysRented > 2)
+					price += (daysRented - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				price += daysRented * 3;
+				break;
+			case CHILDREN:
+				price += 1.5;
+				if (daysRented > 3)
+					price += (daysRented - 3) * 1.5;
+				break;
+		}
+		return price;
 	}
 }
