@@ -1,8 +1,6 @@
 package victor.training.cleancode;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,12 +10,16 @@ public class BooleanParameters {
       bigUglyMethod(1, 5);
       bigUglyMethod(2, 4);
       bigUglyMethod(3, 3);
-      bigUglyMethod(4, 2);
+      aaa();
       bigUglyMethod(5, 1);
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod323(2, 1);
+      bigUglyMethod323(2, 1, "this func");
 
+   }
+
+   private static void aaa() {
+      bigUglyMethod(4, 2);
    }
 
    static void bigUglyMethod(int b, int a) {
@@ -25,9 +27,9 @@ public class BooleanParameters {
       afterLogic(b);
    }
 
-   static void bigUglyMethod323(int b, int a) {
+   static void bigUglyMethod323(int b, int a, final String param) {
       beforeLogic(b, a);
-      System.out.println("My code here when I call this func");
+      System.out.println("My code here when I call " + param);
       afterLogic(b);
    }
 

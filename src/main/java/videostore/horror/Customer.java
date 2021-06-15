@@ -2,7 +2,6 @@ package videostore.horror;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -15,8 +14,8 @@ class Customer {
       this.name = name;
    }
 
-   public void addRental(Movie movie, int daysRented) {
-      rentals.add(new Rental(movie, daysRented));
+   public void addRental(Rental e) {
+      rentals.add(e);
    }
 
    public String getName() {
