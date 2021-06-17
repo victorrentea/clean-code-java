@@ -68,8 +68,8 @@
 					<source>1.8</source>
 					<target>1.8</target>
 
-					<!--<release>15</release>
-					<compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
+					<release>15</release>
+					<compilerArgs>--enable-preview</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>

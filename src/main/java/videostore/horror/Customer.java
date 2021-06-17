@@ -2,6 +2,8 @@ package videostore.horror;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.*;
+
 class Customer {
 	private final String name;
 	private final List<Rental> rentals = new ArrayList<>();
@@ -10,8 +12,8 @@ class Customer {
 		this.name = name;
 	}
 
-	public void addRental(Movie movie, int daysRented) {
-		rentals.add(new Rental(movie, daysRented));
+	public void addRental(Rental e) {
+		rentals.add(e);
 	}
 
 	public String getName() {
@@ -19,37 +21,34 @@ class Customer {
 	}
 
 	public String generateStatement() {
-		int frequentRenterPoints = 0;
-		String statement = "Rental Record for " + getName() + "\n";
+		return generateHeader()
+				 + generateBody()
+				 + generateFooter();
+	}
 
-		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
+	private String generateBody() {
+		return rentals.stream().map(rental -> generateStatementLine(rental)).collect(joining());
+	}
 
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			boolean isNewRelease = movie.getPriceCode() == Movie.Category.NEW_RELEASE;
-			if (isNewRelease && daysRented >= 2) {
-				frequentRenterPoints++;
-			}
+	private String generateStatementLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+	}
 
-			// show figures line for this rental
-			statement += "\t" + movie.getTitle() + "\t" + rental.computePrice() + "\n";
-		}
+	private String generateHeader() {
+		return "Rental Record for " + getName() + "\n";
+	}
 
-		double totalPrice = computeTotalPrice();
-
-
-		statement += generateFooter(totalPrice, frequentRenterPoints);
-		return statement;
+	private int computeTotalPoints() {
+		return rentals.stream().mapToInt(Rental::computeBonus).sum();
 	}
 
 	private double computeTotalPrice() {
 		return rentals.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
-	private String generateFooter(double totalPrice, int frequentRenterPoints) {
+	private String generateFooter() {
+		int frequentRenterPoints = computeTotalPoints();
+		double totalPrice = computeTotalPrice();
 		return "Amount owed is " + totalPrice + "\n"
 				 + "You earned " + frequentRenterPoints + " frequent renter points";
 	}

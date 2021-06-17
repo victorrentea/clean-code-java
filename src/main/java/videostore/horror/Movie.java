@@ -6,19 +6,20 @@ public class Movie {
 	enum Category {
 		CHILDREN,
 		REGULAR,
-		NEW_RELEASE
+		NEW_RELEASE,
+//		ELDERS breaks compilation
 	}
 
 	private final String title;
-	private final Category priceCode;
+	private final Category category;
 
-	public Movie(String title, Category priceCode) {
+	public Movie(String title, Category category) {
 		this.title = requireNonNull(title);
-		this.priceCode = requireNonNull(priceCode);
+		this.category = requireNonNull(category);
 	}
 
-	public Category getPriceCode() {
-		return priceCode;
+	public Category getCategory() {
+		return category;
 	}
 
 	public String getTitle() {
