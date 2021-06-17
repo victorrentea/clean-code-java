@@ -7,7 +7,7 @@ public class Movie {
 		CHILDREN,
 		REGULAR,
 		NEW_RELEASE,
-//		ELDERS breaks compilation
+////		ELDERS breaks compilation
 	}
 
 	private final String title;

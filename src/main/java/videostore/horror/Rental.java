@@ -18,11 +18,22 @@ public class Rental {
    }
 
    public double computePrice() { // feature envy
-      return switch (movie.getCategory()) {
-         case REGULAR -> computeRegularPrice();
-         case NEW_RELEASE -> computeNewReleasePrice();
-         case CHILDREN -> computeChildrenPrice();
-      };
+      switch (movie.getCategory()) {
+         case REGULAR:
+            return computeRegularPrice();
+         case NEW_RELEASE:
+            return computeNewReleasePrice();
+         case CHILDREN:
+            return computeChildrenPrice();
+         default:
+            throw new IllegalStateException("Unexpected value: " + movie.getCategory());
+      }
+      // java 17:
+//      return switch (movie.getCategory()) {
+//         case REGULAR -> computeRegularPrice();
+//         case NEW_RELEASE -> computeNewReleasePrice();
+//         case CHILDREN -> computeChildrenPrice();
+//      };
    }
 
    private double computeChildrenPrice() {
