@@ -29,7 +29,7 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			boolean isNewRelease = movie.getPriceCode() == Movie.NEW_RELEASE;
+			boolean isNewRelease = movie.getPriceCode() == Movie.Category.NEW_RELEASE;
 			if (isNewRelease && daysRented >= 2) {
 				frequentRenterPoints++;
 			}

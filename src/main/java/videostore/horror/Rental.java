@@ -20,15 +20,15 @@ public class Rental {
    public double computePrice() { // feature envy
       double price = 0;
       switch (movie.getPriceCode()) {
-         case Movie.REGULAR:
+         case REGULAR:
             price += 2;
             if (daysRented > 2)
                price += (daysRented - 2) * 1.5;
             break;
-         case Movie.NEW_RELEASE:
+         case NEW_RELEASE:
             price += daysRented * 3;
             break;
-         case Movie.CHILDREN:
+         case CHILDREN:
             price += 1.5;
             if (daysRented > 3)
                price += (daysRented - 3) * 1.5;
