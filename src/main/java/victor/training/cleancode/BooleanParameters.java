@@ -2,34 +2,52 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BooleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, 5, false);
-      bigUglyMethod(2, 4, false);
-      bigUglyMethod(3, 3, false);
-      bigUglyMethod(4, 2, false);
-      bigUglyMethod(5, 1, false);
+      bigUglyMethod(1, 5);
+      bigUglyMethod(2, 4);
+      bigUglyMethod(3, 3);
+      bigUglyMethod(4, 2);
+      bigUglyMethod(5, 1);
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod(2, 1, true);
+      bigUglyMethod323(2, 1, c1 -> System.out.println("My stuff for CR 323" + c1));
 
    }
 
-   static void bigUglyMethod(int b, int a, boolean cr323) {
+   static void bigUglyMethod(int b, int a) {
+      beforeLogic(b, a);
+      afterLOgic(b);
+   }
+
+   @FunctionalInterface
+   public interface MyStuffContract {
+      void processInteger(int theInteger);
+   }
+
+   static void bigUglyMethod323(int b, int a, MyStuffContract consumer) {
+      beforeLogic(b, a);
+      int c = a + b;
+
+      consumer.processInteger(c);
+
+      afterLOgic(b);
+   }
+
+   private static void afterLOgic(int b) {
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+   }
+
+   private static void beforeLogic(int b, int a) {
       System.out.println("x");
       System.out.println("Complex Logic 1 " + a + " and " + b);
       System.out.println("Complex Logic 2 " + a);
       System.out.println("Complex Logic 3 " + a);
-
-      if (cr323) {
-         System.out.println("My stuff for CR 323");
-      }
-
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
    }
 
 
