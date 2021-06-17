@@ -39,8 +39,9 @@ public class Rental {
    private double computeChildrenPrice() {
       double price;
       price = 1.5;
-      if (daysRented > 3)
+      if (daysRented > 3) {
          price += (daysRented - 3) * 1.5;
+      }
       return price;
    }
 
