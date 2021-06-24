@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import lombok.With;
+
 public class ImmutableTracing {
 
    public static void main(String[] args) {
@@ -10,15 +12,17 @@ public class ImmutableTracing {
 
 class MutableHell {
    class Mutable {
-      private int x;
+      @With
+      private final int x;
+
+      Mutable(int x) {
+         this.x = x;
+      }
 
       public int getX() {
          return x;
       }
 
-      public void setX(int x) {
-         this.x = x;
-      }
    }
 
    class HoldingReference {
@@ -29,14 +33,14 @@ class MutableHell {
       }
 
       public void hack() {
-         data.setX(1);
+//         data.setX(1);
       }
    }
 
    private HoldingReference obj = new HoldingReference();
 
    public void h() {
-      Mutable data = new Mutable();
+      Mutable data = new Mutable(1);
       // more code
       obj.setData(data);
       // more code
@@ -44,17 +48,17 @@ class MutableHell {
    }
 
    public void g(Mutable data) {
-      data.setX(2);
+//      data.setX(2);
       // more code
-      evil(data);
+      data = evil(data);
       // more code
       obj.hack();
       // more code
       f(data);
    }
 
-   private void evil(Mutable data) {
-      data.setX(3);
+   private Mutable evil(Mutable data) {
+      return data.withX(3);
    }
 
    public void f(Mutable data) {
