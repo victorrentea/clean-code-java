@@ -1,33 +1,38 @@
 package victor.training.refactoring;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuardClauses {
-   public int getPayAmount(Marine marine) {
-      int result;
-      if (!retrieveDeadStatus()) { // network call
-         if (marine != null) {
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // much more logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            throw new RuntimeException("Marine is null");
-         }
-      } else {
+   public int getPayAmount(Marine marine) throws IOException {
+      if (marine == null) {
+         throw new RuntimeException("Marine is null");
+      }
+      if (marine.getYearsService() == null) {
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
+      if (retrieveDeadStatus()) {
          // some logic here
-         result = deadAmount();
+         return deadAmount();
+      } // network call
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+
+      new FileWriter("a");
+
+      return computePayroll(marine);
+   }
+
+   private int computePayroll(Marine marine) {
+      int result = marine.getYearsService() * 100;
+      if (!marine.getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
       }
       return result;
    }
