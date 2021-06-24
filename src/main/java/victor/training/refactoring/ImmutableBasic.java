@@ -1,5 +1,8 @@
 package victor.training.refactoring;
 
+import lombok.Value;
+import lombok.With;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,39 +25,21 @@ public class ImmutableBasic {
          System.out.println(number);
       }
 
-      Immutable newImmutable = immutable.withNewX(3); // "wither"s
+      Immutable newImmutable = immutable.withX(3); // "wither"s
 
       System.out.println(immutable);
    }
 
 }
 
+@Value
 class Immutable {
-   private final int x;
-   private final List<Integer> numbers;
-   private final Other other;
-
-   public Immutable(int x, List<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = new ArrayList<>(numbers); // ImmutableList evita clonari inutile.
-      this.other = other;
-   }
-
-   public Immutable withNewX(int newX) {
-      return new Immutable(newX, getNumbers(), getOther());
-   }
-
-   public int getX() {
-      return x;
-   }
+   @With
+   int x;
+   List<Integer> numbers;
+   Other other;
    public List<Integer> getNumbers() {
       return Collections.unmodifiableList(numbers);
-   }
-   public Other getOther() {
-      return other;
-   }
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
    }
 }
 
