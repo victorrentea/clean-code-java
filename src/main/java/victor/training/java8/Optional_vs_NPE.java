@@ -24,6 +24,9 @@ class DiscountService {
 			.map(integer -> "Discount%: " + integer)
 			.orElse("");
    }
+//   RAfael:  code guide
+   // Johan: structure
+   // Mani: verbose java
 
    private Optional<Integer> getApplicableDiscountPercentage(MemberCard card) {
       if (card.getFidelityPoints() >= 100) {
