@@ -7,7 +7,10 @@ public class Movie {
 
 	public Movie(String title, MovieCategory category) {
 		this.title = title;
-		this.category = category;
+		if (category == null) {
+			throw new IllegalArgumentException();
+		}
+		this.category =  category;
 	}
 
 	public MovieCategory getCategory() {
