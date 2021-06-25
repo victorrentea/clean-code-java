@@ -1,7 +1,10 @@
 package victor.training.cleancode;
 
 
+import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,10 +60,12 @@ class MathUtil {
 //   private final String username;
 //   private final LocalDateTime time;
 //}
+@Embeddable
 class Interval {
-   private final int start;
-   private final int end;
+   private int start;
+   private int end;
 
+   private Interval() {} // din dragoste de Hibernate
    Interval(int start, int end) {
       if (start > end) {
          throw new IllegalArgumentException("start larger than end");
@@ -115,9 +120,9 @@ class CarSearchCriteria {
    }
 }
 
-//@Entity
+@Entity
 class CarModel {
-//   @Id
+   @Id
    private Long id;
    private String make;
    private String model;
