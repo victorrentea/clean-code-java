@@ -13,20 +13,23 @@ class ParameterizeAndExtract {
         }
     }
 
+    public void g(int n) {
+        try {
+            System.out.println("Logic G");
+            for (int j = 0; j < 3; j++) {
+                if (n + j < 0) {
+                    System.out.println("Code " + j);
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 class AnotherClass {
 
-    public void g(int n) {
-        System.out.println("Logic G");
-        for (int j = 0; j < 3; j++) {
-            if (n + j < 0) {
-                String x = "Code" +
-                        " " + j;
-                System.out.println(x);
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
+
 }
