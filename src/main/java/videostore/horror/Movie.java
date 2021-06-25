@@ -8,15 +8,15 @@ enum MovieCategory {
 public class Movie {
 
 	private final String title;
-	private final MovieCategory priceCode;
+	private final MovieCategory movieCategory;
 
-	public Movie(String title, MovieCategory priceCode) {
+	public Movie(String title, MovieCategory movieCategory) {
 		this.title = title;
-		this.priceCode = priceCode;
+		this.movieCategory = movieCategory;
 	}
 
-	public MovieCategory getPriceCode() {
-		return priceCode;
+	public MovieCategory getMovieCategory() {
+		return movieCategory;
 	}
 
 	public String getTitle() {
