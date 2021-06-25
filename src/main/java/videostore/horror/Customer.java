@@ -2,6 +2,8 @@ package videostore.horror;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
 	private final String name;
 	private final List<Rental> rentals = new ArrayList<>();
@@ -10,8 +12,8 @@ class Customer {
 		this.name = name;
 	}
 
-	public void addRental(Movie movie, int daysRented) {
-		rentals.add(new Rental(movie, daysRented));
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
 	public String getName() {
@@ -19,30 +21,42 @@ class Customer {
 	}
 
 	public String buildStatement() {
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
+	}
 
+	private String formatBody() {
+		StringBuilder sb = new StringBuilder();
 		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
-
-			frequentRenterPoints += rental.determineFrequentRenterPoints();
-			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + rental.determineAmount() + "\n";
+			sb.append(formatLine(rental));
 		}
-		double totalAmount = computeTotalAmount();
-
-		result += formatFooter(totalAmount, frequentRenterPoints);
-		return result;
+		return sb.toString();
 	}
 
-	private double computeTotalAmount() {
-		return rentals.stream().mapToDouble(Rental::determineAmount).sum();
+	private String formatHeader() {
+		return "Rental Record for " + getName() + "\n";
 	}
 
-	private String formatFooter(double totalAmount, int frequentRenterPoints) {
-		return "Amount owed is " + totalAmount + "\n" +
-				 "You earned " + frequentRenterPoints + " frequent renter points";
+	private String formatLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.determinePrice() + "\n";
+	}
+
+	private int computeTotalPoints() {
+		int frequentRenterPoints = 0;
+		for (Rental rental : rentals) {
+			frequentRenterPoints += rental.determineFrequentRenterPoints();
+		}
+		return frequentRenterPoints;
+	}
+
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::determinePrice).sum();
+	}
+
+	private String formatFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n" +
+				 "You earned " + computeTotalPoints() + " frequent renter points";
 	}
 
 }
