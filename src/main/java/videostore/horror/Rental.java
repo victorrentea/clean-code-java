@@ -22,6 +22,7 @@ public class Rental {
          case REGULAR: return computeRegularPrice();
          case NEW_RELEASE: return computeNewReleasePrice();
          case CHILDRENS: return computeChildrenPrice();
+         case ELDERS: return computeChildrenPrice();
          default: throw new IllegalStateException("Unexpected value: " + movie.getCategory());
       }
    }

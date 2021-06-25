@@ -12,7 +12,7 @@ public class Movie {
 		}
 		this.category =  category;
 	}
-
+//public abstract double determinePrice();
 	public MovieCategory getCategory() {
 		return category;
 	}
@@ -21,3 +21,15 @@ public class Movie {
 		return title;
 	}
 }
+
+//class RegularMovie extends Movie {
+//
+//	public RegularMovie(String title, MovieCategory category) {
+//		super(title, category);
+//	}
+//
+//	@Override
+//	public double determinePrice() {
+//		return 0;
+//	}
+//}
