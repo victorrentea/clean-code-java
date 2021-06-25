@@ -1,22 +1,17 @@
 package videostore.horror;
 
-enum MovieCategory {
-	CHILDRENS,
-	REGULAR,
-	NEW_RELEASE
-}
 public class Movie {
 
 	private final String title;
-	private final MovieCategory movieCategory;
+	private final MovieCategory category;
 
-	public Movie(String title, MovieCategory movieCategory) {
+	public Movie(String title, MovieCategory category) {
 		this.title = title;
-		this.movieCategory = movieCategory;
+		this.category = category;
 	}
 
-	public MovieCategory getMovieCategory() {
-		return movieCategory;
+	public MovieCategory getCategory() {
+		return category;
 	}
 
 	public String getTitle() {
