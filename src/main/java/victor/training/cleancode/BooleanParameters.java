@@ -52,34 +52,36 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    public void bossLevelStuffFluff(List<Task> tasks) {
+      beforeBoss(tasks);
+      for (Task task : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         System.out.println("My Logic: " + task);
+      }
+      afterBoss(tasks);
+   }
+
+   private void afterBoss(List<Task> tasks) {
+      for (int i = 0; i < tasks.size(); i++) {
+         Task task = tasks.get(i);
+         System.out.println("Logic5 " + (i+1) + " on " + task.isRunning());
+      }
+      System.out.println("Logic6 " + tasks.size());
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(toList());
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+
+   private void beforeBoss(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
       System.out.println("Logic3");
 
 
-      List<Long> taskIds = tasks.stream().map(Task::getId).collect(toList());
-
       for (Task task : tasks) {
          System.out.println("Logic4: Validate " + task);
          task.setRunning(); // mutation of the loop item
       }
-      int index = 0;
-      for (Task task : tasks) {
-
-         // TODO When **I** call this method, I want this to run HERE, too:
-//         if (cr323) {
-            System.out.println("My Logic: " + task);
-//         }
-
-         index++; // mutation outside of the loop
-         System.out.println("Logic5 " + index + " on " + task.isRunning());
-      }
-      System.out.println("Logic6 " + tasks.size());
-      System.out.println("Task Ids: " + taskIds);
-      System.out.println("Logic7");
    }
-
-
 
 
    public void bossLevelStuffNoFluff(List<Task> tasks) {
