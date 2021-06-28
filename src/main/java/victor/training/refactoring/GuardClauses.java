@@ -1,34 +1,38 @@
 package victor.training.refactoring;
 
+import lombok.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      int result;
-      if (!retrieveDeadStatus()) { // network call
-         if (marine != null) {
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // much more logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            throw new RuntimeException("Marine is null");
-         }
-      } else {
+      if (retrieveDeadStatus()) {
          // some logic here
-         result = deadAmount();
+         return deadAmount();// early returns
       }
+      if (marine == null) {
+         throw new RuntimeException("Marine is null"); // do before calling etPayAmount
+      }
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+      if (marine.getYearsService() == null) { // data fix in db.
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
+      return computeRegularPay(marine);
+   }
+
+   private int computeRegularPay(Marine marine) {
+      int result = marine.getYearsService() * 100;
+      if (!marine.getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
+      }
+      // much more logic here...
       return result;
    }
 
@@ -56,7 +60,7 @@ class Marine {
    Marine(boolean dead, boolean retired, Integer yearsService) {
       this.dead = dead;
       this.retired = retired;
-      this.yearsService = yearsService;
+      this.yearsService = Objects.requireNonNull(yearsService);
    }
 
    public List<Award> getAwards() {

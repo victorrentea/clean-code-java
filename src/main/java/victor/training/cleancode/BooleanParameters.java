@@ -61,13 +61,17 @@ public class BooleanParameters {
    }
 
    private void afterBoss(List<Task> tasks) {
+//      int index = 0;
       for (int i = 0; i < tasks.size(); i++) {
          Task task = tasks.get(i);
+//         index ++;
          System.out.println("Logic5 " + (i+1) + " on " + task.isRunning());
       }
       System.out.println("Logic6 " + tasks.size());
       List<Long> taskIds = tasks.stream().map(Task::getId).collect(toList());
       System.out.println("Task Ids: " + taskIds);
+
+
       System.out.println("Logic7");
    }
 
