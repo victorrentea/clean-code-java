@@ -1,10 +1,15 @@
 package victor.training.refactoring;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.Value;
+import lombok.With;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Collections.unmodifiableList;
@@ -37,42 +42,16 @@ public class ImmutableBasic {
       System.out.println(immutable.getX());
    }
 }
-
+@Value
 class Immutable {
-   private final int x;
-//   private final ImmutableList<Integer> numbers;
-   private final List<Integer> numbers;
-   private final Other other;
+   @With
+   int x;
+   List<Integer> numbers;
+   @NonNull
+   Other other;
 
-   Immutable(int x, List<Integer> numbers, Other other) {
-      this.x = x;
-//      this.numbers = unmodifiableList(numbers);
-      this.numbers = new ArrayList<>(numbers);
-      this.other = other;
-   }
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-   }
-   public int getX() {
-      return x;
-   }
    public List<Integer> getNumbers() {
-      return numbers;
-   }
-//   public List<Integer> getNumbers() {
-//      return unmodifiableList(numbers);
-//   }
-
-//   public void addNumber(int n) {
-//      numbers.add(n);
-//   }
-
-   public Other getOther() {
-      return other;
-   }
-
-   public Immutable withX(int newX) {
-      return new Immutable(newX, numbers, other);
+      return unmodifiableList(numbers);
    }
 }
 
