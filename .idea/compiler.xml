@@ -14,4 +14,9 @@
       <module name="clean-code-java" target="11" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="clean-code-java" options="" />
+    </option>
+  </component>
 </project>
