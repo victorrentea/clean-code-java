@@ -32,25 +32,22 @@ public class ImmutableBasic {
 //      immutable.getNumbers().clear();
 
 //      immutable.getNumbers().add(1);
-//      for (Integer number : immutable.getNumbers()) {
-//         System.out.println(number);
-//      }
+      for (Integer number : immutable.numbers()) {
+         System.out.println(number);
+      }
 
       System.out.println(immutable2);
 
       System.out.println(immutable);
-      System.out.println(immutable.getX());
+      System.out.println(immutable.x());
    }
 }
-@Value
-class Immutable {
-   @With
-   int x;
-   List<Integer> numbers;
-   @NonNull
-   Other other;
+record Immutable(int x, List<Integer> numbers, Other other) {
+   public Immutable {
+      Objects.requireNonNull(other);
+   }
 
-   public List<Integer> getNumbers() {
+   public List<Integer> numbers() {
       return unmodifiableList(numbers);
    }
 }
