@@ -9,10 +9,12 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = new Immutable(1, numbers, new Other(15));
-
+      Immutable immutable = null;//new Immutable(1, numbers, new Other(15));
       System.out.println(immutable);
 
+      // wilderness
+
+      System.out.println(immutable);
    }
 }
 
