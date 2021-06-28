@@ -17,8 +17,9 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-//      ImmutableList<Integer> numbers = ImmutableList.of(1,2,3,4,5);
-      List<Integer> numbers = Stream.of(1,2,3,4,5).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.of(1,2,3,4,5);
+//      List<Integer> numbers = Stream.of(1,2,3,4,5).collect(toList());
+
       Other other = new Other(13);
 
       Immutable immutable = new Immutable(2, numbers, other);
@@ -42,25 +43,26 @@ public class ImmutableBasic {
       System.out.println(immutable.x());
    }
 }
-record Immutable(int x, List<Integer> numbers, Other other) {
+record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
    public Immutable {
       Objects.requireNonNull(other);
    }
 
-   public List<Integer> numbers() {
-      return unmodifiableList(numbers);
+   public Immutable withX(int newX) {
+      return new Immutable(newX, numbers, other);
    }
 }
 
 class Other {
-   private final int a;
+   public final int a;
 
    public Other(int a) {
       this.a = a;
    }
 
    public int getA() {
-      return a;
+      return a; // Other::getA   Other::a
+
    }
 
 //   public void setA(int a) {

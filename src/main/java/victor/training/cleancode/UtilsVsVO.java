@@ -61,6 +61,10 @@ class Interval {
       }
    }
 
+   public int getLength() {
+      return end-start;
+   }
+
    public boolean intersects(Interval other) {
       return start <= other.end && other.start <= end;
    }
