@@ -1,6 +1,10 @@
 package victor.training.cleancode;
 
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,9 +53,11 @@ class MathUtil {
 
 }
 
+@Embeddable
 class Interval {
-   private final Integer start;
-   private final Integer end;
+   private Integer start;
+   private Integer end;
+   private Interval() {} // for Hibernate only.
 
    Interval(Integer start, Integer end) {
       this.start = requireNonNull(start);
@@ -114,13 +120,14 @@ class CarSearchCriteria {
    }
 }
 
-//@Entity
+@Entity
 class CarModel {
-//   @Id
+   @Id
    private Long id;
    private String make;
    private String model;
-   private Interval yearInterval;
+   @Embedded
+   private Interval yearInterval; // separate table ? NO!
 
    public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;

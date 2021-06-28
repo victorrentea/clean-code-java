@@ -58,6 +58,7 @@ class MutableHell {
       f(data);
    }
 
+
    private void m2(Immutable data) {
       System.out.println(data.getX());
    }
