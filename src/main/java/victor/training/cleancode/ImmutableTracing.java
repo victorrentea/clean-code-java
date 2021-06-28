@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import lombok.With;
+
 public class ImmutableTracing {
 
    public static void main(String[] args) {
@@ -9,55 +11,61 @@ public class ImmutableTracing {
 
 
 class MutableHell {
-   class Mutable {
-      private int x;
+   class Immutable {
+      @With
+      private final int x;
+
+      Immutable(int x) {
+         this.x = x;
+      }
 
       public int getX() {
          return x;
       }
 
-      public void setX(int x) {
-         this.x = x;
-      }
    }
+//   class ExtensionByAMeanColleagueThatDoesntKnowThatExtendsIS_BAD extends Immutable {
+//      private int xHack;
+//
+//      ExtensionByAMeanColleagueThatDoesntKnowThatExtendsIS_BAD(int x) {
+//         super(x);
+//      }
+//
+//      @Override
+//      public int getX() {
+//         return xHack;
+//      }
+//
+//      public void setX(int xHack) {
+//         this.xHack = xHack;
+//      }
+//   }
 
-   class HoldingReference {
-      private Mutable data;
-
-      public void setData(Mutable data) {
-         this.data = data;
-      }
-
-      public void hack() {
-         data.setX(1);
-      }
-   }
-
-   private HoldingReference obj = new HoldingReference();
 
    public void h() {
-      Mutable data = new Mutable();
-      // more code
-      obj.setData(data);
+      Immutable data = new Immutable(1);
       // more code
       g(data);
    }
 
-   public void g(Mutable data) {
-      data.setX(2);
+   public void g(Immutable data) {
+      data = data.withX(2);
       // more code
-      evil(data);
-      // more code
-      obj.hack();
+      data = m1(data);
+      m2(data);
+      data = m1(data);
       // more code
       f(data);
    }
 
-   private void evil(Mutable data) {
-      data.setX(3);
+   private void m2(Immutable data) {
+      System.out.println(data.getX());
+   }
+   private Immutable m1(Immutable data) {
+      return data.withX(3);
    }
 
-   public void f(Mutable data) {
+   public void f(Immutable data) {
       if (data.getX() == 1) {
          System.out.println("RUNS");
       }
