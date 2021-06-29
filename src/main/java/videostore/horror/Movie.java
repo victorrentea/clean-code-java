@@ -1,18 +1,23 @@
 package videostore.horror;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 public class Movie {
    enum Category {
       CHILDREN,
+      NEW_RELEASE,
       REGULAR,
-      NEW_RELEASE
+//      UNCATEGORIZED// Null object pattern
    }
 
-   private String title;
-   private Category category;
+   private final String title;
+   private final Category category;
 
    public Movie(String title, Category category) {
       this.title = title;
-      this.category = category;
+      this.category = requireNonNull(category); // + NOT NULL in DB
    }
 
    public Category getCategory() {
@@ -23,5 +28,4 @@ public class Movie {
       return title;
    }
 
-   ;
 }
