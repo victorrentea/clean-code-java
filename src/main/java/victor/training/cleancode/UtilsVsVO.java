@@ -1,6 +1,8 @@
 package victor.training.cleancode;
 
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -123,6 +125,7 @@ class CarSearchCriteria {
 @Entity
 class CarModel {
    @Id
+   @EqualsAndHashCode.Exclude
    private Long id;
    private String make;
    private String model;

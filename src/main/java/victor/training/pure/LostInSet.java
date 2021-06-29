@@ -13,6 +13,8 @@ public class LostInSet {
       set.add(childOne);
 
       System.out.println(set.contains(childOne));
+      childOne.setName("Emma-Simona");
+      System.out.println(set.contains(childOne));
    }
 }
 
