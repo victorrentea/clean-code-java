@@ -1,66 +1,94 @@
 package videostore.horror;
 
-import videostore.horror.Movie.Category;
-
 import java.util.*;
 
 import static videostore.horror.Movie.Category.NEW_RELEASE;
 
-class Customer {
+class Rental {
+	private final Movie movie;
+	private final int daysRented;
+
+	Rental(Movie movie, int daysRented) {
+		this.movie = movie;
+		this.daysRented = daysRented;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public int getDaysRented() {
+		return daysRented;
+	}
+
+	public double computePrice() {
+		double result = 0.0;
+//		someCounter ++; // side effect
+		switch (getMovie().getCategory()) {
+			case REGULAR:
+				result += 2;
+				if (getDaysRented() > 2)
+					result += (getDaysRented() - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				result += getDaysRented() * 3;
+				break;
+			case CHILDREN:
+				result += 1.5;
+				if (getDaysRented() > 3)
+					result += (getDaysRented() - 3) * 1.5;
+				break;
+		}
+		return result;
+	}
+
+	public int computeFrequentPoints() {
+		int frequentRenterPoints = 1;
+		boolean isNewRelease = getMovie().getCategory() == NEW_RELEASE;
+		if (isNewRelease && getDaysRented() >= 2) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
+}
+
+class Customer { // model
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentals = new ArrayList<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Movie movie, int daysRented) {
-		rentals.put(movie, daysRented);
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
-		double totalAmount = 0;
+	public String generateStatement() { // presentation
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
-		Iterator<Movie> rentalsIterator = rentals.keySet().iterator();
 		String result = "Rental Record for " + getName() + "\n";
-		while (rentalsIterator.hasNext()) {
-			double thisAmount = 0;
-			Movie movie = rentalsIterator.next();
-			// determine amounts for each line
-			int daysRented = rentals.get(movie);
-			switch (movie.getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (daysRented > 2)
-					thisAmount += (daysRented - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += daysRented * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (daysRented > 3)
-					thisAmount += (daysRented - 3) * 1.5;
-				break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			boolean isNewRelease = movie.getCategory() == NEW_RELEASE;
-			boolean deservesBonus = isNewRelease && daysRented >= 2;
-			if (deservesBonus) {
-				frequentRenterPoints++;
-			}
+
+		for (Rental rental : rentals) {
+			Movie movie = rental.getMovie();
+
+			// computation
+			frequentRenterPoints += rental.computeFrequentPoints(); // computation
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + movie.getTitle() + "\t" + rental.computePrice() + "\n"; // Presentation
+			// changes to rental here.
+			totalPrice += rental.computePrice(); // different result
+			// a function that given the same args => same results. = Referential Transparent.
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
+
+
 }
