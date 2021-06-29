@@ -26,6 +26,6 @@ public class CustomerTest {
                 + "Amount owed is 35.0\n"
                 + "You earned 5 frequent renter points";
         
-        Assert.assertEquals(expected, customer.generateStatement());
+        Assert.assertEquals(expected, new StatementGenerator().generateStatement(customer.getRentals(), customer.getName()));
     }
 }
