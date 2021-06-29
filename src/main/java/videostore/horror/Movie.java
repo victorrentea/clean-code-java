@@ -9,7 +9,7 @@ public class Movie {
       CHILDREN,
       NEW_RELEASE,
       REGULAR,
-//      UNCATEGORIZED// Null object pattern
+      UNCATEGORIZED// Null object pattern
    }
 
    private final String title;

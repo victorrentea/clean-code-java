@@ -82,7 +82,7 @@
 					<source>8</source>
 					<target>8</target>
 
-					<!--<release>15</release>
+					<!--<release>16</release>
 					<compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
 				</configuration>
 			</plugin>

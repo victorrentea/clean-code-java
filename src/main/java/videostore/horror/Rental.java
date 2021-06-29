@@ -20,22 +20,38 @@ public class Rental {
    }
 
    public double computePrice() {
-      double result = 0.0;
+//      return switch (getMovie().getCategory()) {
+//         case REGULAR -> computeRegularPrice();
+//         case NEW_RELEASE -> computeNewReleasePrice();
+//         case CHILDREN -> computeChildrenPrice();
+//      };
       switch (getMovie().getCategory()) {
          case REGULAR:
-            result += 2;
-            if (getDaysRented() > 2)
-               result += (getDaysRented() - 2) * 1.5;
-            break;
+            return computeRegularPrice();
          case NEW_RELEASE:
-            result += getDaysRented() * 3;
-            break;
+            return computeNewReleasePrice();
          case CHILDREN:
-            result += 1.5;
-            if (getDaysRented() > 3)
-               result += (getDaysRented() - 3) * 1.5;
-            break;
+            return computeChildrenPrice();
+         default:
+            throw new IllegalArgumentException();
       }
+   }
+
+   private double computeChildrenPrice() {
+      double result = 1.5;
+      if (getDaysRented() > 3)
+         result += (getDaysRented() - 3) * 1.5;
+      return result;
+   }
+
+   private double computeNewReleasePrice() {
+      return getDaysRented() * 3;
+   }
+
+   private double computeRegularPrice() {
+      double result = 2;
+      if (getDaysRented() > 2)
+         result += (getDaysRented() - 2) * 1.5;
       return result;
    }
 

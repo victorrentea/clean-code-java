@@ -4,29 +4,61 @@ class ParameterizeAndExtract {
 
     public void f(int n) {
         System.out.println("Logic F");
-        for (int i = 0; i < 4; i++) {
-            if (n + i < 0) {
-                System.out.println("Code " + i);
+        extracted(n, 4);
+    }
+
+
+
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    // 400 lines of code
+    public void g(int n) {
+        System.out.println("Logic G");
+        try {
+
+            extracted(n, 3);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void extracted(int n, int i) {
+        for (int j = 0; j < i; j++) {
+            if (n + j < 0) {
+                System.out.println("Code " + j);
             } else {
                 throw new IllegalArgumentException();
             }
         }
     }
-
 
 }
 class AnotherClass {
 
-    public void g(int n) {
-        System.out.println("Logic G");
-        for (int j = 0; j < 3; j++) {
-            if (n + j < 0) {
-                String x = "Code" +
-                        " " + j;
-                System.out.println(x);
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
 }
