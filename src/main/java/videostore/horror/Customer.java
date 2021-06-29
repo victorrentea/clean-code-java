@@ -2,6 +2,7 @@ package videostore.horror;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.joining;
 import static videostore.horror.Movie.Category.NEW_RELEASE;
 
 class Rental {
@@ -23,7 +24,6 @@ class Rental {
 
 	public double computePrice() {
 		double result = 0.0;
-//		someCounter ++; // side effect
 		switch (getMovie().getCategory()) {
 			case REGULAR:
 				result += 2;
@@ -69,24 +69,29 @@ class Customer { // model
 	}
 
 	public String generateStatement() { // presentation
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		return generateHeader()
+				 + generateBody()
+				 + generateFooter();
+	}
 
-		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
+	private String generateBody() {
+		return rentals.stream().map(this::formatRental).collect(joining());
+	}
 
-			// computation
-			frequentRenterPoints += rental.computeFrequentPoints(); // computation
-			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + rental.computePrice() + "\n"; // Presentation
-			// changes to rental here.
-			totalPrice += rental.computePrice(); // different result
-			// a function that given the same args => same results. = Referential Transparent.
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+	private String formatRental(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+	}
+
+	private String generateHeader() {
+		return "Rental Record for " + getName() + "\n";
+	}
+
+	private String generateFooter() {
+		int totalPoints = rentals.stream().mapToInt(Rental::computeFrequentPoints).sum();
+		double totalPrice = rentals.stream().mapToDouble(Rental::computePrice).sum();
+
+		String result = "Amount owed is " + totalPrice + "\n";
+		result += "You earned " + totalPoints + " frequent renter points";
 		return result;
 	}
 
