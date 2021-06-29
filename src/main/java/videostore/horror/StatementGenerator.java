@@ -1,11 +1,35 @@
 package videostore.horror;
 
+import victor.training.cleancode.pretend.Autowired;
+import victor.training.cleancode.pretend.Service;
+
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
+class SomeOtherClassInYourApp {
 
+   @Autowired
+   private StatementGenerator statementGenerator;
+
+   public void method() {
+      // test this
+      // test this
+      // test this
+      statementGenerator.generateStatement("", Collections.emptyList());
+      // test this
+      // test this
+      // test this
+      // test this
+      // test this
+   }
+}
+
+@Service
 public class StatementGenerator {
-   public String generateStatement(List<Rental> rentals, String customerName) { // presentation
+
+   // {totalPrice, totalPoints and a List<{title:string, price:double}>}
+   public String generateStatement(String customerName, List<Rental> rentals) { // presentation
       return generateHeader(customerName)
              + generateBody(rentals)
              + generateFooter(rentals);
