@@ -7,19 +7,19 @@ public class ImmutableTracing {
    }
 }
 
+class Mutable {
+   private int x;
+
+   public int getX() {
+      return x;
+   }
+
+   public void setX(int x) {
+      this.x = x;
+   }
+}
 
 class MutableHell {
-   class Mutable {
-      private int x;
-
-      public int getX() {
-         return x;
-      }
-
-      public void setX(int x) {
-         this.x = x;
-      }
-   }
 
    public void h() {
       Mutable data = new Mutable();
