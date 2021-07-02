@@ -24,6 +24,8 @@ public class SplitPhase {
         ParsedOrderLine line = OrderLineParser.parse(orderString);
 /////---------------------------------------
 
+//        Order order;
+//        order.place();
         // compute price
         return logicaGreaDeTestatSiEaDarFaraParsare(priceList, line);
     }
@@ -32,8 +34,6 @@ public class SplitPhase {
         Integer productPrice = priceList.get(line.getProductCode());
         return line.getQuantity() * productPrice;
     }
-
-
 
     public static void main(String[] args) {
 //        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
