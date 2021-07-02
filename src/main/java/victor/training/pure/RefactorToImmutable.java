@@ -2,10 +2,7 @@ package victor.training.pure;
 
 import java.math.BigDecimal;
 
-public class RefactorToImmutable {
-   public static void main(String[] args) {
-   }
-}
+// TODO @see Unit Test
 
 class PriceService {
    private final SupplierService supplierService;
