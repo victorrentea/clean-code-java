@@ -30,6 +30,7 @@ class OrderExporter {
 			writer.write("OrderID;Date\n");
 			repo.findByActiveTrue()
 				.map(o -> o.getId() + ";" + o.getCreationDate())
+
 				.forEach(Unchecked.consumer(writer::write));
 			return file;
 		} catch (Exception e) {

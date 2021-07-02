@@ -1,16 +1,47 @@
 package victor.training.cleancode;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+
+import javax.persistence.Cacheable;
 import java.util.Collections;
 import java.util.Map;
 
-public class SplitPhase {
-    public float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
+class OrderLineParser {
+    public static ParsedOrderLine  parse(String orderString) {
         String[] orderData = orderString.split("\\s+");
-        Integer productPrice = priceList.get(orderData[0].split("-")[1]);
-        return Integer.parseInt(orderData[1]) * productPrice;
+        String productCode = orderData[0].split("-")[1];
+        int quantity = Integer.parseInt(orderData[1]);
+        return new ParsedOrderLine(productCode, quantity);
+    }
+}
+@RequiredArgsConstructor
+public class SplitPhase {
+    private final OrderLineParser orderLineParser;
+
+    public float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
+        // parse the line
+        ParsedOrderLine line = OrderLineParser.parse(orderString);
+/////---------------------------------------
+
+        // compute price
+        return logicaGreaDeTestatSiEaDarFaraParsare(priceList, line);
     }
 
-    public static void main(String[] args) {
-        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
+    private int logicaGreaDeTestatSiEaDarFaraParsare(Map<String, Integer> priceList, ParsedOrderLine line) {
+        Integer productPrice = priceList.get(line.getProductCode());
+        return line.getQuantity() * productPrice;
     }
+
+
+
+    public static void main(String[] args) {
+//        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
+    }
+}
+//class OrderInformation
+@Value
+class ParsedOrderLine {
+     String productCode;
+     int quantity;
 }
