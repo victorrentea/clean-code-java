@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import io.vavr.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.List;
