@@ -1,11 +1,15 @@
 package victor.training.pure;
 
-import java.math.BigDecimal;
+import lombok.Value;
 
-public class RefactorToImmutable {
-   public static void main(String[] args) {
-   }
-}
+import java.math.BigDecimal;
+import java.util.Currency;
+
+//public class RefactorToImmutable {
+//   public static void main(String[] args) {
+//      new PriceService()
+//   }
+//}
 
 class PriceService {
    private final SupplierService supplierService;
@@ -19,22 +23,40 @@ class PriceService {
    public void computePrice(Product product) {
       BigDecimal cost = supplierService.getCost(product.getSupplierId(), product.getId());
       BigDecimal deliveryCosts = logisticsService.estimateDeliveryCosts(product.getSupplierId());
-      product.setPrice(cost.add(deliveryCosts));
 
-      applySupplierDiscount(product);
-      applyDeliveryDiscount(product);
+      BigDecimal rate = getDeliveryDiscountRate(product);
+
+      BigDecimal supplierDiscount = getSupplierDiscount(product);
+      BigDecimal price = altaPura(cost, deliveryCosts, rate, supplierDiscount);
+
+      product.setPrice(price);
+
    }
 
-   private void applyDeliveryDiscount(Product product) {
+   private BigDecimal altaPura(BigDecimal cost, BigDecimal deliveryCosts, BigDecimal rate, BigDecimal supplierDiscount) {
+      BigDecimal price = cost.add(deliveryCosts)
+          .multiply(rate)
+          .subtract(supplierDiscount);
+      return price;
+   }
+
+   @Value
+   class Money {
+      BigDecimal amount;
+      Currency currency;
+   }
+
+   /** -10%
+    * @return*/
+   private BigDecimal getDeliveryDiscountRate(Product product) {
       System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId());
-      BigDecimal discount = BigDecimal.ONE;
-      product.setPrice(product.getPrice().subtract(discount));
+      return BigDecimal.valueOf(0.9);
    }
 
-   private void applySupplierDiscount(Product product) {
+   /** -2 EUR */
+   private BigDecimal getSupplierDiscount(Product product) {
       System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId() + " and " + product.getCategory());
-      BigDecimal discount = BigDecimal.valueOf(2);
-      product.setPrice(product.getPrice().subtract(discount));
+      return BigDecimal.valueOf(2);
    }
 }
 

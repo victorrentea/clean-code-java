@@ -45,6 +45,7 @@
     <orderEntry type="library" name="Maven: io.vavr:vavr:0.10.3" level="project" />
     <orderEntry type="library" name="Maven: io.vavr:vavr-match:0.10.3" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mockito:mockito-all:2.0.2-beta" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:30.1.1-jre" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
