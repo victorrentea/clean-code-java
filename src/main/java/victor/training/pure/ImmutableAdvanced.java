@@ -1,6 +1,7 @@
 package victor.training.pure;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,30 +24,11 @@ public class ImmutableAdvanced {
    }
 }
 
+@Value  // love
 class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
-
-   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public List<Integer> getNumbers() {
-      return numbers;
-   }
-   public int getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
-   }
-
-   @Override
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
 }
 
 class Other {
