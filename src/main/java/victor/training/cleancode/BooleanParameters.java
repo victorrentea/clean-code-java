@@ -1,7 +1,12 @@
 package victor.training.cleancode;
 
+import io.vavr.concurrent.Task;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class BooleanParameters {
    public static void main(String[] args) {
@@ -46,36 +51,54 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
    public void clientuSaracu() {
-      bossLevel(true, false, new ArrayList<>());
+      bossLevelStuffFluff(new ArrayList<>());
    }
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO move closer to usages
-      int j = tasks.size();
-      System.out.println("Logic1");
-      List<Long> taskIds = new ArrayList<>();
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-               System.out.println("Logic4: Validate " + task);
-               task.setRunning();
+   public void bossLevelStuffFluffAMea(List<Task> tasks) {
+      beforeBoss(tasks);
 
-               taskIds.add(task.getId());
-
-               // TODO When **I** call this method, I want this to run HERE, too:
-               System.out.println("My Logic: " + task);
-
-               index++;
-               System.out.println("Logic5 " + index + " on " + task.isRunning());
-            }
-            System.out.println("Logic6 " + j);
-            System.out.println("Task Ids: " + taskIds);
-         } else {
-            System.out.println("Logic7 " + tasks);
-         }
+      for (Task task : tasks) {
+         System.out.println("My Logic: " + task);
+         // TODO When **I** call this method, I want this to run HERE, too:
       }
+      afterBoss(tasks);
+   }
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      beforeBoss(tasks);
+      afterBoss(tasks);
+   }
+
+   private void afterBoss(List<Task> tasks) {
+      int index = 0;
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      System.out.println("Logic6 " + tasks.size());
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(toList());
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+
+   private void beforeBoss(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
+      }
+   }
+
+
+   public void bossLevelStuffNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+   public void bossLevelNoStuff(List<Task> tasks) {
+      System.out.println("Logic1");
       System.out.println("Logic7");
    }
 
