@@ -92,6 +92,7 @@ class CarModel {
    private int startYear;
    private int endYear;
 
+   private CarModel() {} // for Hibernate
    public CarModel(String make, String model, int startYear, int endYear) {
       this.make = make;
       this.model = model;
@@ -120,13 +121,6 @@ class CarModel {
       return model;
    }
 
-   public void setMake(String make) {
-      this.make = make;
-   }
-
-   public void setModel(String model) {
-      this.model = model;
-   }
 
    @Override
    public String toString() {
@@ -135,4 +129,25 @@ class CarModel {
              ", model='" + model + '\'' +
              '}';
    }
+}
+
+
+class CarModelMapper {
+   public CarModelDto toDto(CarModel carModel) {
+      CarModelDto dto = new CarModelDto();
+      dto.make = carModel.getMake();
+      dto.model = carModel.getModel();
+      dto.startYear = carModel.getStartYear();
+      dto.endYear = carModel.getEndYear();
+      return dto;
+   }
+   public CarModel fromDto(CarModelDto dto) {
+      return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+   }
+}
+class CarModelDto {
+   public String make;
+   public String model;
+   public int startYear;
+   public int endYear;
 }
