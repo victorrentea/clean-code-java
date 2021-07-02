@@ -2,8 +2,6 @@ package victor.training.pure;
 
 import java.math.BigDecimal;
 
-// TODO @see Unit Test
-
 class PriceService {
    private final SupplierService supplierService;
    private final LogisticsService logisticsService;
@@ -18,18 +16,19 @@ class PriceService {
       BigDecimal deliveryCosts = logisticsService.estimateDeliveryCosts(product.getSupplierId());
       product.setPrice(cost.add(deliveryCosts));
 
-      applySupplierDiscount(product);
-      applyDeliveryDiscount(product);
-   }
-
-   private void applyDeliveryDiscount(Product product) {
-      System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId());
-      BigDecimal discount = BigDecimal.ONE;
-      product.setPrice(product.getPrice().subtract(discount));
+      // @see PriceServiceTest
+      applySupplierDiscount(product); // -20%
+      applyDeliveryDiscount(product); // - 2 EUR
    }
 
    private void applySupplierDiscount(Product product) {
       System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId() + " and " + product.getCategory());
+      BigDecimal discountRate = BigDecimal.valueOf(0.2);
+      product.setPrice(product.getPrice().multiply(BigDecimal.ONE.subtract(discountRate)));
+   }
+
+   private void applyDeliveryDiscount(Product product) {
+      System.out.println("criminally complex logic (200 LOC) using " + product.getSupplierId() + " " + product.getId());
       BigDecimal discount = BigDecimal.valueOf(2);
       product.setPrice(product.getPrice().subtract(discount));
    }

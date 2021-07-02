@@ -54,5 +54,6 @@
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.5.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-all:2.0.2-beta" level="project" />
+    <orderEntry type="library" name="Maven: org.assertj:assertj-core:3.20.2" level="project" />
   </component>
 </module>

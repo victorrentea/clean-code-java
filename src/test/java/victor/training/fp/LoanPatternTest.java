@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
+import static java.time.LocalDate.parse;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -18,21 +19,21 @@ import static org.mockito.Mockito.when;
 public class LoanPatternTest {
    @Mock
    private OrderRepo orderRepo;
-   @Mock
-   private UserRepo userRepo;
    @InjectMocks
-   private OrderExportContentWriter contentWriter;
+   private ExportService contentWriter;
+
 
    @Test
    public void exportOrders() throws IOException {
-      Order order = new Order().setId(1L).setCreationDate(LocalDate.parse("2021-01-07"));
+      Order order = new Order();
+      order.setId(1L);
+      order.setCreationDate(parse("2021-01-07"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
-      // WIP
-      StringWriter sw = new StringWriter();
-      contentWriter.writeContent(sw);
 
-      assertEquals("OrderID;Date\n" +
-                   "1;2021-01-07", sw.toString());
-      // headache: load file from disk, check contentents
+      contentWriter.exportOrders();
+
+      // NOW read the file from the disk ... Yuck!
+
+//      assertEquals("OrderID;Date\n1;2021-01-07", sw.toString());
    }
 }
