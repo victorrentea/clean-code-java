@@ -3,13 +3,7 @@ package victor.training.pure;
 import com.google.common.collect.ImmutableList;
 import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.Collections.*;
-import static java.util.stream.Collectors.toList;
+import javax.print.attribute.standard.MediaSize;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
@@ -30,6 +24,11 @@ class Immutable {
    ImmutableList<Integer> numbers;
    Other other;
 }
+//record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//
+//}
+
+
 
 class Other {
    private final int a;
