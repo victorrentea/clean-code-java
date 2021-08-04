@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,36 +18,53 @@ public class ExtractValueObjects {
 
 
 class SearchEngine {
+      // java 8 is COOL> so cool that some people thinK : why no to filter all data in memory
+      // replace "WHERE c.year>1000" with findAll().filter(c -> c.year>2000 || c.exhaustClass=EURO4 && year>2020)
 
-   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
+   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) { //
       List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      results.removeIf(model -> !new Interval(criteria.getStartYear(), criteria.getEndYear())
+          .intersects(new Interval(model.getStartYear(), model.getEndYear())));
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
-
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
-   }
 }
 
+class Interval {
+   private final int start;
+   private final int end;
 
+   Interval(int start, int end) {
+      this.start = start;
+      this.end = end;
+   }
+
+   public boolean intersects(Interval other) {
+      return start <= other.end && other.start <= end;
+   }
+
+   public int getEnd() {
+      return end;
+   }
+
+   public int getStart() {
+      return start;
+   }
+}
 
 
 
