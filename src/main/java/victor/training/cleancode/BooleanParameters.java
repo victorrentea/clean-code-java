@@ -1,9 +1,11 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BooleanParameters {
+   private Long state; // temporary field
+
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
       bigUglyMethod(1, 5);
@@ -20,6 +22,10 @@ public class BooleanParameters {
    static void bigUglyMethod323(int b, int a, boolean cr323) {
 
    }
+
+
+   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
+
    static void bigUglyMethod(int b, int a) {
       System.out.println("Complex Logic 1 " + a + " and " + b);
       System.out.println("Complex Logic 2 " + a);
@@ -34,48 +40,48 @@ public class BooleanParameters {
       System.out.println("More Complex Logic " + b);
    }
 
-
-
-
-
-
-
-   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
-
-   public void bossLevelStuffFluff(List<Task> tasks) {
-      int j = tasks.size();
-      System.out.println("Logic1");
-      List<Long> taskIds = new ArrayList<>();
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-      for (Task task : tasks) {
-         unkownJungleCode(task.getId());
-         System.out.println("Logic4: Validate " + task);
-         task.setRunning();
-      }
-      for (Task task : tasks) {
-         taskIds.add(task.getId());
-      }
+   public void bossLevelStuffFluffMy(List<Task> tasks) {
+      bossStart(tasks);
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          System.out.println("My Logic: " + task);
       }
-      for (Task task : tasks) {
-         otherUnkownJUngleCode(); // hidden temporal coupling
-         index++;
-         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      bossEnd(tasks);
+   }
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      bossStart(tasks);
+      bossEnd(tasks);
+   }
+
+   private void bossEnd(List<Task> tasks) {
+      for (int i = 0; i < tasks.size(); i++) {
+         Task task = tasks.get(i);
+         System.out.println("Logic5 " + (i + 1) + " on " + task.isRunning());
       }
-      System.out.println("Logic6 " + j);
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+      System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
 
-
-   private Long state; // temporary field
-   private void unkownJungleCode(Long id) {
-      state=id;
+   private void bossStart(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+      }
+      tasks.forEach(Task::setRunning);
    }
+
+   private void innocentFunction(List<Task> tasks) { // do not mutate parameters
+      tasks.add(new Task());
+   }
+
+   private void unkownJungleCode(Long id) {
+      state = id;
+   }
+
    private void otherUnkownJUngleCode() {
       System.out.println("With task id " + state);
    }
@@ -86,6 +92,7 @@ public class BooleanParameters {
       System.out.println("Logic7 " + tasks);
       System.out.println("Logic7");
    }
+
    public void bossLevelNoStuff() {
       System.out.println("Logic1");
       System.out.println("Logic7");
