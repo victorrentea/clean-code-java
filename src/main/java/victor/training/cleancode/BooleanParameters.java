@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import io.vavr.concurrent.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,33 +39,40 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO move closer to usages
+   public void bossLevelStuffFluff(List<Task> tasks) {
       int j = tasks.size();
       System.out.println("Logic1");
       List<Long> taskIds = new ArrayList<>();
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-               System.out.println("Logic4: Validate " + task);
-               task.setRunning();
-
-               taskIds.add(task.getId());
-
-               // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
-
-               index++;
-               System.out.println("Logic5 " + index + " on " + task.isRunning());
-            }
-            System.out.println("Logic6 " + j);
-            System.out.println("Task Ids: " + taskIds);
-         } else {
-            System.out.println("Logic7 " + tasks);
-         }
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      int index = 0;
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
       }
+      for (Task task : tasks) {
+         taskIds.add(task.getId());
+      }
+      for (Task task : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         System.out.println("My Logic: " + task);
+      }
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      System.out.println("Logic6 " + j);
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+   public void bossLevelStuffNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+   public void bossLevelNoStuff() {
+      System.out.println("Logic1");
       System.out.println("Logic7");
    }
 
