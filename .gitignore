@@ -26,6 +26,8 @@ hs_err_pid*
 .settings
 .idea
 .classpath
+
+prod/
 prod/
 
 prod/
