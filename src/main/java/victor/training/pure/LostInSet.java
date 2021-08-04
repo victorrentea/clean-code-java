@@ -7,15 +7,21 @@ import java.util.Set;
 public class LostInSet {
    public static void main(String[] args) {
       // UC-123: Loosing you child at the Mall
-      Set<Child> set = new HashSet<>();
+      Set<Child> puiiMei = new HashSet<>();
 
       Child childOne = new Child("Emma");
-      set.add(childOne);
 
-      System.out.println(set.contains(childOne));
+      puiiMei.add(childOne);
+
+      System.out.println(childOne.hashCode());
+      System.out.println(puiiMei.contains(childOne));
+
+      // adolescenta
+      childOne.setName("Emma-Simona");
+      System.out.println(childOne.hashCode());
+      System.out.println(puiiMei.contains(childOne));
    }
 }
-
 
 class Child {
    private String name;
