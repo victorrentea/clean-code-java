@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import io.vavr.concurrent.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +13,21 @@ public class BooleanParameters {
       bigUglyMethod(5, 1);
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod(2, 1);
+      bigUglyMethod323(2, 1, true);
 
    }
 
+   static void bigUglyMethod323(int b, int a, boolean cr323) {
+
+   }
    static void bigUglyMethod(int b, int a) {
       System.out.println("Complex Logic 1 " + a + " and " + b);
       System.out.println("Complex Logic 2 " + a);
       System.out.println("Complex Logic 3 " + a);
 
-      System.out.println("HERE I want something here !!!");
+      if (false) {
+         System.out.println("HERE I want something here !!!");
+      }
 
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
@@ -47,6 +50,7 @@ public class BooleanParameters {
       System.out.println("Logic3");
       int index = 0;
       for (Task task : tasks) {
+         unkownJungleCode(task.getId());
          System.out.println("Logic4: Validate " + task);
          task.setRunning();
       }
@@ -58,6 +62,7 @@ public class BooleanParameters {
          System.out.println("My Logic: " + task);
       }
       for (Task task : tasks) {
+         otherUnkownJUngleCode(); // hidden temporal coupling
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
@@ -65,6 +70,16 @@ public class BooleanParameters {
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
+
+
+   private Long state; // temporary field
+   private void unkownJungleCode(Long id) {
+      state=id;
+   }
+   private void otherUnkownJUngleCode() {
+      System.out.println("With task id " + state);
+   }
+
    public void bossLevelStuffNoFluff(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
