@@ -1,17 +1,21 @@
 package victor.training.pure;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = null;//new Immutable(1, numbers, new Other(15));
+      Immutable immutable = new Immutable(1, numbers, new Other(15));
       System.out.println(immutable);
 
+      immutable.getNumbers().clear();
       // wilderness
 
       System.out.println(immutable);
@@ -28,8 +32,11 @@ class Immutable {
       this.numbers = numbers;
       this.other = other;
    }
+//   public List<Integer> getNumbers() {
+//      return new ArrayList<>(numbers);
+//   }
    public List<Integer> getNumbers() {
-      return numbers;
+      return unmodifiableList(numbers);
    }
    public int getX() {
       return x;
@@ -45,7 +52,7 @@ class Immutable {
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -55,7 +62,4 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
 }
