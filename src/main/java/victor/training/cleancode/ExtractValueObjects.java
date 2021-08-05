@@ -3,6 +3,9 @@ package victor.training.cleancode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 public class ExtractValueObjects {
    // Ford Focus:     [2012 ---- 2016]
@@ -22,9 +25,11 @@ class SearchEngine {
       // replace "WHERE c.year>1000" with findAll().filter(c -> c.year>2000 || c.exhaustClass=EURO4 && year>2020)
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) { //
-      List<CarModel> results = new ArrayList<>(models);
       Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
-      results.removeIf(model -> !criteriaInterval.intersects(model.getYearInterval()));
+//      results.removeIf(model -> !criteriaInterval.intersects(model.getYearInterval()));
+      List<CarModel> results = models.stream()
+          .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
+          .collect(toList());
       System.out.println("More filtering logic");
       return results;
    }
