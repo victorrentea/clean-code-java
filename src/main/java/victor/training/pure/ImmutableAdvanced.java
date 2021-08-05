@@ -1,7 +1,7 @@
 package victor.training.pure;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -12,11 +12,11 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = new Immutable(1, numbers, new Other(15));
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
       System.out.println(immutable);
 
-      immutable.getNumbers().clear();
       // wilderness
+      immutable.getNumbers().clear();
 
       System.out.println(immutable);
    }
@@ -24,10 +24,10 @@ public class ImmutableAdvanced {
 
 class Immutable {
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers;
    private final Other other;
 
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
@@ -35,8 +35,8 @@ class Immutable {
 //   public List<Integer> getNumbers() {
 //      return new ArrayList<>(numbers);
 //   }
-   public List<Integer> getNumbers() {
-      return unmodifiableList(numbers);
+   public ImmutableList<Integer> getNumbers() {
+      return numbers;
    }
    public int getX() {
       return x;
