@@ -119,6 +119,7 @@ class CarModel {
    private String model;
 
    @Embedded
+   @Setter
    private Interval yearInterval;
 
 //   private int startYear;

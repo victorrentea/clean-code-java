@@ -2,24 +2,31 @@ package victor.training.cleancode;
 
 public class ParameterObjects {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, Address address) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
 
    }
 }
 
+//class PlaceOrderRequest {String fName, String lName;}
+//class FullName {String firstName; String lastName;}
+//class Address {String city, streetName; Integer streetNumber;}
+
+
+
+
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getLastName());
    }
 }
 
@@ -57,11 +64,11 @@ class PersonService {
       System.out.println("Record for " + fullNameStr);
    }
 
-   public void p(String streetName, String city, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
 
    public void pcaller() {
-       p("Dristor", "Bucharest", 91);
+       p(new Address("Bucharest", "Dristor", 91));
    }
 }

@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.lambda.Unchecked;
+import org.jooq.lambda.fi.util.function.CheckedConsumer;
 import victor.training.cleancode.pretend.JpaRepository;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -23,6 +25,7 @@ class FileExporter {
       long t0 = System.currentTimeMillis();
       try (Writer writer = new FileWriter(file)) {
          writer.write("OrderID;Date\n");
+
          orderRepo.findByActiveTrue()
              .map(o -> o.getId() + ";" + o.getCreationDate())
              .forEach(Unchecked.consumer(writer::write));
@@ -30,7 +33,6 @@ class FileExporter {
          log.info("Export completed in {} seconds ", (System.currentTimeMillis() - t0) / 1000);
       } catch (Exception e) {
          sendErrorEmail(e);
-         log.debug("Gotcha!", e); // TERROR-Driven Development
          throw e;
       }
    }
