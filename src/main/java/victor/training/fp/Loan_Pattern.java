@@ -45,9 +45,10 @@ class UserExportWriter {
    public void writeUsers(Writer writer)  {
       writer.write("username;firstname\n");
 
-      userRepo.findAll().stream()
-          .map(u -> u.getUsername() + ";" + u.getFirstName())
-          .forEach(Unchecked.consumer(writer::write));
+      for (User user : userRepo.findAll()) {
+         String s = user.getUsername() + ";" + user.getFirstName();
+         writer.write(s);
+      }
    }
 }
 @Service

@@ -20,10 +20,11 @@ class ProductService {
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		Map<Product, Integer> recentProductCounts = getRecentOrderedProducts(orders);
 
-		List<Product> frequentProducts = recentProductCounts.entrySet().stream()
-			.filter(e -> e.getValue() >= 10)
-			.map(Entry::getKey)
-			.collect(toList());
+		List<Product> frequentProducts = f(recentProductCounts);
+
+
+		System.out.println("products: " + frequentProducts);
+
 
 		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
 		return frequentProducts.stream()
@@ -34,6 +35,14 @@ class ProductService {
 			.collect(toList());
 	}
 
+	private List<Product> f(Map<Product, Integer> recentProductCounts) {
+		return recentProductCounts.entrySet().stream()
+			.filter(e -> e.getValue() >= 10)
+			.map(Entry::getKey)
+			.collect(toList());
+	}
+
+
 	private Map<Product, Integer> getRecentOrderedProducts(List<Order> orders) {
 		return orders.stream()
 			.filter(this::isRecent)
@@ -41,9 +50,9 @@ class ProductService {
 			.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
 	}
 
-	private boolean isRecent(Order o) {
-		if (o.isSpecialStuff()) {return true;}
-		return o.getCreationDate().isAfter(LocalDate.now().minusYears(1));
+	private boolean isRecent(Order order) {
+		if (order.isSpecialStuff()) {return true;}
+		return order.getCreationDate().isAfter(LocalDate.now().minusYears(1));
 	}
 }
 
