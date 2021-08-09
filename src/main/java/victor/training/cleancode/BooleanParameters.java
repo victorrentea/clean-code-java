@@ -64,7 +64,6 @@ public class BooleanParameters {
       for (Task task : tasks) {
          System.out.println("Logic4: Validate " + task);
          task.setRunning();
-         index++;
       }
 
       for (Task task : tasks) {
@@ -77,7 +76,7 @@ public class BooleanParameters {
          }
       }
       for (Task task : tasks) {
-//         index++;
+         index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
       System.out.println("Logic6 " + tasks.size());
