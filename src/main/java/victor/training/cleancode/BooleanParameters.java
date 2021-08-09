@@ -3,6 +3,7 @@ package victor.training.cleancode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BooleanParameters {
    public static void main(String[] args) {
@@ -68,14 +69,11 @@ public class BooleanParameters {
    }
 
    private void after(List<Task> tasks) {
-      List<Long> taskIds = new ArrayList<>();
-      for (Task task : tasks) {
-         taskIds.add(task.getId());
-      }
-      int index = 0;
-      for (Task task : tasks) {
-         index++;
-         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+
+      for (int i = 0; i < tasks.size(); i++) {
+         Task task = tasks.get(i);
+         System.out.println("Logic5 " + (i + 1) + " on " + task.isRunning());
       }
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
