@@ -26,7 +26,6 @@ class MyMapper {
       dto.recipientPerson = parcel.getRecipientPerson()
           .map(String::toUpperCase)
           .orElse(null);
-
       return dto;
    }
 
@@ -74,6 +73,11 @@ class Delivery {
 
 class Address {
    private final ContactPerson contactPerson; // can be null
+//   private final ContactCompany contactPerson; // can be null
+//   private final SSN contactPerson; // can be null
+//   private final ContactPerson contactPerson; // can be null
+//   private final ContactPerson contactPerson; // can be null
+//   private final ContactPerson contactPerson; // can be null
 
    public Address(ContactPerson contactPerson) {
       this.contactPerson = contactPerson;
