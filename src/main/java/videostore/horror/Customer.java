@@ -25,8 +25,6 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		for (Movie movie : rentals.keySet()) {
-			// determine amounts for each line
-
 			double price = computePrice(movie);
 
 			// add frequent renter points
@@ -36,15 +34,13 @@ class Customer {
 				 (movie.getCategory() == Category.NEW_RELEASE)
 				 && rentals.get(movie) > 1)
 				frequentRenterPoints++;
+
 			// show figures line for this rental
 			totalPrice += price;
 
 		}
 		for (Movie movie : rentals.keySet()) {
-			double price = computePrice(movie); // ok BECAUSE
-			// BUG 1: Side effects (eg INSERT in DB)
-			// BUG 2: if the function returns different rsults for the same param -> if it's not REFERENTIAL TRANSPARENT.
-			// FAST
+			double price = computePrice(movie);
 			result += "\t" + movie.getTitle() + "\t" + price + "\n";
 		}
 		// add footer lines
