@@ -21,7 +21,31 @@ public class Rental {
 
 //   move compute price into movie and then replace switch with polymorphism
    public double computePrice() {
-      return movie.getCategory().computePrice(daysRented);
+      return switch (getMovie().getCategory()) {
+         case REGULAR -> computeRegularPrice();
+         case NEW_RELEASE -> computeNewReleasePrice();
+         case CHILDRENS -> computeChildrenPrice();
+      };
+   }
+
+   private double computeChildrenPrice() {
+      double price;
+      price = 1.5;
+      if (getDaysRented() > 3)
+         price += (getDaysRented() - 3) * 1.5;
+      return price;
+   }
+
+   private int computeNewReleasePrice() {
+      return getDaysRented() * 3;
+   }
+
+   private double computeRegularPrice() {
+      double price;
+      price = 2;
+      if (getDaysRented() > 2)
+         price += (getDaysRented() - 2) * 1.5;
+      return price;
    }
 
 
