@@ -21,11 +21,17 @@ public class Rental {
 
 //   move compute price into movie and then replace switch with polymorphism
    public double computePrice() {
-      return switch (getMovie().getCategory()) {
-         case REGULAR -> computeRegularPrice();
-         case NEW_RELEASE -> computeNewReleasePrice();
-         case CHILDRENS -> computeChildrenPrice();
-      };
+//      return switch (getMovie().getCategory()) {  java 17
+      switch (getMovie().getCategory()) {
+         case REGULAR:
+            return computeRegularPrice();
+         case NEW_RELEASE:
+            return computeNewReleasePrice();
+         case CHILDRENS:
+            return computeChildrenPrice();
+         default:
+            throw new IllegalArgumentException();
+      }
    }
 
    private double computeChildrenPrice() {
