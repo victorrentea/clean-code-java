@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import videostore.horror.Movie.Category;
+
 import java.util.*;
 
 class Customer {
@@ -10,8 +12,8 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.put(movie, daysRented);
 	}
 
 	public String getName() {
@@ -19,42 +21,56 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
+		for (Movie movie : rentals.keySet()) {
 			// determine amounts for each line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
+
+			double price = computePrice(movie);
+
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
+			if (movie.getCategory() != null &&
+				 (movie.getCategory() == Category.NEW_RELEASE)
+				 && rentals.get(movie) > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			totalPrice += price;
+
+		}
+		for (Movie movie : rentals.keySet()) {
+			double price = computePrice(movie); // ok BECAUSE
+			// BUG 1: Side effects (eg INSERT in DB)
+			// BUG 2: if the function returns different rsults for the same param -> if it's not REFERENTIAL TRANSPARENT.
+			// FAST
+			result += "\t" + movie.getTitle() + "\t" + price + "\n";
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private double computePrice(Movie movie) {
+		int daysRented = rentals.get(movie);
+		double price = 0;
+		switch (movie.getCategory()) {
+			case REGULAR:
+				price += 2;
+				if (daysRented > 2)
+					price += (daysRented - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				price += daysRented * 3;
+				break;
+			case CHILDRENS:
+				price += 1.5;
+				if (daysRented > 3)
+					price += (daysRented - 3) * 1.5;
+				break;
+		}
+		return price;
 	}
 }
