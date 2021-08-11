@@ -17,6 +17,8 @@ public class Product {
    @Lob
    private String description;
 
+//   @Embedded
+//   private ShippingDetails details;
    private int shippingDaysEst;
    private int shippingCost;
    private boolean shippingToEasyBox;

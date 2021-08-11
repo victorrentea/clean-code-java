@@ -4,7 +4,20 @@ class ParameterizeAndExtract {
 
     public void f(int n) {
         System.out.println("Logic F");
-        for (int i = 0; i < 4; i++) {
+        int m = 4;
+        common(n, m);
+    }
+    public void g(int n) {
+        System.out.println("Logic G");
+        try {
+            common(n, 3);
+        } catch (Exception e) {
+            throw new RuntimeException("Rethrow", e);
+        }
+    }
+
+    private void common(int n, int m) {
+        for (int i = 0; i < m; i++) {
             if (n + i < 0) {
                 System.out.println("Code " + i);
             } else {
@@ -12,25 +25,7 @@ class ParameterizeAndExtract {
             }
         }
     }
-
-
 }
 class SomeOtherClass {
 
-    public void g(int n) {
-        System.out.println("Logic G");
-        try {
-            for (int j = 0; j < 3; j++) {
-                if (n + j < 0) {
-                    String x = "Code" +
-                            " " + j;
-                    System.out.println(x);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Rethrow", e);
-        }
-    }
 }

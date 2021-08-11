@@ -38,7 +38,7 @@ public class BooleanParameters {
 
    private static void bigEnd(int b) {
       System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + (b + 21));
       System.out.println("More Complex Logic " + b);
    }
 
@@ -63,7 +63,7 @@ public class BooleanParameters {
    public void bossLevelStuffFluff323(List<Task> tasks) {
       pre(tasks);
       for (Task task : tasks) {
-         System.out.println("My Logic: " + task);
+         System.out.println("My Logic: " + task.getId());
       }
       after(tasks);
    }

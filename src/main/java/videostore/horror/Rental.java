@@ -56,8 +56,8 @@ public class Rental {
 
 
    public boolean isBonusApplicable() {
-      return (movie.getCategory() == Category.NEW_RELEASE)
-             && getDaysRented() > 1;
+      boolean isNewRelease = movie.getCategory() == Category.NEW_RELEASE;
+      return isNewRelease && getDaysRented() > 1;
    }
 
    public int computeFrequentRenterPoints() {
