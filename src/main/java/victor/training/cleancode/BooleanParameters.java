@@ -1,8 +1,10 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
+import org.jooq.lambda.fi.util.function.CheckedConsumer;
+
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -62,6 +64,39 @@ public class BooleanParameters {
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
+   }
+
+   /// alt exemplu
+   public void exportu1() throws Throwable {
+      exporta( writer -> {
+         System.out.println("CEVA FOARTE VARIABIL (ai 7 implementari aici)");
+         writer.write("Ceva1");
+         writer.write("Ceva1");
+         writer.write("Ceva");
+      });
+   }
+   public void exportu2() throws Throwable {
+      exporta( writer -> {
+         System.out.println("CEVA FOARTE VARIABIL (ai 7 implementari aici)");
+         writer.write("Ceva2");
+         writer.write("Ceva2");
+         writer.write("Ceva");
+      });
+   }
+
+   public void exporta(CheckedConsumer<Writer> writeContentFunction) throws Throwable {
+      try {
+         System.out.println("Logica de inceput");
+         System.out.println("Logica");
+
+         try (FileWriter writer = new FileWriter("out.txt")) {
+            writeContentFunction.accept(writer);
+         }
+         System.out.println("Logica de final");
+      } catch (Exception ex) {
+         // nimic aici. happy debugging, suckers!
+      }
+
    }
 
 
