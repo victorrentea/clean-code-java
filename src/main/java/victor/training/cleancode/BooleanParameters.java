@@ -90,9 +90,13 @@ public class BooleanParameters {
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
       System.out.println("Logic6 " + tasks.size());
-      List<Long> taskIds = tasks.stream().map(Task::getId).collect(toList());
+      List<Long> taskIds = collectTaskIds(tasks);
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
+   }
+
+   private List<Long> collectTaskIds(List<Task> tasks) {
+      return tasks.stream().map(Task::getId).collect(toList());
    }
 
    private void beforeBoss(List<Task> tasks) {
