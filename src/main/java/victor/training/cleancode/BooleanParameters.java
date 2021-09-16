@@ -1,27 +1,62 @@
 package victor.training.cleancode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BooleanParameters {
-   public static void main(String[] args) {
-      // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, 5);
+   private static void cc() {
       bigUglyMethod(2, 4);
+      bb();
+   }
+
+   private static void bb() {
+      aa();
+   }
+
+   private static void aa() {
       bigUglyMethod(3, 3);
       bigUglyMethod(4, 2);
       bigUglyMethod(5, 1);
+   }
+
+   public static void main(String[] args) {
+      // The big method is called from various foreign places in the codebase
+      bigUglyMethod(1, 5);
+      cc();
 
       // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod(2, 1);
+      bigUglyMethod323(2, 1);
 
    }
 
+   static void bigUglyMethod323(int b, int a) {
+
+      beforeLogic(b, a);
+
+      System.out.println("LINIA TA pt cr323");
+
+      afterLogic(b);
+   }
+
    static void bigUglyMethod(int b, int a) {
+      beforeLogic(b, a);
+      afterLogic(b);
+   }
+
+   private static void beforeLogic(int b, int a) {
       System.out.println("Complex Logic 1 " + a + " and " + b);
       System.out.println("Complex Logic 2 " + a);
       System.out.println("Complex Logic 3 " + a);
+      System.out.println("Complex Logic 1 " + a + " and " + b);
+      System.out.println("Complex Logic 2 " + a);
+      System.out.println("Complex Logic 3 " + a);
+      System.out.println("Complex Logic 1 " + a + " and " + b);
+      System.out.println("Complex Logic 2 " + a);
+      System.out.println("Complex Logic 3 " + a);
+   }
 
+   private static void afterLogic(int b) {
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
@@ -30,7 +65,23 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
+   {
+      // jar de demodificat:
+      bossLevel(true, false, Collections.emptyList());
+      bossLevel(true, true, Collections.emptyList());
+      bossLevel(true, false, Collections.emptyList());
+      bossLevel(true, false, Collections.emptyList());
+      bossLevel(true, false, Collections.emptyList());
+      bossLevel(true, false, Collections.emptyList());
+
+      // TU pe CR323
+      bossLevel(true, false, Collections.emptyList(), true);
+
+   }
+   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) { // overload // frozen api
+      bossLevel(stuff, fluff, tasks, false);
+   }
+   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks, boolean cr323) {
       int index = 0; // TODO move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
@@ -46,7 +97,9 @@ public class BooleanParameters {
                taskIds.add(task.getId());
 
                // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
+               if (cr323) {
+                  System.out.println("My Logic: " + task);
+               }
 
                index++;
                System.out.println("Logic5 " + index + " on " + task.isRunning());
