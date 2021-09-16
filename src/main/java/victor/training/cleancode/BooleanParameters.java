@@ -3,6 +3,7 @@ package victor.training.cleancode;
 import org.jooq.lambda.fi.util.function.CheckedConsumer;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
@@ -76,12 +77,14 @@ public class BooleanParameters {
       });
    }
    public void exportu2() throws Throwable {
-      exporta( writer -> {
-         System.out.println("CEVA FOARTE VARIABIL (ai 7 implementari aici)");
-         writer.write("Ceva2");
-         writer.write("Ceva2");
-         writer.write("Ceva");
-      });
+      exporta( writer -> scrie2(writer));
+   }
+
+   private void scrie2(Writer writer) throws IOException {
+      System.out.println("CEVA FOARTE VARIABIL (ai 7 implementari aici)");
+      writer.write("Ceva2");
+      writer.write("Ceva2");
+      writer.write("Ceva");
    }
 
    public void exporta(CheckedConsumer<Writer> writeContentFunction) throws Throwable {
