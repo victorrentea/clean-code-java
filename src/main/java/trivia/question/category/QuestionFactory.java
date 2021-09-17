@@ -1,4 +1,4 @@
-package trivia.question.category.factory;
+package trivia.question.category;
 
 import trivia.question.category.Question;
 

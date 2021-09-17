@@ -1,6 +1,6 @@
 package trivia;
 
-import trivia.question.category.factory.QuestionFactory;
+import trivia.question.category.QuestionFactory;
 
 import java.util.ArrayList;
 
