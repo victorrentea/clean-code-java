@@ -7,18 +7,34 @@ import java.util.Set;
 public class LostInSet {
    public static void main(String[] args) {
       // UC-123: Loosing you child at the Mall
-      Set<Child> set = new HashSet<>();
+      Set<Child> puiiMei = new HashSet<>();
 
       Child childOne = new Child("Emma");
-      set.add(childOne);
+      puiiMei.add(childOne);
 
-      System.out.println(set.contains(childOne));
+
+      System.out.println(childOne.hashCode());
+      System.out.println(puiiMei.contains(childOne));
+//      childOne.setName("Emma-Simona");
+
+      System.out.println(childOne.hashCode());
+
+      System.out.println(puiiMei.contains(childOne));
    }
 }
 
 
 class Child {
-   private String name;
+   private final String name;
+   private int marimePantof;
+
+   public int getMarimePantof() {
+      return marimePantof;
+   }
+
+   public void setMarimePantof(int marimePantof) {
+      this.marimePantof = marimePantof;
+   }
 
    public Child(String name) {
       this.name = name;
@@ -28,9 +44,9 @@ class Child {
       return name;
    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+//   public void setName(String name) {
+//      this.name = name;
+//   }
 
    @Override
    public boolean equals(Object o) {
