@@ -1,6 +1,7 @@
 package victor.training.pure.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Id;
@@ -29,42 +30,26 @@ public class ImmutableBasic {
       System.out.println(immutable.getNumbers());
       System.out.println(immutable);
 
+      // aici sa cresti valoarea lui X
+
+      Immutable newInstance = immutable.withX(immutable.getX() + 1);
+
    }
 }
 
 
 // definitie: Immutable = obiect a carui stare NU mai poate fi schimbata dupa instantiere
+//@RequiredArgsConstructor
+//@ToString
+//@Getter
+//@Data
+
+@Value
 class Immutable {
-   private int x;
-   private List<Integer> numbers;
-   private Other other;
-
-   private Immutable() {} // doar pt hibernate
-   public Immutable(int x, List<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = new ArrayList<>(numbers);
-      this.other = other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-   }
-
-   public int getX() {
-      return x;
-   }
-
-//   public List<Integer> getNumbers() {
-//      return new ArrayList<>(numbers); // waste of GC,CPU,mem
-//   }
-   public List<Integer> getNumbers() {
-      return unmodifiableList(numbers);
-   }
-
-   public Other getOther() {
-      return other;
-   }
-
+   @With
+   int x;
+   List<Integer> numbers;
+   Other other;
 }
 
 class Other {
