@@ -2,11 +2,10 @@ package victor.training.cleancode;
 
 public class ReturnSwitchWTF {
    public int getHeight(TypeOfStuf stuf) {
-      return switch (stuf.name()) {
-         case "INALT" -> 250;
-         case "JOS" -> 80;
-         case "VAMA_VECHE" -> 0;
-         default -> {throw new IllegalArgumentException("JDD");}
+      return switch (stuf) {
+         case INALT -> 250;
+         case JOS -> 80;
+         case VAMA_VECHE -> 0;
       };
 
    }
