@@ -1,27 +1,23 @@
 package trivia.question.category.factory;
 
-import trivia.question.QuestionCategory;
-import trivia.question.category.Pop;
-import trivia.question.category.Rock;
-import trivia.question.category.Science;
-import trivia.question.category.Sports;
+import trivia.question.category.Question;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Factory {
+public class QuestionFactory {
 
-    private Map<Integer, QuestionCategory> positionToCategoryMap = new HashMap<>();
-    private Pop popQuestionCategory;
-    private Rock rockQuestionCategory;
-    private Science scienceQuestionCategory;
-    private Sports sportsQuestionCategory;
+    private Map<Integer, Question> positionToCategoryMap = new HashMap<>();
+    private Question popQuestionCategory;
+    private Question rockQuestionCategory;
+    private Question scienceQuestionCategory;
+    private Question sportsQuestionCategory;
 
-    public Factory() {
-        this.popQuestionCategory = new Pop();
-        this.rockQuestionCategory = new Rock();
-        this.scienceQuestionCategory = new Science();
-        this.sportsQuestionCategory = new Sports();
+    public QuestionFactory() {
+        this.popQuestionCategory = new Question("Pop");
+        this.rockQuestionCategory = new Question("Rock");
+        this.scienceQuestionCategory = new Question("Science");
+        this.sportsQuestionCategory = new Question("Sports");
         populateMap();
     }
 
@@ -39,7 +35,7 @@ public class Factory {
         positionToCategoryMap.put(10, sportsQuestionCategory);
     }
 
-    public QuestionCategory currentCategory(int place) {
+    public Question currentCategory(int place) {
         if (positionToCategoryMap.containsKey(place)) {
             return positionToCategoryMap.get(place);
         }

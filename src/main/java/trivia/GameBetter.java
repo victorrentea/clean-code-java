@@ -1,33 +1,18 @@
 package trivia;
 
-import trivia.question.category.factory.Factory;
+import trivia.question.category.factory.QuestionFactory;
 
 import java.util.ArrayList;
 
 public class GameBetter implements IGame {
     private ArrayList<Player> players = new ArrayList<>();
-    private Factory questionCategoryFactory;
+    private QuestionFactory questionCategoryFactory;
     private Player currentPlayer;
     private boolean isGettingOutOfPenaltyBox;
 
-    private static final String UNPLAYABLE_GAME_MESSAGE = "Not enough players";
-    private static final String INCORRECT_ANSWER_LOG = "Question was incorrectly answered";
-    private static final String CORRECT_ANSWER_LOG  = "Answer was correct!!!!";
-    private static final String SENT_TO_PENALTY_LOG  = " was sent to the penalty box";
-    private static final String NOW_HAS_LOG  = " now has ";
-    private static final String GOLD_COINS_LOG  = " Gold Coins.";
-    private static final String NEW_LOCATION_IS_LOG  = "'s new location is ";
-    private static final String THE_CATEGORY_IS_LOG  = "The category is ";
-    private static final String GET_OUT_OF_PENALTY_LOG  = " is getting out of the penalty box";
-    private static final String DOES_NOT_GET_OUT_OF_PENALTY_LOG = " is not getting out of the penalty box";
-    private static final String IS_THE_CURRENT_PLAYER_LOG  = " is the current player";
-    private static final String ROLLED_VALUE_LOG  = "They have rolled a ";
-    private static final String WAS_ADDED_LOG  = " was added";
-    private static final String PLAYER_NUMBER_LOG  = "They are player number ";
-
 
     public GameBetter() {
-        this.questionCategoryFactory = new Factory();
+        this.questionCategoryFactory = new QuestionFactory();
     }
 
     public void addPlayer(String playerName) {
@@ -76,7 +61,7 @@ public class GameBetter implements IGame {
 
     private void checkIfTheGameIsPlayable() {
         if (!isPlayable()) {
-            throw new RuntimeException(UNPLAYABLE_GAME_MESSAGE);
+            throw new RuntimeException("Not enough players");
         }
     }
 
@@ -175,44 +160,43 @@ public class GameBetter implements IGame {
     //Logging can be seen as a violation of SRP, it can be moved to another class
 
     private void logWrongAnswer() {
-        System.out.println(INCORRECT_ANSWER_LOG);
-        System.out.println(currentPlayer.getPlayerName() + SENT_TO_PENALTY_LOG);
+        System.out.println("Question was incorrectly answered");
+        System.out.println(currentPlayer.getPlayerName() + " was sent to the penalty box");
     }
 
     private void logRewardDetails(){
-        System.out.println(CORRECT_ANSWER_LOG );
+        System.out.println("Answer was correct!!!!");
         System.out.println(currentPlayer.getPlayerName()
-                + NOW_HAS_LOG
-                + currentPlayer.getPurse()
-                + GOLD_COINS_LOG);
+                           + " now has "
+                           + currentPlayer.getPurse()
+                           + " Gold Coins.");
     }
 
     private void logPlayersPositionDetails() {
         System.out.println(currentPlayer.getPlayerName()
-                + NEW_LOCATION_IS_LOG
-                + currentPlayer.getPlace());
+                           + "'s new location is "
+                           + currentPlayer.getPlace());
 
-        System.out.println(THE_CATEGORY_IS_LOG + questionCategoryFactory
+        System.out.println("The category is " + questionCategoryFactory
                 .currentCategory(currentPlayer.getPlace())
-                .getClass()
-                .getSimpleName());
+                .getName());
     }
 
     private void logPlayerGettingOutOfPenalty(boolean isRollUneven){
         if(isRollUneven){
-            System.out.println(currentPlayer.getPlayerName() + GET_OUT_OF_PENALTY_LOG);
+            System.out.println(currentPlayer.getPlayerName() + " is getting out of the penalty box");
             return;
         }
-        System.out.println(currentPlayer.getPlayerName() + DOES_NOT_GET_OUT_OF_PENALTY_LOG);
+        System.out.println(currentPlayer.getPlayerName() + " is not getting out of the penalty box");
     }
 
     private void logCurrentPlayerAndHisRoll(int roll) {
-        System.out.println(currentPlayer.getPlayerName() + IS_THE_CURRENT_PLAYER_LOG);
-        System.out.println(ROLLED_VALUE_LOG + roll);
+        System.out.println(currentPlayer.getPlayerName() + " is the current player");
+        System.out.println("They have rolled a " + roll);
     }
 
     private void logAddedPlayersDetails(String playerName) {
-        System.out.println(playerName + WAS_ADDED_LOG);
-        System.out.println(PLAYER_NUMBER_LOG + players.size());
+        System.out.println(playerName + " was added");
+        System.out.println("They are player number " + players.size());
     }
 }
