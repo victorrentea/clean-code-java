@@ -112,7 +112,7 @@ public class GameBetter implements IGame {
 
     private void askQuestion() {
         this.questionCategoryFactory
-                .currentCategory(currentPlayer.getPlace())
+                .getQuestionCategory(currentPlayer.getPlace())
                 .askQuestion();
     }
 
@@ -178,7 +178,7 @@ public class GameBetter implements IGame {
                            + currentPlayer.getPlace());
 
         System.out.println("The category is " + questionCategoryFactory
-                .currentCategory(currentPlayer.getPlace())
+                .getQuestionCategory(currentPlayer.getPlace())
                 .getName());
     }
 

@@ -2,11 +2,11 @@ package trivia.question.category;
 
 import java.util.LinkedList;
 
-public class Question {
+public class QuestionCategory {
     private final String questionName;
-    private LinkedList<String> questions = new LinkedList<>();
+    private final LinkedList<String> questions = new LinkedList<>();
 
-    public Question(final String questionName) {
+    public QuestionCategory(final String questionName) {
         this.questionName = questionName;
         for (int i = 0; i < 50; i++) {
             questions.addLast(questionName + " Question " + i);
