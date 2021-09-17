@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Id;
+import javax.print.attribute.standard.MediaSize.Other;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,12 +28,12 @@ public class ImmutableBasic {
       // 1000 LOC. eg. alg de calcul de preturi, determinarea loviturii unui erou in fct de itemii skilluri de pe el
       numbers.add(-5);
 
-      System.out.println(immutable.getNumbers());
+      System.out.println(immutable.numbers());
       System.out.println(immutable);
 
       // aici sa cresti valoarea lui X
 
-      Immutable newInstance = immutable.withX(immutable.getX() + 1);
+//      Immutable newInstance = immutable.withX(immutable.getX() + 1);
 
    }
 }
@@ -44,13 +45,18 @@ public class ImmutableBasic {
 //@Getter
 //@Data
 
-@Value
-class Immutable {
-   @With
-   int x;
-   List<Integer> numbers;
-   Other other;
+//@Value
+//class Immutable {
+//   @With
+//   int x;
+//   List<Integer> numbers;
+//   Other other;
+//}
+
+record Immutable(int x, List<Integer> numbers, Other other) {
 }
+
+
 
 class Other {
    private final int a;
