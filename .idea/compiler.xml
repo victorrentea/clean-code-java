@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="clean-code-java" target="11" />
+      <module name="clean-code-java" target="15" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

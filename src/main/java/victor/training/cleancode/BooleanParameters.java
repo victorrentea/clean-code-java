@@ -36,11 +36,8 @@ public class BooleanParameters {
    }
 
    static void bigUglyMethod323(int b, int a) {
-
       beforeLogic(b, a);
-
       System.out.println("LINIA TA pt cr323");
-
       afterLogic(b);
    }
 
