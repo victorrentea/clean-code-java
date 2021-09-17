@@ -97,9 +97,7 @@
 				<configuration>
 					<source>11</source>
 					<target>11</target>
-
-					<!--<release>15</release>
-					<compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
+					<!--<release>17</release>-->
 				</configuration>
 			</plugin>
 		</plugins>
