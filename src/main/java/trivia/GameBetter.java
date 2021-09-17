@@ -105,7 +105,7 @@ public class GameBetter implements IGame {
     }
 
     private void ifTheLastPlaceWasReachedMoveToTheFirstPosition() {
-        if (currentPlayer.getPlace() > 11) {
+        if (currentPlayer.getPlace() >= 12) {
             currentPlayer.setPlace(currentPlayer.getPlace() - 12);
         }
     }
