@@ -32,7 +32,7 @@ public class GameBetter implements IGame {
             return true;
         }
         rewardCorrectAnswer();
-        return isWinner();
+        return notWon();
     }
 
     public boolean wrongAnswer() {
@@ -117,6 +117,12 @@ public class GameBetter implements IGame {
         System.out.println(question);
     }
 
+    private boolean notWon(){
+        boolean notWon = didPlayerWin();
+        moveToNextPlayer();
+        return notWon;
+    }
+
     private boolean isGettingOutOfPenalty(){
         if (currentPlayer.isInPenaltyBox()) {
             if (!isGettingOutOfPenaltyBox) {
@@ -126,35 +132,29 @@ public class GameBetter implements IGame {
         return false;
     }
 
-    private boolean isWinner(){
-        boolean winner = didPlayerWin();
-        moveToNextPlayer();
-        return winner;
-    }
-
     private void rewardCorrectAnswer(){
         currentPlayer.setPurse(currentPlayer.getPurse() + 1);
         logRewardDetails();
     }
 
     private boolean didPlayerWin() {
-        return !(currentPlayer.getPurse() == 6);
+        return currentPlayer.getPurse() != 6;
     }
 
     private void moveToNextPlayer() {
-        if (isTheLastPlayer()) {
-            currentPlayer = players.get(0);
-            return;
+        int oldIndex = players.lastIndexOf(currentPlayer);
+
+        int newIndex = getNewIndex(oldIndex);
+
+        currentPlayer = players.get(newIndex);
+    }
+
+    private int getNewIndex(int oldIndex) {
+        int newIndex = oldIndex + 1;
+        if (newIndex == players.size()) {
+           return  0;
         }
-        currentPlayer = findNextPlayer();
-    }
-
-    private boolean isTheLastPlayer() {
-        return players.lastIndexOf(currentPlayer) == players.size() - 1;
-    }
-
-    private Player findNextPlayer() {
-        return players.get(players.lastIndexOf(currentPlayer) + 1);
+        return newIndex;
     }
 
 

@@ -32,17 +32,17 @@ public class GameTest {
 			aGame.addPlayer("Pat");
 			aGame.addPlayer("Sue");
 			
-			boolean notAWinner = false;
+			boolean notWinner = false;
 			do {
 				aGame.roll(rand.nextInt(5) + 1);
 				
 				if (rand.nextInt(9) == 7) {
-					notAWinner = aGame.wrongAnswer();
+					notWinner = aGame.wrongAnswer();
 				} else {
-					notAWinner = aGame.wasCorrectlyAnswered();
+					notWinner = aGame.wasCorrectlyAnswered();
 				}
 				
-			} while (notAWinner);
+			} while (notWinner);
 
 
 

@@ -83,8 +83,9 @@ public class Game implements IGame {
          System.out.println("The category is " + currentCategory());
          askQuestion();
       }
-
    }
+//   abstract <> abstractizare
+// abstractizare
 
    private void askQuestion() {
       if (currentCategory() == "Pop")
