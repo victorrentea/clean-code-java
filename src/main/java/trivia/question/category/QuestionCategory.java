@@ -13,11 +13,11 @@ public class QuestionCategory {
         }
     }
 
-    public void askQuestion() {
+    public String askQuestion() {
         if (questions.isEmpty()) {
             throw new RuntimeException("No more "+questionName+" questions");
         }
-        System.out.println(questions.removeFirst());
+        return questions.removeFirst();
     }
 
     public String getName() {

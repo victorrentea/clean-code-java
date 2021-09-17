@@ -111,9 +111,10 @@ public class GameBetter implements IGame {
     }
 
     private void askQuestion() {
-        this.questionCategoryFactory
-                .getQuestionCategory(currentPlayer.getPlace())
-                .askQuestion();
+        String question = this.questionCategoryFactory
+            .getQuestionCategory(currentPlayer.getPlace())
+            .askQuestion();
+        System.out.println(question);
     }
 
     private boolean isGettingOutOfPenalty(){
@@ -157,7 +158,7 @@ public class GameBetter implements IGame {
     }
 
 
-    //Logging can be seen as a violation of SRP, it can be moved to another class
+    //Presentation logic mixed with domain logic can be seen as a violation of SRP (MVC), it can be moved to another class
 
     private void logWrongAnswer() {
         System.out.println("Question was incorrectly answered");
