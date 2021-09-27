@@ -18,8 +18,6 @@ public class BooleanParameters {
    }
 
 
-
-
    static void cancelOrder(int orderId, int b) {
       beforeLogic(orderId, b);
       afterLogic(b);
@@ -46,7 +44,7 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
+   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks, boolean cr323) {
       int index = 0; // TODO move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
@@ -62,7 +60,8 @@ public class BooleanParameters {
                taskIds.add(task.getId());
 
                // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
+               if (cr323)
+                  System.out.println("My Logic: " + task);
 
                index++;
                System.out.println("Logic5 " + index + " on " + task.isRunning());
