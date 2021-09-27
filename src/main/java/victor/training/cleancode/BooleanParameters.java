@@ -2,8 +2,16 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BooleanParameters {
+   {
+      List<Task> list = new ArrayList<>();
+      bossLevelStuffFluff(list);
+      bossLevelStuffNoFluff(list);
+      bossLevelNoStuff();
+   }
+
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
       cancelOrder(5, 1);
@@ -16,7 +24,6 @@ public class BooleanParameters {
       cancelOrderNoua(1, 2);
 
    }
-
 
    static void cancelOrder(int orderId, int b) {
       beforeLogic(orderId, b);
@@ -35,49 +42,77 @@ public class BooleanParameters {
       System.out.println("More Complex Logic " + b);
    }
 
+
+   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
+
    private static void beforeLogic(int orderId, int b) {
       System.out.println("Complex Logic 1 " + orderId + " and " + b);
       System.out.println("Complex Logic 2 " + orderId);
       System.out.println("Complex Logic 3 " + orderId);
    }
 
+   public void bossLevelStuffFluff(List<Task> tasks) {
+      bossStart(tasks);
 
-   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
+      numeDestept(tasks);
 
-   {
-      List<Task> list = new ArrayList<>();
-      bossLevel(true, false, list, true);
-      bossLevel(false, false, list, true);
+      bossEnd(tasks);
+   }
+   public void bossLevelStuffFluff323(List<Task> tasks) {
+      bossStart(tasks);
+
+      for (Task task : tasks) {
+      // TODO When **I** call this method, I want this to run HERE, too:
+         System.out.println("My Logic: " + task);
+      }
+
+      numeDestept(tasks);
+
+      bossEnd(tasks);
    }
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
-      int j = tasks.size();
-      System.out.println("Logic1");
-      List<Long> taskIds = new ArrayList<>();
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-               System.out.println("Logic4: Validate " + task);
-               task.setRunning();
-
-               taskIds.add(task.getId());
-
-               // TODO When **I** call this method, I want this to run HERE, too:
-               if (cr323)
-                  System.out.println("My Logic: " + task);
-
-               index++;
-               System.out.println("Logic5 " + index + " on " + task.isRunning());
-            }
-            System.out.println("Logic6 " + j);
-            System.out.println("Task Ids: " + taskIds);
-         } else {
-            System.out.println("Logic7 " + tasks);
-         }
+   private void numeDestept(List<Task> tasks) {
+      int index = 0;
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
+   }
+
+   private void bossStart(List<Task> tasks) {
+      bossStart();
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
+      }
+   }
+
+   private void bossEnd(List<Task> tasks) {
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+      System.out.println("Logic6 " + tasks.size());
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+
+   private void bossStart() {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+   }
+
+   public void bossLevelStuffNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+
+   private void innocent(List<Task> tasks) {
+      tasks.clear(); // NICIODATA SA NU MODIFICI COLECTIILE DATE PARAM FUNCTIEI TALE
+   }
+
+   public void bossLevelNoStuff() {
+      System.out.println("Logic1");
       System.out.println("Logic7");
    }
 
