@@ -6,26 +6,41 @@ import java.util.List;
 public class BooleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, 5);
-      bigUglyMethod(2, 4);
-      bigUglyMethod(3, 3);
-      bigUglyMethod(4, 2);
-      bigUglyMethod(5, 1);
+      cancelOrder(5, 1, false);
+      cancelOrder(4, 2, false);
+      cancelOrder(3, 3, false);
+      cancelOrder(2, 4, false);
+      cancelOrder(1, 5, false);
 
-      // TODO From my use-case #323, I call it too, to do more within:
-      bigUglyMethod(2, 1);
+      // TODO CR: From my use-case #323, I call it too, to do more within:
+      cancelOrder(1, 2, true);
 
    }
 
-   static void bigUglyMethod(int b, int a) {
-      System.out.println("Complex Logic 1 " + a + " and " + b);
-      System.out.println("Complex Logic 2 " + a);
-      System.out.println("Complex Logic 3 " + a);
+
+
+
+   static void cancelOrder(int orderId, int b, boolean cr323) {
+      System.out.println("Complex Logic 1 " + orderId + " and " + b);
+      System.out.println("Complex Logic 2 " + orderId);
+      System.out.println("Complex Logic 3 " + orderId);
+
+      if (cr323) {
+         System.out.println("Logica in plus! doar pt CR323" + orderId);
+      }
 
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
    }
+
+
+
+
+
+
+
+
 
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
