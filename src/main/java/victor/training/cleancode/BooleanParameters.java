@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 public class BooleanParameters {
    {
       List<Task> list = new ArrayList<>();
@@ -88,7 +90,11 @@ public class BooleanParameters {
    }
 
    private void bossEnd(List<Task> tasks) {
-      List<Long> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+      List<Long> taskIds = tasks.stream().map(Task::getId).collect(toList());
+//      List<Long> taskIds = new ArrayList<>();
+//      for (Task task : tasks) {
+//         taskIds.add(task.getId());
+//      }
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
