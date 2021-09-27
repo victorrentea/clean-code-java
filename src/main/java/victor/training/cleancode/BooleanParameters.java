@@ -44,6 +44,12 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
+   {
+      List<Task> list = new ArrayList<>();
+      bossLevel(true, false, list, true);
+      bossLevel(false, false, list, true);
+   }
+
    public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks, boolean cr323) {
       int index = 0; // TODO move closer to usages
       int j = tasks.size();
