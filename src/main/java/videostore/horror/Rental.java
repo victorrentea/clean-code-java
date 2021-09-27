@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import static videostore.horror.Movie.Type.NEW_RELEASE;
+
 public class Rental {
    private final Movie movie;
    private final int daysRented;
@@ -18,22 +20,37 @@ public class Rental {
    }
 
    public double computePrice() { // Feature Envy
-      double price = 0;
       switch (movie.getType()) {
          case REGULAR:
-            price += 2;
-            if (daysRented > 2)
-               price += (daysRented - 2) * 1.5;
-            return price;
+            return computeRegularPrice();
          case NEW_RELEASE:
             return daysRented * 3;
          case CHILDRENS:
-            price += 1.5;
-            if (daysRented > 3)
-               price += (daysRented - 3) * 1.5;
-            return price;
+            return computeChildrenPrice();
          default:
             throw new IllegalStateException("Unexpected value: " + getMovie().getType());
       }
+   }
+
+   private double computeChildrenPrice() {
+      double price = 1.5;
+      if (daysRented > 3)
+         price += (daysRented - 3) * 1.5;
+      return price;
+   }
+
+   private double computeRegularPrice() {
+      double price = 2;
+      if (daysRented > 2)
+         price += (daysRented - 2) * 1.5;
+      return price;
+   }
+
+   public int computePoints() {
+      int frequentRenterPoints = 1;
+      if (movie.getType() == NEW_RELEASE && daysRented >= 2) {
+         frequentRenterPoints++;
+      }
+      return frequentRenterPoints;
    }
 }
