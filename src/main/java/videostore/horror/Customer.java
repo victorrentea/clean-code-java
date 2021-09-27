@@ -2,59 +2,58 @@ package videostore.horror;
 
 import java.util.*;
 
+import static videostore.horror.Movie.Type.NEW_RELEASE;
+
 class Customer {
 	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+
+	private List<Rental> rentals = new ArrayList<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
-		double totalAmount = 0;
+	public String generateStatement() {
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for each line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
+
+		for (Rental rental : rentals) {
+
+			frequentRenterPoints += computePoints(rental);
+
+			// apelarea unei functii de doua ori - PUNCTE DE ATENTIE
+			// 1) performance daca e scumpa
+			// 2) daca face side effects : INSERT
+			// 3) daca returneaza alte valori de fiecare data --> tre sa fie "referential transparent"
+			// 2+3 = Pure Function
+
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+
+			totalPrice += rental.computePrice();
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
+
+	private int computePoints(Rental rental) {
+		int frequentRenterPoints = 0;
+		frequentRenterPoints++;
+		if (rental.getMovie().getType() == NEW_RELEASE && rental.getDaysRented() >= 2) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
+
 }
