@@ -30,32 +30,39 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void bossLevel(boolean stuff, boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO move closer to usages
+   {
+      List<Task> list = new ArrayList<>();
+      bossLevel(true, list);
+      bossLevel(false, list);
+      // TODO CR 323:
+
+      bossLevel(false, list);
+   }
+
+   public void bossLevel(boolean fluff, List<Task> tasks) {
+      int index = 0; // TODO ALT-ENTER move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
       List<Long> taskIds = new ArrayList<>();
-      if (stuff) {
-         System.out.println("Logic2");
-         if (fluff) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-               System.out.println("Logic4: Validate " + task);
-               task.setRunning();
+      System.out.println("Logic2");
+      if (fluff) {
+         System.out.println("Logic3");
+         for (Task task : tasks) {
+            System.out.println("Logic4: Validate " + task);
+            task.setRunning();
 
-               taskIds.add(task.getId());
+            taskIds.add(task.getId());
 
-               // TODO When **I** call this method, I want this to run HERE, too:
-               // System.out.println("My Logic: " + task);
+            // TODO When **I** call this method, I want this to run HERE, too:
+            // System.out.println("My Logic: " + task);
 
-               index++;
-               System.out.println("Logic5 " + index + " on " + task.isRunning());
-            }
-            System.out.println("Logic6 " + j);
-            System.out.println("Task Ids: " + taskIds);
-         } else {
-            System.out.println("Logic7 " + tasks);
+            index++;
+            System.out.println("Logic5 " + index + " on " + task.isRunning());
          }
+         System.out.println("Logic6 " + j);
+         System.out.println("Task Ids: " + taskIds);
+      } else {
+         System.out.println("Logic7 " + tasks);
       }
       System.out.println("Logic7");
    }

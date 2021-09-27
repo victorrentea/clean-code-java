@@ -6,8 +6,8 @@ import java.util.List;
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
       int result;
-      if (!retrieveDeadStatus()) { // network call
-         if (marine != null) {
+      if (marine != null) {
+         if (!isDead(marine)) { // network call
             if (!marine.isRetired()) {
                if (marine.getYearsService() != null) {
                   result = marine.getYearsService() * 100;
@@ -17,22 +17,21 @@ public class GuardClauses {
                   if (marine.getAwards().size() >= 3) {
                      result += 2000;
                   }
-                  // much more logic here...
+                  // HEAVY logic here...
                } else {
                   throw new IllegalArgumentException("Any marine should have the years of service set");
                }
             } else result = retiredAmount();
          } else {
-            throw new RuntimeException("Marine is null");
+            result = deadAmount();
          }
       } else {
-         // some logic here
-         result = deadAmount();
+         throw new RuntimeException("Marine is null");
       }
-      return result;
+      return result; // TODO ALT-ENTER move return closer
    }
 
-   private boolean retrieveDeadStatus() {
+   private boolean isDead(Marine marine) {
       // after 500 millis
       return false;
    }
