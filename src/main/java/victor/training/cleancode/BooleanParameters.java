@@ -6,41 +6,42 @@ import java.util.List;
 public class BooleanParameters {
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      cancelOrder(5, 1, false);
-      cancelOrder(4, 2, false);
-      cancelOrder(3, 3, false);
-      cancelOrder(2, 4, false);
-      cancelOrder(1, 5, false);
+      cancelOrder(5, 1);
+      cancelOrder(4, 2);
+      cancelOrder(3, 3);
+      cancelOrder(2, 4);
+      cancelOrder(1, 5);
 
       // TODO CR: From my use-case #323, I call it too, to do more within:
-      cancelOrder(1, 2, true);
+      cancelOrderNoua(1, 2);
 
    }
 
 
 
 
-   static void cancelOrder(int orderId, int b, boolean cr323) {
+   static void cancelOrder(int orderId, int b) {
+      beforeLogic(orderId, b);
+      afterLogic(b);
+   }
+
+   static void cancelOrderNoua(int orderId, int b) {
+      beforeLogic(orderId, b);
+      System.out.println("Logica in plus! doar pt CR323" + orderId);
+      afterLogic(b);
+   }
+
+   private static void afterLogic(int b) {
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+   }
+
+   private static void beforeLogic(int orderId, int b) {
       System.out.println("Complex Logic 1 " + orderId + " and " + b);
       System.out.println("Complex Logic 2 " + orderId);
       System.out.println("Complex Logic 3 " + orderId);
-
-      if (cr323) {
-         System.out.println("Logica in plus! doar pt CR323" + orderId);
-      }
-
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
    }
-
-
-
-
-
-
-
-
 
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
