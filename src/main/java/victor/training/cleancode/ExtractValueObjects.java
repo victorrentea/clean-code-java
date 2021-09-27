@@ -68,6 +68,10 @@ class Interval {
    public boolean intersects(Interval other) {
       return start <= other.end && other.start <= end;
    }
+
+   public Interval translate(int delta) {
+      return new Interval(start + delta, end + delta);
+   }
 }
 
 
