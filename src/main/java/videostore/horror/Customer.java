@@ -1,7 +1,9 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
 import static videostore.horror.Movie.Type.NEW_RELEASE;
 
 class Customer {
@@ -22,30 +24,36 @@ class Customer {
 	}
 
 	public String generateStatement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
-
-		for (Rental rental : rentals) {
-
-			frequentRenterPoints += computePoints(rental);
-
-			// apelarea unei functii de doua ori - PUNCTE DE ATENTIE
-			// 1) performance daca e scumpa
-			// 2) daca face side effects : INSERT
-			// 3) daca returneaza alte valori de fiecare data --> tre sa fie "referential transparent"
-			// 2+3 = Pure Function
-
-			// show figures line for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
-
-			totalPrice += rental.computePrice();
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
 	}
+
+	private String formatBody() {
+		return rentals.stream().map(this::formatBodyLine).collect(joining());
+	}
+
+	private String formatFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n"
+				 + "You earned " + computeTotalPoints() + " frequent renter points";
+	}
+
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
+	}
+
+	private int computeTotalPoints() {
+		return rentals.stream().mapToInt(this::computePoints).sum();
+	}
+
+	private String formatBodyLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+	}
+
+	private String formatHeader() {
+		return "Rental Record for " + getName() + "\n";
+	}
+	// "separation by layers of abstraction" -- codul dintr-o metoda trebuie sa fie aprox la acelasi nivel de detaliu
 
 	private int computePoints(Rental rental) {
 		int frequentRenterPoints = 0;
