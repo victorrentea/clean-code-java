@@ -48,7 +48,8 @@ public class Rental {
 
    public int computePoints() {
       int frequentRenterPoints = 1;
-      if (movie.getType() == NEW_RELEASE && daysRented >= 2) {
+      boolean isNewRelease = movie.getType() == NEW_RELEASE;
+      if (isNewRelease && daysRented >= 2) {
          frequentRenterPoints++;
       }
       return frequentRenterPoints;
