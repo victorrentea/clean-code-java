@@ -1,7 +1,12 @@
 package victor.training.cleancode;
 
+import lombok.Getter;
 import lombok.Value;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,12 +56,13 @@ class MathUtil {
 
 }
 
-@Value // == @Data + toate campurile private final\
-// record in java 17 :) LOVE
+@Getter
+@Embeddable
 class Interval {
-   int start;
-   int end;
+   private int start;
+   private int end;
 
+   private Interval() {} // doar pt Hibernate
    public Interval(int start, int end) {
       if (start > end) {
          throw new IllegalArgumentException("start larger than end");
@@ -107,12 +113,13 @@ class CarSearchCriteria { // pute a JSON
    }
 }
 
-//@Entity
-class CarModel {
-//   @Id
+@Entity
+class CarModel { // CAR_MODEL(ID,MAKE,MODEL, START,END)
+   @Id
    private Long id;
    private String make;
    private String model;
+   @Embedded
    private Interval yearInterval;
 
    private CarModel() {} // for Hibernate

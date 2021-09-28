@@ -23,7 +23,9 @@ public class ImmutableBasic {
 
       immutable.getNumbers().add(1);
 
-//      Immutable nou = immutable.withX(3);
+      for (int i =0;i<1_000_000;i++) {
+         immutable = immutable.withX(immutable.getX()+1);
+      }
 
       System.out.println(immutable.getNumbers());
       System.out.println(immutable);
@@ -41,6 +43,10 @@ class Immutable {
    int x;
    ImmutableList<Integer> numbers;
    Other other;
+
+   public Immutable withX(int newX) {
+      return new Immutable(newX, numbers, other);
+   }
 }
 
 @ToString
