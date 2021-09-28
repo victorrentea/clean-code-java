@@ -42,6 +42,7 @@ class Order {
 	private Long id;
 	private List<OrderLine> orderLines;
 	private LocalDate creationDate;
+	private boolean active;
 }
 
 @Data

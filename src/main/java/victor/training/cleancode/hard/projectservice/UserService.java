@@ -4,5 +4,5 @@ import java.net.CookieHandler;
 import java.util.Optional;
 
 public interface UserService {
-   Optional<User> findByCuid(String cuid);
+   Optional<User> findByUuid(String cuid);
 }

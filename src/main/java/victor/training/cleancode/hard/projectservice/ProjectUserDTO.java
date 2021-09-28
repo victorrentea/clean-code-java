@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ProjectUserDTO {
    private ProjectUserRoleType role;
+   private String uuid;
 
    public ProjectUserRoleType getRole() {
       return role;
@@ -13,8 +14,12 @@ public class ProjectUserDTO {
       this.role = role;
    }
 
-   public String getCuid() {
-      return null;
+   public String getUuid() {
+      return uuid;
+   }
+
+   public void setUuid(String uuid) {
+      this.uuid = uuid;
    }
 
    public List<String> getServices() {

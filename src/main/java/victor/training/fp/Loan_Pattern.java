@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.lambda.Unchecked;
-import victor.training.cleancode.pretend.JpaRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.File;
 import java.io.FileWriter;

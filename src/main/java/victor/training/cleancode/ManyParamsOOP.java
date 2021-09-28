@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
-import victor.training.cleancode.pretend.Autowired;
-import victor.training.cleancode.pretend.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
