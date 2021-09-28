@@ -14,6 +14,7 @@ public class StatementGenerator {
 
 
    public String generateStatement(String customerName, List<Rental> rentals) {
+
       return formatHeader(customerName)
              + formatBody(rentals)
              + formatFooter(rentals);

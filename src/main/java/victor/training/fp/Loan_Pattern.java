@@ -84,5 +84,11 @@ class ExportService {
 }
 
 interface OrderRepo extends JpaRepository<Order, Long> { // Spring Data FanClub
+//   @Query("""
+//       SELECT multi
+//       line string
+//       uuuuu
+//       copy-pastable
+//       """)
    Stream<Order> findByActiveTrue(); // 1 Mln orders ;)
 }

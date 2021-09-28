@@ -30,6 +30,12 @@ public class Rental {
          default:
             throw new IllegalStateException("Unexpected value: " + getMovie().getType());
       }
+//      return switch (movie.getType()) {
+//         case REGULAR -> computeRegularPrice();
+//         case NEW_RELEASE -> daysRented * 3;
+//         case CHILDRENS -> computeChildrenPrice();
+////         case DE_BABACI -> 1;
+//      };
    }
 
    private double computeChildrenPrice() {
