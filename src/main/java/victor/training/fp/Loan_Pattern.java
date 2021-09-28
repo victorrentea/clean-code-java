@@ -18,7 +18,7 @@ class FileExporter {
    private final OrderRepo orderRepo;
 
    public void exportOrder() throws IOException {
-      File file = new File("export/orders.csv");
+      File file = new File("target/orders.csv");
       log.info("Starting export into {} ...", file.getAbsolutePath());
       long t0 = System.currentTimeMillis();
       try (Writer writer = new FileWriter(file)) {

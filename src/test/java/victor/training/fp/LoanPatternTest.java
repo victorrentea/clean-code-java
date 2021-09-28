@@ -1,26 +1,23 @@
 package victor.training.fp;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.time.LocalDate;
 import java.util.stream.Stream;
 
 import static java.time.LocalDate.parse;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LoanPatternTest {
    @Mock
    private OrderRepo orderRepo;
    @InjectMocks
-   private ExportService contentWriter;
+   private FileExporter exporter;
 
 
    @Test
@@ -30,7 +27,7 @@ public class LoanPatternTest {
       order.setCreationDate(parse("2021-01-07"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
 
-      contentWriter.exportOrders();
+      new ExportService(exporter).exportOrders();
 
       // NOW read the file from the disk ... Yuck!
 
