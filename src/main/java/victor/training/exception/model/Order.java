@@ -5,11 +5,16 @@ import java.util.Date;
 import static java.util.Objects.requireNonNull;
 
 public class Order {
+   private long id;
    private int price;
    private Date offerDate;
 
    public Order(Date offerDate) {
       setOfferDate(offerDate);
+   }
+
+   public long getId() {
+      return id;
    }
 
    public int getPrice() {
