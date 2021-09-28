@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import lombok.ToString;
 import lombok.Value;
 
-import javax.print.attribute.standard.MediaSize.Other;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,33 +15,39 @@ public class ImmutableBasic {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
-      Immutable immutable = new Immutable(2, ImmutableList.copyOf(numbers), new Other2(13));
+      Immutable immutable = new Immutable(2, ImmutableList.copyOf(numbers), new Other(13));
 
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
 
-      immutable.numbers().add(1);
+      immutable.getNumbers().add(1);
 
-      Immutable nou = immutable.withX(3);
+//      Immutable nou = immutable.withX(3);
 
-      System.out.println(immutable.numbers());
+      System.out.println(immutable.getNumbers());
       System.out.println(immutable);
    }
 }
 
 // === @LOmbok cu 1 diferenta: getterii nu mai au prefixul "get"
-record Immutable(int x, List<Integer> numbers, Other2 other) {
-   public Immutable withX(int newX) {
-      return new Immutable(newX, numbers, other);
-   }
+//record Immutable(int x, List<Integer> numbers, Other2 other) {
+//   public Immutable withX(int newX) {
+//      return new Immutable(newX, numbers, other);
+//   }
+//}
+@Value
+class Immutable {
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
 }
 
 @ToString
-class Other2 {
+class Other {
    private final int a;
 
-   public Other2(int a) {
+   public Other(int a) {
       this.a = a;
    }
 
