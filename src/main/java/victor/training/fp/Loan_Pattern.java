@@ -24,7 +24,7 @@ class FileExporter {
       try (Writer writer = new FileWriter(file)) {
          writer.write("OrderID;Date\n");
          orderRepo.findByActiveTrue()
-             .map(o -> o.getId() + ";" + o.getCreationDate())
+             .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
              .forEach(Unchecked.consumer(writer::write));
 
          log.info("Export completed in {} seconds ", (System.currentTimeMillis() - t0) / 1000);
