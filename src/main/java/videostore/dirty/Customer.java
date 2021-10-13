@@ -76,13 +76,13 @@ class Customer {
    private double computePrice(Rental rental) {
 //		return rental.getMovie().getPriceCode() == PriceCode.CATEGORY_REGULAR ? 1 : 2;
 //
-      return rental.getMovie().getPriceCode().priceCalculationFunction.apply(rental);
+//      return rental.getMovie().getPriceCode().priceCalculationFunction.apply(rental);
 
-//		return switch (rental.getMovie().getPriceCode()) {
-//			case CATEGORY_REGULAR,CATEGORY_NEW_RELEASE -> computeRegularPrice(rental);
-//			case CATEGORY_CHILDRENS -> computeChildrenPrice(rental);
-//			default -> 0;
-//		};
+		return switch (rental.getMovie().getPriceCode()) {
+			case CATEGORY_REGULAR-> computeRegularPrice(rental);
+         case CATEGORY_NEW_RELEASE -> computeNewReleasePrice(rental);
+			case CATEGORY_CHILDRENS -> computeChildrenPrice(rental);
+		};
    }
 //	record X(String action, Consumer<SeleniumPage> checked) {
 //	}

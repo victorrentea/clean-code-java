@@ -8,16 +8,11 @@ public class Movie {
 	public static final int CATEGORY_NEW_RELEASE = 1;
 
 	enum PriceCode {
-		CATEGORY_CHILDRENS {
-			@Override
-			public double computePrice(Rental rental) {
-				return 0;
-			}
-		},
-		CATEGORY_REGULAR {},
-		CATEGORY_NEW_RELEASE {};
+		CATEGORY_CHILDRENS ,
+		CATEGORY_REGULAR ,
+		CATEGORY_NEW_RELEASE ;
 
-		public abstract double computePrice(Rental rental);
+
 
 	}
 	private String _title;
