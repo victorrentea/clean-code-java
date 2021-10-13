@@ -10,20 +10,25 @@ import java.util.List;
 public class SplitLoop {
 
     // see tests
-    public String computeStats(List<Employee> employees) {
+    public String computeStats(List<Employee> employeesList) {
         long averageAge = 0;
         double averageSalary = 0;
-        for (Employee employee : employees) {
+        for (Employee employee : employeesList) {
             if (!employee.isConsultant()) {
                 averageAge += employee.getAge();
             }
             averageSalary += employee.getSalary();
         }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
+        nuaicesastrici();
+        averageAge = averageAge / employeesList.stream().filter(e -> !e.isConsultant()).count();
+        averageSalary = averageSalary / employeesList.size();
         return "avg age = " + averageAge + "; avg sal = " + averageSalary;
     }
 
+    public void nuaicesastrici() {
+
+
+    }
 
     // ======= hard core =========
 
