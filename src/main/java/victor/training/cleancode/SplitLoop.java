@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
@@ -47,36 +46,38 @@ public class SplitLoop {
     // ======= hard core =========
 
     public String computeStatsHard(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                averageAge += employee.getAge();
-                continue;
-            }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
-                }
-            }
-            averageSalary += employee.getSalary();
+        List<Employee> consultants = employees.stream().filter(Employee::isConsultant).collect(toList());
+        // validare
+        if (consultants.stream().anyMatch(c -> c.getId() == null)) {
+            return "Employee(s) not persisted";
         }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
-        return "Agerage age = " + averageAge + "; Internal employee average salary = " + averageSalary;
+
+        // data enhancement/ retrieval
+        retrieveSalaries(consultants);
+
+        // calcule
+        long totalAge = employees.stream().filter(employee -> !employee.isConsultant()).mapToLong(Employee::getAge).sum();
+        double totalSalary = consultants.stream().mapToDouble(Employee::getSalary).sum();
+        totalAge = totalAge / employees.stream().filter(e -> !e.isConsultant()).count();
+        totalSalary = totalSalary / employees.size();
+        return "Agerage age = " + totalAge + "; Internal employee average salary = " + totalSalary;
+    }
+
+    private void retrieveSalaries(List<Employee> consultants) {
+        for (Employee employee : consultants) {
+            if (employee.getSalary() == null) {
+                Integer salary = employeeService.retrieveSalary(employee.getId())
+                    .orElseThrow(() -> new RuntimeException("NO salary found for employee " + employee.getId()));
+                employee.setSalary(salary);
+            }
+        }
     }
 
     EmployeeService employeeService;
 
 }
 interface EmployeeService {
-    Integer retrieveSalary(int employeeId);
+    Optional<Integer> retrieveSalary(int employeeId);
 }
 
 @Data
