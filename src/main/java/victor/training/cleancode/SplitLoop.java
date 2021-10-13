@@ -2,9 +2,16 @@ package victor.training.cleancode;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.*;
+
+@Slf4j
 /**
  * Break the loops and refactor to use .stream to compute stuff.
  */
@@ -12,16 +19,27 @@ public class SplitLoop {
 
     // see tests
     public String computeStats(List<Employee> employees) {
-        long totalAge = 0;
-        double totalSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalAge += employee.getAge();
-            }
-            totalSalary += employee.getSalary();
-        }
-        long averageAge = totalAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        double averageSalary = totalSalary / employees.size();
+        double averageSalary = employees.stream()
+            .mapToDouble(Employee::getSalary)
+            .average()
+            .orElse(0);
+
+        int averageAge = (int) employees.stream()
+
+            .filter(e -> !e.isConsultant())
+            .filter(not(Employee::isConsultant))
+            .filter(Employee::isNotConsultant)
+
+            .mapToLong(Employee::getAge)
+            .average()
+            .orElse(0);
+
+        List<Integer> consultantsIds = employees.stream()
+            .filter(Employee::isConsultant)
+            .map(Employee::getId)
+            .collect(toList());
+
+        System.out.println(consultantsIds);
         return "avg age = " + averageAge + "; avg sal = " + averageSalary;
     }
 
@@ -68,4 +86,10 @@ class Employee {
     private final int age;
     private Integer salary;
     private final boolean consultant;
+
+    public boolean isNotConsultant() {
+        return !consultant;
+    }
 }
+
+//class Consultant extends Employee {}
