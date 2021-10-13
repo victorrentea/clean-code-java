@@ -5,6 +5,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // get the list of users to UI
 
@@ -14,15 +15,16 @@ class UserFacade {
 	
 	public List<UserDto> getAllUsers() {
 		List<User> users = userRepo.findAll();
-		List<UserDto> dtos = new ArrayList<>();
-		for (User user : users) {
-			UserDto dto = new UserDto();
-			dto.setUsername(user.getUsername());
-			dto.setFullName(user.getFirstName() + " " + user.getLastName().toUpperCase());
-			dto.setActive(user.getDeactivationDate() == null);
-			dtos.add(dto);
-		}
+		List<UserDto> dtos = users.stream().map(this::toDto).collect(Collectors.toList());
 		return dtos;
+	}
+
+	private UserDto toDto(User user) {
+		UserDto dto = new UserDto();
+		dto.setUsername(user.getUsername());
+		dto.setFullName(user.getFirstName() + " " + user.getLastName().toUpperCase());
+		dto.setActive(user.getDeactivationDate() == null);
+		return dto;
 	}
 }
 
