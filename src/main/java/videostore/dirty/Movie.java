@@ -8,15 +8,17 @@ public class Movie {
 	public static final int CATEGORY_NEW_RELEASE = 1;
 
 	enum PriceCode {
-		CATEGORY_CHILDRENS(Customer::computeChildrenPrice),
-		CATEGORY_REGULAR(r -> Customer.computeRegularPrice(r)),
-		CATEGORY_NEW_RELEASE(Customer::computeNewReleasePrice);
+		CATEGORY_CHILDRENS {
+			@Override
+			public double computePrice(Rental rental) {
+				return 0;
+			}
+		},
+		CATEGORY_REGULAR {},
+		CATEGORY_NEW_RELEASE {};
 
-		public final Function<Rental, Double> priceCalculationFunction;
+		public abstract double computePrice(Rental rental);
 
-		PriceCode(Function<Rental, Double> priceCalculationFunction) {
-			this.priceCalculationFunction = priceCalculationFunction;
-		}
 	}
 	private String _title;
 	private PriceCode _priceCode;
