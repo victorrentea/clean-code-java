@@ -1,7 +1,10 @@
 package victor.training.cleancode;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,25 +13,24 @@ import java.util.List;
 public class SplitLoop {
 
     // see tests
-    public String computeStats(List<Employee> employeesList) {
+    public String computeStats(List<Employee> employees) {
         long averageAge = 0;
         double averageSalary = 0;
-        for (Employee employee : employeesList) {
+        List<Integer> consultantIds = new ArrayList<>();
+        for (Employee employee : employees) {
             if (!employee.isConsultant()) {
                 averageAge += employee.getAge();
+            } else {
+                consultantIds.add(employee.getId());
             }
             averageSalary += employee.getSalary();
         }
-        nuaicesastrici();
-        averageAge = averageAge / employeesList.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employeesList.size();
-        return "avg age = " + averageAge + "; avg sal = " + averageSalary;
+        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
+        averageSalary = averageSalary / employees.size();
+        System.out.println("Consultant IDs: " + consultantIds);
+        return "Average age = " + averageAge + "; Average salary = " + averageSalary;
     }
 
-    public void nuaicesastrici() {
-
-
-    }
 
     // ======= hard core =========
 
@@ -66,9 +68,10 @@ interface EmployeeService {
 }
 
 @Data
+@AllArgsConstructor
 class Employee {
     private final Integer id;
     private final int age;
-    private final boolean consultant;
     private Integer salary;
+    private final boolean consultant;
 }

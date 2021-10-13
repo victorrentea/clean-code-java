@@ -4,7 +4,6 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -14,41 +13,28 @@ public class BooleanParameters {
 
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      //@GetMapping
-      bigUglyMethod(1, new Task(5), task -> System.out.println("Logic just for UC1 : " + task));
-
-      bigUglyMethod(2, new Task(4), task -> System.out.println("Lgic just foor UC2 : " + task));
-
-      bigUglyMethod(3, new Task(3), task -> System.out.println("Lgic just foor UC2 : " + task));
-
-      bigUglyMethod(4, new Task(2), task -> System.out.println("Lgic just foor UC2 : " + task));
-
-      bigUglyMethod(5, new Task(1), task -> System.out.println("Lgic just foor UC2 : " + task));
+      bigUglyMethod(1, new Task(5));
+      bigUglyMethod(2, new Task(4));
+      bigUglyMethod(3, new Task(3));
+      bigUglyMethod(4, new Task(2));
+      bigUglyMethod(5, new Task(1));
 
       // TODO From my use-case #323, I call it too, to do more within:. + task.setDetail(15)
       Task task = new Task(1);
-      bigUglyMethod(2, task, t -> System.out.println("Lgic just foor CR323 : " + t));
+      bigUglyMethod(2, task);
 
    }
 
-   static void bigUglyMethod(int b, Task task, Consumer<Task> consumer) {
-      beforeLogic(b, task);
-
-      consumer.accept(task);
-
-      afterLogic(b);
-   }
-
-   private static void afterLogic(int b) {
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-   }
-
-   private static void beforeLogic(int b, Task task) {
+   static void bigUglyMethod(int b, Task task) {
       System.out.println("Complex Logic 1 " + task + " and " + b);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
+
+      // System.out.println("Logic just for CR323 : " + task);
+
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
    }
 
 
