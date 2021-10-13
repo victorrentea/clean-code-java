@@ -5,6 +5,7 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -27,6 +28,7 @@ public class BooleanParameters {
 
       // TODO From my use-case #323, I call it too, to do more within:. + task.setDetail(15)
       Task task = new Task(1);
+      task.setDetail(13);
       bigUglyMethod(2, task, t -> System.out.println("Lgic just foor CR323 : " + t));
 
    }
@@ -55,32 +57,39 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // see the tests
-   public void bossLevel(boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO ALT-ENTER move closer to usages
-      int j = tasks.size();
-      System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
-      System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-
-            taskIds.add(task.getId());
-
-            // TODO When **I** call this method, I want this to run HERE, too:
-            // System.out.println("My Logic: " + task);
-
-            index++;
-            System.out.println("Logic5 " + index + " on " + task.isRunning());
-         }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+      beforeBoss(tasks);
+      afterBoss(tasks);
+   }
+   public void bossLevel323(boolean fluff, List<Task> tasks, boolean cr323) {
+      beforeBoss(tasks);
+      for (Task task : tasks) {
+         System.out.println("My Logic: " + task);
       }
+      afterBoss(tasks);
+   }
+
+   private void afterBoss(List<Task> tasks) {
+      int index = 0;
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      System.out.println("Logic6 " + tasks.size());
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+      System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
+   }
+
+   private void beforeBoss(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
+      }
    }
 
 }
@@ -99,9 +108,11 @@ class Task {
    public void setDetail(int detail) {
       this.detail = detail;
    }
+
    public int getDetail() {
       return detail;
    }
+
    public void setRunning() {
       running = true;
    }
