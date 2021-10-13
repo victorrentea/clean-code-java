@@ -1,46 +1,34 @@
 package victor.training.cleancode;
 
-import lombok.NonNull;
-
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      if (marine == null) {
+      int result;
+      if (marine != null) {
+         if (!isDead(marine)) { // network call
+            if (!marine.isRetired()) {
+               if (marine.getYearsService() != null) {
+                  result = marine.getYearsService() * 100;
+                  if (!marine.getAwards().isEmpty()) {
+                     result += 1000;
+                  }
+                  if (marine.getAwards().size() >= 3) {
+                     result += 2000;
+                  }
+                  // HEAVY logic here...
+               } else {
+                  throw new IllegalArgumentException("Any marine should have the years of service set");
+               }
+            } else result = retiredAmount();
+         } else {
+            result = deadAmount();
+         }
+      } else {
          throw new RuntimeException("Marine is null");
       }
-      if (isDead(marine)) {
-         return deadAmount();
-      } // network call
-      if (marine.isRetired()) {
-         return retiredAmount();
-      }
-      if (marine.getYearsService() == null) {
-         throw new IllegalArgumentException("Any marine should have the years of service set");
-      }
-//       nu validari cu logica in ac functie
-      int result = marine.getYearsService() * 100;
-      if (!marine.getAwards().isEmpty()) {
-         result += 1000;
-      }
-      if (marine.getAwards().size() >= 3) {
-         result += 2000;
-      }
-      // HEAVY logic here...
-      return result;
-   }
-
-
-   public void method(List<Integer> list) {
-      // single point of return
-      if (list == null) {
-         return;
-      }
-      for (Integer integer : list) {
-         
-      }
+      return result; // TODO ALT-ENTER move return closer
    }
 
    private boolean isDead(Marine marine) {
