@@ -32,11 +32,11 @@ public class CustomJpaRepositoryFactoryBean<R extends JpaRepository<T, ID>, T, I
         @SuppressWarnings("unchecked")
         protected JpaRepositoryImplementation<?, ?> getTargetRepository(RepositoryInformation information, EntityManager entityManager) {
             JpaEntityInformation<T, ?> entityInformation = (JpaEntityInformation<T, ?>) getEntityInformation(information.getDomainType());
-            return new victor.training.jpa.app.common.data.CustomJpaRepositoryImpl<T, ID>( entityInformation, entityManager);
+            return new CustomJpaRepositoryImpl<T, ID>( entityInformation, entityManager);
         }
         @Override
         protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-            return victor.training.jpa.app.common.data.CustomJpaRepositoryImpl.class;
+            return CustomJpaRepositoryImpl.class;
         }
         
     }
