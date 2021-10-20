@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import victor.training.cleancode.support.Award;
+import victor.training.cleancode.support.Marine;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,35 +49,5 @@ public class GuardClauses {
 
 }
 
-class Marine {
-   private final boolean dead;
-   private final boolean retired;
-   private final Integer yearsService;
-   private final List<Award> awards = new ArrayList<>();
 
-   Marine(boolean dead, boolean retired, Integer yearsService) {
-      this.dead = dead;
-      this.retired = retired;
-      this.yearsService = yearsService;
-   }
 
-   public List<Award> getAwards() {
-      return awards;
-   }
-
-   public Integer getYearsService() {
-      return yearsService;
-   }
-
-   public boolean isRetired() {
-      return retired;
-   }
-
-   public boolean isDead() {
-      return dead;
-   }
-}
-
-class Award {
-
-}

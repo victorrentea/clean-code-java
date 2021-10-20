@@ -1,6 +1,6 @@
 package victor.training.cleancode;
 
-import lombok.ToString;
+import victor.training.cleancode.support.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,31 +72,3 @@ public class BooleanParameters {
 }
 
 
-@ToString
-class Task {
-   private final int id;
-   private boolean running;
-   private int detail = 0;
-
-   Task(int id) {
-      this.id = id;
-   }
-
-   public void setDetail(int detail) {
-      this.detail = detail;
-   }
-   public int getDetail() {
-      return detail;
-   }
-   public void setRunning() {
-      running = true;
-   }
-
-   public boolean isRunning() {
-      return running;
-   }
-
-   public int getId() {
-      return id;
-   }
-}

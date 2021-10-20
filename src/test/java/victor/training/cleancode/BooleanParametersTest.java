@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import org.junit.jupiter.api.Test;
+import victor.training.cleancode.support.Task;
 import victor.training.testing.tools.CaptureSystemOutput;
 import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
 
@@ -23,11 +24,11 @@ class BooleanParametersTest {
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic2\n" +
                                      "Logic3\n" +
-                                     "Logic4: Validate Task(id=5, running=false)\n" +
+                                     "Logic4: Validate Task(id=5, running=false, detail=0)\n" +
                                      "Logic5 1 on true\n" +
                                      "Logic6 1\n" +
                                      "Task Ids: [5]\n" +
-                                     "Logic7");
+                                     "Logic7\n");
    }
 
    @Test
@@ -39,11 +40,9 @@ class BooleanParametersTest {
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic2\n" +
                                      "Logic3\n" +
-                                     "Logic4: Validate Task(id=5, running=false)\n" +
-                                     "Logic5 1 on true\n" +
-                                     "Logic6 1\n" +
-                                     "Task Ids: [5]\n" +
-                                     "Logic7");
+                                     "Logic6 0\n" +
+                                     "Task Ids: []\n" +
+                                     "Logic7\n");
    }
    @Test
    @CaptureSystemOutput
@@ -52,8 +51,8 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                              "Logic2\n" +
-                              "Logic7 [Task(id=5, running=false)]\n" +
-                              "Logic7\n");
+                                     "Logic2\n" +
+                                     "Logic7 [Task(id=5, running=false, detail=0)]\n" +
+                                     "Logic7\n");
    }
 }
