@@ -31,4 +31,8 @@ public class Task {
    public int getId() {
       return id;
    }
+
+   public void doIt() {
+      System.out.println("My Logic: " + detail);
+   }
 }
