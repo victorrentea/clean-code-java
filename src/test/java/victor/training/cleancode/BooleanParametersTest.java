@@ -39,11 +39,9 @@ class BooleanParametersTest {
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic2\n" +
                                      "Logic3\n" +
-                                     "Logic4: Validate Task(id=5, running=false)\n" +
-                                     "Logic5 1 on true\n" +
-                                     "Logic6 1\n" +
-                                     "Task Ids: [5]\n" +
-                                     "Logic7");
+                                     "Logic6 0\n" +
+                                     "Task Ids: []\n" +
+                                     "Logic7\n");
    }
    @Test
    @CaptureSystemOutput

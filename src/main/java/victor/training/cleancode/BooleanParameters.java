@@ -76,18 +76,11 @@ public class BooleanParameters {
 class Task {
    private final int id;
    private boolean running;
-   private int detail = 0;
 
    Task(int id) {
       this.id = id;
    }
 
-   public void setDetail(int detail) {
-      this.detail = detail;
-   }
-   public int getDetail() {
-      return detail;
-   }
    public void setRunning() {
       running = true;
    }

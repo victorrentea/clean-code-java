@@ -34,12 +34,14 @@ public class SplitLoop {
 
     // ======= hard core =========
 
+    EmployeeService employeeService;
+
     public String computeStatsHard(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
+        long totalEmpAge = 0;
+        double totalConsultantSalary = 0;
         for (Employee employee : employees) {
             if (!employee.isConsultant()) {
-                averageAge += employee.getAge();
+                totalEmpAge += employee.getAge();
                 continue;
             }
             if (employee.getId() == null) {
@@ -53,14 +55,21 @@ public class SplitLoop {
                     employee.setSalary(salary);
                 }
             }
-            averageSalary += employee.getSalary();
+            totalConsultantSalary += employee.getSalary();
         }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
-        return "Agerage age = " + averageAge + "; Internal employee average salary = " + averageSalary;
+
+        long averageAge = 0;
+        if (totalEmpAge != 0) {
+            averageAge = totalEmpAge / employees.stream().filter(e -> !e.isConsultant()).count();
+        }
+        double averageConsultantSalary = 0;
+        if (totalConsultantSalary != 0) {
+            averageConsultantSalary = totalConsultantSalary / employees.size();
+        }
+        return "Average employee age = " + averageAge + "; Average consultant salary = " + averageConsultantSalary;
     }
 
-    EmployeeService employeeService;
+
 
 }
 interface EmployeeService {
@@ -70,8 +79,8 @@ interface EmployeeService {
 @Data
 @AllArgsConstructor
 class Employee {
-    private final Integer id;
-    private final int age;
+    private Integer id;
+    private int age;
     private Integer salary;
-    private final boolean consultant;
+    private boolean consultant;
 }
