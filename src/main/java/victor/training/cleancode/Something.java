@@ -1,16 +1,46 @@
 package victor.training.cleancode;
 
-public class ParameterObjects {
+public class Something {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new Something()
+//          .firstName("John") // you might forget to call one
+//          .lastName("Doe")
+//          .city("St. Albergue")
+//          .streetName("Paris")
+//          .streetNumber(99)
+          .placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
    }
 
+//   public void placeOrder(FullName fullName, Address address) {
+//
+//   }
    public void placeOrder(String firstName, String lName, String city, String streetName, Integer streetNumber) {
       if (firstName == null || lName == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
 
+   }
+}
+
+class FullName {
+   private final String firstName;
+   private final String lastName;
+
+   FullName(String firstName, String lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+   }
+}
+class Address {
+   private final String city;
+   private final String streetName;
+   private final Integer streetNumber;
+
+   Address(String city, String streetName, Integer streetNumber) {
+      this.city = city;
+      this.streetName = streetName;
+      this.streetNumber = streetNumber;
    }
 }
 
@@ -53,7 +83,6 @@ class PersonService {
    public void f(Person person) {
       System.out.println("Hi there, " + person.getFirstName());
 
-      String fullName = formatFullName(person);
       // pure function:  also typically very fast since they do no network.
       // 1  NO side effects, eg>
       //   a) File read/write, DB, HTTP call (any network);
@@ -62,8 +91,7 @@ class PersonService {
       //    a) if the return of formatFullName depends on some state besides the Person param
                //
       //    b) current time/random
-      System.out.println("Record for " + fullName);
-      System.out.println("Record for " + fullName);
+      String fullName = formatFullName(person);
       System.out.println("Record for " + fullName);
    }
 
