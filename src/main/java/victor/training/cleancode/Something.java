@@ -1,6 +1,9 @@
 package victor.training.cleancode;
 
-import java.util.Objects;
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
+import java.util.Locale;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -23,24 +26,43 @@ public class Something {
    }
 }
 
+class FullNamePlay2 {
+
+   private record X(int i) {}
+   public static void main(String[] args) {
+      FullName fullName = new FullName("f", "l");
+      System.out.println(fullName);
+      System.out.println(fullName.firstName());
+   }
+}
+interface Name {
+   String asHumanReadable();
+}
 
 
-class FullName {
-   private final String firstName;
-   private final String lastName;
+// practical use of Records :
+// Value Objects to decompose your domain data 2-4 fielrs
+// RX instead of Tuple3<String,String,List<Integer>> :)  --> record(String name, String address, List<Integer> orderIds) {}
 
-   FullName(String firstName, String lastName) {
-      this.firstName = requireNonNull(firstName, "firstName");
-      this.lastName = requireNonNull(lastName, "lastName");
+record SomeSuper(int oups) {
+}
+//class X extends SomeSuper {}
+record FullName(String firstName, String lastName)implements Name {
+   FullName {
+      requireNonNull(firstName, "firstName");
+      requireNonNull(lastName, "lastName");
    }
 
-   public String getFirstName() {
-      return firstName;
-   }
 
-   public String getLastName() {
-      return lastName;
+   @Override
+   public String asHumanReadable() {
+      return firstName + " " + lastName.toUpperCase();
    }
+//   private String middleName;
+
+//   public Optional<String> firstName() {
+//      return firstName.map(String::toUpperCase);
+//   }
 }
 
 class Address {
@@ -66,12 +88,13 @@ class Address {
       return streetNumber;
    }
 }
+
 // some other code
 class AnotherClass {
    public void otherMethod(FullName fullName, int x) {
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + fullName.getLastName());
+      System.out.println("Person: " + fullName.lastName());
    }
 }
 

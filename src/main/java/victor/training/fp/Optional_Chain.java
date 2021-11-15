@@ -1,5 +1,11 @@
 package victor.training.fp;
 
+import lombok.NonNull;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,7 +39,6 @@ class MyMapper {
 //          .ifPresent(delivery -> delivery.getAddress().getContactPerson()
 //              .ifPresent(person -> dto.recipientPerson = person.getName()));
 
-
       dto.recipientPerson = parcel.getDelivery()
           // PRO: less chained operators
 //          .flatMap(delivery -> delivery.getAddress().getContactPerson())
@@ -49,8 +54,9 @@ class MyMapper {
 
           .orElse(null);
 
-
-//      }
+      String s = new Address(new ContactPerson("a")).getContactPersonRaw().toString();
+      System.out.println(s);
+//      
       return dto;
    }
 }
@@ -86,12 +92,19 @@ class Delivery {
 }
 
 class Address {
+   @Nullable
+   @NotNull // Validator.validate(address) javax.validation >>>
    private final ContactPerson contactPerson; // can be null
 
-   public Address(ContactPerson contactPerson) {
+   public Address( @Nonnull ContactPerson contactPerson) {
       this.contactPerson = contactPerson;
    } // TODO allow not setting
 
+   @Nullable
+//   @Nonnull
+   public ContactPerson getContactPersonRaw() {
+      return contactPerson;
+   }
    public Optional<ContactPerson> getContactPerson() {
       return Optional.ofNullable(contactPerson);
    }
