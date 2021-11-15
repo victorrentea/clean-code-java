@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+import java.util.function.Function;
 
 @RestController
 @SpringBootApplication
@@ -29,19 +31,36 @@ public class JacksonPlay {
 class MyDto {
 //   MyId id;
 }
-
-
 @Data
+// TODO convince Swagger to put a string in the header.
 class MyId {
    private String id;
    public MyId(String id) { this.id = id;}
 }
-
 @Component
 class StringToLocalDateTimeConverter implements Converter<String, MyId> {
-
    @Override
    public MyId convert(String source) {
       return new MyId(source);
+   }
+}
+
+// you only need Function<> if you play with Stream/Optional.map()
+//@FunctionalInterface
+//interface StringToUUID{
+//   UUID convert(String str) ;
+//}
+//class StringToUUIDImpl implements StringToUUID {
+//   @Override
+//   public UUID apply(String s) {
+//      return null;
+//   }
+//}
+
+
+class YourCode {
+
+   public void method() {
+
    }
 }

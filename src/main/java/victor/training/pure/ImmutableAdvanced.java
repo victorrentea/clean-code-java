@@ -1,5 +1,8 @@
 package victor.training.pure;
 
+import com.google.common.collect.ImmutableList;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -26,37 +29,38 @@ class TwoOthers {
 }
 public class ImmutableAdvanced {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.copyOf(Stream.of(1, 2, 3).collect(toList()));
 
+//      List.of(1,1).remove(1);
       Immutable immutable = new Immutable(1, numbers) // #1 >> GC
-
           // A no desgign
           .withOther(new Other(1)) // #2 >> GC
           .withOther2(new Other(2))  // #3
-
           // B mode deep modeling of our world
 //          .withTwoOther(new Other(1), new Other(2))  // // better because the design screams that they need to be set togher
 
           // C most design: allowing me to NOW add logic on class TwoOthers !
 //          .withTwoOthers(new TwoOthers(new Other(1), new Other(2)))
           ;
+
       System.out.println(immutable);
 
+      numbers.clear();
       // wilderness
 
       System.out.println(immutable);
    }
 }
 
-class Immutable {
+final class Immutable { // deep immutable only if
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers;
    private final Other other; // optional
    private final Other other2; // optional
 
 //   private final TwoOthers twoOthers;
 
-   Immutable(int x, List<Integer> numbers) { // only for required fields. if THIS grows over 5, I would look to break the class.
+   Immutable(int x, ImmutableList<Integer> numbers) { // only for required fields. if THIS grows over 5, I would look to break the class.
       this(x, numbers, null, null);
    }
    public Immutable withOther(Other newOther) {
@@ -65,14 +69,14 @@ class Immutable {
    public Immutable withOther2(Other newOther2) {
       return new Immutable(x, numbers, other, newOther2);
    }
-   Immutable(int x, List<Integer> numbers, Other other, Other other2) { // canonical
+   Immutable(int x, ImmutableList<Integer> numbers, Other other, Other other2) { // canonical
       this.x = x;
-      this.numbers = numbers;
+      this.numbers = numbers; // waste of memory
       this.other = other;
       this.other2 = other2;
    }
    public List<Integer> getNumbers() {
-      return Collections.unmodifiableList(numbers);
+      return numbers;
    }
    public int getX() {
       return x;
