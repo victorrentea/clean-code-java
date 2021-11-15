@@ -35,8 +35,18 @@ class MyMapper {
 
 
       dto.recipientPerson = parcel.getDelivery()
-          .flatMap(delivery -> delivery.getAddress().getContactPerson())
-          .map(person -> person.getName().toUpperCase())
+          // PRO: less chained operators
+//          .flatMap(delivery -> delivery.getAddress().getContactPerson())
+//          .map(person -> person.getName().toUpperCase())
+
+
+         // PRO: more ::, "more FP"
+          .map(Delivery::getAddress)
+          .flatMap(Address::getContactPerson)
+          .map(ContactPerson::getName)
+          .map(String::toUpperCase)
+
+
           .orElse(null);
 
 
