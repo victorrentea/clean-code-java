@@ -8,6 +8,11 @@ import victor.training.exception.model.Order;
 public class Biz {
 
    public void applyDiscount(Order order, Customer customer) {
+
+
+      if (order == null) {
+         throw new RuntimeException("Some message for the caller (to put in http response)");
+      }
       System.out.println("START");
       if (order.getOfferDate().before(Config.getLastPromoDate())) { // TODO inside
          System.out.println("APPLYING DISCOUNT");
