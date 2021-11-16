@@ -55,6 +55,7 @@ public class ImmutableAdvanced {
 final class Immutable { // deep immutable only if
    private final int x;
    private final ImmutableList<Integer> numbers;
+//   private final TwoOthers twoOthers;
    private final Other other; // optional
    private final Other other2; // optional
 
