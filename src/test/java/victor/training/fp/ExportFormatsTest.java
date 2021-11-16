@@ -32,16 +32,19 @@ class ExportFormatsTest {
    void writeOrders() throws IOException {
       var order = new Order().setId(1L).setCreationDate(LocalDate.parse("2021-11-16"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
-      Writer writer = new StringWriter(); // this is a FAKE = implementation only for tests
-//      Writer writer = mock(Writer.class);
+//      Writer writer = new StringWriter(); // this is a FAKE = implementation only for tests
+      Writer writer = mock(Writer.class);
 
       exportFormats.writeOrders(writer);
 
-//      verify(writer).write();
-      String actualContent = writer.toString();
-      Assertions.assertThat(actualContent).isEqualTo("""
-          order_id;date
-          1;2021-11-16
-          """);
+      verify(writer).write(anyString());
+//      String actualContent = writer.toString();
+//      Assertions.assertThat(actualContent).isEqualTo("""
+//          order_id;date
+//          1;2021-11-16
+//          """);
    }
 }
+
+
+
