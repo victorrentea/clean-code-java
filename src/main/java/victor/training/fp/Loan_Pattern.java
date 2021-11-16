@@ -10,8 +10,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+ interface ConsumerThrowing<T> {
+    void accept(T t) throws Exception;
+ }
 @Slf4j
 @RequiredArgsConstructor
 class FileExporter {
@@ -24,9 +28,10 @@ class FileExporter {
       try (Writer writer = new FileWriter(file)) {
 
          writer.write("order_id;date\n");
-         orderRepo.findByActiveTrue()
+         orderRepo.findByActiveTrue() // WHY?: retrieve and consume, and not collect it in a list. in DB 10M active orders. collect = OOME
              .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
-             .forEach(Unchecked.consumer(writer::write));
+//             .forEach(wrapChecked(writer::write));
+               .forEach(Unchecked.consumer(writer::write));
 
          log.info("Export DONE");
       } catch (Exception e) {
@@ -38,6 +43,17 @@ class FileExporter {
          log.info("Export completed in {} seconds ", (t1 - t0) / 1000);
       }
    }
+
+   public static <T>  Consumer<T> wrapChecked(ConsumerThrowing<T> myConsumer) {
+      return s -> {
+         try {
+            myConsumer.accept(s);
+         } catch (Exception e) {
+            throw new RuntimeException(e);
+         }
+      };
+   }
+
 }
 
 @RequiredArgsConstructor

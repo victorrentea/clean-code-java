@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 public class SplitLoopTest {
 
    @Test
-   public void characterizationTest() {
+   public void level1() {
       String actual = new SplitLoop().computeStats(asList(
           new Employee(1, 24, 2000, false),
           new Employee(1, 27, 2000, false),

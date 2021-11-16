@@ -39,6 +39,7 @@ class ProductService {
 
 
 
+			.filter(p -> p.isActive())
 			.filter(p -> !p.isDeleted())
 			.filter(not(Product::isDeleted))
 
@@ -58,6 +59,10 @@ class ProductService {
 class Product {
 	private Long id;
 	private boolean deleted;
+
+	public boolean isActive() {
+		return !deleted;
+	}
 }
 
 @Data

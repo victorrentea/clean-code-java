@@ -6,6 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.not;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -14,22 +18,26 @@ public class SplitLoop {
 
     // see tests
     public String computeStats(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
-        List<Integer> consultantIds = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                averageAge += employee.getAge();
-            } else {
-                consultantIds.add(employee.getId());
-            }
-            averageSalary += employee.getSalary();
-        }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
+        List<Integer> consultantIds = employees.stream()
+            .filter(Employee::isConsultant)
+            .map(Employee::getId)
+            .collect(Collectors.toList());
+
+        final long averageAge = (long) employees.stream()
+            .filter(not(Employee::isConsultant))
+            .mapToInt(Employee::getAge)
+            .average()
+            .orElse(0d);
+//        long averageAge = totalAge / employees.stream().filter(e -> !e.isConsultant()).count();
+
+
+        double totalSalary = employees.stream().mapToInt(Employee::getSalary).sum();
+
+        double averageSalary = totalSalary / employees.size();
         System.out.println("Consultant IDs: " + consultantIds);
         return "Average age = " + averageAge + "; Average salary = " + averageSalary;
     }
+
 
 
     // ======= hard core =========
