@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ class ExportFormatsTest {
 //   p
 
    @Test
-   void writeOrders() {
+   void writeOrders() throws IOException {
       var order = new Order().setId(1L).setCreationDate(LocalDate.parse("2021-11-16"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
       Writer writer = new StringWriter(); // this is a FAKE = implementation only for tests
