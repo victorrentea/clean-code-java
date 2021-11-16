@@ -60,12 +60,8 @@ class FileExporter {
 class ExportFormats {
 	private final OrderRepo orderRepo;
 
-	public void writeOrders(Writer writer) {
-		try {
-			writer.write("order_id;date\n");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	public void writeOrders(Writer writer) throws IOException {
+      writer.write("order_id;date\n");
 		orderRepo.findByActiveTrue() // WHY?: retrieve and consume, and not collect it in a list. in DB 10M active
 										// orders. collect = OOME
 				.map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
@@ -77,12 +73,8 @@ class ExportFormats {
 
 	private final UserRepo userRepo;
 
-	public void writeUsers(Writer writer) {
-		try {
-			writer.write("username;firstname\n");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	public void writeUsers(Writer writer) throws IOException {
+      writer.write("username;firstname\n");
 		userRepo.findAll().stream()
 				.map(u -> u.getUsername() + ";" + u.getFirstName() + "\n")
 				.forEach(Unchecked.consumer(s -> writer.write(s)));
