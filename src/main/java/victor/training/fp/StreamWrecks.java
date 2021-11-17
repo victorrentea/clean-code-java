@@ -8,10 +8,7 @@ import java.util.Map.Entry;
 
 import static java.util.stream.Collectors.*;
 
-// get the products frequently ordered during the past year
-
-
-class ProductService {
+public class StreamWrecks {
 	private ProductRepo productRepo;
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
