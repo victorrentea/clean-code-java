@@ -6,21 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ExtractValueObjects {
-   // Ford Focus:     [2012 ---- 2016]
-   // Search:              [2014 ---- 2018]
-   public static void main(String[] args) {
-      // can't afford a 2021 car
-      CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
-      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
-      List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
-      System.out.println(models);
-   }
-}
+class ExtractValueObjects {
 
-
-class SearchEngine {
-
+   // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
       List<CarModel> results = new ArrayList<>(models);
       results.removeIf(model -> !MathUtil.intervalsIntersect(
