@@ -1,41 +1,90 @@
 package victor.training.pure.basic;
 
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
+import com.google.common.collect.ImmutableList;
+import lombok.ToString;
+import lombok.Value;
+import lombok.With;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.of(1, 2, 3, 4, 5);
 
-      Immutable immutable = new Immutable();
-
-      immutable.x = 2;
-      immutable.numbers = numbers;
-      immutable.other = new Other(13);
+      Immutable immutable = new Immutable(2, numbers,new Other(13));
 
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
+      int newX = someCreepyMethod(immutable);
 
-      System.out.println(immutable.numbers);
+//      immutable = new Builder(immutable)
+//          .with(newX)
+//          .build();
+//      immutable.setX(newX);
+      immutable = immutable.withX(newX);
+
+      System.out.println(immutable.getNumbers());
       System.out.println(immutable);
    }
-}
 
-class Immutable {
-   public int x;
-   public List<Integer> numbers;
-   public Other other;
+   private static int someCreepyMethod(Immutable immutable) {
+      // WHAT CAN GO WRONG HERE?
+//      immutable.getNumbers().add(-10);
 
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+
+      return -1;
    }
 }
 
+
+@Value
+class ImmutableLombok {
+   @With
+   int x;
+   ImmutableList<Integer> numbers; // HIBERNATE HAS ALLERGY TO THIS, but ok for Mongo/Cassandra/...nosql
+   Other other;
+}
+
+
+@ToString
+class Immutable { //deep immutable object
+   private final int x;
+   private final ImmutableList<Integer> numbers; // HIBERNATE HAS ALLERGY TO THIS, but ok for Mongo/Cassandra/...nosql
+   private final Other other;
+
+   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+      this.x = x;
+      this.numbers = numbers;
+      this.other = other;
+   }
+
+   public Immutable withX(int newX) {
+      return new Immutable(newX, numbers, other);
+   }
+
+
+   public int getX() {
+      return x;
+   }
+//   public List<Integer> getNumbers() {
+////      return new ArrayList<>(numbers); //wasteful for memory
+//      return Collections.unmodifiableList(numbers); // 95% of teams do this if they want immutability
+//   }
+//   public Iterable<Integer> getNumbers() { // weird but possible
+//      return numbers;
+//   }
+
+   public ImmutableList<Integer> getNumbers() {
+      return numbers;
+   }
+
+   public Other getOther() {
+      return other;
+   }
+}
+
+@ToString
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -43,9 +92,5 @@ class Other {
 
    public int getA() {
       return a;
-   }
-
-   public void setA(int a) {
-      this.a = a;
    }
 }
