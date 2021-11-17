@@ -1,14 +1,16 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
+import lombok.Value;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class ExtractValueObjects {
-   // Ford Focus:     [2012 ---- 2016]
-   // Search:              [2014 ---- 2018]
+   // Ford Focus Mk2:     [2012 ---- 2016]
+   // Search:                 [2014 ---- 2018]
    public static void main(String[] args) {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
@@ -22,40 +24,48 @@ public class ExtractValueObjects {
 class SearchEngine {
 
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+
+      Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+      List<CarModel> results = models.stream()
+          .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
+          .collect(toList());
       System.out.println("More filtering logic");
       return results;
    }
+   // Tarzan ; got hurt
+   // baby steps
+   // INLINE STATIC function to push in all code the body of our function
+   // discovered Interval class from a large singature
+   // we added logic to it!
+
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
-
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
-   }
 }
 
+//@Data // i hate data
+@Value // i love this
+class Interval {
+   int start;
+   int end;
 
-
-
-
-
-
-
+   public boolean intersects(Interval other) {
+      return start <= other.end && other.start <= end;
+   }
+}
+//record Interval(int start, int end) {} java 17
 
 
 class CarSearchCriteria {
@@ -83,22 +93,31 @@ class CarSearchCriteria {
    }
 }
 
+// Holy Enty Model
 //@Entity
 class CarModel {
-//   @Id
+   //   @Id
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+//   private int startYear;
+//   private int endYear;
+   private Interval yearInterval;
 
-   private CarModel() {} // for Hibernate
-   public CarModel(String make, String model, int startYear, int endYear) {
+   private CarModel() {
+   } // for Hibernate
+
+   public CarModel(String make, String model, int startYear, int endYear) {  // TODO
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");  // TODO
+//      this.startYear = startYear;
+//      this.endYear = endYear;
+      yearInterval = new Interval(startYear, endYear);
+   }
+
+   public Interval getYearInterval() {
+      return yearInterval;
    }
 
    public Long getId() {
@@ -106,11 +125,11 @@ class CarModel {
    }
 
    public int getEndYear() {
-      return endYear;
-   }
+      return yearInterval.getEnd();
+   }  // TODO
 
    public int getStartYear() {
-      return startYear;
+      return yearInterval.getStart();
    }
 
    public String getMake() {
@@ -141,10 +160,12 @@ class CarModelMapper {
       dto.endYear = carModel.getEndYear();
       return dto;
    }
+
    public CarModel fromDto(CarModelDto dto) {
       return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
    }
 }
+
 class CarModelDto {
    public String make;
    public String model;
