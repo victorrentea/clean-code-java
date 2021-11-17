@@ -1,9 +1,12 @@
 package victor.training.pure.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.Value;
 import lombok.With;
+
+import java.util.Objects;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
@@ -20,6 +23,8 @@ public class ImmutableBasic {
 
       System.out.println(immutable.getNumbers());
       System.out.println(immutable);
+
+      new ImmutableLombok(1, null, new Other(1));
    }
 
    private static int someCreepyMethod(Immutable immutable) {
@@ -36,6 +41,7 @@ public class ImmutableBasic {
 class ImmutableLombok {
    @With
    int x;
+   @NonNull // not sure
    ImmutableList<Integer> numbers; // HIBERNATE HAS ALLERGY TO THIS, but ok for Mongo/Cassandra/...nosql
    Other other;
 }
@@ -48,8 +54,9 @@ class Immutable { //deep immutable object
    private final Other other;
 
    public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+      // what validation to enoforce on my fields
       this.x = x;
-      this.numbers = numbers;
+      this.numbers = Objects.requireNonNull(numbers);
       this.other = other;
    }
 
