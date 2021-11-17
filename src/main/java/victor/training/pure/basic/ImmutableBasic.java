@@ -16,10 +16,6 @@ public class ImmutableBasic {
       // LOTS OF BUSINESS LOGIC HERE
       int newX = someCreepyMethod(immutable);
 
-//      immutable = new Builder(immutable)
-//          .with(newX)
-//          .build();
-//      immutable.setX(newX);
       immutable = immutable.withX(newX);
 
       System.out.println(immutable.getNumbers());
