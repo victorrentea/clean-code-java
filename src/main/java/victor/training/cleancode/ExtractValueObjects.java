@@ -1,10 +1,11 @@
 package victor.training.cleancode;
 
+import lombok.Getter;
 import lombok.Value;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -14,7 +15,7 @@ public class ExtractValueObjects {
    public static void main(String[] args) {
       // can't afford a 2021 car
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
-      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+      CarModel fordFocusMk2 = new CarModel("Ford", "Focus", new Interval(2012, 2016));
       List<CarModel> models = new SearchEngine().filterCarModels(criteria, Arrays.asList(fordFocusMk2));
       System.out.println(models);
    }
@@ -61,6 +62,15 @@ class Interval {
    int start;
    int end;
 
+   public Interval(int start, int end) {
+      if (start > end) { // makes the Interval less reusable
+         throw new IllegalArgumentException("start larger than end"); // self-validating model
+         // <50% of teams (best of teams) Domain Driven Desing
+      }
+      this.start = start;
+      this.end = end;
+   }
+
    public boolean intersects(Interval other) {
       return start <= other.end && other.start <= end;
    }
@@ -94,27 +104,26 @@ class CarSearchCriteria {
 }
 
 // Holy Enty Model
-//@Entity
+//@Entity // CAR_MODEL(ID,MAKE,MODEL,START_YEAR,END_YEAR,
+@Getter
 class CarModel {
-   //   @Id
+      @Id
    private Long id;
    private String make;
    private String model;
-//   private int startYear;
-//   private int endYear;
+//   @Embedded //@AttributeOverrides
    private Interval yearInterval;
+   // -2+1  == -1 field for my entity =>> lighter entities
 
    private CarModel() {
    } // for Hibernate
 
-   public CarModel(String make, String model, int startYear, int endYear) {  // TODO
+   public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");  // TODO
-//      this.startYear = startYear;
-//      this.endYear = endYear;
-      yearInterval = new Interval(startYear, endYear);
+      this.yearInterval = yearInterval;
    }
+
 
    public Interval getYearInterval() {
       return yearInterval;
@@ -124,13 +133,7 @@ class CarModel {
       return id;
    }
 
-   public int getEndYear() {
-      return yearInterval.getEnd();
-   }  // TODO
-
-   public int getStartYear() {
-      return yearInterval.getStart();
-   }
+   // "Man in the middle"
 
    public String getMake() {
       return make;
@@ -150,19 +153,19 @@ class CarModel {
    }
 }
 
-
 class CarModelMapper {
    public CarModelDto toDto(CarModel carModel) {
       CarModelDto dto = new CarModelDto();
       dto.make = carModel.getMake();
       dto.model = carModel.getModel();
-      dto.startYear = carModel.getStartYear();
-      dto.endYear = carModel.getEndYear();
+      dto.startYear = carModel.getYearInterval().getStart();
+      dto.startYear = carModel.getYearInterval().getStart();
+      dto.endYear = carModel.getYearInterval().getEnd();
       return dto;
    }
 
    public CarModel fromDto(CarModelDto dto) {
-      return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+      return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
    }
 }
 
