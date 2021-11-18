@@ -27,6 +27,9 @@ class Validator {
     @Autowired
 	private OtherDependency dep;
 
+    List<String> errors = new ArrayList<>();
+
+
     public void m1(String a, int b, List<String> errors) {
         if (a == null) {
             errors.add("a must not be null");
