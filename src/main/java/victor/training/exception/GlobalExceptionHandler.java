@@ -28,7 +28,8 @@
 //   @ExceptionHandler(MyException.class)
 //   @ResponseStatus
 //   public String myexception(MyException e, HttpServletRequest request) {
-//      String userMessage = messageSource.getMessage(e.getCode().name(), e.getParams(), request.getLocale());
+//      String userMessage = messageSource.getMessage(e.getCode().name()+".message", e.getParams(), request.getLocale());
+////      String userMessage = messageSource.getMessage(e.getCode().name()+".code", e.getParams(), request.getLocale());
 //      log.error("Unexpected: " + userMessage, e);
 //       return userMessage;
 //   }

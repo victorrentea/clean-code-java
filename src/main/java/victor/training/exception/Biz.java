@@ -4,6 +4,9 @@ import victor.training.exception.model.Customer;
 import victor.training.exception.model.MemberCard;
 import victor.training.exception.model.Order;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 //@Service
 public class Biz {
 
@@ -16,6 +19,8 @@ public class Biz {
       } else {
          System.out.println("NO DISCOUNT");
       }
+
+
 
    }
 }

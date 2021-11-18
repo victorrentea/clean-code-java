@@ -1,12 +1,13 @@
 package victor.training.fp;
 
 public class Optional_Chain {
-	static MyMapper mapper = new MyMapper();
-   public static void main(String[] args) {
-		Parcel parcel = new Parcel();
-		parcel.setDelivery(new Delivery(new Address(new ContactPerson("John"))));
+   static MyMapper mapper = new MyMapper();
 
-		DeliveryDto dto = mapper.convert(parcel);
+   public static void main(String[] args) {
+      Parcel parcel = new Parcel();
+      parcel.setDelivery(new Delivery(null));
+
+      DeliveryDto dto = mapper.convert(parcel);
       System.out.println(dto);
    }
 }
@@ -14,21 +15,35 @@ public class Optional_Chain {
 class MyMapper {
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
+
+//      if (
+//          parcel != null &&
+//          parcel.getDelivery() != null &&
+//          parcel.getDelivery().getAddress() != null &&
+//          parcel.getDelivery().getAddress().getContactPerson() != null &&
+//          parcel.getDelivery().getAddress().getContactPerson().getName() != null
+//      ) {
+
+
       dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+
+//      }
       return dto;
    }
 }
 
 class DeliveryDto {
-	public String recipientPerson;
+   public String recipientPerson;
 }
+
 class Parcel {
    private Delivery delivery; // NULL until a delivery is scheduled
 
    public Delivery getDelivery() {
       return delivery;
    }
-	public void setDelivery(Delivery delivery) {
+
+   public void setDelivery(Delivery delivery) {
       this.delivery = delivery;
    }
 }
@@ -41,11 +56,11 @@ class Delivery {
       this.address = address;
    }
 
-	public void setAddress(Address address) {
-		this.address = address; // TODO null safe
-	}
+   public void setAddress(Address address) {
+      this.address = address; // TODO null safe
+   }
 
-	public Address getAddress() {
+   public Address getAddress() {
       return address;
    }
 }
