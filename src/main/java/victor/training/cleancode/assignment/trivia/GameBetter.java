@@ -31,16 +31,8 @@ public class GameBetter implements IGame {
     }
 
     public boolean add(String playerName) {
-        for (Player player : players) {
-            if (player.getUsername().equalsIgnoreCase(playerName)) {
-                log.info("Username already exists! [{}] Please choose a different one.", playerName);
-                return false;
-            }
-        }
         final Player newPlayer = new Player(playerName, false, 0, 0, 0);
         players.add(newPlayer);
-        log.info("Player [{}] was successfully added.", playerName);
-        log.info("They are player number: {}", players.size());
 
         //TODO: add log4j config to output to console
         System.out.println(playerName + " was added");
@@ -54,8 +46,6 @@ public class GameBetter implements IGame {
             // the game just started, the first user is 0
             currentPlayer = players.get(0);
         }
-        log.info("{} is the current player", currentPlayer.getUsername());
-        log.info("They have rolled a {}", roll);
 
         System.out.println(currentPlayer.getUsername() + " is the current player");
         System.out.println("They have rolled a " + roll);
@@ -64,14 +54,12 @@ public class GameBetter implements IGame {
             if (roll % 2 != 0) {
                 //the player is getting out of penalty box
                 currentPlayer.setPenalise(false);
-                log.info("{} is getting out of the penalty box", currentPlayer.getUsername());
                 System.out.println(currentPlayer.getUsername() + " is getting out of the penalty box");
 
                 calculatePlaceForPlayer(currentPlayer, roll);
                 prepareQuestion();
             } else {
                 System.out.println(currentPlayer.getUsername() + " is not getting out of the penalty box");
-                log.info("{} is not getting out of the penalty box", currentPlayer.getUsername());
 
                 //TODO: move to the next user -> this one doesnt answer to any question, he is still in prison -> see Readme for output
             }
@@ -93,7 +81,6 @@ public class GameBetter implements IGame {
     }
 
     private boolean correctAnswer() {
-        log.info("Answer was correct!!!!");
         currentPlayer.setCorrectAnswers(currentPlayer.getCorrectAnswers() + 1);
         System.out.println("Answer was correct!!!!");
         if (ENABLE_STREAK && currentPlayer.getCorrectAnswers() > MIN_NEEDED_STREAKS) {
@@ -101,7 +88,6 @@ public class GameBetter implements IGame {
         } else {
             currentPlayer.setCoins(currentPlayer.getCoins() + 1);
         }
-        log.info("{} now has {} Gold Coins.", currentPlayer.getUsername(), currentPlayer.getCoins());
         System.out.println(currentPlayer.getUsername()
                 + " now has "
                 + currentPlayer.getCoins()
@@ -120,9 +106,7 @@ public class GameBetter implements IGame {
     }
 
     public boolean wrongAnswer() {
-        log.info("Question was incorrectly answered");
         System.out.println("Question was incorrectly answered");
-        log.info("{} was sent to the penalty box", currentPlayer.getUsername());
         System.out.println(currentPlayer.getUsername() + " was sent to the penalty box");
         if (ENABLE_STREAK) {
             //no penalise because of streak
@@ -136,7 +120,6 @@ public class GameBetter implements IGame {
 
     public void prepareQuestion() {
         final QuestionCategory currentCategory = getCurrentCategory(currentPlayer.getPlace());
-        log.info("The category is {}", currentCategory.label);
         System.out.println("The category is " + currentCategory.label);
         askQuestion(currentCategory);
     }
@@ -156,7 +139,6 @@ public class GameBetter implements IGame {
         } else {
             player.setPlace(newPlace);
         }
-        log.info("{}'s new location is {}", player.getUsername(), player.getPlace());
         System.out.println(player.getUsername()
                 + "'s new location is "
                 + player.getPlace());
@@ -182,7 +164,6 @@ public class GameBetter implements IGame {
 
     private void askQuestion(QuestionCategory currentCategory) {
         final Question question = questionsMap.get(currentCategory).removeFirst();
-        log.info(question.getSentence());
         System.out.println(question.getSentence());
     }
 
