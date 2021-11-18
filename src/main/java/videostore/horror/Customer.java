@@ -1,6 +1,7 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static videostore.horror.Movie.Type.NEW_RELEASE;
 
@@ -19,19 +20,51 @@ class Rental {
 	public Movie getMovie() {
 		return movie;
 	}
+
+	public double computePrice() {
+		double price = 0;
+		switch (getMovie().getPriceCode()) {
+			case REGULAR:
+				price += 2;
+				if (getDaysRented() > 2)
+					price += (getDaysRented() - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				price += getDaysRented() * 3;
+				break;
+			case CHILDRENS:
+				price += 1.5;
+				if (getDaysRented() > 3)
+					price += (getDaysRented() - 3) * 1.5;
+				break;
+			default: //always
+				throw new IllegalStateException("Unexpected value: " + getMovie().getPriceCode());
+		}
+		return price;
+	}
+
+	public boolean deservesBonus() {
+		return getMovie().getPriceCode() == NEW_RELEASE && getDaysRented() >= 2;
+	}
+
+	public int computeBonus() {
+		int frequentRenterPoints = 1;
+		if (deservesBonus()) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
 }
 
 class Customer {
 	private final String name;
 	private final List<Rental> rentals = new ArrayList<>();
-	private final Map<Movie, Integer> rentalsMap = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentalsMap.put(movie, daysRented);
 		rentals.add(new Rental(movie, daysRented));
 	}
 
@@ -40,55 +73,34 @@ class Customer {
 	}
 
 	public String statement() {
-		double totaPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
-
-		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
-
-			double price = computePrice(rental);
-
-			// add frequent renter points
-			frequentRenterPoints++;
-			if (deservesBonus(movie, daysRented)) {
-				frequentRenterPoints++;
-			}
-
-			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + price + "\n";
-			totaPrice += price;
-		}
-		// add footer lines
-		result += "Amount owed is " + totaPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
 	}
 
-	private double computePrice(Rental rental) {
-		double price = 0;
-		switch (rental.getMovie().getPriceCode()) {
-			case REGULAR:
-				price += 2;
-				if (rental.getDaysRented() > 2)
-					price += (rental.getDaysRented() - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				price += rental.getDaysRented() * 3;
-				break;
-			case CHILDRENS:
-				price += 1.5;
-				if (rental.getDaysRented() > 3)
-					price += (rental.getDaysRented() - 3) * 1.5;
-				break;
-			default: //always
-				throw new IllegalStateException("Unexpected value: " + rental.getMovie().getPriceCode());
-		}
-		return price;
+	private double getTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
-	private boolean deservesBonus(Movie each, int daysRented) {
-		return each.getPriceCode() == NEW_RELEASE && daysRented >= 2;
+	private int getTotalPoints() {
+		return rentals.stream().mapToInt(Rental::computeBonus).sum();
 	}
+
+	private String formatBody() {
+		return rentals.stream().map(this::formatLine).collect(Collectors.joining());
+	}
+
+	private String formatHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String formatFooter() {
+		return "Amount owed is " + getTotalPrice() + "\n" +
+				 "You earned " + getTotalPoints() + " frequent renter points";
+	}
+
+	private String formatLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+	}
+
 }

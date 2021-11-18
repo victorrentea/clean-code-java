@@ -23,11 +23,11 @@ public class CustomerTest {
         
         assertEquals(expected, customer.statement());
     }
-    @Test
-    public void explore() {
-        Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", null), 6);
-
-        customer.statement();
-    }
+//    @Test
+//    public void explore() {
+//        Customer customer = new Customer("John Doe");
+//        customer.addRental(new Movie("Star Wars", null), 6);
+//
+//        customer.statement();
+//    }
 }
