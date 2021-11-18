@@ -2,12 +2,13 @@ package victor.training.cleancode.assignment.trivia;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
  * Created by Alexandra Petcov on Nov, 2021
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Player {
     private final String username;
     private boolean penalise;
@@ -39,11 +40,6 @@ public class Player {
 
     public int getPlace() {
         return place;
-    }
-
-    public Player setPlace(int place) {
-        this.place = place;
-        return this;
     }
 
     public int getCoins() {

@@ -15,7 +15,7 @@ public class GameBetter implements IGame {
 
 
     public boolean add(String playerName) {
-        final Player newPlayer = new Player(playerName, false, 0, 0, 0);
+        final Player newPlayer = new Player(playerName);
         players.add(newPlayer);
 
         System.out.println(playerName + " was added");
