@@ -36,6 +36,7 @@ public class QuestionRepo {
 
    public void askQuestion(QuestionCategory currentCategory) {
       final Question question = questionsMap.get(currentCategory).remove(0);
+//      questionsMap.get(currentCategory).add(question); mail to biz
       System.out.println(question.getSentence());
    }
 }

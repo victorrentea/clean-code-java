@@ -33,17 +33,17 @@ public class GameTest {
 			aGame.add("Pat");
 			aGame.add("Sue");
 			
-			boolean notAWinner = false;
-			do {
+			boolean notOver = true;
+			while(notOver) {
 				aGame.roll(rand.nextInt(5) + 1);
-				
+
 				if (rand.nextInt(9) == 7) {
-					notAWinner = aGame.wrongAnswer();
+					notOver = aGame.wrongAnswer();
 				} else {
-					notAWinner = aGame.wasCorrectlyAnswered();
+					notOver = aGame.wasCorrectlyAnswered();
 				}
-				
-			} while (notAWinner);
+
+			}
 		}
 		String output = new String(baos.toByteArray());
 		return output;

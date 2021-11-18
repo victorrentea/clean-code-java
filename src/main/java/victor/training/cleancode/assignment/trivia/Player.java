@@ -1,9 +1,6 @@
 package victor.training.cleancode.assignment.trivia;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 /**
  * Created by Alexandra Petcov on Nov, 2021
@@ -33,9 +30,12 @@ public class Player {
         return penalise;
     }
 
-    public Player setPenalise(boolean penalise) {
-        this.penalise = penalise;
-        return this;
+    public void moveOutOfPenaltyBox() {
+        penalise = false;
+    }
+
+    public void moveInPenaltyBox() {
+        penalise = true;
     }
 
     public int getPlace() {
@@ -58,5 +58,9 @@ public class Player {
     public Player setCorrectAnswers(int correctAnswers) {
         this.correctAnswers = correctAnswers;
         return this;
+    }
+
+    public boolean didPlayerWin() {
+        return coins == 6;
     }
 }
