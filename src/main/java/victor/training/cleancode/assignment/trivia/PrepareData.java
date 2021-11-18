@@ -16,7 +16,7 @@ public class PrepareData {
 
     //Todo: this must be refactored again .. maybe tomorrow, too many things change when new category is added
     public Map<Integer, QuestionCategory> createPlaces() {
-        final HashMap<Integer, QuestionCategory> places = new HashMap<>();
+        Map<Integer, QuestionCategory> places = new HashMap<>();
         places.put(0, QuestionCategory.POP);
         places.put(4, QuestionCategory.POP);
         places.put(8, QuestionCategory.POP);
@@ -26,8 +26,6 @@ public class PrepareData {
         places.put(2, QuestionCategory.SPORTS);
         places.put(6, QuestionCategory.SPORTS);
         places.put(10, QuestionCategory.SPORTS);
-        //With this the test can fail
-//        places.put(11, QuestionCategory.GEOGRAPHY);
         return places;
     }
 

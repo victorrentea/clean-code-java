@@ -13,11 +13,18 @@ public class Player {
     private final String username;
     @Setter
     private boolean penalise;
-    @Setter
     private int place;
     @Setter
     private int coins;
     @Setter
     private int correctAnswers;
 
+    // encapsulate the biz rule: "place loops after 12" inside the player, as close as possible to where the state is
+    // Uncle Bob will hug you!
+    public void advance(int roll) {
+        place += roll;
+        if (place >= 12) {
+            place -= 12;
+        }
+    }
 }

@@ -1,31 +1,26 @@
 package victor.training.cleancode.assignment.trivia;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-// REFACTOR ME
 public class GameBetter implements IGame {
 
-    private static final Logger log = LogManager.getLogger(GameBetter.class.getName());
     //these fields must be externalized
     private static final int COINS_NUMBER = 6;
-    private static final int MIN_NEEDED_STREAKS = 3;
-    private static final boolean ENABLE_STREAK = false;
-    private static final int MAX_PLACE = 11;
-    private static final int DECREASE_PLACE_VALUE = 12;
 
-    final PrepareData prepareData = new PrepareData();
-    final Map<QuestionCategory, LinkedList<Question>> questionsMap;
-    final Map<Integer, QuestionCategory> places;
-    ArrayList<Player> players = new ArrayList<>();
 
-    Player currentPlayer;
+    private final Map<QuestionCategory, LinkedList<Question>> questionsMap;
+
+    private final Map<Integer, QuestionCategory> places;
+
+    private final List<Player> players = new ArrayList<>();
+
+    private int currentPlayerIndex;
 
     public GameBetter() {
+        PrepareData prepareData = new PrepareData();
         this.questionsMap = prepareData.createQuestionsMap();
         this.places = prepareData.createPlaces();
     }
@@ -42,30 +37,26 @@ public class GameBetter implements IGame {
     }
 
     public void roll(int roll) {
-        if (currentPlayer == null) {
-            // the game just started, the first user is 0
-            currentPlayer = players.get(0);
-        }
 
-        System.out.println(currentPlayer.getUsername() + " is the current player");
+        System.out.println(currentPlayer().getUsername() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (currentPlayer.isPenalise()) {
+        if (currentPlayer().isPenalise()) {
             if (roll % 2 != 0) {
                 //the player is getting out of penalty box
-                currentPlayer.setPenalise(false);
-                System.out.println(currentPlayer.getUsername() + " is getting out of the penalty box");
+                currentPlayer().setPenalise(false);
+                System.out.println(currentPlayer().getUsername() + " is getting out of the penalty box");
 
-                calculatePlaceForPlayer(currentPlayer, roll);
+                calculatePlaceForPlayer(currentPlayer(), roll);
                 prepareQuestion();
             } else {
-                System.out.println(currentPlayer.getUsername() + " is not getting out of the penalty box");
+                System.out.println(currentPlayer().getUsername() + " is not getting out of the penalty box");
 
                 //TODO: move to the next user -> this one doesnt answer to any question, he is still in prison -> see Readme for output
             }
 
         } else {
-            calculatePlaceForPlayer(currentPlayer, roll);
+            calculatePlaceForPlayer(currentPlayer(), roll);
             prepareQuestion();
         }
 
@@ -73,7 +64,7 @@ public class GameBetter implements IGame {
 
     public boolean wasCorrectlyAnswered() {
         boolean winner = true;
-        if (!currentPlayer.isPenalise()) {
+        if (!currentPlayer().isPenalise()) {
             winner = correctAnswer();
         }
         getNextPlayer();
@@ -81,64 +72,47 @@ public class GameBetter implements IGame {
     }
 
     private boolean correctAnswer() {
-        currentPlayer.setCorrectAnswers(currentPlayer.getCorrectAnswers() + 1);
+        currentPlayer().setCorrectAnswers(currentPlayer().getCorrectAnswers() + 1);
         System.out.println("Answer was correct!!!!");
-        if (ENABLE_STREAK && currentPlayer.getCorrectAnswers() > MIN_NEEDED_STREAKS) {
-            currentPlayer.setCoins(currentPlayer.getCoins() + 2);
-        } else {
-            currentPlayer.setCoins(currentPlayer.getCoins() + 1);
-        }
-        System.out.println(currentPlayer.getUsername()
-                + " now has "
-                + currentPlayer.getCoins()
-                + " Gold Coins.");
+        currentPlayer().setCoins(currentPlayer().getCoins() + 1);
+        System.out.println(currentPlayer().getUsername()
+                           + " now has "
+                           + currentPlayer().getCoins()
+                           + " Gold Coins.");
         return didPlayerWin();
     }
 
     private void getNextPlayer() {
-        //next player
-        int currentIndex = players.indexOf(currentPlayer);
+        int currentIndex = players.indexOf(currentPlayer());
         currentIndex++;
         if (currentIndex == players.size()) {
             currentIndex = 0;
         }
-        currentPlayer = players.get(currentIndex);
+        currentPlayerIndex = currentIndex;
     }
 
     public boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
-        System.out.println(currentPlayer.getUsername() + " was sent to the penalty box");
-        if (ENABLE_STREAK) {
-            //no penalise because of streak
-            currentPlayer.setCorrectAnswers(0);
-        } else {
-            currentPlayer.setPenalise(true);
-        }
+        System.out.println(currentPlayer().getUsername() + " was sent to the penalty box");
+        currentPlayer().setPenalise(true);
         getNextPlayer();
         return true;
     }
 
     public void prepareQuestion() {
-        final QuestionCategory currentCategory = getCurrentCategory(currentPlayer.getPlace());
+        final QuestionCategory currentCategory = getCurrentCategory(currentPlayer().getPlace());
         System.out.println("The category is " + currentCategory.label);
         askQuestion(currentCategory);
     }
 
     private boolean didPlayerWin() {
-        if (ENABLE_STREAK) {
-            return currentPlayer.getCoins() != COINS_NUMBER * 2;
-        }
-        return currentPlayer.getCoins() != COINS_NUMBER;
+        return currentPlayer().getCoins() != COINS_NUMBER;
     }
+
 
     private void calculatePlaceForPlayer(Player player, int roll) {
         //set new place for the current player and get rid of magic numbers
-        final int newPlace = player.getPlace() + roll;
-        if (newPlace > MAX_PLACE) {
-            player.setPlace(newPlace - DECREASE_PLACE_VALUE);
-        } else {
-            player.setPlace(newPlace);
-        }
+        player.advance(roll);
         System.out.println(player.getUsername()
                 + "'s new location is "
                 + player.getPlace());
@@ -165,6 +139,10 @@ public class GameBetter implements IGame {
     private void askQuestion(QuestionCategory currentCategory) {
         final Question question = questionsMap.get(currentCategory).removeFirst();
         System.out.println(question.getSentence());
+    }
+
+    public Player currentPlayer() {
+        return players.get(currentPlayerIndex);
     }
 
 }
