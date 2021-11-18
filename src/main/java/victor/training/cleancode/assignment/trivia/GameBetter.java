@@ -8,9 +8,8 @@ public class GameBetter implements IGame {
     //these fields must be externalized
     private static final int COINS_NUMBER = 6;
 
-
-    private final List<Player> players = new ArrayList<>();
     private final QuestionRepo questionRepo = new QuestionRepo();
+    private final List<Player> players = new ArrayList<>();
 
     private int currentPlayerIndex;
 
@@ -19,7 +18,6 @@ public class GameBetter implements IGame {
         final Player newPlayer = new Player(playerName, false, 0, 0, 0);
         players.add(newPlayer);
 
-        //TODO: add log4j config to output to console
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
         return true;
@@ -27,12 +25,11 @@ public class GameBetter implements IGame {
     }
 
     public void roll(int roll) {
-
         System.out.println(currentPlayer().getUsername() + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (currentPlayer().isPenalise()) {
-            if (roll % 2 != 0) {
+        if (currentPlayer().isPenalized()) {
+            if (isGettingOutOfPenaltyBox(roll)) {
                 //the player is getting out of penalty box
                 currentPlayer().setPenalise(false);
                 System.out.println(currentPlayer().getUsername() + " is getting out of the penalty box");
@@ -52,9 +49,14 @@ public class GameBetter implements IGame {
 
     }
 
+    // http://confluence/jira.intra/....
+    private boolean isGettingOutOfPenaltyBox(int roll) {
+        return roll % 2 != 0;
+    }
+
     public boolean wasCorrectlyAnswered() {
         boolean winner = true;
-        if (!currentPlayer().isPenalise()) {
+        if (!currentPlayer().isPenalized()) {
             winner = correctAnswer();
         }
         getNextPlayer();

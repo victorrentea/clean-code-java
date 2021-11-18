@@ -8,15 +8,11 @@ import lombok.Setter;
  * Created by Alexandra Petcov on Nov, 2021
  */
 @AllArgsConstructor
-@Getter
 public class Player {
     private final String username;
-    @Setter
     private boolean penalise;
     private int place;
-    @Setter
     private int coins;
-    @Setter
     private int correctAnswers;
 
     // encapsulate the biz rule: "place loops after 12" inside the player, as close as possible to where the state is
@@ -26,5 +22,45 @@ public class Player {
         if (place >= 12) {
             place -= 12;
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public boolean isPenalized() {
+        return penalise;
+    }
+
+    public Player setPenalise(boolean penalise) {
+        this.penalise = penalise;
+        return this;
+    }
+
+    public int getPlace() {
+        return place;
+    }
+
+    public Player setPlace(int place) {
+        this.place = place;
+        return this;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public Player setCoins(int coins) {
+        this.coins = coins;
+        return this;
+    }
+
+    public int getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public Player setCorrectAnswers(int correctAnswers) {
+        this.correctAnswers = correctAnswers;
+        return this;
     }
 }
