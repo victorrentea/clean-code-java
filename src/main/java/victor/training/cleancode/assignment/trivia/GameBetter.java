@@ -1,9 +1,7 @@
 package victor.training.cleancode.assignment.trivia;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class GameBetter implements IGame {
 
@@ -11,19 +9,11 @@ public class GameBetter implements IGame {
     private static final int COINS_NUMBER = 6;
 
 
-    private final Map<QuestionCategory, LinkedList<Question>> questionsMap;
-
-    private final Map<Integer, QuestionCategory> places;
-
     private final List<Player> players = new ArrayList<>();
+    private final QuestionRepo questionRepo = new QuestionRepo();
 
     private int currentPlayerIndex;
 
-    public GameBetter() {
-        PrepareData prepareData = new PrepareData();
-        this.questionsMap = prepareData.createQuestionsMap();
-        this.places = prepareData.createPlaces();
-    }
 
     public boolean add(String playerName) {
         final Player newPlayer = new Player(playerName, false, 0, 0, 0);
@@ -100,9 +90,9 @@ public class GameBetter implements IGame {
     }
 
     public void prepareQuestion() {
-        final QuestionCategory currentCategory = getCurrentCategory(currentPlayer().getPlace());
+        final QuestionCategory currentCategory = questionRepo.getCurrentCategory(currentPlayer().getPlace());
         System.out.println("The category is " + currentCategory.label);
-        askQuestion(currentCategory);
+        questionRepo.askQuestion(currentCategory);
     }
 
     private boolean didPlayerWin() {
@@ -129,16 +119,12 @@ public class GameBetter implements IGame {
 //    }
 
     private QuestionCategory getCurrentCategory(int playerPlace) {
-        if (places.containsKey(playerPlace)) {
-            return places.get(playerPlace);
-        }
-        return QuestionCategory.ROCK;
 
+        return questionRepo.getCurrentCategory(playerPlace);
     }
 
     private void askQuestion(QuestionCategory currentCategory) {
-        final Question question = questionsMap.get(currentCategory).removeFirst();
-        System.out.println(question.getSentence());
+        questionRepo.askQuestion(currentCategory);
     }
 
     public Player currentPlayer() {

@@ -7,8 +7,7 @@ enum QuestionCategory {
     POP("Pop"),
     SCIENCE("Science"),
     SPORTS("Sports"),
-    ROCK("Rock"),
-    GEOGRAPHY("Geography");
+    ROCK("Rock");
 
     public final String label;
 
