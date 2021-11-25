@@ -1,25 +1,27 @@
 package victor.training.cleancode;
 
+import java.time.LocalDate;
+
 public class ParameterObjects {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, Address address) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
 
    }
 }
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getLastName());
    }
 }
 
@@ -28,6 +30,13 @@ class Person {
    private String firstName;
    private String lastName;
    private String phone;
+
+//   private String createdBy;
+//   private LocalDate createdDate;
+//   private UserAction creation; {user,date}
+
+
+
 
    public Person(String firstName, String lastName) {
       if (firstName == null || lastName == null) throw new IllegalArgumentException();
