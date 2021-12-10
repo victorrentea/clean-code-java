@@ -20,26 +20,25 @@ public class SplitLoop {
         if (employees.isEmpty()) {
             return "N/A";
         }
-        long totalEmpAge = 0;
+        long totalEmpAge;
         double averageConsultantSalary = 0;
         for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
-            }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
+            if (employee.isConsultant()) {
+                if (employee.getId() == null) {
+                    return "Employee(s) not persisted";
                 }
+                if (employee.getSalary() == null) {
+                    Integer salary = employeeService.retrieveSalary(employee.getId());
+                    if (salary == null) {
+                        throw new RuntimeException("NO salary found for employee " + employee.getId());
+                    } else {
+                        employee.setSalary(salary);
+                    }
+                }
+                averageConsultantSalary += employee.getSalary();
             }
-            averageConsultantSalary += employee.getSalary();
         }
+        totalEmpAge = employees.stream().filter(employee -> !employee.isConsultant()).mapToLong(Employee::getAge).sum();
 
         long averageAge = 0;
         if (totalEmpAge != 0) {

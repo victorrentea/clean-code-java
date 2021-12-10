@@ -2,53 +2,48 @@ package victor.training.cleancode;
 
 public class ParameterObjects {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 17);
+      new ParameterObjects().placeOrder(new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 17));
    }
 
-   public void placeOrder(String firstName, String lastName, String city, String streetName, Integer streetNumber) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, Address address) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("HEAVY LOGIC !$!(*%($*!(@&!(*$@!(");
-      System.out.println("Recipient: " + firstName + " " + lastName.toUpperCase());
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Recipient: " + fullName.asCorporateName());
+      System.out.println("Shipping to " + address.getCity() + " on St. " + address.getStreetName() + " " + address.getStreetNumber());
    }
+
 }
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int age) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int age) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + age);
-      System.out.println("Hello mr " + lastName);
+      System.out.println("Hello mr " + fullName.getLastName());
    }
 }
 
 class Person {
    private Long id;
    private String phone;
-   private String firstName;
-   private String lastName;
+   private FullName fullName;
 
    public Person(String firstName, String lastName) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-      this.firstName = firstName;
-      this.lastName = lastName;
+      fullName = new FullName(firstName, lastName);
    }
 
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
+   public FullName getFullName() {
+      return fullName;
    }
 }
 
 class PersonService {
    public void f(Person person) {
-      System.out.println("Hi there, " + person.getFirstName());
+      System.out.println("Hi there, " + person.getFullName().getFirstName());
 
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
+
+      String fullNameStr = person.getFullName().asCorporateName();
       System.out.println("Record for " + fullNameStr);
    }
 
@@ -60,6 +55,6 @@ class PersonService {
 
 class ClientCode {
    public void method() {
-      new AnotherClass().otherMethod("John", "Doe", 9);
+      new AnotherClass().otherMethod(new FullName("John", "Doe"), 9);
    }
 }
