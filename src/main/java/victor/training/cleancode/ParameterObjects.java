@@ -8,6 +8,7 @@ public class ParameterObjects {
    public void placeOrder(String firstName, String lastName, String city, String streetName, Integer streetNumber) {
       if (firstName == null || lastName == null) throw new IllegalArgumentException();
 
+      System.out.println("HEAVY LOGIC !$!(*%($*!(@&!(*$@!(");
       System.out.println("Recipient: " + firstName + " " + lastName.toUpperCase());
       System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
    }
@@ -49,6 +50,11 @@ class PersonService {
 
       String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
       System.out.println("Record for " + fullNameStr);
+   }
+
+   public void bar() {
+      Person person = new Person("John", "Doe");
+      System.out.println(person);
    }
 }
 
