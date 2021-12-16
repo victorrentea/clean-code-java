@@ -1,6 +1,7 @@
 package victor.training.pure.basic;
 
 import com.google.common.collect.ImmutableList;
+import io.vavr.control.Try;
 import lombok.Value;
 import lombok.With;
 
@@ -20,53 +21,44 @@ public class ImmutableBasic {
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
+//      Try<Immutable> newChangedObj = innocent(immutable);
       Immutable newChangedObj = innocent(immutable);
 
       System.out.println(immutable.getNumbers());
       System.out.println(immutable);
+
+      f(newChangedObj);
+   }
+
+   private static void f(Immutable newChangedObj) {
+      if (newChangedObj.getX() == 2) {
+         System.out.println("Missile");
+      }
    }
 
    private static Immutable innocent(Immutable immutable) {
+//      if (true) return Try.failure(new RuntimeException("e"));
 //      immutable.getNumbers().clear(); // thte caller might not know about the runtie error
+      immutable = immutable.withX(-1);
+      immutable = immutable.withX(-1);
+      immutable = immutable.withOther(new Other(7));
+      immutable = immutable.withOther(new Other(7));
+      immutable = immutable.withX(-1);
+      immutable = immutable.withOther(new Other(7));
+      immutable = immutable.withOther(new Other(7));
       return immutable.withX(-1);
    }
 
 }
 
 //@Value  // = DATA + private final all fields
+@Value
 class Immutable {
    @With
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
-
-   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-
-   public int getX() {
-      return x;
-   }
-
-//   public List<Integer> getNumbers() {
-//      return new ArrayList<>(numbers);
-//   }
-//   public List<Integer> getNumbers() {
-//      return Collections.unmodifiableList(numbers);
-//   }
-   public ImmutableList<Integer> getNumbers() {
-      return numbers;
-   }
-
-   public Other getOther() {
-      return other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-   }
+   int x;
+   ImmutableList<Integer> numbers;
+   @With
+   Other other;
 }
 
 class Other {

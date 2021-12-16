@@ -1,7 +1,16 @@
 package victor.training.pure;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Value;
+import victor.training.pure.Product.Category;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
+
+//@ApplicatonSerbie
 class PriceService {
    private final SupplierService supplierService;
    private final LogisticsService logisticsService;
@@ -18,25 +27,44 @@ class PriceService {
       product.setPrice(cost.add(deliveryCosts));
 
       // @see PriceServiceTest
-      applySupplierDiscount(product); // -20%
-      applyDeliveryDiscount(product); // - 2 EUR
+      // -20%
+      product.applyDiscountRate(getSupplierDiscountRate(new RecordForPriceComputation(product)));
+      product.applyFixedDiscount(getDeliveryDiscount(product)); // - 2 EUR
+
+//      productRepo.save(product);
    }
 
-   private void applySupplierDiscount(Product product) {
-      System.out.println("200 lines of criminally complex logic using " +
+   /*private*/ BigDecimal getSupplierDiscountRate(RecordForPriceComputation product) {
+      BigDecimal discountRate = BigDecimal.valueOf(0.2);
+      System.out.println("80 lines of criminally complex logic using " +
                          product.getSupplierId() + " " + product.getId() +
                          " and " + product.getCategory());
-      BigDecimal discountRate = BigDecimal.valueOf(0.2);
-      product.setPrice(product.getPrice().multiply(BigDecimal.ONE.subtract(discountRate)));
+      return discountRate;
    }
 
-   private void applyDeliveryDiscount(Product product) {
+   private BigDecimal getDeliveryDiscount(Product product) {
+
       System.out.println("40 bugs and changes over the past year here" +
                          product.getSupplierId() + " " + product.getId());
       BigDecimal discount = BigDecimal.valueOf(2);
-      product.setPrice(product.getPrice().subtract(discount));
+     return discount;
+   }
+
+@Value
+static class RecordForPriceComputation {
+   Long id;
+   Long supplierId;
+   Category category;
+   public RecordForPriceComputation(Product product) {
+      this.id= product.getId();
+      this.supplierId = product.getSupplierId();
+      this.category = product.getCategory();
    }
 }
+}
+
+/// regarding unit testing: how do you do it for those private pure methods?
+
 
 // standard, mutable object
 class Product  {
@@ -44,6 +72,17 @@ class Product  {
    private Long supplierId;
    private BigDecimal price;
    private Category category;
+
+   @Getter
+   private List<String> tags;
+
+   public void applyDiscountRate(BigDecimal discountRate) {
+      setPrice(getPrice().multiply(BigDecimal.ONE.subtract(discountRate)));
+   }
+
+   public void applyFixedDiscount(BigDecimal discount) {
+      setPrice(getPrice().subtract(discount));
+   }
 
    public enum Category {
       HOME,
@@ -77,3 +116,5 @@ interface LogisticsService {
 
    BigDecimal estimateDeliveryCosts(Long supplierId);
 }
+
+//what do you think of tools like swagger codegen?
