@@ -14,6 +14,7 @@ class PriceService {
    public void computePrice(Product product) {
       BigDecimal cost = supplierService.getCost(product.getSupplierId(), product.getId());
       BigDecimal deliveryCosts = logisticsService.estimateDeliveryCosts(product.getSupplierId());
+
       product.setPrice(cost.add(deliveryCosts));
 
       // @see PriceServiceTest
