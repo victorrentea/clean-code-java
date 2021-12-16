@@ -23,18 +23,22 @@ class PriceService {
    }
 
    private void applySupplierDiscount(Product product) {
-      System.out.println("200 lines of criminally complex logic using " + product.getSupplierId() + " " + product.getId() + " and " + product.getCategory());
+      System.out.println("200 lines of criminally complex logic using " +
+                         product.getSupplierId() + " " + product.getId() +
+                         " and " + product.getCategory());
       BigDecimal discountRate = BigDecimal.valueOf(0.2);
       product.setPrice(product.getPrice().multiply(BigDecimal.ONE.subtract(discountRate)));
    }
 
    private void applyDeliveryDiscount(Product product) {
-      System.out.println("40 bugs and changes over the past year here" + product.getSupplierId() + " " + product.getId());
+      System.out.println("40 bugs and changes over the past year here" +
+                         product.getSupplierId() + " " + product.getId());
       BigDecimal discount = BigDecimal.valueOf(2);
       product.setPrice(product.getPrice().subtract(discount));
    }
 }
 
+// standard, mutable object
 class Product  {
    private Long id;
    private Long supplierId;
