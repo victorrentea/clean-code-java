@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +66,7 @@ class Marine {
       return dead;
    }
 
+   // bits of small (5-10) reusable (not specific to a use case) DOMAIN LOGIC
    public int computePay() {
       int result = yearsService * 100;
       if (!awards.isEmpty()) {
@@ -74,8 +77,23 @@ class Marine {
       }
       return result;
    }
+
+   public String asCsv() { // BAD its presentation logic - violating MVC
+      return dead + "," + retired + "," + yearsService;
+   }
+}
+@Service
+class MarinePaymentCalculator {
+
 }
 
 class Award {
 
 }
+
+
+// py
+//   m(g)()
+//fun m(g) {
+//
+//}

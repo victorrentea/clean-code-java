@@ -1,10 +1,12 @@
 package victor.training.pure.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.With;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
       ImmutableList<Integer> numbers = ImmutableList.of(1, 2, 3, 4, 5);
+
 
       Immutable immutable = new Immutable(2, 5, numbers, new Other(13));
 
@@ -12,8 +14,15 @@ public class ImmutableBasic {
 
 //      immutable.getNumbers().clear();
 
-      Immutable immutable1 = immutable.withX(3);
-//      Immutable immutable1 = new Immutable.Builder(immutable).withX(3).build();
+      // repeatedly calling with with with / cloning an immutable object in a single method is design smell.
+      // missed opportunity
+       immutable = immutable.withX(3);
+       immutable = immutable.withY(6);
+       immutable = immutable.withOther(new Other(6));
+
+       immutable = new Immutable(3,6, immutable.getNumbers(), new Other(6));
+
+//      Immutable immutable1 = new Immutable.Builder(immutable).withX(3).withY(6).withOther(new Other()).build();
 
       // LOTS OF BUSINESS LOGIC HERE
 
@@ -25,8 +34,12 @@ public class ImmutableBasic {
 
 class Immutable {
    private final int x;
+
+   @With
    private final int y;
+   @With
    private final ImmutableList<Integer> numbers;
+   @With
    private final Other other;
    public Immutable(int x, int y, ImmutableList<Integer> numbers, Other other) {
       this.x = x;

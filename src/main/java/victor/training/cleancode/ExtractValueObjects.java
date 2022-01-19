@@ -108,6 +108,7 @@ class CarModel {
       this.make = make;
       this.model = model;
 
+
       yearInterval= new Interval(startYear, endYear);
    }
 

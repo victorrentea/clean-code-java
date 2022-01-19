@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -73,6 +74,7 @@ public class BooleanParameters {
 
    private void bossEnd(List<Task> tasks) {
       List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+
       int index = 0;
       for (Task task : tasks) {
          index++;
