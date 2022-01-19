@@ -18,10 +18,10 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		Iterator rentals = this.rentals.iterator();
 		String result = "Rental Record for " + getName() + "\n";
+		double totalAmount = 0;
 		while (rentals.hasNext()) {
 			double thisAmount = 0;
 			Rental each = (Rental) rentals.next();

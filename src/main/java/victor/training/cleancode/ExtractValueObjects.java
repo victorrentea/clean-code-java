@@ -1,50 +1,57 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 class ExtractValueObjects {
 
    // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      List<CarModel> results = models.stream()
+          .filter(model -> MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear())))
+          .collect(toList());
+
+
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
-
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
+   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+      return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
    }
 }
+class Interval {
+   private final int start;
+   private final int end;
 
+   Interval(int start, int end) {
+      this.start = start;
+      this.end = end;
+   }
 
+   public int getEnd() {
+      return end;
+   }
 
-
-
-
-
-
-
+   public int getStart() {
+      return start;
+   }
+}
 
 class CarSearchCriteria {
    private final int startYear;
@@ -73,14 +80,16 @@ class CarSearchCriteria {
 
 //@Entity
 class CarModel {
-//   @Id
+   //   @Id
    private Long id;
    private String make;
    private String model;
    private int startYear;
    private int endYear;
 
-   private CarModel() {} // for Hibernate
+   private CarModel() {
+   } // for Hibernate
+
    public CarModel(String make, String model, int startYear, int endYear) {
       this.make = make;
       this.model = model;
@@ -129,10 +138,12 @@ class CarModelMapper {
       dto.endYear = carModel.getEndYear();
       return dto;
    }
+
    public CarModel fromDto(CarModelDto dto) {
       return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
    }
 }
+
 class CarModelDto {
    public String make;
    public String model;
