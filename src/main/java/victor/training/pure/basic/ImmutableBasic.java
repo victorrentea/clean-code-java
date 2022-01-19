@@ -1,51 +1,65 @@
 package victor.training.pure.basic;
 
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
+import com.google.common.collect.ImmutableList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.of(1, 2, 3, 4, 5);
 
-      Immutable immutable = new Immutable();
-
-      immutable.x = 2;
-      immutable.numbers = numbers;
-      immutable.other = new Other(13);
+      Immutable immutable = new Immutable(2, 5, numbers, new Other(13));
 
       System.out.println(immutable);
+
+//      immutable.getNumbers().clear();
+
+      Immutable immutable1 = immutable.withX(3);
+//      Immutable immutable1 = new Immutable.Builder(immutable).withX(3).build();
 
       // LOTS OF BUSINESS LOGIC HERE
 
-      System.out.println(immutable.numbers);
+      System.out.println(immutable.getNumbers());
       System.out.println(immutable);
    }
+
 }
 
 class Immutable {
-   public int x;
-   public List<Integer> numbers;
-   public Other other;
+   private final int x;
+   private final int y;
+   private final ImmutableList<Integer> numbers;
+   private final Other other;
+   public Immutable(int x, int y, ImmutableList<Integer> numbers, Other other) {
+      this.x = x;
+      this.y = y;
+      this.numbers = numbers;
+      this.other = other;
+   }
+
+   public Immutable withX(int newX) { // wither
+      return new Immutable(newX, y, getNumbers(), getOther());
+   }
+
+   public int getX() {
+      return x;
+   }
+   public ImmutableList<Integer> getNumbers() {
+      return numbers;
+   }
+   public Other getOther() {
+      return other;
+   }
 
    public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
    }
 }
 
 class Other {
-   private int a;
-
+   private final int a;
    public Other(int a) {
       this.a = a;
    }
-
    public int getA() {
       return a;
-   }
-
-   public void setA(int a) {
-      this.a = a;
    }
 }
