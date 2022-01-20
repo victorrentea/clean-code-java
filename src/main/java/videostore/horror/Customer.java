@@ -1,8 +1,8 @@
 package videostore.horror;
 
-import videostore.horror.Movie.Category;
-
 import java.util.*;
+
+import static java.util.stream.Collectors.joining;
 
 class Customer {
 	private static final int DEFAULT_POINTS = 1;
@@ -23,38 +23,34 @@ class Customer {
 	}
 
 	public String generateStatement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		String result = formatHeader();
-		for (Rental rental : rentals) {
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
+	}
 
-			frequentRenterPoints += rental.computeRenterPoints();
-		}
-		for (Rental rental : rentals) {
-			double price = rental.computePrice();
-			result += formatLine(rental, price);
-		}
-		for (Rental rental : rentals) {
-			double price = rental.computePrice();
-			// WHEN is it ok to repeat method calls ?
-			// > PURE (no side effects , same results) + FAST
-			totalAmount += price;
-		}
-		result += formatFooter(totalAmount, frequentRenterPoints);
-		return result;
+	private String formatBody() {
+		return rentals.stream().map(this::formatLine).collect(joining());
+	}
+
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
+	}
+
+	private int computeTotalPoints() {
+		return rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
 	}
 
 	private String formatHeader() {
 		return "Rental Record for " + getName() + "\n";
 	}
 
-	private String formatFooter(double totalAmount, int frequentRenterPoints) {
-		return "Amount owed is " + totalAmount + "\n" +
-				 "You earned " + frequentRenterPoints + " frequent renter points";
+	private String formatFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n" +
+				 "You earned " + computeTotalPoints() + " frequent renter points";
 	}
 
-	private String formatLine(Rental rental, double price) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	private String formatLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 }
