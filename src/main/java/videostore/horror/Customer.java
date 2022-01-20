@@ -18,6 +18,26 @@ class Rental {
 	public Movie getMovie() {
 		return movie;
 	}
+
+	public double computePrice() {
+		double thisAmount = 0;
+		switch (getMovie().getCategory()) {
+			case REGULAR:
+				thisAmount += 2;
+				if (daysRented > 2)
+					thisAmount += (daysRented - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				thisAmount += daysRented * 3;
+				break;
+			case CHILDREN:
+				thisAmount += 1.5;
+				if (daysRented > 3)
+					thisAmount += (daysRented - 3) * 1.5;
+				break;
+		}
+		return thisAmount;
+	}
 }
 class Customer {
 	private final String name;
@@ -35,7 +55,7 @@ class Customer {
 		return name;
 	}
 
-	public String statement() { // TODO name
+	public String generateStatement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
@@ -44,13 +64,9 @@ class Customer {
 			Movie movie = rental.getMovie();
 			int daysRented = rental.getDaysRented();
 
-			double price = computePrice(movie, daysRented); // TODO move to Rental
+			double price = rental.computePrice();
 
-			frequentRenterPoints++;
-			boolean deservesBonus = movie.getCategory() == Category.NEW_RELEASE && daysRented  >= 2 ;
-			if (deservesBonus) {
-				frequentRenterPoints++;
-			}
+			frequentRenterPoints += computeRenterPoints(movie, daysRented);
 
 			// show figures line for this rental
 			result += "\t" + movie.getTitle() + "\t" + price + "\n";
@@ -63,23 +79,13 @@ class Customer {
 		return result;
 	}
 
-	private double computePrice(Movie each, int dr) {
-		double thisAmount = 0;
-		switch (each.getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (dr > 2)
-					thisAmount += (dr - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += dr * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (dr > 3)
-					thisAmount += (dr - 3) * 1.5;
-				break;
+	private int computeRenterPoints(Movie movie, int daysRented) {
+		int frequentRenterPoints = 1;
+		boolean deservesBonus = movie.getCategory() == Category.NEW_RELEASE && daysRented >= 2 ;
+		if (deservesBonus) {
+			frequentRenterPoints++;
 		}
-		return thisAmount;
+		return frequentRenterPoints;
 	}
+
 }
