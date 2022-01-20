@@ -22,7 +22,7 @@ class Customer {
 		return name;
 	}
 
-	public String generateStatement() {
+	public String generateStatement() { // move to another class with all satteline methods
 		return formatHeader()
 				 + formatBody()
 				 + formatFooter();
@@ -39,6 +39,7 @@ class Customer {
 	private int computeTotalPoints() {
 		return rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
 	}
+
 
 	private String formatHeader() {
 		return "Rental Record for " + getName() + "\n";

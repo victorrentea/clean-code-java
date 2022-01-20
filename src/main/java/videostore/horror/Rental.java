@@ -21,20 +21,25 @@ public class Rental {
 
    public double computePrice() {
       double thisAmount = 0;
-      switch (getMovie().getCategory()) {
-         case REGULAR:
-            thisAmount += 2;
-            if (daysRented > 2)
-               thisAmount += (daysRented - 2) * 1.5;
-            break;
-         case NEW_RELEASE:
-            thisAmount += daysRented * 3;
-            break;
-         case CHILDREN:
-            thisAmount += 1.5;
-            if (daysRented > 3)
-               thisAmount += (daysRented - 3) * 1.5;
-            break;
+      return switch (getMovie().getCategory()) {
+         case REGULAR -> computeRegularMoviePrice(thisAmount);
+         case NEW_RELEASE -> daysRented * 3;
+         case CHILDREN -> computeChildrenPrice(thisAmount);
+      };
+   }
+
+   private double computeChildrenPrice(double thisAmount) {
+      thisAmount += 1.5;
+      if (daysRented > 3) {
+         thisAmount += (daysRented - 3) * 1.5;
+      }
+      return thisAmount;
+   }
+
+   private double computeRegularMoviePrice(double thisAmount) {
+      thisAmount += 2;
+      if (daysRented > 2) {
+         thisAmount += (daysRented - 2) * 1.5;
       }
       return thisAmount;
    }
