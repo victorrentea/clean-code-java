@@ -1,5 +1,8 @@
 package victor.training.fp;
 
+import java.util.Objects;
+import java.util.Optional;
+
 public class Optional_Chain {
 	static MyMapper mapper = new MyMapper();
    public static void main(String[] args) {
@@ -11,10 +14,29 @@ public class Optional_Chain {
    }
 }
 
+
 class MyMapper {
+   public void method() {
+//      convert(null);
+   }
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
-      dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+
+//      if (
+//          parcel != null &&
+//          parcel.getDelivery() != null &&
+//          parcel.getDelivery().getAddress() != null &&
+//          parcel.getDelivery().getAddress().getContactPerson()!=null &&
+//          parcel.getDelivery().getAddress().getContactPerson().getName() !=null
+//      ) {
+
+      dto.recipientPerson = parcel.getDelivery()
+          .flatMap(d->d.getAddress().getContactPerson())
+          .map(p->p.getName().toUpperCase())
+          .orElse(null);
+//      }
+
+
       return dto;
    }
 }
@@ -25,8 +47,8 @@ class DeliveryDto {
 class Parcel {
    private Delivery delivery; // NULL until a delivery is scheduled
 
-   public Delivery getDelivery() {
-      return delivery;
+   public Optional<Delivery> getDelivery() {
+      return Optional.ofNullable(delivery);
    }
 	public void setDelivery(Delivery delivery) {
       this.delivery = delivery;
@@ -35,10 +57,12 @@ class Parcel {
 
 
 class Delivery {
-   private Address address; // NOT NULL IN DB
+//   @NotNull
+   private Address address; // NOT NULL IN DB (SQL)
 
    public Delivery(Address address) {
-      this.address = address;
+//      if
+      this.address = Objects.requireNonNull(address);
    }
 
 	public void setAddress(Address address) {
@@ -57,8 +81,8 @@ class Address {
       this.contactPerson = contactPerson;
    } // TODO allow not setting
 
-   public ContactPerson getContactPerson() {
-      return contactPerson;
+   public Optional<ContactPerson> getContactPerson() {
+      return Optional.ofNullable(contactPerson);
    }
 }
 
@@ -66,7 +90,7 @@ class ContactPerson {
    private final String name; // NOT NULL
 
    public ContactPerson(String name) {
-      this.name = name;
+      this.name = Objects.requireNonNull(name);
    }
 
    public String getName() {
