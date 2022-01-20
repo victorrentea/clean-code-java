@@ -4,42 +4,9 @@ import videostore.horror.Movie.Category;
 
 import java.util.*;
 
-class Rental {
-	private final Movie movie;
-	private final int daysRented;
-
-	Rental(Movie movie, int daysRented) {
-		this.movie = movie;
-		this.daysRented = daysRented;
-	}
-	public int getDaysRented() {
-		return daysRented;
-	}
-	public Movie getMovie() {
-		return movie;
-	}
-
-	public double computePrice() {
-		double thisAmount = 0;
-		switch (getMovie().getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (daysRented > 2)
-					thisAmount += (daysRented - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += daysRented * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (daysRented > 3)
-					thisAmount += (daysRented - 3) * 1.5;
-				break;
-		}
-		return thisAmount;
-	}
-}
 class Customer {
+	private static final int DEFAULT_POINTS = 1;
+	private static final int BONUS_POINTS = 1;
 	private final String name;
 	private final List<Rental> rentals = new ArrayList<>();
 
@@ -58,34 +25,36 @@ class Customer {
 	public String generateStatement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		String result = formatHeader();
+		for (Rental rental : rentals) {
 
-		for (Rental rental : rentals) { // TODO break the for
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
-
+			frequentRenterPoints += rental.computeRenterPoints();
+		}
+		for (Rental rental : rentals) {
 			double price = rental.computePrice();
-
-			frequentRenterPoints += computeRenterPoints(movie, daysRented);
-
-			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + price + "\n";
-
+			result += formatLine(rental, price);
+		}
+		for (Rental rental : rentals) {
+			double price = rental.computePrice();
+			// WHEN is it ok to repeat method calls ?
+			// > PURE (no side effects , same results) + FAST
 			totalAmount += price;
 		}
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+		result += formatFooter(totalAmount, frequentRenterPoints);
 		return result;
 	}
 
-	private int computeRenterPoints(Movie movie, int daysRented) {
-		int frequentRenterPoints = 1;
-		boolean deservesBonus = movie.getCategory() == Category.NEW_RELEASE && daysRented >= 2 ;
-		if (deservesBonus) {
-			frequentRenterPoints++;
-		}
-		return frequentRenterPoints;
+	private String formatHeader() {
+		return "Rental Record for " + getName() + "\n";
+	}
+
+	private String formatFooter(double totalAmount, int frequentRenterPoints) {
+		return "Amount owed is " + totalAmount + "\n" +
+				 "You earned " + frequentRenterPoints + " frequent renter points";
+	}
+
+	private String formatLine(Rental rental, double price) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
 	}
 
 }
