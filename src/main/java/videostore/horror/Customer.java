@@ -35,16 +35,16 @@ class Customer {
 		return name;
 	}
 
-	public String statement() {
+	public String statement() { // TODO name
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 
-		for (Rental rental : rentals) {
+		for (Rental rental : rentals) { // TODO break the for
 			Movie movie = rental.getMovie();
 			int daysRented = rental.getDaysRented();
 
-			double price = computePrice(movie, daysRented);
+			double price = computePrice(movie, daysRented); // TODO move to Rental
 
 			frequentRenterPoints++;
 			boolean deservesBonus = movie.getCategory() == Category.NEW_RELEASE && daysRented  >= 2 ;
