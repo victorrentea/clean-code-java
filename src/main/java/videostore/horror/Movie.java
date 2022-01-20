@@ -5,16 +5,22 @@ public class Movie {
    public static final int REGULAR = 0;
    public static final int NEW_RELEASE = 1;
 
+	enum Category {
+		CHILDREN,
+		REGULAR,
+		NEW_RELEASE
+
+	}
 
    private final String title;
-   private final int priceCode;
+   private final Category priceCode;
 
-   public Movie(String title, int priceCode) {
+   public Movie(String title, Category priceCode) {
       this.title = title;
       this.priceCode = priceCode;
    }
 
-   public int getPriceCode() {
+   public Category getPriceCode() {
       return priceCode;
    }
 
