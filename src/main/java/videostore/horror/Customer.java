@@ -1,17 +1,34 @@
 package videostore.horror;
 
+import videostore.horror.Movie.Category;
+
 import java.util.*;
 
+class Rental {
+	private final Movie movie;
+	private final int daysRented;
+
+	Rental(Movie movie, int daysRented) {
+		this.movie = movie;
+		this.daysRented = daysRented;
+	}
+	public int getDaysRented() {
+		return daysRented;
+	}
+	public Movie getMovie() {
+		return movie;
+	}
+}
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Movie m, int daysRented) {
-		rentals.put(m, daysRented);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -22,16 +39,18 @@ class Customer {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie movie : rentals.keySet()) {
-			int daysRented = rentals.get(movie);
+
+		for (Rental rental : rentals) {
+			Movie movie = rental.getMovie();
+			int daysRented = rental.getDaysRented();
+
 			double price = computePrice(movie, daysRented);
 
-			// add frequent renter points
 			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((movie.getCategory() == Movie.Category.NEW_RELEASE)
-				 && daysRented > 1)
+			boolean deservesBonus = movie.getCategory() == Category.NEW_RELEASE && daysRented  >= 2 ;
+			if (deservesBonus) {
 				frequentRenterPoints++;
+			}
 
 			// show figures line for this rental
 			result += "\t" + movie.getTitle() + "\t" + price + "\n";
