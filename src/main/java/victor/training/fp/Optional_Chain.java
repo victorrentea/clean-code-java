@@ -19,6 +19,9 @@ class MyMapper {
    public void method() {
 //      convert(null);
    }
+
+
+
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
 
