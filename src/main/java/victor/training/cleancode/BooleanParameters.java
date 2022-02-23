@@ -24,6 +24,7 @@ public class BooleanParameters {
       bigUglyMethod323(task);
 
    }
+
    private static void bigUglyMethod(int b, Task task) {
       bigUglyStart(b, task);
       bigUglyEnd(b);
@@ -54,32 +55,51 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // see the tests
-   public void bossLevel(boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO ALT-ENTER move closer to usages
-      int j = tasks.size();
+   private void bossLevelFluff(List<Task> tasks, boolean cr323) {
       System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
+      System.out.println("Logic3");
 
-            taskIds.add(task.getId());
-
-            // TODO When **I** call this method, I want this to run HERE, too:
-            // System.out.println("My Logic: " + task);
-
-            index++;
-            System.out.println("Logic5 " + index + " on " + task.isRunning());
-         }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+      int index = 0;
+      List<Integer> taskIds = new ArrayList<>();
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
       }
+      for (Task task : tasks) {
+         taskIds.add(task.getId());
+      }
+      for (Task task : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         if (cr323) {
+            System.out.println("My Logic: " + task);
+         }
+      }
+      for (Task task : tasks) {
+
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      // q1: ce poate merge rau
+      // q2: cand "Split Loop" refactor produce buguri
+      System.out.println("Logic6 " + tasks.size());
+      System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
+   }
+
+   private void bossLevelNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+      if (fluff) {
+         bossLevelFluff(tasks, cr323);
+      } else {
+         bossLevelNoFluff(tasks);
+      }
+
    }
 
 }
