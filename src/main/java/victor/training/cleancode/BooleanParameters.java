@@ -4,6 +4,9 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -95,10 +98,15 @@ public class BooleanParameters {
          task.setRunning();
       }
 
-      List<Integer> taskIds = new ArrayList<>();
-      for (Task task : tasks) {
-         taskIds.add(task.getId());
-      }
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+
+      // MAI RAU decat foru de mai sus.
+//      tasks.stream().forEach(e -> {
+//         taskIds.add(e.getId()); // modificari de date NU e FP. NU trebuie facute din Stream. mai bne ramai la for()
+//      });
+
+//      taskIds = tasks.stream().map(Task::getId).collect(toList());
+
       return taskIds;
    }
 
