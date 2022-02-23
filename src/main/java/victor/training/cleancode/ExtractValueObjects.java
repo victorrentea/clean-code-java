@@ -1,11 +1,6 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -16,35 +11,59 @@ class ExtractValueObjects {
 
       System.out.println("More filtering logic");
 
+      Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+
       List<CarModel> results = models.stream()
-          .filter(model -> MathUtil.intervalsIntersect(
-              criteria.getStartYear(), criteria.getEndYear(),
-              model.getStartYear(), model.getEndYear()))
+//          .filter(model -> criteriaInterval.intersects(model)) // incorrect coupling direction
+//          .filter(model -> criteriaInterval.intersects(new Interval(model.getStartYear(), model.getEndYear())))
+          .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
+//          .filter(model -> model.intersectsYears(criteria.getStartYear(), criteria.getEndYear()))
           .collect(toList());
 
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
 
 }
 
 class MathUtil {
 
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
+}
+class Interval {
+   private final int start;
+   private final int end;
+
+   Interval(int start, int end) {
+      if (start > end) { // in anumite contexte clasa nu mai e reutilizabila!
+         throw new IllegalArgumentException("start larger than end");
+      }
+      this.start = start;
+      this.end = end;
+   }
+
+   public int getStart() {
+      return start;
+   }
+
+   public int getEnd() {
+      return end;
+   }
+
+   public boolean intersects(Interval other) {
+      if (other == null) return false;
+      return start <= other.end && other.start <= end;
    }
 }
-
-
 
 
 
@@ -84,28 +103,20 @@ class CarModel {
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+   private final Interval yearInterval;
 
-   private CarModel() {} // for Hibernate
-   public CarModel(String make, String model, int startYear, int endYear) {
+   public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      this.yearInterval = yearInterval;
    }
 
    public Long getId() {
       return id;
    }
 
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
+   public Interval getYearInterval() {
+      return yearInterval;
    }
 
    public String getMake() {
@@ -132,12 +143,12 @@ class CarModelMapper {
       CarModelDto dto = new CarModelDto();
       dto.make = carModel.getMake();
       dto.model = carModel.getModel();
-      dto.startYear = carModel.getStartYear();
-      dto.endYear = carModel.getEndYear();
+      dto.startYear = carModel.getYearInterval().getStart();
+      dto.endYear = carModel.getYearInterval().getEnd();
       return dto;
    }
    public CarModel fromDto(CarModelDto dto) {
-      return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+      return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
    }
 }
 class CarModelDto {
