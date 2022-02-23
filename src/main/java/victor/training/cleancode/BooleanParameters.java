@@ -2,9 +2,7 @@ package victor.training.cleancode;
 
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -58,19 +56,33 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // see the tests
-   private void bossLevelFluff(List<Task> tasks, boolean cr323) {
-      List<Integer> taskIds = bossStart(tasks);
-
-      for (Task task : tasks) {
-         // TODO When **I** call this method, I want this to run HERE, too:
-         if (cr323) {
-            System.out.println("My Logic: " + task);
-         }
-      }
-      bossEnd(tasks, taskIds);
+   private void bossLevelFluff(List<Task> tasks) {
+      bossStart(tasks);
+      bossEnd(tasks);
    }
 
-   private void bossEnd(List<Task> tasks, List<Integer> taskIds) {
+   private void bossLevelFluff323(List<Task> tasks) { // TODO de chema asta din CR-323
+      bossStart(tasks);
+      for (Task task : tasks) {
+         System.out.println("My Logic: " + task);
+      }
+      bossEnd(tasks);
+   }
+
+   private void bossStart(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+
+      for (Task task1 : tasks) {
+         System.out.println("Logic4: Validate " + task1);
+         task1.setRunning();
+      }
+   }
+
+   private void bossEnd(List<Task> tasks) {
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+
       int index = 0;
       for (Task task : tasks) {
          index++;
@@ -88,37 +100,16 @@ public class BooleanParameters {
       System.out.println("Logic7");
    }
 
-   private List<Integer> bossStart(List<Task> tasks) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.setRunning();
-      }
-
-      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
-
-      // MAI RAU decat foru de mai sus.
-//      tasks.stream().forEach(e -> {
-//         taskIds.add(e.getId()); // modificari de date NU e FP. NU trebuie facute din Stream. mai bne ramai la for()
-//      });
-
-//      taskIds = tasks.stream().map(Task::getId).collect(toList());
-
-      return taskIds;
-   }
-
    private void bossLevelNoFluff(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
       System.out.println("Logic7 " + tasks);
       System.out.println("Logic7");
    }
-   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+
+   public void bossLevel(boolean fluff, List<Task> tasks) {
       if (fluff) {
-         bossLevelFluff(tasks, cr323);
+         bossLevelFluff(tasks);
       } else {
          bossLevelNoFluff(tasks);
       }
