@@ -4,31 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuardClauses {
+
    public int getPayAmount(Marine marine) {
-      int result;
-      if (marine != null) {
-         if (!isDead(marine)) { // network call
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // HEAVY logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            result = deadAmount();
-         }
-      } else {
+      // GUNOI care nu trebuie sa fie amestecat cu logica efectiva.
+      if (marine == null) { // guard condition
          throw new RuntimeException("Marine is null");
       }
-      return result; // TODO ALT-ENTER move return closer
+      if (marine.getYearsService() == null) {
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
+
+      return bizPayAmount(marine);
+   }
+
+   private int bizPayAmount(Marine marine) {
+      if (isDead(marine)) {
+         return deadAmount();
+      }
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+      // Feature Envy
+      int result = marine.getPay();
+      // HEAVY logic here...
+      return result;
    }
 
    private boolean isDead(Marine marine) {
@@ -72,6 +71,17 @@ class Marine {
 
    public boolean isDead() {
       return dead;
+   }
+
+   public int getPay() {
+      int result = getYearsService() * 100;
+      if (!getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (getAwards().size() >= 3) {
+         result += 2000;
+      }
+      return result;
    }
 }
 
