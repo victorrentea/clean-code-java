@@ -56,35 +56,50 @@ public class BooleanParameters {
 
    // see the tests
    private void bossLevelFluff(List<Task> tasks, boolean cr323) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
+      List<Integer> taskIds = bossStart(tasks);
 
-      int index = 0;
-      List<Integer> taskIds = new ArrayList<>();
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.setRunning();
-      }
-      for (Task task : tasks) {
-         taskIds.add(task.getId());
-      }
       for (Task task : tasks) {
          // TODO When **I** call this method, I want this to run HERE, too:
          if (cr323) {
             System.out.println("My Logic: " + task);
          }
       }
-      for (Task task : tasks) {
+      bossEnd(tasks, taskIds);
+   }
 
+   private void bossEnd(List<Task> tasks, List<Integer> taskIds) {
+      int index = 0;
+      for (Task task : tasks) {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
-      // q1: ce poate merge rau
+      // q1: ce poate merge rau:
+      // - peformanta: cand avem multe (10K) taskuri
+      //     1) cat de mare e un task in heap? INCAP toate? E wise sa tin 100MB in RAM cu toate? 1000.. mai mult, te gandesti la procesare in pagini eg de 100
+      //     2) cat de multa munca faci per task e f f rapida > e posibil sa doara ca faci 4 foruri. In java asta - NICIODATA.
+      /// ai emotii, fa benchmarkuri (in Java cu JMH)
       // q2: cand "Split Loop" refactor produce buguri
+      // - cand depind unele de altele>
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
+   }
+
+   private List<Integer> bossStart(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
+      }
+
+      List<Integer> taskIds = new ArrayList<>();
+      for (Task task : tasks) {
+         taskIds.add(task.getId());
+      }
+      return taskIds;
    }
 
    private void bossLevelNoFluff(List<Task> tasks) {
