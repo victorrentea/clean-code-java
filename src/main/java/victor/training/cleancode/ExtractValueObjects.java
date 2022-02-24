@@ -1,5 +1,9 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -16,11 +20,17 @@ class ExtractValueObjects {
       List<CarModel> results = models.stream()
 //          .filter(model -> criteriaInterval.intersects(model)) // incorrect coupling direction
 //          .filter(model -> criteriaInterval.intersects(new Interval(model.getStartYear(), model.getEndYear())))
-          .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
+          .filter(model -> filterByYear(criteriaInterval, model))
 //          .filter(model -> model.intersectsYears(criteria.getStartYear(), criteria.getEndYear()))
           .collect(toList());
 
       return results;
+   }
+
+   private boolean filterByYear(Interval criteriaInterval, CarModel model) {
+      Interval yearInterval = model.getYearInterval();
+      // logica aici
+      return criteriaInterval.intersects(yearInterval);
    }
 
    private void applyCapacityFilter() {
@@ -39,6 +49,7 @@ class Alta {
 class MathUtil {
 
 }
+@Embeddable
 class Interval {
    private final int start;
    private final int end;
@@ -97,13 +108,14 @@ class CarSearchCriteria {
    }
 }
 
-//@Entity
+@Entity
 class CarModel {
-//   @Id
+   @Id
    private Long id;
    private String make;
    private String model;
-   private final Interval yearInterval;
+   @Embedded
+   private Interval yearInterval;
 
    public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;

@@ -74,11 +74,11 @@ class Marine {
    }
 
    public int getPay() {
-      int result = getYearsService() * 100;
-      if (!getAwards().isEmpty()) {
+      int result = yearsService * 100;
+      if (!awards.isEmpty()) {
          result += 1000;
       }
-      if (getAwards().size() >= 3) {
+      if (awards.size() >= 3) {
          result += 2000;
       }
       return result;
