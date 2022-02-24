@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
  */
-
 public class BooleanParameters {
 
    public static void main(String[] args) {
@@ -42,7 +41,7 @@ public class BooleanParameters {
 
    // see the tests
    public void bossLevel(boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO ALT-ENTER move closer to usages
+      int index = 0; // TODO ALT-ENTER > move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
       List<Integer> taskIds = new ArrayList<>();
