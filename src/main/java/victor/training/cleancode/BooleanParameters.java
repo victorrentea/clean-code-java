@@ -1,9 +1,11 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -55,40 +57,41 @@ public class BooleanParameters {
 //      bossLevel(false, Collections.emptyList(), t-> {});
 //      bossLevel(false, Collections.emptyList(), task-> System.out.println("My Logic: " + task));
 //   }
-   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO ALT-ENTER > move closer to usages
-      int j = tasks.size();
+   public void bossLevelFluff(ImmutableList<Task> tasks, boolean cr323) {
       System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-         }
-         for (Task task : tasks) {
-            taskIds.add(task.getId());
-         }
-         for (Task task : tasks) {
-            // TODO When **I** call this method, I want this to run HERE, too:
-            if (cr323) {
-               System.out.println("My Logic: " + task);
-            }
-         }
-         for (Task task : tasks) {
-            index++;
-            System.out.println("Logic5 " + index + " on " + task.isRunning());
-         }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+      System.out.println("Logic3");
+
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
       }
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+
+      if (cr323) {
+         for (Task task : tasks) {
+            System.out.println("My Logic: " + task);
+         }
+      }
+      int index = 0;
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      System.out.println("Logic6 " + tasks.size());
+      System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
 
-    // private int forBody(int index, List<Integer> taskIds, Task task, boolean cr323) {}
+
+   public void bossLevelNoFluff(ImmutableList<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+
+   // private int forBody(int index, List<Integer> taskIds, Task task, boolean cr323) {}
 }
 
 @ToString
