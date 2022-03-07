@@ -16,8 +16,7 @@ public class GuardClauses {
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }
 
-      Marine m = null ;
-      return domainService.computePayAmount(m);
+      return domainService.computePayAmount(marine);
    }
 
 
