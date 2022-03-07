@@ -57,7 +57,35 @@ public class BooleanParameters {
 //      bossLevel(false, Collections.emptyList(), t-> {});
 //      bossLevel(false, Collections.emptyList(), task-> System.out.println("My Logic: " + task));
 //   }
-   public void bossLevelFluff(ImmutableList<Task> tasks, boolean cr323) {
+   public void bossLevelFluff(ImmutableList<Task> tasks) {
+      bossStart(tasks);
+      logic5(tasks);
+      bossEnd(tasks);
+   }
+   public void bossLevelFluff323(ImmutableList<Task> tasks) {
+      bossStart(tasks);
+      for (Task task : tasks) {
+         System.out.println("My Logic: " + task);
+      }
+      logic5(tasks);
+      bossEnd(tasks);
+   }
+
+   private void bossEnd(ImmutableList<Task> tasks) {
+      System.out.println("Logic6 " + tasks.size());
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+
+   private void logic5(ImmutableList<Task> tasks) {
+      for (int i = 0; i < tasks.size(); i++) {
+         Task task = tasks.get(i);
+         System.out.println("Logic5 " + (i + 1) + " on " + task.isRunning());
+      }
+   }
+
+   private void bossStart(ImmutableList<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
       System.out.println("Logic3");
@@ -66,21 +94,6 @@ public class BooleanParameters {
          System.out.println("Logic4: Validate " + task);
          task.setRunning();
       }
-      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
-
-      if (cr323) {
-         for (Task task : tasks) {
-            System.out.println("My Logic: " + task);
-         }
-      }
-      int index = 0;
-      for (Task task : tasks) {
-         index++;
-         System.out.println("Logic5 " + index + " on " + task.isRunning());
-      }
-      System.out.println("Logic6 " + tasks.size());
-      System.out.println("Task Ids: " + taskIds);
-      System.out.println("Logic7");
    }
 
 
