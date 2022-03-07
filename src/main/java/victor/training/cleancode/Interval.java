@@ -21,6 +21,8 @@ public class Interval {
       // imagine 20 lines of logic 10 tests
       // imagine 20 lines of logic 10 tests
       // imagine 20 lines of logic 10 tests
+      // imagine 20 lines of logic 10 tests
+      // imagine 20 lines of logic 10 tests
       return start <= other.end && other.start <= end;
    }
 
