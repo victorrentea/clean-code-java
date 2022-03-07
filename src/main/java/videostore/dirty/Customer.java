@@ -19,48 +19,49 @@ public class Customer {
 
 	public String statement() {
 		double totalAmount = 0;
-		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + name + "\n";
 
-		for (Rental each : rentals) {
-			double thisAmount = 0;
-			// determine amounts for each line
 
-//			thisAmount = switch (each.getMovie().getCategory()) {
-//				case REGULAR -> 1;
-//				case NEW_RELEASE -> 2;
-//				case CHILDREN,					ELDERS -> 3;
-//			};
+		int frequentRenterPoints = rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
 
-			switch (each.getMovie().getCategory()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (each.getDaysRented() > 2)
-						thisAmount += (each.getDaysRented() - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += each.getDaysRented() * 3;
-					break;
-				case CHILDREN:
-					thisAmount += 1.5;
-					if (each.getDaysRented() > 3)
-						thisAmount += (each.getDaysRented() - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((each.getMovie().getCategory() == Movie.Category.NEW_RELEASE)
-				 && each.getDaysRented() > 1)
-				frequentRenterPoints++;
+		for (Rental rental : rentals) {
+
 			// show figures for this rental
-			result += "\t" + each.getMovie().getTitle() + "\t"
-						 + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + rental.getMovie().getTitle() + "\t" + computeAmount(rental) + "\n";
+			totalAmount += computeAmount(rental);
+			// repeating a function call with same args can:
+			// 1)BUG  > if the method does SIDE-EFFECTS eg. INSERT, incrementX
+			// 2)BUG  > if the function for the same args returns DIFFERENT RESULTS
+			// 3) take time (fct computes a lot of stuff)
+
+			// 1 + 2: no side effects and same out for same params = PURE FUNCTION
+
+			// --
+			// in any case if tomorrow someone changes the code without testing it.. BUM
 		}
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private double computeAmount(Rental rental) {
+		double thisAmount = 0;
+		switch (rental.getMovie().getCategory()) {
+			case REGULAR:
+				thisAmount += 2;
+				if (rental.getDaysRented() > 2)
+					thisAmount += (rental.getDaysRented() - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				thisAmount += rental.getDaysRented() * 3;
+				break;
+			case CHILDREN:
+				thisAmount += 1.5;
+				if (rental.getDaysRented() > 3)
+					thisAmount += (rental.getDaysRented() - 3) * 1.5;
+				break;
+		}
+		return thisAmount;
 	}
 }
