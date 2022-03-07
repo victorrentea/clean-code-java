@@ -83,6 +83,11 @@ class CarModel {
    public Interval getProductionYears() {
       return productionYears;
    }
+
+   // man in the middle
+//   public int getStartYear() {
+//      return productionYears.getStart();
+//   }
    public Long getId() {
       return id;
    }
