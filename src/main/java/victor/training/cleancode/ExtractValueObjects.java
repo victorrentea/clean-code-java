@@ -1,41 +1,35 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 class ExtractValueObjects {
 
    // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+      List<CarModel> results = models.stream()
+          .filter(model -> criteriaInterval.intersects(model.getProductionYears()))
+          .collect(toList());
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
-
 }
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+      System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
    }
-
 }
 
 class MathUtil {
-
-   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
-   }
 }
+
+
 
 
 
@@ -77,34 +71,24 @@ class CarModel {
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+   private Interval productionYears;
 
    private CarModel() {} // for Hibernate
-   public CarModel(String make, String model, int startYear, int endYear) {
+   public CarModel(String make, String model, Interval productionYears) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      this.productionYears = productionYears;
    }
 
+   public Interval getProductionYears() {
+      return productionYears;
+   }
    public Long getId() {
       return id;
    }
-
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
-   }
-
    public String getMake() {
       return make;
    }
-
    public String getModel() {
       return model;
    }
@@ -125,12 +109,15 @@ class CarModelMapper {
       CarModelDto dto = new CarModelDto();
       dto.make = carModel.getMake();
       dto.model = carModel.getModel();
-      dto.startYear = carModel.getStartYear();
-      dto.endYear = carModel.getEndYear();
+      dto.startYear = carModel.getProductionYears().getStart();
+      dto.endYear = carModel.getProductionYears().getEnd();
+      dto.endYear = carModel.getProductionYears().getEnd();
+      dto.endYear = carModel.getProductionYears().getEnd();
+      dto.endYear = carModel.getProductionYears().getEnd();
       return dto;
    }
    public CarModel fromDto(CarModelDto dto) {
-      return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+      return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
    }
 }
 class CarModelDto {
