@@ -1,5 +1,4 @@
 package videostore.dirty;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,8 @@ public class Customer {
 	private String formatFooter() {
 		int frequentRenterPoints = rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
 		double totalAmount = rentals.stream().mapToDouble(this::computeAmount).sum();
-		return "Amount owed is " + totalAmount + "\n"
+		String string = "Amount owed is " + totalAmount + "\n";
+		return string
 				 + "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
