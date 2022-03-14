@@ -27,10 +27,10 @@ public class Customer {
       String result = "Rental Record for " + getName() + "\n";
 
 		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
-			int daysRented = rental.getDaysRented();
+         Movie movie = rental.getMovie();
+         int daysRented = rental.getDaysRented();
 
-			// add frequent renter points
+         // add frequent renter points
          frequentRenterPoints++;
          // add bonus for a two day new release rental
          if (movie.priceCode() == PriceCode.NEW_RELEASE && daysRented >= 2) {
@@ -39,6 +39,8 @@ public class Customer {
 
          // show figures line for this rental
          result += "\t" + movie.title() + "\t" + rental.calculatePrice() + "\n";
+      }
+		for (Rental rental : rentals) {
          totalPrice += rental.calculatePrice();
 
          // WHEN is it safe to call a function 2 times
@@ -50,6 +52,7 @@ public class Customer {
                // that is, a CPU intensive function should be cached.
 
          // 1+2 = PURE Function
+            // it never goes outside the MEMORY.
       }
       // add footer lines
       result += "Amount owed is " + totalPrice + "\n";

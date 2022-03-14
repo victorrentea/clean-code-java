@@ -8,11 +8,8 @@ public class Rental {
    int daysRented;
 
    public double calculatePrice() {
-
-
-
-      double price = defaultPrice;
-      switch (getMovie().priceCode()) {
+      double price = 0;
+      switch (movie.priceCode()) {
          case REGULAR:
             price += 2;
             if (daysRented > 2) {
