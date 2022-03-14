@@ -1,21 +1,26 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 class ExtractValueObjects {
 
    // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      List<CarModel> results = models.stream()
+          .filter(model -> filterByYears(criteria, model))
+          .collect(toList());
       System.out.println("More filtering logic");
       return results;
+   }
+
+   private boolean filterByYears(CarSearchCriteria criteria, CarModel model) {
+      return MathUtil.intervalsIntersect(
+          criteria.getStartYear(), criteria.getEndYear(),
+          model.getStartYear(), model.getEndYear());
    }
 
    private void applyCapacityFilter() {
@@ -23,6 +28,7 @@ class ExtractValueObjects {
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
       System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
@@ -36,17 +42,13 @@ class MathUtil {
       return start1 <= end2 && start2 <= end1;
    }
 }
+class Interval {
+   int start1;
+   int end1;
+}
 
 
-
-
-
-
-
-
-
-
-class CarSearchCriteria {
+class CarSearchCriteria { // stinks as JSON - DTO - garbage. API model. UGLY. BAD> EVIL
    private final int startYear;
    private final int endYear;
    private final String make;
@@ -73,14 +75,16 @@ class CarSearchCriteria {
 
 //@Entity
 class CarModel {
-//   @Id
+   //   @Id
    private Long id;
    private String make;
    private String model;
    private int startYear;
    private int endYear;
 
-   private CarModel() {} // for Hibernate
+   private CarModel() {
+   } // for Hibernate
+
    public CarModel(String make, String model, int startYear, int endYear) {
       this.make = make;
       this.model = model;
@@ -129,10 +133,12 @@ class CarModelMapper {
       dto.endYear = carModel.getEndYear();
       return dto;
    }
+
    public CarModel fromDto(CarModelDto dto) {
       return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
    }
 }
+
 class CarModelDto {
    public String make;
    public String model;
