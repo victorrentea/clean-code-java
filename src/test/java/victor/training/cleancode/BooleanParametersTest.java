@@ -17,7 +17,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevel(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)));
+      target.doBossFluff(List.of(new Task(5)), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -33,7 +33,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelEmptyList(OutputCapture outputCapture) {
-      target.bossLevel(true, Collections.emptyList());
+      target.doBossFluff(Collections.emptyList(), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -46,7 +46,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevel(false, List.of(new Task(5)));
+      target.doBossNoFluff(List.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -58,11 +58,14 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void validatesBoth(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5),new Task(6)));
+      target.doBossFluff(List.of(new Task(5),new Task(6)), false);
 
       assertThat(outputCapture.toString())
           .contains("Logic4: Validate Task(id=5, running=false)")
-          .contains("Logic4: Validate Task(id=6, running=false)");
+          .contains("Logic4: Validate Task(id=6, running=false)")
+          .contains("Logic5 1 on true")
+          .contains("Logic5 2 on true")
+      ;
 
    }
 }

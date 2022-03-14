@@ -56,34 +56,43 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   // see the tests
-   public void bossLevel(boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO ALT-ENTER > move closer to usages
+   public void doBossFluff(List<Task> tasks, boolean cr323) {
       int j = tasks.size();
       System.out.println("Logic1");
       List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-
-            taskIds.add(task.getId());
-
-            // TODO When **I** call this method, I want this to run HERE, too:
-//            if (cr323) {
-//               System.out.println("My Logic: " + task);
-//            }
-
-            index++;
-            System.out.println("Logic5 " + index + " on " + task.isRunning());
-         }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+      System.out.println("Logic3");
+      int index = 0;
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
       }
+      for (Task task : tasks) {
+         taskIds.add(task.getId());
+      }
+      for (Task task : tasks) {
+         // TODO When **I** call this method, I want this to run HERE, too:
+         if (cr323) {
+            System.out.println("My Logic: " + task);
+         }
+         index++;
+      }
+      for (Task task : tasks) {
+         System.out.println("Logic5 " + index + " on " + task.isRunning());
+      }
+      // Split Loop refactoring:
+      // 1) performance? NO: "Measure don't guess" - Kirk Pepperdime
+      // 2)
+      System.out.println("Logic6 " + j);
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+
+
+   public void doBossNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
       System.out.println("Logic7");
    }
 
