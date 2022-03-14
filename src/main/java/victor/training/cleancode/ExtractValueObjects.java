@@ -100,6 +100,7 @@ class CarModel {
    private CarModel() {
    } // for Hibernate
 
+
    public CarModel(String make, String model, Interval years) {
       this.make = make;
       this.model = model;
@@ -138,12 +139,6 @@ class CarModelMapper {
       CarModelDto dto = new CarModelDto();
       dto.make = carModel.getMake();
       dto.model = carModel.getModel();
-      dto.startYear = carModel.getYearInterval().getStart();
-      dto.startYear = carModel.getYearInterval().getStart();
-      dto.startYear = carModel.getYearInterval().getStart();
-      dto.startYear = carModel.getYearInterval().getStart();
-      dto.startYear = carModel.getYearInterval().getStart();
-      dto.startYear = carModel.getYearInterval().getStart();
       dto.startYear = carModel.getYearInterval().getStart();
       dto.endYear = carModel.getYearInterval().getEnd();
       return dto;

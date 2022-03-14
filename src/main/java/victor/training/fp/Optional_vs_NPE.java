@@ -1,6 +1,10 @@
 package victor.training.fp;
 
 import lombok.Data;
+import lombok.NonNull;
+import org.springframework.lang.Nullable;
+
+import java.util.Optional;
 
 /* "I call it my billion-dollar mistake. 
  * It was the invention of the null reference in 1965..."
@@ -10,22 +14,27 @@ import lombok.Data;
 
 class DiscountService {
 	public String getDiscountLine(Customer customer) {
-		return "Discount%: " + getApplicableDiscountPercentage(customer.getMemberCard());
+		return customer.getMemberCard()
+			.map(card -> getApplicableDiscountPercentage(card))
+			.map(discount -> "Discount%: " + discount)
+			.orElse("");
 	}
 		
-	private Integer getApplicableDiscountPercentage(MemberCard card) { 
+	private Integer getApplicableDiscountPercentage(MemberCard card) {
 		if (card.getFidelityPoints() >= 100) {
 			return 5;
 		}
 		if (card.getFidelityPoints() >= 50) {
 			return 3;
 		}
-		return null;
+		return 0;
 	}
 		
 	// test: 60, 10, no MemberCard
 	public static void main(String[] args) {
-		
+		System.out.println(new DiscountService().getDiscountLine(new Customer(new MemberCard(60))));
+		System.out.println(new DiscountService().getDiscountLine(new Customer(new MemberCard(10))));
+		System.out.println(new DiscountService().getDiscountLine(new Customer()));
 	}
 }
 
@@ -38,8 +47,9 @@ class Customer {
 	public Customer(MemberCard profile) {
 		this.memberCard = profile;
 	}
-	public MemberCard getMemberCard() {
-		return memberCard;
+ //	@Nullable = IDE+SOnar hints
+	public Optional<MemberCard> getMemberCard() {
+		return Optional.ofNullable(memberCard);
 	}
 }
 
