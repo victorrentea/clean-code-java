@@ -1,9 +1,12 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -56,35 +59,42 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   public void doBossFluff(List<Task> tasks, boolean cr323) {
-      int j = tasks.size();
-      System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
-      System.out.println("Logic2");
-      System.out.println("Logic3");
+   public void doBossFluff(List<Task> tasks) {
+      bossStart(tasks);
+      bossEnd(tasks);
+   }
+   public void doBossFluff323(List<Task> tasks) {
+      bossStart(tasks);
+      for (Task task : tasks) {
+         System.out.println("My Logic: " + task);
+      }
+      bossEnd(tasks);
+   }
+
+   private void bossEnd(List<Task> tasks) {
       int index = 0;
-      for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.setRunning();
-      }
-      for (Task task : tasks) {
-         taskIds.add(task.getId());
-      }
-      if (cr323) {
-         for (Task task : tasks) {
-            System.out.println("My Logic: " + task);
-         }
-      }
       for (Task task : tasks) {
          index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
-      // Split Loop refactoring:
-      // 1) performance? NO: "Measure don't guess" - Kirk Pepperdime
-      // 2)
+
+      int j = tasks.size();
       System.out.println("Logic6 " + j);
+
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
+   }
+
+   private void bossStart(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
+      }
    }
 
 
