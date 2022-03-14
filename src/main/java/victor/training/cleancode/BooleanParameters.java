@@ -70,14 +70,13 @@ public class BooleanParameters {
       for (Task task : tasks) {
          taskIds.add(task.getId());
       }
-      for (Task task : tasks) {
-         // TODO When **I** call this method, I want this to run HERE, too:
-         if (cr323) {
+      if (cr323) {
+         for (Task task : tasks) {
             System.out.println("My Logic: " + task);
          }
-         index++;
       }
       for (Task task : tasks) {
+         index++;
          System.out.println("Logic5 " + index + " on " + task.isRunning());
       }
       // Split Loop refactoring:
