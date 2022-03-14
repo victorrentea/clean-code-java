@@ -4,6 +4,17 @@ import videostore.horror.Movie.PriceCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+// WHEN is it safe to call a function 2 times
+         // 1) No SIDE-EFFECTs
+               // :that is, DO NOT repeat calls if the function INSERTs to DB.
+         // 2) REFERENTIAL TRANSPARENT (~idempotent): "same params -> same result"
+               // double defaultPrice = restTemplate.getForDouble("http:://some-service");// NOT safe to re-call
+         // *) FAST <- also concerned
+               // that is, a CPU intensive function should be cached.
+
+         // 1+2 = PURE Function
+            // it never goes outside the MEMORY.
 
 public class Customer {
    private final String name;
@@ -22,41 +33,32 @@ public class Customer {
    }
 
    public String statement() {
-      double totalPrice = 0;
-      int frequentRenterPoints = 0;
+      AtomicInteger frequentRenterPoints = new AtomicInteger();
       String result = "Rental Record for " + getName() + "\n";
 
-		for (Rental rental : rentals) {
+//		for (Rental rental : rentals) {
+      rentals.stream().forEach(rental-> {
          Movie movie = rental.getMovie();
          int daysRented = rental.getDaysRented();
 
          // add frequent renter points
-         frequentRenterPoints++;
+         frequentRenterPoints.getAndIncrement();
          // add bonus for a two day new release rental
          if (movie.priceCode() == PriceCode.NEW_RELEASE && daysRented >= 2) {
-            frequentRenterPoints++;
+            frequentRenterPoints.getAndIncrement();
          }
+      });
 
-         // show figures line for this rental
-         result += "\t" + movie.title() + "\t" + rental.calculatePrice() + "\n";
-      }
+
 		for (Rental rental : rentals) {
-         totalPrice += rental.calculatePrice();
-
-         // WHEN is it safe to call a function 2 times
-         // 1) No SIDE-EFFECTs
-               // :that is, DO NOT repeat calls if the function INSERTs to DB.
-         // 2) REFERENTIAL TRANSPARENT (~idempotent): "same params -> same result"
-               // double defaultPrice = restTemplate.getForDouble("http:://some-service");// NOT safe to re-call
-         // *) FAST <- also concerned
-               // that is, a CPU intensive function should be cached.
-
-         // 1+2 = PURE Function
-            // it never goes outside the MEMORY.
+         result += "\t" + rental.getMovie().title() + "\t" + rental.getPrice() + "\n";
       }
+
+      double totalPrice = rentals.stream().mapToDouble(Rental::getPrice).sum();
+
       // add footer lines
       result += "Amount owed is " + totalPrice + "\n";
-      result += "You earned " + frequentRenterPoints + " frequent renter points";
+      result += "You earned " + frequentRenterPoints.get() + " frequent renter points";
       return result;
    }
 

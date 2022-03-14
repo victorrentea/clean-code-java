@@ -1,13 +1,32 @@
 package videostore.horror;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.stereotype.Service;
+
+//@Service
+//@RequiredArgsConstructor
+//class SomeService {
+//   private final SomeDep dep;
+//
+//
+//}
 
 @Value
 public class Rental {
    Movie movie;
    int daysRented;
 
-   public double calculatePrice() {
+//   @Autowired
+//   messageSender
+
+   public double getPrice() {
+//      priceComputationCounter ++;
+      // INSERT POST SEND MESSAGE < NEVER HAPPEN, as they require Spring dep
+      // SELECT GET < NEVER HAPPEN, as they require Spring dep
+      // change FIELD < NO: I am in an immutable object. :)
+      // time-based stuff >>> RISKY (16 years : never saw time-based logic deep inside a data object)
       double price = 0;
       switch (movie.priceCode()) {
          case REGULAR:
