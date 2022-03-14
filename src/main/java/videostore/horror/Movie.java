@@ -1,25 +1,26 @@
 package videostore.horror;
+
+import java.util.Objects;
+
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
+	enum PriceCode {
+		REGULAR,
+		CHILDREN,
+		NEW_RELEASE
+	}
+	private final String title;
+	private final PriceCode priceCode;
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+	public Movie(String title, PriceCode priceCode) {
+		this.title = Objects.requireNonNull(title); // + NOT NULL in DB
+		this.priceCode = Objects.requireNonNull(priceCode);
 	}
 
-	public Integer getPriceCode() {
-		return _priceCode;
+	public PriceCode priceCode() {
+		return priceCode;
 	}
 
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
-	}
-
-	public String getTitle() {
-		return _title;
+	public String title() {
+		return title;
 	};
 }

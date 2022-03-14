@@ -33,7 +33,7 @@ class AnotherClass {
 
 class Person {
    private Long id;
-   private String firstName;
+   private final String firstName;
    private String lastName;
    private String phone;
 
