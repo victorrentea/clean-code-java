@@ -8,8 +8,15 @@ public class Customer {
    private String name;
    private MemberCard memberCard;
 
-   public Optional<MemberCard> getMemberCard() {
-      return ofNullable(memberCard);
+   public Customer() {
+   }
+
+   public Customer(MemberCard memberCard) {
+      this.memberCard = memberCard;
+   }
+
+   public MemberCard getMemberCard() {
+      return memberCard;
    }
 
    public Customer setMemberCard(MemberCard memberCard) {

@@ -5,6 +5,9 @@ import lombok.Data;
 import victor.training.exception.model.Customer;
 import victor.training.exception.model.MemberCard;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("ConstantConditions")
 public class Optionals {
 	public static void main(String[] args) {
