@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class BooleanParameters {
       bigUglyMethod(4, new Task(2));
       bigUglyMethod(5, new Task(1));
 
-      // TODO From my use-case #323, I call it too, to do more within:. + task.setDetail(15)
+      // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
       bigUglyMethod(2, task);
 
@@ -39,9 +37,9 @@ public class BooleanParameters {
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   // see the tests
-   public void bossLevel(boolean fluff, List<Task> tasks) {
-      int index = 0; // TODO ALT-ENTER > move closer to usages
+   // Lord gave us tests!
+   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+      int index = 0; // TODO move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
       List<Integer> taskIds = new ArrayList<>();
@@ -54,11 +52,12 @@ public class BooleanParameters {
 
             taskIds.add(task.getId());
 
-            // TODO When **I** call this method, I want this to run HERE, too:
-            // System.out.println("My Logic: " + task);
+            if (cr323) { // TODO remove the boolean
+               System.out.println("My Logic: " + task);
+            }
 
             index++;
-            System.out.println("Logic5 " + index + " on " + task.isRunning());
+            System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
          }
          System.out.println("Logic6 " + j);
          System.out.println("Task Ids: " + taskIds);
@@ -71,7 +70,6 @@ public class BooleanParameters {
 }
 
 
-@ToString
 class Task {
    private final int id;
    private boolean running;
@@ -90,5 +88,10 @@ class Task {
 
    public int getId() {
       return id;
+   }
+
+   @Override
+   public String toString() {
+      return "Task{" + "id=" + id + ", running=" + running + '}';
    }
 }
