@@ -54,4 +54,15 @@ class BooleanParametersTest {
                               "Logic7 [Task(id=5, running=false)]\n" +
                               "Logic7\n");
    }
+
+   @Test
+   @CaptureSystemOutput
+   void validatesBoth(OutputCapture outputCapture) {
+      target.bossLevel(true, List.of(new Task(5),new Task(6)));
+
+      assertThat(outputCapture.toString())
+          .contains("Logic4: Validate Task(id=5, running=false)")
+          .contains("Logic4: Validate Task(id=6, running=false)");
+
+   }
 }

@@ -73,7 +73,7 @@ public class BooleanParameters {
 
             // TODO When **I** call this method, I want this to run HERE, too:
 //            if (cr323) {
-               System.out.println("My Logic: " + task);
+//               System.out.println("My Logic: " + task);
 //            }
 
             index++;
