@@ -1,10 +1,5 @@
 package videostore.horror;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.stereotype.Service;
-
 //@Service
 //@RequiredArgsConstructor
 //class SomeService {
@@ -13,15 +8,19 @@ import org.springframework.stereotype.Service;
 //
 //}
 
-@Value
-public class Rental {
-   Movie movie;
-   int daysRented;
+public final class Rental {
+   private final Movie movie;
+   private final int daysRented;
+
+   public Rental(Movie movie, int daysRented) {
+      this.movie = movie;
+      this.daysRented = daysRented;
+   }
 
 //   @Autowired
 //   messageSender
 
-   public double getPrice() {
+   public double price() {
 //      priceComputationCounter ++;
       // INSERT POST SEND MESSAGE < NEVER HAPPEN, as they require Spring dep
       // SELECT GET < NEVER HAPPEN, as they require Spring dep
@@ -46,5 +45,17 @@ public class Rental {
             break;
       }
       return price;
+   }
+
+   public int calculateFrequentRenterPoints() {
+      if (movie.isNewRelease() && daysRented >= 2) {
+         return 2;
+      } else {
+         return 1;
+      }
+   }
+
+   public Movie movie() {
+      return movie;
    }
 }

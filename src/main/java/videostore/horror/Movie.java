@@ -3,6 +3,10 @@ package videostore.horror;
 import java.util.Objects;
 
 public class Movie {
+	public boolean isNewRelease() {
+		return priceCode() == PriceCode.NEW_RELEASE;
+	}
+
 	enum PriceCode {
 		REGULAR,
 		CHILDREN,
