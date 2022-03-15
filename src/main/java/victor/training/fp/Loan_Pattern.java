@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.lambda.Unchecked;
+import org.jooq.lambda.fi.util.function.CheckedConsumer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -24,9 +26,20 @@ class FileExporter {
       try (Writer writer = new FileWriter(file)) {
 
          writer.write("order_id;date\n");
+
+         CheckedConsumer<String> param = writer::write;
+         Consumer<String> consumer = Unchecked.consumer(param);
+
          orderRepo.findByActiveTrue()
              .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
-             .forEach(Unchecked.consumer(writer::write));
+                 .forEach(Unchecked.consumer(s -> writer.write(s)));
+//             .forEach(str -> {
+//                try {
+//                   writer.write(str);
+//                } catch (IOException e) {
+//                   throw new RuntimeException(e);
+//                }
+//             });
 
          log.info("Export DONE");
       } catch (Exception e) {
