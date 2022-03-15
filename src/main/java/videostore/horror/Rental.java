@@ -8,6 +8,8 @@ package videostore.horror;
 //
 //}
 
+import videostore.horror.Movie.PriceCode;
+
 public final class Rental {
    private final Movie movie;
    private final int daysRented;
@@ -17,15 +19,7 @@ public final class Rental {
       this.daysRented = daysRented;
    }
 
-//   @Autowired
-//   messageSender
-
    public double price() {
-//      priceComputationCounter ++;
-      // INSERT POST SEND MESSAGE < NEVER HAPPEN, as they require Spring dep
-      // SELECT GET < NEVER HAPPEN, as they require Spring dep
-      // change FIELD < NO: I am in an immutable object. :)
-      // time-based stuff >>> RISKY (16 years : never saw time-based logic deep inside a data object)
       double price = 0;
       switch (movie.priceCode()) {
          case REGULAR:
@@ -33,21 +27,25 @@ public final class Rental {
             if (daysRented > 2) {
                price += (daysRented - 2) * 1.5;
             }
-            break;
+            return price;
          case NEW_RELEASE:
             price += daysRented * 3;
-            break;
+            return price;
          case CHILDREN:
             price += 1.5;
             if (daysRented > 3) {
                price += (daysRented - 3) * 1.5;
             }
-            break;
+            return price;
+         default:
+            throw new IllegalStateException("Unexpected value: " + movie.priceCode());
       }
-      return price;
    }
 
-   public int calculateFrequentRenterPoints() {
+
+
+
+   public int frequentRenterPoints() {
       if (movie.isNewRelease() && daysRented >= 2) {
          return 2;
       } else {

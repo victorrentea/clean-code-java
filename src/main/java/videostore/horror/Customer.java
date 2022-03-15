@@ -41,7 +41,7 @@ public class Customer {
     * - pure functions are cool: repeat them and you're still safe.
     * - immutable object are cool > see above why
     * - broke the for take totalAmount computation out
-    * - we identified the Rental class
+    * - we identified the Rental class from Map<Movie,daysRented>
     * - we added contraints and we had lovely discussions with BIZ >
     * - we made our model null-safe
     * - moved biz logic inside Rental
@@ -62,7 +62,7 @@ public class Customer {
 
    private String formatFooter() {
       double totalPrice = rentals.stream().mapToDouble(Rental::price).sum();
-      int frequentRenterPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
+      int frequentRenterPoints = rentals.stream().mapToInt(Rental::frequentRenterPoints).sum();
       String result = "Amount owed is " + totalPrice + "\n";
       result += "You earned " + frequentRenterPoints + " frequent renter points";
       return result;

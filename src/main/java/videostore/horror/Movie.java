@@ -10,7 +10,10 @@ public class Movie {
 	enum PriceCode {
 		REGULAR,
 		CHILDREN,
-		NEW_RELEASE
+		NEW_RELEASE,
+		ELDERS;
+
+
 	}
 	private final String title;
 	private final PriceCode priceCode;
