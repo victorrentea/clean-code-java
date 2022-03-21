@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import io.vavr.Tuple4;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ public class GuardClauses {
       if (marine.isRetired()) {
          return retiredAmount();
       }
+
       if (marine.getYearsService() == null) { // validari de date care trebuiau facute PANA sa ajungi sa chemi functia mea
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }

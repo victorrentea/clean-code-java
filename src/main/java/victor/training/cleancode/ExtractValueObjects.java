@@ -5,15 +5,17 @@ import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class ExtractValueObjects {
 
    // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      List<CarModel> results = models.stream()
+          .filter(model -> MathUtil.intervalsIntersect(
+             criteria.getStartYear(), criteria.getEndYear(),
+             model.getStartYear(), model.getEndYear()))
+          .collect(Collectors.toList());
       System.out.println("More filtering logic");
       return results;
    }
