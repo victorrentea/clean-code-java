@@ -1,28 +1,30 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embedded;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 class ExtractValueObjects {
 
    // see tests
-   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-       Range criteriaRange = new Range(criteria.getStartYear(), criteria.getEndYear());
+   public List<CarModel> filterCarModels(List<CarModel> models, Range criteriaRange) {
       List<CarModel> results = models.stream()
-          .filter(model -> criteriaRange.rangeIntersect(new Range(model.getStartYear(), model.getEndYear())))
-          .collect(Collectors.toList());
+          .filter(model -> criteriaRange.intersects(model.getYearRange()))
+          .collect(toList());
       System.out.println("More filtering logic");
       return results;
    }
 
    private void applyCapacityFilter() {
-      System.out.println(new Range(1000, 1600).rangeIntersect(new Range(1250, 2000)));
+      System.out.println(new Range(1000, 1600).intersects(new Range(1250, 2000)));
    }
 
 }
+
 class Alta {
    private void applyCapacityFilter() {
-      System.out.println(new Range(1000, 1600).rangeIntersect(new Range(1250, 2000)));
+      System.out.println(new Range(1000, 1600).intersects(new Range(1250, 2000)));
    }
 
 }
@@ -36,11 +38,14 @@ class Range {
    private final int end;
 
    public Range(int start, int end) {
+      if (start > end) { // model self-validat. ATENTIE LA BUGURI. oricine folosea acest Range, va primit ex daca nu era valid
+         throw new IllegalArgumentException("start larger than end");
+      }
       this.start = start;
       this.end = end;
    }
 
-   public boolean rangeIntersect(Range other) {
+   public boolean intersects(Range other) {
       return start <= other.end && other.start <= end;
    }
 
@@ -52,13 +57,6 @@ class Range {
       return start;
    }
 }
-
-
-
-
-
-
-
 
 
 class CarSearchCriteria {
@@ -88,33 +86,33 @@ class CarSearchCriteria {
 
 //@Entity
 class CarModel {
-//   @Id
+   //   @Id
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+   @Embedded // gen
+   private Range yearRange;
 
-   private CarModel() {} // for Hibernate
-   public CarModel(String make, String model, int startYear, int endYear) {
+   private CarModel() {
+   } // for Hibernate
+
+   public CarModel(String make, String model, Range yearRange) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      this.yearRange = yearRange;
+   }
+
+   public Range getYearRange() {
+      return yearRange;
    }
 
    public Long getId() {
       return id;
    }
-
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
-   }
+   // code smell: man in the middle: cod stupid care doar delega mai departe, fara zica nimic in plus
+   //   public int getStartYear() {
+   //      return getYearRange().getStart();
+   //   }
 
    public String getMake() {
       return make;
@@ -140,14 +138,22 @@ class CarModelMapper {
       CarModelDto dto = new CarModelDto();
       dto.make = carModel.getMake();
       dto.model = carModel.getModel();
-      dto.startYear = carModel.getStartYear();
-      dto.endYear = carModel.getEndYear();
+      dto.startYear = carModel.getYearRange().getStart();
+      dto.endYear = carModel.getYearRange().getEnd();
+      dto.endYear = carModel.getYearRange().getEnd();
+      dto.endYear = carModel.getYearRange().getEnd();
+      dto.endYear = carModel.getYearRange().getEnd();
+      dto.endYear = carModel.getYearRange().getEnd();
+      dto.endYear = carModel.getYearRange().getEnd();
+      dto.endYear = carModel.getYearRange().getEnd();
       return dto;
    }
+
    public CarModel fromDto(CarModelDto dto) {
-      return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+      return new CarModel(dto.make, dto.model, new Range(dto.startYear, dto.endYear));
    }
 }
+
 class CarModelDto {
    public String make;
    public String model;
