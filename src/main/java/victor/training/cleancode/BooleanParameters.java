@@ -27,9 +27,17 @@ public class BooleanParameters {
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
 
-      if (cr323) {
+
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+   }
+   static void bigUglyMethod323(int b, Task task, boolean cr323) {
+      System.out.println("Complex Logic 1 " + task + " and " + b);
+      System.out.println("Complex Logic 2 " + task);
+      System.out.println("Complex Logic 3 " + task);
+
          System.out.println("Logic just for CR323 : " + task);
-      }
 
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
