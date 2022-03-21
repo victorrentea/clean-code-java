@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -23,6 +22,35 @@ class Rental {
 
    public int getDaysRented() {
       return daysRented;
+   }
+
+   public int computeRenterPoints() {
+      if (getMovie().isNewRelease() && getDaysRented() >= 2) {
+			return 2;
+		} else {
+			return 1;
+		}
+   }
+
+   // fun names lead you to expect the function is PURE "get
+   public double getPrice() {
+      double price = 0;
+      switch (getMovie().getCategory()) {
+         case REGULAR:
+            price += 2;
+            if (getDaysRented() > 2)
+               price += (getDaysRented() - 2) * 1.5;
+            break;
+         case NEW_RELEASE:
+            price += getDaysRented() * 3;
+            break;
+         case CHILDREN:
+            price += 1.5;
+            if (getDaysRented() > 3)
+               price += (getDaysRented() - 3) * 1.5;
+            break;
+      }
+      return price;
    }
 }
 
@@ -46,61 +74,34 @@ class Customer {
    }
 
    public String formatStatement() {
-      String result = "Rental Record for " + getName() + "\n";
+      return formatHeader() + formatBody() + formatFooter();
+   }
 
-      int frequentRenterPoints = rentalList.stream().mapToInt(this::computeRenterPoints).sum();
+   private String formatFooter() {
+      return "Amount owed is " + getTotalPrice() + "\n"
+             + "You earned " + getTotalRenterPoints() + " frequent renter points";
+   }
 
-//      for (Rental rental : rentalList) {
-//         result += formatStatementLine(rental);
-//      }
-      result += rentalList.stream().map(this::formatStatementLine).collect(joining());
-      double totalPrice = rentalList.stream().mapToDouble(this::getPrice).sum();
-      // E gresit sa repeti un apel de functie daca :
-      // 1) ADUCE ALT REZULTAT LA AL DOILEA APEL: merge in DB (SELECT) si cine stie ce aduce a doua oara (chiar pt aceiasi param) - NU E REFERENTIAL TRANSPARENT ?!?!?!?!
-      // 2) FACE SIDE-EFFECTS (ITI TRANSFERA BANI)
-      // 3) ia timp
+   private int getTotalRenterPoints() {
+      return rentalList.stream().mapToInt(Rental::computeRenterPoints).sum();
+   }
 
-      // O FUNCTIE PURE a) nu face side effects si b) da acelasi rezultat pt aceeasi param
-      // daca o fct e pure si fast => o poti chema la liber
+   private double getTotalPrice() {
+      return rentalList.stream().mapToDouble(Rental::getPrice).sum();
+   }
 
-      // add footer lines
-      result += "Amount owed is " + totalPrice + "\n";
-      result += "You earned " + frequentRenterPoints + " frequent renter points";
-      return result;
+   private String formatBody() {
+      return rentalList.stream().map(this::formatStatementLine).collect(joining());
+   }
+
+   private String formatHeader() {
+      return "Rental Record for " + getName() + "\n";
    }
 
    private String formatStatementLine(Rental rental) {
-      return "\t" + rental.getMovie().getTitle() + "\t" + getPrice(rental) + "\n";
-   }
-
-   private int computeRenterPoints(Rental rental) {
-      if (rental.getMovie().isNewRelease() && rental.getDaysRented() >= 2) {
-			return 2;
-		} else {
-			return 1;
-		}
+      return "\t" + rental.getMovie().getTitle() + "\t" + rental.getPrice() + "\n";
    }
 
    // TODO un obiect Statement care sa aiba functie de "renderAsString()"
 
-   // fun names lead you to expect the function is PURE "get
-   private double getPrice(Rental rental) {
-      double price = 0;
-      switch (rental.getMovie().getCategory()) {
-         case REGULAR:
-            price += 2;
-            if (rental.getDaysRented() > 2)
-               price += (rental.getDaysRented() - 2) * 1.5;
-            break;
-         case NEW_RELEASE:
-            price += rental.getDaysRented() * 3;
-            break;
-         case CHILDREN:
-            price += 1.5;
-            if (rental.getDaysRented() > 3)
-               price += (rental.getDaysRented() - 3) * 1.5;
-            break;
-      }
-      return price;
-   }
 }
