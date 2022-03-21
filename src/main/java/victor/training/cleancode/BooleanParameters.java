@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -59,16 +62,17 @@ public class BooleanParameters {
       System.out.println("Logic2");
       System.out.println("Logic3");
       int index = 0;
-      List<Integer> taskIds = new ArrayList<>();
       for (Task task : tasks) {
          System.out.println("Logic4: Validate " + task);
          task.setRunning();
-         taskIds.add(task.getId());
-
-         if (cr323) { // TODO remove the boolean
+      }
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+      if (cr323) { // TODO remove the boolean
+         for (Task task : tasks) {
             System.out.println("My Logic: " + task);
          }
-
+      }
+      for (Task task : tasks) {
          index++;
          System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
       }
