@@ -23,7 +23,7 @@ class BooleanParametersTest {
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic2\n" +
                                      "Logic3\n" +
-                                     "Logic4: Validate Task(id=5, running=false)\n" +
+                                     "Logic4: Validate Task{id=5, running=false}\n" +
                                      "Logic5 index=1 on running=true\n" +
                                      "Logic6 1\n" +
                                      "Task Ids: [5]\n" +
@@ -38,8 +38,8 @@ class BooleanParametersTest {
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic2\n" +
                                      "Logic3\n" +
-                                     "Logic4: Validate Task(id=5, running=false)\n" +
-                                     "My Logic: Task(id=5, running=true)\n" +
+                                     "Logic4: Validate Task{id=5, running=false}\n" +
+                                     "My Logic: Task{id=5, running=true}\n" +
                                      "Logic5 index=1 on running=true\n" +
                                      "Logic6 1\n" +
                                      "Task Ids: [5]\n" +
@@ -66,9 +66,9 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                              "Logic2\n" +
-                              "Logic7 [Task(id=5, running=false)]\n" +
-                              "Logic7\n");
+                                     "Logic2\n" +
+                                     "Logic7 [Task{id=5, running=false}]\n" +
+                                     "Logic7\n");
    }
 
    @Test
@@ -77,8 +77,8 @@ class BooleanParametersTest {
       target.bossLevel(true, List.of(new Task(5),new Task(6)), false);
 
       assertThat(outputCapture.toString())
-          .contains("Logic4: Validate Task(id=5, running=false)")
-          .contains("Logic4: Validate Task(id=6, running=false)")
+          .contains("Logic4: Validate Task{id=5, running=false}")
+          .contains("Logic4: Validate Task{id=6, running=false}")
           .contains("Logic5 index=1 on running=true")
           .contains("Logic5 index=2 on running=true")
       ;
