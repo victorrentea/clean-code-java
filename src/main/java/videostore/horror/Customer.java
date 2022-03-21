@@ -3,15 +3,15 @@ package videostore.horror;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.put(movie, daysRented);
 	}
 
 	public String getName() {
@@ -25,27 +25,27 @@ class Customer {
 		for (Movie movie : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for each line
-			int dr = rentals.get(movie);
+			int daysRented = rentals.get(movie);
 			switch (movie.getCategory()) {
 				case REGULAR:
 					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					if (daysRented > 2)
+						thisAmount += (daysRented - 2) * 1.5;
 					break;
 				case NEW_RELEASE:
-					thisAmount += dr * 3;
+					thisAmount += daysRented * 3;
 					break;
 				case CHILDREN:
 					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+					if (daysRented > 3)
+						thisAmount += (daysRented - 3) * 1.5;
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if ((movie.getCategory() == Movie.Category.NEW_RELEASE)
-				 && dr > 1)
+				 && daysRented >= 2)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
