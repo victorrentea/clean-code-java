@@ -28,17 +28,13 @@ public class Optionals {
    }
 
    private static Optional<Discount> getApplicableDiscountPercentage(MemberCard card) {
-
-		if (card == null) {
-			return Optional.empty();
-		}
-
 		if (card.getFidelityPoints() >= 100) {
          return Optional.of(new Discount(5));
       }
       if (card.getFidelityPoints() >= 50) {
          return Optional.of(new Discount(3));
       }
+//      throw new RuntimeException("c");
 //      return new Discount(0); // NULL OBJECT PATTERN = un obiect care reprezinta prin valorile lui "ABSENTA"
 		return Optional.empty();
    }

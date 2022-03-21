@@ -1,10 +1,13 @@
 package victor.training.fp;
 
+import java.util.Objects;
+import java.util.Optional;
+
 public class Optional_Chain {
 	static MyMapper mapper = new MyMapper();
    public static void main(String[] args) {
 		Parcel parcel = new Parcel();
-		parcel.setDelivery(new Delivery(new Address(new ContactPerson("John"))));
+		parcel.setDelivery(new Delivery(null));
 
 		DeliveryDto dto = mapper.convert(parcel);
       System.out.println(dto);
@@ -14,7 +17,20 @@ public class Optional_Chain {
 class MyMapper {
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
-      dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+
+      // piramida nullului
+//      if (
+//          parcel != null &&
+//          parcel.getDelivery() != null &&
+//          parcel.getDelivery().getAddress() != null &&
+//          parcel.getDelivery().getAddress().getContactPerson() != null &&
+//          parcel.getDelivery().getAddress().getContactPerson().getName() != null
+//      )
+      dto.recipientPerson = parcel.getDelivery()
+          .flatMap(delivery->delivery.getAddress().getContactPerson())
+          .map(person -> person.getName().toUpperCase())
+          .orElse(null);
+
       return dto;
    }
 }
@@ -25,8 +41,8 @@ class DeliveryDto {
 class Parcel {
    private Delivery delivery; // NULL until a delivery is scheduled
 
-   public Delivery getDelivery() {
-      return delivery;
+   public Optional<Delivery> getDelivery() {
+      return Optional.ofNullable(delivery);
    }
 	public void setDelivery(Delivery delivery) {
       this.delivery = delivery;
@@ -38,11 +54,11 @@ class Delivery {
    private Address address; // NOT NULL IN DB
 
    public Delivery(Address address) {
-      this.address = address;
+      setAddress(address);
    }
 
 	public void setAddress(Address address) {
-		this.address = address; // TODO null safe
+      this.address = Objects.requireNonNull(address); // TODO null safe
 	}
 
 	public Address getAddress() {
@@ -57,8 +73,8 @@ class Address {
       this.contactPerson = contactPerson;
    } // TODO allow not setting
 
-   public ContactPerson getContactPerson() {
-      return contactPerson;
+   public Optional<ContactPerson> getContactPerson() {
+      return Optional.ofNullable(contactPerson);
    }
 }
 
@@ -66,7 +82,7 @@ class ContactPerson {
    private final String name; // NOT NULL
 
    public ContactPerson(String name) {
-      this.name = name;
+      this.name = Objects.requireNonNull(name);
    }
 
    public String getName() {
