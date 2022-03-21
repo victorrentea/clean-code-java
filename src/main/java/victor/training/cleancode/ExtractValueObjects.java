@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+
 import javax.persistence.Embedded;
 import java.util.List;
 
@@ -30,7 +31,6 @@ class Alta {
 }
 
 class MathUtil {
-
 }
 
 class Range {
