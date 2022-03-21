@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      if (marine == null) {
+      if (marine == null) { // validari de date care trebuiau facute PANA sa ajungi sa chemi functia mea
          throw new RuntimeException("Marine is null");
       }
       if (isDead(marine)) {
@@ -14,7 +14,7 @@ public class GuardClauses {
       if (marine.isRetired()) {
          return retiredAmount();
       }
-      if (marine.getYearsService() == null) {
+      if (marine.getYearsService() == null) { // validari de date care trebuiau facute PANA sa ajungi sa chemi functia mea
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }
       int result = marine.getYearsService() * 100;
