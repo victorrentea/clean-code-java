@@ -21,6 +21,7 @@ public class Optionals {
    public static String getDiscountLine(Customer customer) {
 		return
 			customer.getMemberCard()
+             //flatmap daca ai Optional<Optional<
 				.flatMap(card -> getApplicableDiscountPercentage(card))
 				.map(discount -> "Discount%: " + discount.getGlobalPercentage())
 				.orElse("");
