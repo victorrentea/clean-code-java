@@ -34,22 +34,37 @@ class Rental {
 
    // fun names lead you to expect the function is PURE "get
    public double getPrice() {
-      double price = 0;
       switch (getMovie().getCategory()) {
          case REGULAR:
-            price += 2;
-            if (getDaysRented() > 2)
-               price += (getDaysRented() - 2) * 1.5;
-            break;
+            return computeRegularPrice();
          case NEW_RELEASE:
-            price += getDaysRented() * 3;
-            break;
+            return computeNewReleasePrice();
          case CHILDREN:
-            price += 1.5;
-            if (getDaysRented() > 3)
-               price += (getDaysRented() - 3) * 1.5;
-            break;
+            return computeChildrenPrice();
+         default:
+            throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
       }
+   }
+
+   private double computeChildrenPrice() {
+      double price;
+      price = 1.5;
+      if (getDaysRented() > 3)
+         price += (getDaysRented() - 3) * 1.5;
+      return price;
+   }
+
+   private double computeNewReleasePrice() {
+      double price;
+      price = getDaysRented() * 3;
+      return price;
+   }
+
+   private double computeRegularPrice() {
+      double price;
+      price = 2;
+      if (getDaysRented() > 2)
+         price += (getDaysRented() - 2) * 1.5;
       return price;
    }
 }

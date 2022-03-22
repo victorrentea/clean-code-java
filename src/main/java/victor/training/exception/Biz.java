@@ -14,7 +14,8 @@ public class Biz {
          Integer points = customer.getMemberCard()
              // collateral bugfix
              .map(MemberCard::getFidelityPoints)
-             .orElse(0);
+             .orElse(null)
+             ;
          order.setPrice(order.getPrice() * (100 - 2 * points) / 100);
       } else {
          System.out.println("NO DISCOUNT");
