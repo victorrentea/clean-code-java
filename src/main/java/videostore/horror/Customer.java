@@ -1,5 +1,6 @@
 package videostore.horror;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -89,8 +90,24 @@ class Customer {
    }
 
    public String formatStatement() {
-      return formatHeader() + formatBody() + formatFooter();
+      return formatHeader()
+             + formatBody()
+             + formatFooter();
    }
+
+
+//   private LocalDate localDate;
+////   private String localDateStr;
+//
+//   public Customer setLocalDate(LocalDate localDate) {
+//      this.localDate = localDate;
+//      this.localDateStr = localDate.toString();
+//      return this;
+//   }
+//
+//   public String getLocalDateStr() {
+//      return localDate.toString();
+//   }
 
    private String formatFooter() {
       return "Amount owed is " + getTotalPrice() + "\n"

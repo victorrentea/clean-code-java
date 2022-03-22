@@ -18,7 +18,7 @@ public class PriceServiceTest {
    @Mock
    private LogisticsService logisticsService;
    @InjectMocks
-   private PriceService priceService;
+   private IPriceService priceService;
 
    @Test
    public void computePrice() {
