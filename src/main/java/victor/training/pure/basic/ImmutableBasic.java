@@ -29,7 +29,7 @@ public class ImmutableBasic {
    }
 }
 
-class Immutable { // shallow immutable
+class Immutable { // deeply immutable
    private final int x;
    private final ImmutableList<Integer> numbers; // NU MERGE CU HIBERNATE. merge cu Cassandra, Mongo, jooq pe relational DB
    private final Other other;
@@ -60,7 +60,7 @@ class Immutable { // shallow immutable
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -70,7 +70,7 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
+//   public void setA(int a) {
+//      this.a = a;
+//   }
 }
