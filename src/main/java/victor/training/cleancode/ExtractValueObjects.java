@@ -7,7 +7,7 @@ class ExtractValueObjects {
 
    // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-     Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+      Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
       List<CarModel> results = models.stream()
               .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
                .collect(Collectors.toList());
@@ -36,6 +36,8 @@ class Interval { // 800 linii
    private final int end;
 
    public Interval(int start, int end) {
+      if (start > end) throw new IllegalArgumentException("start larger than end");
+
       this.start = start;
       this.end = end;
    }
@@ -92,30 +94,22 @@ class CarModel {
    private Long id;
    private String make;
    private String model;
-   private int startYear;
-   private int endYear;
+
+   private Interval yearInterval;// +
+//   private int startYear; // -
+//   private int endYear; // -
 
    private CarModel() {} // for Hibernate
-   public CarModel(String make, String model, int startYear, int endYear) {
+   public CarModel(String make, String model, Interval yearInterval) {
       this.make = make;
       this.model = model;
-      if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-      this.startYear = startYear;
-      this.endYear = endYear;
+      this.yearInterval = yearInterval;
    }
    public Interval getYearInterval() {
-      return new Interval(startYear, endYear);
+      return yearInterval;
    }
    public Long getId() {
       return id;
-   }
-
-   public int getEndYear() {
-      return endYear;
-   }
-
-   public int getStartYear() {
-      return startYear;
    }
 
    public String getMake() {
@@ -134,8 +128,6 @@ class CarModel {
              ", model='" + model + '\'' +
              '}';
    }
-
-
 }
 
 
@@ -144,12 +136,12 @@ class CarModelMapper {
       CarModelDto dto = new CarModelDto();
       dto.make = carModel.getMake();
       dto.model = carModel.getModel();
-      dto.startYear = carModel.getStartYear();
-      dto.endYear = carModel.getEndYear();
+      dto.startYear = carModel.getYearInterval().getStart();
+      dto.endYear = carModel.getYearInterval().getEnd();
       return dto;
    }
    public CarModel fromDto(CarModelDto dto) {
-      return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+      return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
    }
 }
 class CarModelDto {
