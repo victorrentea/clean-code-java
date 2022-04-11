@@ -18,20 +18,33 @@ public class BooleanParameters {
 
       // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
-      bigUglyMethod(2, task);
+      bigUglyMethod323(2, task);
 
    }
 
    static void bigUglyMethod(int b, Task task) {
+      bigStart(b, task);
+      bigEnd(b);
+   }
+   static void bigUglyMethod323(int b, Task task) {
+      bigStart(b, task);
+      System.out.println("Logic just for CR323 : " + task);
+      bigEnd(b);
+   }
+
+   private static void bigEnd(int b) {
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+   }
+
+   private static void bigStart(int b, Task task) {
       System.out.println("Complex Logic 1 " + task + " and " + b);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
-
-      // System.out.println("Logic just for CR323 : " + task);
-
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
+      System.out.println("Complex Logic 1 " + task + " and " + b);
+      System.out.println("Complex Logic 2 " + task);
+      System.out.println("Complex Logic 3 " + task);
    }
 
 
