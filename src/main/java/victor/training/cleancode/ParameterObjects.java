@@ -1,25 +1,33 @@
 package victor.training.cleancode;
 
+import io.vavr.Tuple2;
+import io.vavr.Tuple3;
+
+import java.time.LocalDate;
+import java.util.function.BiFunction;
+
 public class ParameterObjects {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder(new FullName("John", "Doe"), new StreetAddress("St. Albergue", "Paris", 99));
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, StreetAddress streetAddress) {
+      if (fullName.getfName() == null || fullName.getlName() == null) throw new IllegalArgumentException();
 
+//      var x;;// NICIODATA IN COD DE PROD!
+//      Tuple2<BiFunction<String,Double, Tuple3<Long, Long, LocalDate>>, LocalDate> x = progFuctProstInteleasa;
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + streetAddress.getCity() + " on St. " + streetAddress.getStreetName() + " " + streetAddress.getStreetNumber());
 
    }
 }
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getfName() == null || fullName.getlName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getlName());
    }
 }
 

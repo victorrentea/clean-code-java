@@ -6,6 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -37,26 +42,25 @@ public class SplitLoop {
     EmployeeService employeeService;
 
     public String computeStatsHard(List<Employee> employees) {
-        long totalEmpAge = 0;
-        double totalConsultantSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
-            }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
-                }
-            }
-            totalConsultantSalary += employee.getSalary();
+
+        List<Employee> consultants = employees.stream().filter(Employee::isConsultant).collect(toList());
+
+        if (consultants.stream().anyMatch(e -> e.getId() == null)) {
+            return "Employee(s) not persisted";
         }
+
+        long totalEmpAge = employees.stream()
+            .filter(not(Employee::isConsultant))
+            .mapToLong(Employee::getAge)
+            .sum();
+
+        for (Employee consultant : consultants) {
+            if (consultant.getSalary() == null) {
+                consultant.setSalary(retrieveSallary(consultant));
+            }
+        }
+
+        double totalConsultantSalary = consultants.stream().mapToDouble(Employee::getSalary).sum();
 
         long averageAge = 0;
         if (totalEmpAge != 0) {
@@ -69,6 +73,13 @@ public class SplitLoop {
         return "Average employee age = " + averageAge + "; Average consultant salary = " + averageConsultantSalary;
     }
 
+    private Integer retrieveSallary(Employee consultant) {
+        Integer salary = employeeService.retrieveSalary(consultant.getId());
+        if (salary == null) {
+            throw new RuntimeException("NO salary found for employee " + consultant.getId());
+        }
+        return salary;
+    }
 
 
 }

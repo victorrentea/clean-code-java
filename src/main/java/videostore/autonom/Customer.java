@@ -1,10 +1,13 @@
 package videostore.autonom;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.*;
 
 public class Customer {
    private String name;
    private List<Rental> rentals = new ArrayList<>();
+
 
    public Customer(String name) {
       this.name = name;

@@ -1,5 +1,10 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +36,15 @@ class MathUtil {
 
 }
 
-class Interval { // 800 linii
-   private final int start;
-   private final int end;
-
+@Embeddable
+class Interval {
+   private int start;
+   private int end;
+   protected Interval() {}
    public Interval(int start, int end) {
-      if (start > end) throw new IllegalArgumentException("start larger than end");
-
+      if (start > end) {
+         throw new IllegalArgumentException("start larger than end");
+      }
       this.start = start;
       this.end = end;
    }
@@ -45,7 +52,6 @@ class Interval { // 800 linii
    public int getStart() {
       return start;
    }
-//   public int getStartRotunjitOFunctie() { // nu
 
    public boolean intersects(Interval other) {
       return start <= other.end && other.start <= end;
@@ -88,13 +94,15 @@ class CarSearchCriteria {
    }
 }
 
-//@Entity
+@Entity
 class CarModel {
-//   @Id
+   @Id
    private Long id;
+   @NotNull
    private String make;
    private String model;
 
+   @Embedded
    private Interval yearInterval;// +
 //   private int startYear; // -
 //   private int endYear; // -
