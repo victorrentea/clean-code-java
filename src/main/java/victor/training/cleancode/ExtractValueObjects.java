@@ -1,19 +1,15 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class ExtractValueObjects {
 
    // see tests
    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-      List<CarModel> results = new ArrayList<>(models);
-      results.removeIf(model -> !MathUtil.intervalsIntersect(
-          criteria.getStartYear(), criteria.getEndYear(),
-          model.getStartYear(), model.getEndYear()));
+      List<CarModel> results = models.stream()
+              .filter(model -> MathUtil.intervalsIntersect(criteria.getStartYear(), criteria.getEndYear(), model.getStartYear(), model.getEndYear()))
+                  .collect(Collectors.toList());
       System.out.println("More filtering logic");
       return results;
    }
@@ -32,12 +28,34 @@ class Alta {
 
 class MathUtil {
 
+   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+      return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
+   }
+   // are IntelliJ acces pe toate locurile din care se cheama aceasta functie ?
+   // NU : lasi asa
+   @Deprecated
    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-      return start1 <= end2 && start2 <= end1;
+      return intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
    }
 }
 
+class Interval {
+   private final int start;
+   private final int end;
 
+   public Interval(int start, int end) {
+      this.start = start;
+      this.end = end;
+   }
+
+   public int getStart() {
+      return start;
+   }
+
+   public int getEnd() {
+      return end;
+   }
+}
 
 
 
