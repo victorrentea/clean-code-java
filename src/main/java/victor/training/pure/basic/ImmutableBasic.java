@@ -1,5 +1,7 @@
 package victor.training.pure.basic;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,13 +11,13 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.copyOf(Stream.of(1, 2, 3, 4, 5).collect(toList()));
 
       Immutable immutable = new Immutable(2, numbers, new Other(13));
 
 
       System.out.println(immutable);
-
+//numbers.clear();
       undevaAdanc(immutable);
 
       System.out.println(immutable.getNumbers());
@@ -23,18 +25,18 @@ public class ImmutableBasic {
    }
 
    private static void undevaAdanc(Immutable immutable) {
-      immutable.getNumbers().add(-1);
+//      immutable.getNumbers().add(-1);
    }
 }
 
-class Immutable {
+class Immutable { // shallow immutable
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers; // NU MERGE CU HIBERNATE. merge cu Cassandra, Mongo, jooq pe relational DB
    private final Other other;
 
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = new ArrayList<>(numbers);
+      this.numbers = numbers;
       this.other = other;
    }
    public String toString() {
@@ -43,10 +45,15 @@ class Immutable {
    public int getX() {
       return x;
    }
-   public List<Integer> getNumbers() {
-//      return new ArrayList<>(numbers);// Solutia 1: waste of mem + surpriza la caller ca-l lasa sa puna add
-      return Collections.unmodifiableList(numbers); // Solutia 2: merge pe Hibernate entity; nu face malloc (), crapa cu exceptie
+
+   public ImmutableList<Integer> getNumbers() {
+      return numbers;
    }
+
+   //   public List<Integer> getNumbers() {
+////      return new ArrayList<>(numbers);// Solutia 1: waste of mem + surpriza la caller ca-l lasa sa puna add
+//      return Collections.unmodifiableList(numbers); // Solutia 2: merge pe Hibernate entity; nu face malloc (), crapa cu exceptie
+//   }
    public Other getOther() {
       return other;
    }
