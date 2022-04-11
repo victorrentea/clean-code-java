@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -26,6 +26,7 @@ public class BooleanParameters {
       bigStart(b, task);
       bigEnd(b);
    }
+
    static void bigUglyMethod323(int b, Task task) {
       bigStart(b, task);
       System.out.println("Logic just for CR323 : " + task);
@@ -51,28 +52,41 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // Lord gave us tests!
-   public void bossLevel(List<Task> tasks, boolean cr323) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-      List<Integer> taskIds = new ArrayList<>();
+   public void bossLevel(List<Task> tasks) {
+      bossStart(tasks);
+      bossEnd(tasks);
+   }
+
+   public void bossLevel323(List<Task> tasks) {
+      bossStart(tasks);
       for (Task task : tasks) {
-         System.out.println("Logic4: Validate " + task);
-         task.setRunning();
+         System.out.println("My Logic: " + task);
+      }
+      bossEnd(tasks);
+   }
 
-         taskIds.add(task.getId());
-
-         if (cr323) { // TODO remove the boolean
-            System.out.println("My Logic: " + task);
-         }
+   private void bossEnd(List<Task> tasks) {
+      int index = 0;
+      for (Task task : tasks) {
          index++;
          System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
       }
       System.out.println("Logic6 " + tasks.size());
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
+
+   private void bossStart(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
+      }
+   }
+
    public void bossLevelNoFluff(List<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");
@@ -80,7 +94,7 @@ public class BooleanParameters {
       System.out.println("Logic7");
    }
 
-   private void inocenta(List<Task> tasks) {
+   private void inocenta(List<Task> tasks) { // NEVER
       tasks.clear();
    }
 
