@@ -15,22 +15,18 @@ public class Biz {
 
    public void applyDiscount(Order order, Customer customer)  {
       System.out.println("START");
-      try {
-         if (order.getOfferDate().before(Config.getLastPromoDate())) {
-            //  Checked exceptions sunt "Abstraction Leak": tradeaza implementarea
-            System.out.println("APPLYING DISCOUNT");
-            Integer points = customer.getMemberCard()
-                .map(MemberCard::getFidelityPoints)
-                .orElse(0);
+      if (order.getOfferDate().before(Config.getLastPromoDate())) {
+         //  Checked exceptions sunt "Abstraction Leak": tradeaza implementarea
+         System.out.println("APPLYING DISCOUNT");
+         Integer points = customer.getMemberCard()
+             .map(MemberCard::getFidelityPoints)
+             .orElse(0);
 
-            order.setPrice(order.getPrice() * (100 - 2 * points) / 100);
-         } else {
-            System.out.println("NO DISCOUNT");
-         }
-         System.out.println("GATA");
-      } catch (IOException | ParseException e) { // cand prinzi pe toate NU CUMVA sa o inghiti > inghiti si NPE
-         // TODO ma dcs sa intreb.
+         order.setPrice(order.getPrice() * (100 - 2 * points) / 100);
+      } else {
+         System.out.println("NO DISCOUNT");
       }
+      System.out.println("GATA");
 
    }
 }
