@@ -1,6 +1,9 @@
 package videostore.horror;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 class Rental {
 	private final Movie movie;
@@ -69,39 +72,45 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0; // code smells: acumulatori
-		String result = "Rental Record for " + name + "\n";
+		return formatHeader()
+				 + formatBody()
+				 + formatFooter();
+	}
 
-		for (Rental rental : rentals) {
-			Movie movie = rental.getMovie();
+	private String formatBody() {
+		return rentals.stream().map(this::formatBodyLine).collect(joining());
+	}
 
-			double price = rental.computePrice();
-			frequentRenterPoints += rental.computeFrequentRenterPoints();
+	private String formatBodyLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+	}
 
-			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + price + "\n";
-		}
-		for (Rental rental : rentals) {
-			double price = rental.computePrice();
-			// pentru a putea sparge forul in 2, va trebui sa repet un apel de functie (rental.computePrice()).
-			// cand e asta riscant?
-			// 1) daca functia nu e pura => buguri
-				// PURE =
-				// 	a) da acelasi rezultat daca e chemata de mai mute ori cu acelasi input
-				// 	b) nu modifica starea din jur (nu are side effect)
-			// 2) durata de executie sa fie mica. (in 99% din cazuri o fct pura e super fast).
-			// pt ca de obicei intarzierile sunt cauzate de DB, alte APIuri, WS...
-				// evaluateChessBoard(board) sau validate dig signature (message)
+	private String formatHeader() {
+		return "Rental Record for " + name + "\n";
+	}
 
-			// Concluzie. Noi iubim fct pure pt ca sunt safe de chemat de cate ori avem nevoie!
+	private String formatFooter() {
+		return "Amount owed is " + totalPrice() + "\n" +
+				 "You earned " + totalPoints() + " frequent renter points";
+	}
 
-			totalPrice += price;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+	private double totalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
+	}
+
+	private int totalPoints() {
+		return rentals.stream().mapToInt(Rental::computeFrequentRenterPoints).sum();
 	}
 
 }
+// pentru a putea sparge forul in 2, va trebui sa repet un apel de functie (rental.computePrice()).
+// cand e asta riscant?
+// 1) daca functia nu e pura => buguri
+	// PURE =
+	// 	a) da acelasi rezultat daca e chemata de mai mute ori cu acelasi input
+	// 	b) nu modifica starea din jur (nu are side effect)
+// 2) durata de executie sa fie mica. (in 99% din cazuri o fct pura e super fast).
+// pt ca de obicei intarzierile sunt cauzate de DB, alte APIuri, WS...
+	// evaluateChessBoard(board) sau validate dig signature (message)
+
+// Concluzie. Noi iubim fct pure pt ca sunt safe de chemat de cate ori avem nevoie!
