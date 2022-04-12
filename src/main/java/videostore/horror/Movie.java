@@ -1,24 +1,19 @@
 package videostore.horror;
 
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-
-
 	private final String title;
-	private Integer priceCode;
+	private MovieCategory priceCode;
 
-	public Movie(String title, Integer priceCode) {
+	public Movie(String title, MovieCategory priceCode) {
 		this.title = title;
 		this.priceCode = priceCode;
 	}
 
-	public Integer getPriceCode() {
+	public MovieCategory getPriceCode() {
 		return priceCode;
 	}
 
-	public void setPriceCode(Integer priceCode) {
+	public void setPriceCode(MovieCategory priceCode) {
 		this.priceCode = priceCode;
 	}
 
