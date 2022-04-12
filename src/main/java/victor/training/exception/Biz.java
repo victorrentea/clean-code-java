@@ -28,7 +28,7 @@ public class Biz {
             System.out.println("NO DISCOUNT");
          }
          System.out.println("GATA");
-      } catch (Exception e) { // cand prinzi pe toate NU CUMVA sa o inghiti > inghiti si NPE
+      } catch (IOException | ParseException e) { // cand prinzi pe toate NU CUMVA sa o inghiti > inghiti si NPE
          // TODO ma dcs sa intreb.
       }
 
