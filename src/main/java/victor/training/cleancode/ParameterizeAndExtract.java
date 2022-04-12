@@ -12,19 +12,14 @@ class ParameterizeAndExtract {
             }
         }
     }
-
-
 }
 class SomeOtherClass {
-
     public void g(int n) {
         System.out.println("Logic G");
         try {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 4; j++) {
                 if (n + j < 0) {
-                    String x = "Code" +
-                            " " + j;
-                    System.out.println(x);
+                    System.out.println("Code" + j);
                 } else {
                     throw new IllegalArgumentException();
                 }
@@ -33,4 +28,5 @@ class SomeOtherClass {
             throw new RuntimeException("Rethrow", e);
         }
     }
+
 }
