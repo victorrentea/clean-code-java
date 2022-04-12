@@ -1,23 +1,21 @@
 package videostore.horror;
 
+import static java.util.Objects.requireNonNull;
+
 public class Movie {
 	private final String title;
-	private MovieCategory priceCode;
+	private final MovieCategory category;
 
-	public Movie(String title, MovieCategory priceCode) {
-		this.title = title;
-		this.priceCode = priceCode;
+	public Movie(String title, MovieCategory category) {
+		this.title = requireNonNull(title);
+		this.category = requireNonNull(category);
 	}
 
-	public MovieCategory getPriceCode() {
-		return priceCode;
-	}
-
-	public void setPriceCode(MovieCategory priceCode) {
-		this.priceCode = priceCode;
+	public MovieCategory getCategory() {
+		return category;
 	}
 
 	public String getTitle() {
 		return title;
-	};
+	}
 }
