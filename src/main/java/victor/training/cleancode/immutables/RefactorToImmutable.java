@@ -1,6 +1,7 @@
-package victor.training.pure;
+package victor.training.cleancode.immutables;
 
 import java.math.BigDecimal;
+
 
 class PriceService {
    private final SupplierService supplierService;
@@ -10,7 +11,7 @@ class PriceService {
       this.supplierService = supplierService;
       this.logisticsService = logisticsService;
    }
-
+   // see tests
    public void computePrice(Product product) {
       BigDecimal cost = supplierService.getCost(product.getSupplierId(), product.getId());
       BigDecimal deliveryCosts = logisticsService.estimateDeliveryCosts(product.getSupplierId());
@@ -70,6 +71,5 @@ interface SupplierService {
    BigDecimal getCost(Long supplierId, Long productId); // out of scope
 }
 interface LogisticsService {
-
    BigDecimal estimateDeliveryCosts(Long supplierId);
 }
