@@ -11,5 +11,6 @@ public class ImperativeMindset {
              // imperative mindset: let's *add* to ...
              // sum += order.getPrice();
           });
+      System.out.println("Total price of active orders: " + sum);
    }
 }

@@ -1,5 +1,7 @@
 package victor.training.exception;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,12 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-/**
- * @author Alan T.
- */
+
+@Component
 public class Config {
 
-   public static Date getLastPromoDate() {
+   public Date getLastPromoDate() {
 //      File file = new File("config.properties");
 //      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 //      Properties properties = new Properties();

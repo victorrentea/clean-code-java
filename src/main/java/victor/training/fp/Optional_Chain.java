@@ -1,7 +1,7 @@
 package victor.training.fp;
 
 public class Optional_Chain {
-	static MyMapper mapper = new MyMapper();
+	private static final MyMapper mapper = new MyMapper();
    public static void main(String[] args) {
 		Parcel parcel = new Parcel();
 		parcel.setDelivery(new Delivery(new Address(new ContactPerson("John"))));

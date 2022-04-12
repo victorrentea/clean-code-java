@@ -2,15 +2,7 @@ package victor.training.exception;
 
 public class MyException extends  RuntimeException {
 
-   public MyException(Exception e) {
-      this(e, ErrorCode.GENERAL);
-   }
-
-   public MyException(String message, Exception cause) {
-      this(message, cause, ErrorCode.GENERAL);
-   }
-
-   enum ErrorCode {
+   public enum ErrorCode {
       GENERAL,
       BAD_CONFIG
    }
@@ -18,15 +10,21 @@ public class MyException extends  RuntimeException {
    private final ErrorCode code;
    private final Object[] params;
 
-   public Object[] getParams() {
-      return params;
-   }
-
    public ErrorCode getCode() {
       return code;
    }
 
+   public Object[] getParams() {
+      return params;
+   }
 
+   public MyException(Exception e) {
+      this(e, ErrorCode.GENERAL);
+   }
+
+   public MyException(String message, Exception cause) {
+      this(message, cause, ErrorCode.GENERAL);
+   }
 
    public MyException(ErrorCode code, Object... params) {
       this.code = code;

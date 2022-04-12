@@ -40,6 +40,7 @@ class Order {
 	private List<OrderLine> orderLines;
 	private LocalDate creationDate;
 	private boolean active;
+	private int price;
 }
 
 @Data
