@@ -40,6 +40,10 @@ class Order {
 	private List<OrderLine> orderLines;
 	private LocalDate creationDate;
 	private boolean active;
+
+	public int getPrice() {
+		return 0;
+	}
 }
 
 @Data
