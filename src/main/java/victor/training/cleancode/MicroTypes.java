@@ -17,7 +17,7 @@ public class MicroTypes {
                 .forEach(System.out::println);
     }
 
-    private CustomerRepo customerRepo = new CustomerRepo(); //fake dep injection
+    private CustomerRepo customerRepo = new CustomerRepo(); //pretend dep injection
     public void microIdTypes() {
         Map<Long, List<Long>> idMap = customerRepo.getCustomerOrders();
         for (Long id : idMap.keySet()) {
