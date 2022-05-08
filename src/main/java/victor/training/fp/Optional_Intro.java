@@ -2,8 +2,8 @@
 package victor.training.fp;
 
 import lombok.Data;
-import victor.training.exception.model.Customer;
-import victor.training.exception.model.MemberCard;
+import victor.training.cleancode.exception.model.Customer;
+import victor.training.cleancode.exception.model.MemberCard;
 
 import java.util.HashMap;
 import java.util.Map;
