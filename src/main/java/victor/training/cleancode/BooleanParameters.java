@@ -1,7 +1,11 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -75,9 +79,11 @@ public class BooleanParameters {
             index++;
             System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
         }
+        ImmutableList<Integer> taskIds = tasks.stream().map(Task::getId).collect(toImmutableList());
+//        ImmutableList<Integer> taskIds = tasks.stream().map(Task::getId).collect(toImmutableList());
+//        taskIds.add(1);
 
-        List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
-        System.out.println("#sieu " + tasks.size());
+
         System.out.println("Logic6 " + tasks.size());
         System.out.println("Task Ids: " + taskIds);
         System.out.println("Logic7");
