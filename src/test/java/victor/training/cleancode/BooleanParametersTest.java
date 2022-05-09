@@ -32,7 +32,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevelFluff(List.of(new Task(5)), true);
+      target.bossLevelFluff323(List.of(new Task(5)), true);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
