@@ -60,7 +60,7 @@ public class BooleanParameters {
         startAllTasks(tasks);
 
         for (Task task : tasks) {
-            System.out.println("My Logic: " + task);
+                System.out.println("My Logic: " + task);
         }
 
         bossEnd(tasks);
