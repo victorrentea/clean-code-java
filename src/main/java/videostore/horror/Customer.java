@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.*;
 
 class Customer {
@@ -10,51 +12,78 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.put(movie, daysRented);
 	}
 
 	public String getName() {
 		return name;
 	}
 
+
 	public String statement() {
-		double totalAmount = 0;
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for each line
-			int dr = rentals.get(each);
-			switch (each.getCategory()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDREN:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getCategory() != null &&
-				 (each.getCategory() == Movie.Category.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
+		for (Movie movie : rentals.keySet()) {
+			int daysRented = rentals.get(movie);
+			double price = computePrice(movie, daysRented);
+
+			frequentRenterPoints = addFrequentRenterPoints(frequentRenterPoints, movie, daysRented);
+
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + movie.getTitle() + "\t" + price + "\n";
+			totalPrice += price;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
+
+	private int addFrequentRenterPoints(int frequentRenterPoints, Movie movie, int daysRented) {
+		frequentRenterPoints++;
+		if (movie.isNewRelease() && daysRented >= 2) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
+	private double computePrice(Movie movie, int daysRented) {
+		switch (movie.getCategory()) { // nu ai nimic in afara de switch in functie
+			case REGULAR:
+				return computeRegularPrice(daysRented); //1 line / case
+			case NEW_RELEASE:
+				return computeNewReleasePrice(daysRented);
+			case CHILDREN:
+				return computeChildrenPrice(daysRented);
+			default:
+				throw new IllegalStateException("Unexpected value: " + movie.getCategory()); // ai default cu throw
+		}
+	}
+
+	private int computeNewReleasePrice(int dr) {
+		return dr * 3;
+	}
+
+	private double computeChildrenPrice(int dr) {
+		double price;
+		price = 1.5;
+		if (dr > 3)
+			price += (dr - 3) * 1.5;
+		return price;
+	}
+
+	private double computeRegularPrice(int dr) {
+		double price;
+		price = 2;
+		if (dr > 2)
+			price += (dr - 2) * 1.5;
+		return price;
+	}
 }
+//@Test // buna idee
+//void test() {
+//	for (Movie.Category value : Movie.Category.values()) {
+//		computePrice(new Movie()) sa nu arunce illegalStateEx
+//	}
+//}
