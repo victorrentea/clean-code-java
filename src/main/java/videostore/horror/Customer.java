@@ -1,19 +1,31 @@
 package videostore.horror;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.*;
+class Rental {
+	private final Movie movie;
+	private final int daysRented;
 
+	Rental(Movie movie, int daysRented) {
+		this.movie = movie;
+		this.daysRented = daysRented;
+	}
+	public Movie getMovie() {
+		return movie;
+	}
+	public int getDaysRented() {
+		return daysRented;
+	}
+}
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentalList = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentals.put(movie, daysRented);
+		rentalList.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -25,11 +37,14 @@ class Customer {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie movie : rentals.keySet()) {
-			int daysRented = rentals.get(movie);
+
+		for (Rental rental : rentalList) {
+			Movie movie = rental.getMovie();
+			int daysRented = rental.getDaysRented();
+
 			double price = computePrice(movie, daysRented);
 
-			frequentRenterPoints = addFrequentRenterPoints(frequentRenterPoints, movie, daysRented);
+			frequentRenterPoints += addFrequentRenterPoints(movie, daysRented);
 
 			// show figures line for this rental
 			result += "\t" + movie.getTitle() + "\t" + price + "\n";
@@ -41,7 +56,8 @@ class Customer {
 		return result;
 	}
 
-	private int addFrequentRenterPoints(int frequentRenterPoints, Movie movie, int daysRented) {
+	private int addFrequentRenterPoints(Movie movie, int daysRented) {
+		int frequentRenterPoints = 0;
 		frequentRenterPoints++;
 		if (movie.isNewRelease() && daysRented >= 2) {
 			frequentRenterPoints++;
@@ -49,6 +65,12 @@ class Customer {
 		return frequentRenterPoints;
 	}
 	private double computePrice(Movie movie, int daysRented) {
+		//return switch (movie.getCategory()) { // nu ai nimic in afara de switch in functie
+		//			case REGULAR -> computeRegularPrice(daysRented); //1 line / case
+		//			case NEW_RELEASE -> computeNewReleasePrice(daysRented);
+		//			case CHILDREN -> computeChildrenPrice(daysRented);
+		//			// ai default cu throw
+		//		};
 		switch (movie.getCategory()) { // nu ai nimic in afara de switch in functie
 			case REGULAR:
 				return computeRegularPrice(daysRented); //1 line / case

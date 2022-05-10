@@ -6,12 +6,10 @@ import static java.util.Objects.requireNonNull;
 
 public class Movie {
 
-
 	enum Category {
 		CHILDREN,
 		REGULAR,
 		NEW_RELEASE
-		,BABACI
 	}
 	private final String title;
 
