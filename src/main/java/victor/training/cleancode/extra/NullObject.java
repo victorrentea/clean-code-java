@@ -4,9 +4,7 @@ class NullObject {
     public void process(Customer customer) {
         String customerName;
         if (customer == null) {
-            customerName = "occupant";
         } else {
-            customerName = customer.getName();
         }
         // ...
     }
