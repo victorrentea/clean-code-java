@@ -2,16 +2,18 @@ package videostore.horror;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
 	private final String name;
-	private final List<Rental> rentalList = new ArrayList<>();
+	private final List<Rental> rental = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentalList.add(new Rental(movie, daysRented));
+		rental.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -20,32 +22,34 @@ class Customer {
 
 
 	public String statement() {
-		double totalPrice = 0;
-		int frequentRenterPoints;
-		String result = "Rental Record for " + getName() + "\n";
-
-		frequentRenterPoints = rentalList.stream().mapToInt(Rental::computeRenterPoints).sum();
-
-		for (Rental rental : rentalList) {
-			// ce probleme poti avea cand repeti un apel de functie ?
-			// 1 daca modifica state (++, insert, POST, tibco send)\
-			// 2 nu timp, nu random, nu READ pe network
-			// - performanta daca dureaza timp/sau aloca multa mem
-
-			// PURE FUNCTION = nu side effects (setteri) + da acelasi rezultat pt acelasi input
-
-			result += formatStatementLine(rental, rental.computePrice());
-			totalPrice += rental.computePrice();
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		return formatHeader()
+				+ formatBody()
+				+ formatFooter();
 	}
-// "viata-i greu, nu toti o poate" - din batrani
 
-	private String formatStatementLine(Rental rental, double price) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+	private String formatBody() {
+		return rental.stream().map(this::formatStatementLine).collect(joining());
+	}
+
+	private String formatHeader() {
+		return "Rental Record for " + getName() + "\n";
+	}
+
+	private String formatFooter() {
+		return "Amount owed is " + totalPrice() + "\n"
+				+ "You earned " + totalPoints() + " frequent renter points";
+	}
+
+	private int totalPoints() {
+		return rental.stream().mapToInt(Rental::computeRenterPoints).sum();
+	}
+
+	private double totalPrice() {
+		return rental.stream().mapToDouble(Rental::computePrice).sum();
+	}
+
+	private String formatStatementLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 }
