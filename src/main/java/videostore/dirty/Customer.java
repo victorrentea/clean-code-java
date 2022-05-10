@@ -2,8 +2,8 @@ package videostore.dirty;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private List rentals = new ArrayList();
+	private final String name;
+	private final List rentals = new ArrayList();
 
 	public Customer(String name) {
 		this.name = name;

@@ -12,7 +12,7 @@ class NullObject {
 }
 
 class Customer {
-    private String name;
+    private final String name;
 
     Customer(String name) {
         this.name = name;

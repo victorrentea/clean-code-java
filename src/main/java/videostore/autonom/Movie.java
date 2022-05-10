@@ -6,7 +6,7 @@ public class Movie {
     REGULAR,
     NEW_RELEASE
   }
-  private String title;
+  private final String title;
   private Category priceCode;
 
   public Movie(String title, Category priceCode) {
