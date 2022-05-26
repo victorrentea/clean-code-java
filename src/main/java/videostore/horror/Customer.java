@@ -4,6 +4,8 @@ package videostore.horror;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
@@ -21,32 +23,24 @@ class Customer {
     }
 
     public String generateStatement() {
-        double totalPrice;
-        int frequentRenterPoints;
-        String result = formatHeader();
+        return formatHeader()
+                + formatBody()
+                + formatFooter();
+    }
 
-        totalPrice = rentals.stream().mapToDouble(Rental::calculatePrice).sum();
-        //1) daca face un INSERT
-        //2) daca nu intoarce acelasi lucru cand o chemi a doua oara (eg se bazeaza pe timp sau random)
-        // Daca o functie nu face nici 1 nici 2: ==> functia e PURE FUNCTION
-        frequentRenterPoints = rentals.stream().mapToInt(Rental::calculateRenterPoints).sum();
-
-        for (Rental rental : rentals) {
-            // show figures line for this rental
-            result += formatRentalLine(rental);
-        }
-
-        result += formatFooter(totalPrice, frequentRenterPoints);
-        return result;
+    private String formatBody() {
+        return rentals.stream().map(this::formatRentalLine).collect(joining());
     }
 
     private String formatHeader() {
         return "Rental Record for " + name + "\n";
     }
 
-    private String formatFooter(double totalPrice, int frequentRenterPoints) {
+    private String formatFooter() {
+        double totalPrice = rentals.stream().mapToDouble(Rental::calculatePrice).sum();
+        int totalPoints = rentals.stream().mapToInt(Rental::calculateRenterPoints).sum();
         return "Amount owed is " + totalPrice + "\n" +
-                "You earned " + frequentRenterPoints + " frequent renter points";
+                "You earned " + totalPoints + " frequent renter points";
     }
 
     private String formatRentalLine(Rental rental) {

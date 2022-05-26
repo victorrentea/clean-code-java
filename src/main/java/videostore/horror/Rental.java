@@ -36,7 +36,7 @@ public class Rental {
 
     public double calculatePrice() {
         int daysRented = getDaysRented();
-        double price = Math.random();
+        double price = 0;
         switch (getMovie().getCategory()) {
             case REGULAR:
                 price += 2;
