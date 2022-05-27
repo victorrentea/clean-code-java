@@ -23,9 +23,9 @@ class Customer {
     }
 
     public String generateStatement() {
-        return formatHeader()
-                + formatBody()
-                + formatFooter();
+
+        return formatHeader() + formatBody() + formatFooter();
+
     }
 
     private String formatBody() {

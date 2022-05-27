@@ -36,22 +36,43 @@ public class Rental {
 
     public double calculatePrice() {
         int daysRented = getDaysRented();
-        double price = 0;
-        switch (getMovie().getCategory()) {
-            case REGULAR:
-                price += 2;
-                if (daysRented > 2)
-                    price += (daysRented - 2) * 1.5;
-                break;
-            case NEW_RELEASE:
-                price += daysRented * 3;
-                break;
-            case CHILDREN:
-                price += 1.5;
-                if (daysRented > 3)
-                    price += (daysRented - 3) * 1.5;
-                break;
-        }
+
+//        return switch (movie.getCategory()) {
+//            case REGULAR -> calculateRegularPrice(daysRented);
+//            case NEW_RELEASE -> calculateNewReleasePrice(daysRented);
+//            case CHILDREN -> calculateChildrenPrice(daysRented);
+////            default -> throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
+//        };
+//        switch (getMovie().getCategory()) {
+//            case REGULAR:
+//                return calculateRegularPrice(daysRented);
+//            case NEW_RELEASE:
+//                return calculateNewReleasePrice(daysRented);
+//            case CHILDREN:
+//                return calculateChildrenPrice(daysRented);
+//            default:
+//                throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
+//        }
+        return movie.getCategory().computePrice(daysRented);
+    }
+
+    private int calculateNewReleasePrice(int daysRented) {
+        return daysRented * 3;
+    }
+
+    private double calculateChildrenPrice(int daysRented) {
+        double price;
+        price = 1.5;
+        if (daysRented > 3)
+            price += (daysRented - 3) * 1.5;
+        return price;
+    }
+
+    private double calculateRegularPrice(int daysRented) {
+        double price;
+        price = 2;
+        if (daysRented > 2)
+            price += (daysRented - 2) * 1.5;
         return price;
     }
 //

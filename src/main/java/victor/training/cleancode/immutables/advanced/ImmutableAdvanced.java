@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutables.advanced;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -9,34 +11,27 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = null;//new Immutable(1, numbers, new Other(15));
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
       System.out.println(immutable);
+
+//      numbers.add(-1);
 
       // wilderness
+      f(immutable);
 
       System.out.println(immutable);
+   }
+
+   private static void f(Immutable immutable) {
+      g(immutable);
+   }
+
+   private static void g(Immutable immutable) {
+      immutable.numbers().add(1);
    }
 }
 
-class Immutable {
-   private final int x;
-   private final List<Integer> numbers;
-   private final Other other;
-
-   Immutable(int x, List<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public List<Integer> getNumbers() {
-      return numbers;
-   }
-   public int getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
-   }
+record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
 
    @Override
    public String toString() {
@@ -45,7 +40,7 @@ class Immutable {
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -55,7 +50,7 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
+//   public void setA(int a) {
+//      this.a = a;
+//   }
 }
