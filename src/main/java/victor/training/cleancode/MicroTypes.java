@@ -1,53 +1,148 @@
 package victor.training.cleancode;
 
-import lombok.Data;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.LongStream;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.joining;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MicroTypes {
-    public void displayUrgent(List<Incident> incidents) {
-        incidents.stream()
-                // over 'normal'
-                .filter(i-> i.getPriority().equals("high") || i.getPriority().equals("rush"))
-                .forEach(System.out::println);
-    }
+   private static void unknownFierceCode(Immutable obj) {
+      // TODO what can go wrong here ?
+   }
 
-    private CustomerRepo customerRepo = new CustomerRepo(); //fake dep injection
-    public void microIdTypes() {
-        Map<Long, List<Long>> idMap = customerRepo.getCustomerOrders();
-        for (Long id : idMap.keySet()) {
-            List<Long> ids = idMap.get(id);
-            processCustomer(id, ids);
-        }
-    }
+   public Map<CustomerId, List<ProductCount>> getCustomerIdToProductCounts() {
+      CustomerId customerId = new CustomerId(1L);
+      Integer product1Count = 2;
+      Integer product2Count = 4;
+      return Map.of(customerId, List.of(
+              new ProductCount("Table", product1Count),
+              new ProductCount("Chair", product2Count)
+      ));
+   }
 
-    private void processCustomer(Long id, List<Long> ids) {
-        System.out.println("Process cid="+id + " -> order Ids:" + ids);
-    }
+
+   @Test
+   void lackOfAbstractions() {
+      Map<CustomerId, List<ProductCount>> map = getCustomerIdToProductCounts();
+      // Joke: try "var" above :)
+//log.debug("am uitat adnotarea!");
+      for (CustomerId customerId : map.keySet()) {
+         String pl = map.get(customerId).stream()
+                 .map(t -> t.productName() + " of " + t.count())
+                 .collect(joining(", "));
+         System.out.println("cid=" + customerId + " got " + pl);
+      }
+   }
+
+   @Test
+   void immutables() {
+      List<Integer> numbers = IntStream.range(1, 10).boxed().toList();
+      Immutable obj = new Immutable("John", new Other("halo"), numbers);
+
+      String original = obj.toString();
+      System.out.println(obj);
+
+      unknownFierceCode(obj);
+
+      System.out.println(obj);
+
+      assertThat(original).describedAs("State should not change!").isEqualTo(obj.toString());
+   }
+
+   record CustomerId(long id) {
+   }// asta e nebun // microtipuri aka ID types
 }
 
-@Data
-class Incident {
-    private final Long id;
-    private final String priority;
+// -- RECORD --
+// methods: add extra, overriding generated
+// constructor:
+// inheritance:
+
+
+class Immutable {
+   private final String name;
+   private final Other other;
+   private final List<Integer> list;
+
+   public Immutable(String name, Other other, List<Integer> list) {
+      this.name = name;
+      this.other = other;
+      this.list = list;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public Other getOther() {
+      return other;
+   }
+
+   public List<Integer> getList() {
+      return list;
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      Immutable immutable = (Immutable) o;
+      return Objects.equals(name, immutable.name) && Objects.equals(other, immutable.other) && Objects.equals(list, immutable.list);
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hash(name, other, list);
+   }
+
+   @Override
+   public String toString() {
+      return "Immutable{" +
+              "name='" + name + '\'' +
+              ", other=" + other +
+              ", list=" + list +
+              '}';
+   }
 }
 
-class CustomerRepo {
+class Other {
+   private String data;
 
-    Map<Long, List<Long>> getCustomerOrders() {
-        Map<Long, List<Long>> map = new HashMap<>();
-        // simulate loading data
-        for (long i = 0; i < 10; i++) {
-            long customerId = i;
-            List<Long> orderIds = LongStream.range(0, i).boxed().collect(toList());
-            map.put(customerId, orderIds);
-        }
-        return map;
+   public Other(String data) {
+      this.data = data;
+   }
 
-    }
+   public String getData() {
+      return data;
+   }
+
+   public Other setData(String data) {
+      this.data = data;
+      return this;
+   }
+
+   @Override
+   public String toString() {
+//      @Cleanup
+      return "Other{" +
+              "data='" + data + '\'' +
+              '}';
+   }
 }
+
+
+//@Value //= @Data + toate campurile priuvate finale by default
+//class ProductCount {
+//   String productName;
+//   int count;
+//}
+record ProductCount(String productName, int count) {
+}
+
+
+
