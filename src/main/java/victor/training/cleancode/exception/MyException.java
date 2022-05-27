@@ -4,7 +4,7 @@ public class MyException extends  RuntimeException {
 
    public enum ErrorCode {
       GENERAL,
-      BAD_CONFIG
+      BAD_CONFIG,
    }
 
    private final ErrorCode code;
