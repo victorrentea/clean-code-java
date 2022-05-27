@@ -1,53 +1,38 @@
 package victor.training.cleancode;
 
-import lombok.Data;
+import org.jooq.lambda.tuple.Tuple;
+import org.jooq.lambda.tuple.Tuple2;
+import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.LongStream;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.joining;
 
 public class MicroTypes {
-    public void displayUrgent(List<Incident> incidents) {
-        incidents.stream()
-                // over 'normal'
-                .filter(i-> i.getPriority().equals("high") || i.getPriority().equals("rush"))
-                .forEach(System.out::println);
-    }
 
-    private CustomerRepo customerRepo = new CustomerRepo(); //fake dep injection
-    public void microIdTypes() {
-        Map<Long, List<Long>> idMap = customerRepo.getCustomerOrders();
-        for (Long id : idMap.keySet()) {
-            List<Long> ids = idMap.get(id);
-            processCustomer(id, ids);
+    //<editor-fold desc="Unknown source of data">
+    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
+        Long customerId = 1L;
+        Integer product1Count = 2;
+        Integer product2Count = 4;
+        return Map.of(customerId, List.of(
+                Tuple.tuple("Table", product1Count),
+                Tuple.tuple("Chair", product2Count)
+        ));
+    }
+    //</editor-fold>
+
+    @Test
+    void lackOfAbstractions() {
+        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
+        // Joke: try "var" above :)
+
+        for (Long cid : map.keySet()) {
+            String pl = map.get(cid).stream()
+                    .map(t -> t.v2 + " of " + t.v1)
+                    .collect(joining(", "));
+            System.out.println("cid=" + cid + " got " + pl);
         }
-    }
-
-    private void processCustomer(Long id, List<Long> ids) {
-        System.out.println("Process cid="+id + " -> order Ids:" + ids);
-    }
-}
-
-@Data
-class Incident {
-    private final Long id;
-    private final String priority;
-}
-
-class CustomerRepo {
-
-    Map<Long, List<Long>> getCustomerOrders() {
-        Map<Long, List<Long>> map = new HashMap<>();
-        // simulate loading data
-        for (long i = 0; i < 10; i++) {
-            long customerId = i;
-            List<Long> orderIds = LongStream.range(0, i).boxed().collect(toList());
-            map.put(customerId, orderIds);
-        }
-        return map;
-
     }
 }
