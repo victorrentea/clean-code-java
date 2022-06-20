@@ -15,7 +15,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(new Task(5)), false);
+      target.bossLevel(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -30,7 +30,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(new Task(5)), true);
+      target.bossLevel323(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -47,7 +47,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(), false);
+      target.bossLevel(ImmutableList.of());
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -72,7 +72,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(new Task(5),new Task(6)), false);
+      target.bossLevel(ImmutableList.of(new Task(5),new Task(6)));
 
       assertThat(outputCapture.toString())
           .contains("Logic4: Validate Task{id=5, running=false}")
