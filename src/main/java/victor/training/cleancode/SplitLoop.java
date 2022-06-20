@@ -7,10 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
+interface EmployeeService {
+    Integer retrieveSalary(int employeeId);
+}
+
 /**
  * Break the loops and refactor to use .stream to compute stuff.
  */
 public class SplitLoop {
+
+    EmployeeService employeeService;
+
+
+    // ======= hard core =========
 
     // see tests
     public String computeStats(List<Employee> employees) {
@@ -31,31 +40,33 @@ public class SplitLoop {
         return "Average age = " + averageAge + "; Average salary = " + averageSalary;
     }
 
-
-    // ======= hard core =========
-
-    EmployeeService employeeService;
-
     public String computeStatsHard(List<Employee> employees) {
-        long totalEmpAge = 0;
+        long totalEmpAge;
         double totalConsultantSalary = 0;
+        totalEmpAge = employees.stream()
+                .filter(employee -> !employee.isConsultant())
+                .mapToLong(Employee::getAge)
+                .sum();
+
+//        employees.
+//        .filter(lambda e:e.isConsultant)
+//        .map(lamda e: e.getAget())
+//        .sum
         for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
-            }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
+            if (employee.isConsultant()) {
+                if (employee.getId() == null) {
+                    return "Employee(s) not persisted";
                 }
+                if (employee.getSalary() == null) {
+                    Integer salary = employeeService.retrieveSalary(employee.getId());
+                    if (salary == null) {
+                        throw new RuntimeException("NO salary found for employee " + employee.getId());
+                    } else {
+                        employee.setSalary(salary);
+                    }
+                }
+                totalConsultantSalary += employee.getSalary();
             }
-            totalConsultantSalary += employee.getSalary();
         }
 
         long averageAge = 0;
@@ -70,10 +81,6 @@ public class SplitLoop {
     }
 
 
-
-}
-interface EmployeeService {
-    Integer retrieveSalary(int employeeId);
 }
 
 @Data
