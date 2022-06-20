@@ -1,47 +1,49 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 class ExtractValueObjects {
 
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
+        Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                .filter(model -> {
+                    Interval modelInterval = new Interval(model.getStartYear(), model.getEndYear());
+                    return criteriaInterval.intersects(modelInterval);
+                })
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 record Interval(int start, int end) {
+    // my dream function. THE GOAL: spread this everywhere instead of the otjher function
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+
+    public void method() {
+        
+    }
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
-    }
 }
 
 
