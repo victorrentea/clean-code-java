@@ -9,10 +9,7 @@ class ExtractValueObjects {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
         List<CarModel> results = models.stream()
-                .filter(model -> {
-                    Interval modelInterval = new Interval(model.getStartYear(), model.getEndYear());
-                    return criteriaInterval.intersects(modelInterval);
-                })
+                .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -32,6 +29,17 @@ class Alta {
 }
 
 record Interval(int start, int end) {
+    // this couples your tiny (hopefully reusable) Interval to your CarModel
+//    public static Interval of(CarModel model) { // works if CarModel is unchangeable. out of my control
+//        return new Interval(model.getStartYear(), model.getEndYear());
+//    }
+
+    Interval {
+        // HUGE step towards self-consistent domain model. Objects that play nice to you.
+        // That enforce domain invariant (rules) right in their code, so they cannot be bypassed by anyone.
+        if (start > end) throw new IllegalArgumentException("start larger than end");
+    }
+
     // my dream function. THE GOAL: spread this everywhere instead of the otjher function
     public boolean intersects(Interval other) {
         return start <= other.end && other.start <= end;
@@ -72,36 +80,31 @@ class CarSearchCriteria {
     }
 }
 
-//@Entity
+//@Document
 class CarModel {
     //   @Id
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+//    private int startYear;
+//    private int endYear;
+    private Interval yearInterval;
 
     private CarModel() {
     } // for Hibernate
 
-    public CarModel(String make, String model, int startYear, int endYear) {
+    public CarModel(String make, String model, Interval yearInterval) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        this.yearInterval = yearInterval;
+    }
+
+    public Interval getYearInterval() {
+        return yearInterval;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
     }
 
     public String getMake() {
@@ -128,13 +131,13 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().start();
+        dto.endYear = carModel.getYearInterval().end();
         return dto;
     }
 
     public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+        return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
     }
 }
 
