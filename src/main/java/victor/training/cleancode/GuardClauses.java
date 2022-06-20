@@ -5,30 +5,27 @@ import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      int result;
-      if (marine != null) {
-         if (!isDead(marine)) { // network call
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // HEAVY logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            result = deadAmount();
-         }
-      } else {
+      if (marine == null) { // in clean code you NEVER call others passing null as arg
          throw new RuntimeException("Marine is null");
       }
-      return result; // TODO ALT-ENTER move return closer
+      if (isDead(marine)) {
+         return deadAmount();
+      } // network call
+      if (marine.isRetired()) {
+         return retiredAmount();
+      }
+      if (marine.getYearsService() == null) {
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
+      int result = marine.getYearsService() * 100;
+      if (!marine.getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
+      }
+      // HEAVY logic here...
+      return result;
    }
 
    private boolean isDead(Marine marine) {
