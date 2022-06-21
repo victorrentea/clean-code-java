@@ -63,6 +63,16 @@ public class MicroTypes {
         Map<CustomerId, List<ProductCount>> map = extremeFP();
         // Joke: try "var" above :)
 
+        String x;
+        if (map.isEmpty()) {
+            System.out.println("COmmont");
+            x = "bla";
+        } else {
+            System.out.println("COmmont");
+            x = "wawsa";
+        }
+        System.out.println(x);
+
         for (CustomerId cid : map.keySet()) {
             String pl = map.get(cid).stream()
                     .map(t -> t.getProductName() + " of " + t.getItemCount())

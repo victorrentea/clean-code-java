@@ -12,12 +12,10 @@ class ParameterizeAndExtract {
             }
         }
     }
-}
-class SomeOtherClass {
     public void g(int n) {
         System.out.println("Logic G");
         try {
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 5; j++) {
                 if (n + j < 0) {
                     System.out.println("Code" + j);
                 } else {
