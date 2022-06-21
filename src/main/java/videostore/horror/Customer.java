@@ -31,10 +31,14 @@ class Customer {
 			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
 			totalPrice += price;
 		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+
+		result += formatFooter(totalPrice, frequentRenterPoints);
 		return result;
+	}
+
+	private String formatFooter(double totalPrice, int frequentRenterPoints) {
+		return "Amount owed is " + totalPrice + "\n"
+			   + "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
 }
