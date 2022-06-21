@@ -1,23 +1,62 @@
 package videostore.horror;
-public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
 
-	public Movie(String title, Integer priceCode) {
+import lombok.RequiredArgsConstructor;
+
+interface SoemStuff {
+	public int getPrice(int days);
+}
+
+class Me implements SoemStuff {
+	@Override
+	public int getPrice(int days) {
+		return 0;
+	}
+}
+
+
+public class Movie {
+	@RequiredArgsConstructor
+	enum MovieType {
+		CHILDRENS, //(d -> formula...),
+		REGULAR, // (priceAlgo),
+		NEW_RELEASE, // (Me::class),
+		ELDERS
+		;
+
+//		public final Class<SoemStuff> priceAlgo;
+
+
+//		public void computePrice() {
+//			double thisAmount = 0;
+//			switch (this) {
+//				case REGULAR:
+//					thisAmount += 2;
+//					if (dr > 2)
+//						thisAmount += (dr - 2) * 1.5;
+//					break;
+//				case NEW_RELEASE:
+//					thisAmount += dr * 3;
+//					break;
+//				case CHILDRENS:
+//					thisAmount += 1.5;
+//					if (dr > 3)
+//						thisAmount += (dr - 3) * 1.5;
+//					break;
+//			}
+//		}
+	}
+	private String _title;
+	private MovieType _priceCode;
+
+	public Movie(String title, MovieType priceCode) {
 		_title = title;
 		_priceCode = priceCode;
 	}
 
-	public Integer getPriceCode() {
+	public MovieType getPriceCode() {
 		return _priceCode;
 	}
 
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
-	}
 
 	public String getTitle() {
 		return _title;
