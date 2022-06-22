@@ -1,5 +1,8 @@
 package videostore.horror;
 
+
+import java.util.Date;
+
 public class Rental {
     private final Movie movie;
     private final int daysRented;
@@ -7,6 +10,8 @@ public class Rental {
     Rental(Movie movie, int daysRented) {
         this.movie = movie;
         this.daysRented = daysRented;
+        Date d = new Date();
+//        d.set
     }
 
     public Movie getMovie() {
@@ -17,7 +22,29 @@ public class Rental {
         return daysRented;
     }
 
-    public double computePrice() {
+//    public double howManyDaysMax() {
+//        switch (movie.getPriceCode()) {
+//            case REGULAR:
+//                return computeRegularPrice(daysRented);
+//            case NEW_RELEASE:
+//                return computeNewReleasePrice(daysRented);
+//            case CHILDREN:
+//                return computeChildrenPrice(daysRented);
+//            default:
+//                throw new IllegalStateException("Unexpected value: " + movie.getPriceCode());
+//        }
+//    }
+
+     // 2008, 14 years ago switch was the only option in Java
+
+    public double process() {
+//        movie.f()
+//        if (movie instanceof RegularMovie) {
+//            // A...
+//
+//        } else if (movie instanceof ChildrenMovie) {
+//            // B
+//        }
         switch (movie.getPriceCode()) {
             case REGULAR:
                 return computeRegularPrice(daysRented);
@@ -30,7 +57,7 @@ public class Rental {
         }
         // day-dream: Java 17
 //		return switch (each.getPriceCode()) {
-//			case REGULAR -> computeRegularPrice(daysRented);
+//			case REGULAR -> computeRyegularPrice(daysRented);
 //			case NEW_RELEASE -> computeNewReleasePrice(daysRented);
 //			case CHILDREN -> computeChildrenPrice(daysRented);
 //			default -> throw new IllegalStateException("Unexpected value: " + each.getPriceCode());
@@ -49,7 +76,7 @@ public class Rental {
         return daysRented * 3;
     }
 
-    private double computeRegularPrice(int daysRented) {
+    public double computeRegularPrice(int daysRented) {
         double price = 2;
         if (daysRented > 2) {
             price += (daysRented - 2) * 1.5;
@@ -64,3 +91,27 @@ public class Rental {
         return frequentRenterPoints;
     }
 }
+
+
+abstract class Contract {
+    abstract double computePrice() ;
+
+}
+  class PersonalContract extends Contract {
+
+      @Override
+      double computePrice() {
+          return 0;
+      }
+  }
+  class CorporateContract extends Contract {
+      @Override
+      double computePrice() {
+//          200 LOC too heavy logic to push inside the Data structures themselves
+          return 0;
+      }
+  }
+//
+
+
+

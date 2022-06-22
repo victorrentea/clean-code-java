@@ -1,14 +1,22 @@
 package videostore.horror;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class Movie {
+
+//class RegularMovie extends Movie {}
+//class NewReleaseMovie extends Movie {}
+public  class Movie {
+//    boolean newRelease;
     enum PriceCode {
-        CHILDREN,
+        CHILDREN, //(Rental::computeRegularPrice),
         REGULAR,
         NEW_RELEASE,
         ELDER
+
     }
+
+    private LocalDate releaseDate; // is not null only new Release
 
     private final String title;
     private final PriceCode priceCode;

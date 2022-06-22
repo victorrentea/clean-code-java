@@ -25,12 +25,23 @@ class Customer {
 		String result = "Rental Record for " + getName() + "\n";
 
 		for (Rental rental : rentalList) {
-			double price = rental.computePrice();
 			frequentRenterPoints += rental.computeRenterPoints();
+		}
+		for (Rental rental : rentalList) {
+			double price = rental.process();
 			// show figures line for this rental
 			result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+		}
+		for (Rental rental : rentalList) {
+			double price = rental.process();
 			totalPrice += price;
 		}
+		// what can go wrong if you call a f() twice ?\
+		// 1) Performance (heavy computations) x 2 < < never a problem because pure functions
+		// 2) random inputs inside >> the function could return different results > NOT REFERENTIAL TRANSPARENT
+		// 3) side effects eg INSERT >> calling the f twice >> BAD DATA INSERTED
+
+		// a function that does NOT do side effects and returns the same results when called with the same args = PURE FUNCTION
 
 		result += formatFooter(totalPrice, frequentRenterPoints);
 		return result;
