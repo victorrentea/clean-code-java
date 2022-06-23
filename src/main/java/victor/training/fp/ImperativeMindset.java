@@ -8,8 +8,8 @@ public class ImperativeMindset {
       orders.stream()
           .filter(order -> order.isActive())
           .forEach(order -> {
-             // imperative mindset: let's *add* to ...
-             // sum += order.getPrice();
+//              imperative mindset: let's *add* to ...
+//              sum += order.getPrice();
           });
       System.out.println("Total price of active orders: " + sum);
    }

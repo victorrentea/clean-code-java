@@ -37,7 +37,7 @@ public class Rental {
 
      // 2008, 14 years ago switch was the only option in Java
 
-    public double process() {
+    public double computePrice() {
 //        movie.f()
 //        if (movie instanceof RegularMovie) {
 //            // A...
