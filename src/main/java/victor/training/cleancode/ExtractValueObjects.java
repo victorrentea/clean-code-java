@@ -15,27 +15,25 @@ class ExtractValueObjects {
     }
 
     private boolean intersects(CarSearchCriteria criteria, CarModel model) {
-        return MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear()));
+        return new Interval(criteria.getStartYear(), criteria.getEndYear())
+                .intersects(new Interval(model.getStartYear(), model.getEndYear()));
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
-    }
 }
 
 

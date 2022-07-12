@@ -9,6 +9,10 @@ public class Interval {
         this.end = end;
     }
 
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+
     public int getStart() {
         return start;
     }
