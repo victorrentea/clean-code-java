@@ -1,22 +1,25 @@
 package videostore.dirty;
+
 public class Movie {
-	public static final int CATEGORY_CHILDREN = 2;
-	public static final int CATEGORY_REGULAR = 0;
-	public static final int CATEGORY_NEW_RELEASE = 1;
+    enum Category {
+        CHILDREN,
+        REGULAR,
+        NEW_RELEASE
+    }
 
-	private final String title;
-	private final int priceCode;
+    private final String title;
+    private final Category priceCode;
 
-	public Movie(String title, int priceCode) {
-		this.title = title;
-		this.priceCode = priceCode;
-	}
+    public Movie(String title, Category priceCode) {
+        this.title = title;
+        this.priceCode = priceCode;
+    }
 
-	public int getPriceCode() {
-		return priceCode;
-	}
+    public Category getPriceCode() {
+        return priceCode;
+    }
 
     public String getTitle() {
-		return title;
-	};
+        return title;
+    }
 }
