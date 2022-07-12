@@ -21,44 +21,42 @@ class Customer {
 
 	public String generateStatement() {
 		double totalAmount = 0;
-		String result = "Rental Record for " + getName() + lineSeparator();
-		int frequentRenterPoints = 0;
+		String result = generateHeader();
+
+		int totalPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
 
 		for (Rental rental : rentals) {
-			double thisAmount = calculateAmount(rental);
-
-			frequentRenterPoints += rental.calculateFrequentRenterPoints();
-
-			// show figures for this rental
-			result += "\t" + rental.getMovie().getTitle() + "\t"
-					  + thisAmount + lineSeparator();
+			double thisAmount = rental.calculateAmount();
 			totalAmount += thisAmount;
+
 		}
-		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + lineSeparator();
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
+		for (Rental rental : rentals) {
+			double thisAmount = rental.calculateAmount();
+			// ce poate sa mearga rau daca repeti un apel de functie?
+			// 1 sa-ti dea rezultat diferit cand o chemi a doua oara
+			// 2 daca functia chemata face SIDE EFFECTS (eg un INSERT)
+			// * sa dureze timp (calcule multe) - query in DB, REST, SOAP,
+// in pracitca pt ca 1+2 ==> *
+
+			// definitie o functie PURE nu face nici (1) nici (2): adica iti da acelasi rezultat si nu face side effects
+			result += generateBodyLine(rental, thisAmount);
+		}
+		result += generateFooter(totalAmount, totalPoints);
 		return result;
 	}
 
-	private double calculateAmount(Rental rental) {
-		double amount;
-		switch (rental.getMovie().getCategory()) {
-			case REGULAR:
-				amount = 2;
-				if (rental.getDaysRented() > 2)
-					amount += (rental.getDaysRented() - 2) * 1.5;
-				return amount;
-			case NEW_RELEASE:
-				amount = rental.getDaysRented() * 3;
-				return amount;
-			case CHILDREN:
-				amount = 1.5;
-				if (rental.getDaysRented() > 3)
-					amount += (rental.getDaysRented() - 3) * 1.5;
-				return amount;
-			default:
-				throw new IllegalStateException("Unexpected value: " + rental.getMovie().getCategory());
-		}
+	private String generateBodyLine(Rental rental, double thisAmount) {
+		return "\t" + rental.getMovie().getTitle() + "\t"
+			   + thisAmount + lineSeparator();
 	}
+
+	private String generateHeader() {
+		return "Rental Record for " + getName() + lineSeparator();
+	}
+
+	private String generateFooter(double totalAmount, int frequentRenterPoints) {
+		return "Amount owed is " + totalAmount + lineSeparator()
+			   + "You earned " + frequentRenterPoints + " frequent renter points";
+	}
+
 }
