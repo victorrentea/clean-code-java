@@ -1,17 +1,16 @@
 package videostore.dirty;
 
-public class Movie {
-
+public final class Movie {
     private final String title;
-    private final MovieCategory priceCode;
+    private final MovieCategory category;
 
-    public Movie(String title, MovieCategory priceCode) {
+    public Movie(String title, MovieCategory category) {
         this.title = title;
-        this.priceCode = priceCode;
+        this.category = category;
     }
 
-    public MovieCategory getPriceCode() {
-        return priceCode;
+    public MovieCategory getCategory() {
+        return category;
     }
 
     public String getTitle() {
