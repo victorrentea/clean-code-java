@@ -1,13 +1,14 @@
 package victor.training.cleancode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
  */
-public abstract class BooleanParameters {
+public class BooleanParameters {
 
    public static void main(String[] args) {
 //      new BooleanParameters().f();
@@ -61,8 +62,6 @@ public abstract class BooleanParameters {
       System.out.println("cacaniu : " + task);
    }
 
-}
-class X {
 
 
 
@@ -70,6 +69,8 @@ class X {
 
    // Lord gave us tests!
    public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+
+// TODO victorrentea 12.07.2022:
       int index = 0; // TODO move closer to usages
       int jj = tasks.size();
       System.out.println("Logic1");
