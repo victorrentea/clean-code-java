@@ -33,8 +33,8 @@ class Alta {
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(Interval interval1, Interval interval) {
-        return interval1.getStart() <= interval.getEnd() && interval.getStart() <= interval1.getEnd();
+    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
     }
 }
 
