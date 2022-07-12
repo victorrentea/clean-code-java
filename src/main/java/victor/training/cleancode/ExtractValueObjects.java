@@ -10,13 +10,8 @@ class ExtractValueObjects {
         System.out.println("More filtering logic");
 
         return models.stream()
-                .filter(model -> intersects(criteria, model))
+                .filter(model -> criteria.getYearInterval().intersects(model.getYearInterval()))
                 .collect(Collectors.toList());
-    }
-
-    private boolean intersects(CarSearchCriteria criteria, CarModel model) {
-        return new Interval(criteria.getStartYear(), criteria.getEndYear())
-                .intersects(new Interval(model.getStartYear(), model.getEndYear()));
     }
 
     private void applyCapacityFilter() {
@@ -43,8 +38,11 @@ class CarSearchCriteria {
 
     public CarSearchCriteria(int startYear, int endYear, String make) {
         this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         yearInterval = new Interval(startYear, endYear);
+    }
+
+    public Interval getYearInterval() {
+        return yearInterval;
     }
 
     public int getStartYear() {
@@ -74,20 +72,11 @@ class CarModel {
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         yearInterval = new Interval(startYear, endYear);
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int getEndYear() {
-        return yearInterval.getEnd();
-    }
-
-    public int getStartYear() {
-        return yearInterval.getStart();
     }
 
     public String getMake() {
@@ -106,6 +95,10 @@ class CarModel {
                ", model='" + model + '\'' +
                '}';
     }
+
+    public Interval getYearInterval() {
+        return yearInterval;
+    }
 }
 
 
@@ -114,8 +107,9 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().getStart();
+//        dto.endYear = carModel.getEndYear(); // PROST pt ca incarca Entity cu o metoda care nu zice nimic inteligent. "Middle Man" code smell.
+        dto.endYear = carModel.getYearInterval().getEnd();
         return dto;
     }
 
