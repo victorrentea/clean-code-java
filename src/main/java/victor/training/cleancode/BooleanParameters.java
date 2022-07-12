@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -15,26 +16,25 @@ public abstract class BooleanParameters {
 
    private void f() {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, new Task(5));
-      bigUglyMethod(2, new Task(4));
-      bigUglyMethod(3, new Task(3));
-      bigUglyMethod(4, new Task(2));
-      bigUglyMethod(5, new Task(1));
+      Proiecte proiecte = new Proiecte();
+      bigUglyMethod(1, new Task(5), task1 -> proiecte.verde(task1));
+      bigUglyMethod(2, new Task(4), task1 -> proiecte.verde(task1));
+      bigUglyMethod(3, new Task(3), task1 -> proiecte.verde(task1));
+      bigUglyMethod(4, new Task(2), task1 -> proiecte.verde(task1));
+      bigUglyMethod(5, new Task(1), task1 -> proiecte.verde(task1));
 
       // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
 //      bigUglyMethod323(2, task);
    }
 
-   public void bigUglyMethod(int fas, Task task) {
+   public void bigUglyMethod(int fas, Task task, Consumer<Task> pasuLipsa) {
       beforeStuff(fas, task);
 
-      pasuLipsa(task);
+      pasuLipsa.accept(task);
 
       afterStuff(fas);
    }
-
-   public abstract void pasuLipsa(Task task);
 
    private void afterStuff(int fas) {
       System.out.println("More Complex Logic " + fas);
@@ -42,25 +42,20 @@ public abstract class BooleanParameters {
       System.out.println("More Complex Logic " + fas);
    }
 
-   private void beforeStuff(int fas, Task task) {
+   public void beforeStuff(int fas, Task task) {
       System.out.println("Complex Logic 1 " + task + " and " + fas);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
    }
 
 }
-class Verde extends BooleanParameters {
-   @Override
-   public void pasuLipsa(Task task) {
+class Proiecte  {
+   public void verde(Task task) {
       System.out.println("verde§ : " + task);
       System.out.println("verde : " + task);
       System.out.println("verde : " + task);
    }
-
-}
-class Brownfield extends BooleanParameters {
-   @Override
-   public void pasuLipsa(Task task) {
+   public void maro(Task task) {
       System.out.println("cacaniu : " + task);
       System.out.println("cacaniu : " + task);
       System.out.println("cacaniu : " + task);
