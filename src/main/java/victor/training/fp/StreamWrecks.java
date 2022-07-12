@@ -25,6 +25,7 @@ public class StreamWrecks {
 				.map(Entry::getKey)
 				.collect(toList());
 		log.debug("Lista de produse " + frequentProducts);
+
 		List<Long> hiddenProductIds = productRepo.getHiddenProductIds(); // 1 data retea
 
 		return frequentProducts.stream() // 100 de produse in lista
