@@ -6,35 +6,70 @@ import java.util.List;
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
  */
-public class BooleanParameters {
+public abstract class BooleanParameters {
 
    public static void main(String[] args) {
+//      new BooleanParameters().f();
+
+   }
+
+   private void f() {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, new Task(5), false);
-      bigUglyMethod(2, new Task(4), false);
-      bigUglyMethod(3, new Task(3), false);
-      bigUglyMethod(4, new Task(2), false);
-      bigUglyMethod(5, new Task(1), false);
+      bigUglyMethod(1, new Task(5));
+      bigUglyMethod(2, new Task(4));
+      bigUglyMethod(3, new Task(3));
+      bigUglyMethod(4, new Task(2));
+      bigUglyMethod(5, new Task(1));
 
       // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
-      bigUglyMethod(2, task, true);
-
+//      bigUglyMethod323(2, task);
    }
 
-   static void bigUglyMethod(int fas, Task task, boolean cr323) {
+   public void bigUglyMethod(int fas, Task task) {
+      beforeStuff(fas, task);
+
+      pasuLipsa(task);
+
+      afterStuff(fas);
+   }
+
+   public abstract void pasuLipsa(Task task);
+
+   private void afterStuff(int fas) {
+      System.out.println("More Complex Logic " + fas);
+      System.out.println("More Complex Logic " + fas);
+      System.out.println("More Complex Logic " + fas);
+   }
+
+   private void beforeStuff(int fas, Task task) {
       System.out.println("Complex Logic 1 " + task + " and " + fas);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
-
-      if (cr323) {
-         System.out.println("Logic just for CR323 : " + task);
-      }
-
-      System.out.println("More Complex Logic " + fas);
-      System.out.println("More Complex Logic " + fas);
-      System.out.println("More Complex Logic " + fas);
    }
+
+}
+class Verde extends BooleanParameters {
+   @Override
+   public void pasuLipsa(Task task) {
+      System.out.println("verde§ : " + task);
+      System.out.println("verde : " + task);
+      System.out.println("verde : " + task);
+   }
+
+}
+class Brownfield extends BooleanParameters {
+   @Override
+   public void pasuLipsa(Task task) {
+      System.out.println("cacaniu : " + task);
+      System.out.println("cacaniu : " + task);
+      System.out.println("cacaniu : " + task);
+      System.out.println("cacaniu : " + task);
+   }
+
+}
+class X {
+
 
 
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
