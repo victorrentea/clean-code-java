@@ -1,61 +1,64 @@
 package videostore.dirty;
 import java.util.*;
 
+import static java.lang.System.lineSeparator;
+
 class Customer {
-	private String name;
-	private List rentals = new ArrayList();
+	private final String name;
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Rental arg) {
-		rentals.add(arg);
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
+	public String generateStatement() {
 		double totalAmount = 0;
+		String result = "Rental Record for " + getName() + lineSeparator();
 		int frequentRenterPoints = 0;
-		Iterator rentals = this.rentals.iterator();
-		String result = "Rental Record for " + getName() + "\n";
-		while (rentals.hasNext()) {
-			double thisAmount = 0;
-			Rental each = (Rental) rentals.next();
-			// determine amounts for each line
-			switch (each.getMovie().getCategory()) {
-			case REGULAR:
-				thisAmount += 2;
-				if (each.getDaysRented() > 2)
-					thisAmount += (each.getDaysRented() - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				thisAmount += each.getDaysRented() * 3;
-				break;
-			case CHILDREN:
-				thisAmount += 1.5;
-				if (each.getDaysRented() > 3)
-					thisAmount += (each.getDaysRented() - 3) * 1.5;
-				break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((each.getMovie().getCategory() == MovieCategory.NEW_RELEASE)
-					&& each.getDaysRented() > 1)
-				frequentRenterPoints++;
+
+		for (Rental rental : rentals) {
+			double thisAmount = calculateAmount(rental);
+
+			frequentRenterPoints += rental.calculateFrequentRenterPoints();
+
 			// show figures for this rental
-			result += "\t" + each.getMovie().getTitle() + "\t"
-					+ thisAmount + "\n";
+			result += "\t" + rental.getMovie().getTitle() + "\t"
+					  + thisAmount + lineSeparator();
 			totalAmount += thisAmount;
 		}
 		// add footer lines
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+		result += "Amount owed is " + String.valueOf(totalAmount) + lineSeparator();
 		result += "You earned " + String.valueOf(frequentRenterPoints)
 				+ " frequent renter points";
 		return result;
+	}
+
+	private double calculateAmount(Rental rental) {
+		double amount;
+		switch (rental.getMovie().getCategory()) {
+			case REGULAR:
+				amount = 2;
+				if (rental.getDaysRented() > 2)
+					amount += (rental.getDaysRented() - 2) * 1.5;
+				return amount;
+			case NEW_RELEASE:
+				amount = rental.getDaysRented() * 3;
+				return amount;
+			case CHILDREN:
+				amount = 1.5;
+				if (rental.getDaysRented() > 3)
+					amount += (rental.getDaysRented() - 3) * 1.5;
+				return amount;
+			default:
+				throw new IllegalStateException("Unexpected value: " + rental.getMovie().getCategory());
+		}
 	}
 }

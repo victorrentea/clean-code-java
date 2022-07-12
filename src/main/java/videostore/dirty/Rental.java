@@ -1,7 +1,5 @@
 package videostore.dirty;
 
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
 
 class Rental {
@@ -22,5 +20,15 @@ class Rental {
 
 	public Movie getMovie() {
 		return movie;
+	}
+
+//	private static final String SPACE = " "; // the final frontier
+	public int calculateFrequentRenterPoints() {
+		int frequentRenterPoints= 1;
+		boolean isNewRelease = getMovie().getCategory() == MovieCategory.NEW_RELEASE; // explanatory variable
+		if (isNewRelease && getDaysRented() >= 2) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
 	}
 }
