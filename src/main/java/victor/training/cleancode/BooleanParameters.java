@@ -10,28 +10,30 @@ public class BooleanParameters {
 
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(1, new Task(5));
-      bigUglyMethod(2, new Task(4));
-      bigUglyMethod(3, new Task(3));
-      bigUglyMethod(4, new Task(2));
-      bigUglyMethod(5, new Task(1));
+      bigUglyMethod(1, new Task(5), false);
+      bigUglyMethod(2, new Task(4), false);
+      bigUglyMethod(3, new Task(3), false);
+      bigUglyMethod(4, new Task(2), false);
+      bigUglyMethod(5, new Task(1), false);
 
       // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
-      bigUglyMethod(2, task);
+      bigUglyMethod(2, task, true);
 
    }
 
-   static void bigUglyMethod(int b, Task task) {
-      System.out.println("Complex Logic 1 " + task + " and " + b);
+   static void bigUglyMethod(int fas, Task task, boolean cr323) {
+      System.out.println("Complex Logic 1 " + task + " and " + fas);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
 
-      // System.out.println("Logic just for CR323 : " + task);
+      if (cr323) {
+         System.out.println("Logic just for CR323 : " + task);
+      }
 
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + fas);
+      System.out.println("More Complex Logic " + fas);
+      System.out.println("More Complex Logic " + fas);
    }
 
 
@@ -40,7 +42,7 @@ public class BooleanParameters {
    // Lord gave us tests!
    public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
       int index = 0; // TODO move closer to usages
-      int j = tasks.size();
+      int jj = tasks.size();
       System.out.println("Logic1");
       List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
@@ -59,7 +61,7 @@ public class BooleanParameters {
             index++;
             System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
          }
-         System.out.println("Logic6 " + j);
+         System.out.println("Logic6 " + jj);
          System.out.println("Task Ids: " + taskIds);
       } else {
          System.out.println("Logic7 " + tasks);
