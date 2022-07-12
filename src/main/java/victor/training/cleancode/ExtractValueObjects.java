@@ -38,23 +38,21 @@ class MathUtil {
 
 
 class CarSearchCriteria {
-    private final int startYear;
-    private final int endYear;
+    private final Interval yearInterval;
     private final String make;
 
     public CarSearchCriteria(int startYear, int endYear, String make) {
         this.make = make;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        yearInterval = new Interval(startYear, endYear);
     }
 
     public int getStartYear() {
-        return startYear;
+        return yearInterval.getStart();
     }
 
     public int getEndYear() {
-        return endYear;
+        return yearInterval.getEnd();
     }
 
     public String getMake() {
@@ -68,8 +66,7 @@ class CarModel {
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+    private Interval yearInterval;
 
     private CarModel() {
     } // for Hibernate
@@ -78,8 +75,7 @@ class CarModel {
         this.make = make;
         this.model = model;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        yearInterval = new Interval(startYear, endYear);
     }
 
     public Long getId() {
@@ -87,11 +83,11 @@ class CarModel {
     }
 
     public int getEndYear() {
-        return endYear;
+        return yearInterval.getEnd();
     }
 
     public int getStartYear() {
-        return startYear;
+        return yearInterval.getStart();
     }
 
     public String getMake() {
