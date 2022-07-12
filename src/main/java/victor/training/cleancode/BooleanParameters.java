@@ -16,23 +16,29 @@ public abstract class BooleanParameters {
 
    private void f() {
       // The big method is called from various foreign places in the codebase
-      Proiecte proiecte = new Proiecte();
-      bigUglyMethod(1, new Task(5), task1 -> proiecte.verde(task1));
-      bigUglyMethod(2, new Task(4), task1 -> proiecte.verde(task1));
-      bigUglyMethod(3, new Task(3), task1 -> proiecte.verde(task1));
-      bigUglyMethod(4, new Task(2), task1 -> proiecte.verde(task1));
-      bigUglyMethod(5, new Task(1), task1 -> proiecte.verde(task1));
+      bigUglyMethod(1, new Task(5));
+      bigUglyMethod(2, new Task(4));
+      bigUglyMethod(3, new Task(3));
+      bigUglyMethod(4, new Task(2));
+      bigUglyMethod(5, new Task(1));
 
       // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
-//      bigUglyMethod323(2, task);
+      bigUglyMethod323(2, task);
    }
 
-   public void bigUglyMethod(int fas, Task task, Consumer<Task> pasuLipsa) {
+   public void bigUglyMethod323(int fas, Task task) {
       beforeStuff(fas, task);
-
-      pasuLipsa.accept(task);
-
+      // daca bucata variabila este intr-un
+      // - try { try/catch/finally, iei lambda ca vrei sa folosesti mecanismul de exceptii din Java.
+      //-  for { incerci sa refactorezi. si uneori iei lambda
+      // - if refactorezi incerci sa nu iei lambda
+      // - daca esti pe baseline NICIODATA LAMBDA: ci tai functia
+      maro(task);
+      afterStuff(fas);
+   }
+   public void bigUglyMethod(int fas, Task task) {
+      beforeStuff(fas, task);
       afterStuff(fas);
    }
 
@@ -48,13 +54,6 @@ public abstract class BooleanParameters {
       System.out.println("Complex Logic 3 " + task);
    }
 
-}
-class Proiecte  {
-   public void verde(Task task) {
-      System.out.println("verde§ : " + task);
-      System.out.println("verde : " + task);
-      System.out.println("verde : " + task);
-   }
    public void maro(Task task) {
       System.out.println("cacaniu : " + task);
       System.out.println("cacaniu : " + task);
