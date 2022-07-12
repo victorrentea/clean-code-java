@@ -1,6 +1,5 @@
 package videostore.dirty;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
@@ -28,16 +27,13 @@ class Customer {
 	}
 
 	public String generateStatement() {
-		String result = generateHeader();
+		return generateHeader()
+			   + generateBody()
+			   + generateFooter();
+	}
 
-		int totalPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
-
-		double totalAmount = rentals.stream().mapToDouble(Rental::calculateAmount).sum();
-
-		result += rentals.stream().map(this::generateBodyLine).collect(joining());
-
-		result += generateFooter(totalAmount, totalPoints);
-		return result;
+	private String generateBody() {
+		return rentals.stream().map(this::generateBodyLine).collect(joining());
 	}
 
 	private String generateBodyLine(Rental rental) {
@@ -49,9 +45,11 @@ class Customer {
 		return "Rental Record for " + getName() + lineSeparator();
 	}
 
-	private String generateFooter(double totalAmount, int frequentRenterPoints) {
+	private String generateFooter() {
+		int totalPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
+		double totalAmount = rentals.stream().mapToDouble(Rental::calculateAmount).sum();
 		return "Amount owed is " + totalAmount + lineSeparator()
-			   + "You earned " + frequentRenterPoints + " frequent renter points";
+			   + "You earned " + totalPoints + " frequent renter points";
 	}
 
 }
