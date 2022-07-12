@@ -1,8 +1,5 @@
 package victor.training.fp;
 
-import java.util.Objects;
-import java.util.Optional;
-
 public class Optional_Chain {
 	private static final MyMapper mapper = new MyMapper();
    public static void main(String[] args) {
@@ -17,17 +14,7 @@ public class Optional_Chain {
 class MyMapper {
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
-//      if (
-//              parcel != null &&
-//              parcel.getDelivery() != null &&
-//              parcel.getDelivery().getAddress() != null &&
-//              parcel.getDelivery().getAddress().getContactPerson() != null &&
-//              parcel.getDelivery().getAddress().getContactPerson().getName() != null
-//      )
-      dto.recipientPerson = parcel.getDelivery()
-              .flatMap(d -> d.getAddress().getContactPerson())
-              .map(cp -> cp.getName().toUpperCase())
-              .orElse(null);
+      dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
       return dto;
    }
 }
@@ -38,8 +25,8 @@ class DeliveryDto {
 class Parcel {
    private Delivery delivery; // NULL until a delivery is scheduled
 
-   public Optional<Delivery> getDelivery() {
-      return Optional.ofNullable(delivery);
+   public Delivery getDelivery() {
+      return delivery;
    }
 	public void setDelivery(Delivery delivery) {
       this.delivery = delivery;
@@ -51,11 +38,11 @@ class Delivery {
    private Address address; // NOT NULL IN DB
 
    public Delivery(Address address) {
-       this.address = Objects.requireNonNull(address);
+      this.address = address;
    }
 
 	public void setAddress(Address address) {
-        this.address = Objects.requireNonNull(address); // TODO null safe
+		this.address = address; // TODO null safe
 	}
 
 	public Address getAddress() {
@@ -70,8 +57,8 @@ class Address {
       this.contactPerson = contactPerson;
    } // TODO allow not setting
 
-   public Optional<ContactPerson> getContactPerson() {
-      return Optional.ofNullable(contactPerson);
+   public ContactPerson getContactPerson() {
+      return contactPerson;
    }
 }
 
