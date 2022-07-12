@@ -1,8 +1,16 @@
 package videostore.dirty;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.System.lineSeparator;
+import static java.util.stream.Collectors.joining;
+// ce poate sa mearga rau daca repeti un apel de functie?
+// 1 sa-ti dea rezultat diferit cand o chemi a doua oara
+// 2 daca functia chemata face SIDE EFFECTS (eg un INSERT)
+// * sa dureze timp (calcule multe) - query in DB, REST, SOAP,
+// in pracitca pt ca 1+2 ==> *
 
+// definitie o functie PURE nu face nici (1) nici (2): adica iti da acelasi rezultat si nu face side effects
 class Customer {
 	private final String name;
 	private final List<Rental> rentals = new ArrayList<>();
@@ -20,34 +28,21 @@ class Customer {
 	}
 
 	public String generateStatement() {
-		double totalAmount = 0;
 		String result = generateHeader();
 
 		int totalPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
 
-		for (Rental rental : rentals) {
-			double thisAmount = rental.calculateAmount();
-			totalAmount += thisAmount;
+		double totalAmount = rentals.stream().mapToDouble(Rental::calculateAmount).sum();
 
-		}
-		for (Rental rental : rentals) {
-			double thisAmount = rental.calculateAmount();
-			// ce poate sa mearga rau daca repeti un apel de functie?
-			// 1 sa-ti dea rezultat diferit cand o chemi a doua oara
-			// 2 daca functia chemata face SIDE EFFECTS (eg un INSERT)
-			// * sa dureze timp (calcule multe) - query in DB, REST, SOAP,
-// in pracitca pt ca 1+2 ==> *
+		result += rentals.stream().map(this::generateBodyLine).collect(joining());
 
-			// definitie o functie PURE nu face nici (1) nici (2): adica iti da acelasi rezultat si nu face side effects
-			result += generateBodyLine(rental, thisAmount);
-		}
 		result += generateFooter(totalAmount, totalPoints);
 		return result;
 	}
 
-	private String generateBodyLine(Rental rental, double thisAmount) {
+	private String generateBodyLine(Rental rental) {
 		return "\t" + rental.getMovie().getTitle() + "\t"
-			   + thisAmount + lineSeparator();
+			   + rental.calculateAmount() + lineSeparator();
 	}
 
 	private String generateHeader() {
