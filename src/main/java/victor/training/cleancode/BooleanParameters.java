@@ -2,6 +2,10 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -65,27 +69,41 @@ public class BooleanParameters {
     // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
     // Lord gave us tests!
-    public void bossLevel(List<Task> tasks, boolean cr323) {
-        System.out.println("Logic1");
-        System.out.println("Logic2");
-        System.out.println("Logic3");
-        List<Integer> taskIds = new ArrayList<>();
+    public void bossLevel(List<Task> tasks) {
+        bossStart(tasks);
+        bossEnd(tasks);
+    }
+    public void bossLevel323(List<Task> tasks) {
+        bossStart(tasks);
+        for (Task task : tasks) {
+            System.out.println("My Logic: " + task);
+        }
+        bossEnd(tasks);
+    }
+
+    private void bossEnd(List<Task> tasks) {
         int index = 0;
         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-
-            taskIds.add(task.getId());
-
-            if (cr323) { // TODO remove the boolean
-                System.out.println("My Logic: " + task);
-            }
             index++;
             System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
         }
         System.out.println("Logic6 " + tasks.size());
+        List<Integer> taskIds = tasks.stream()
+                .filter(Objects::nonNull)
+                .map(Task::getId)
+                .collect(toList());
         System.out.println("Task Ids: " + taskIds);
         System.out.println("Logic7");
+    }
+
+    private void bossStart(List<Task> tasks) {
+        System.out.println("Logic1");
+        System.out.println("Logic2");
+        System.out.println("Logic3");
+        for (Task task : tasks) {
+            System.out.println("Logic4: Validate " + task);
+            task.setRunning();
+        }
     }
 
     public void bossLevelNoFluff(List<Task> tasks) {
