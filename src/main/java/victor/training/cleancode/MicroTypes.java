@@ -1,7 +1,6 @@
 package victor.training.cleancode;
 
-import org.jooq.lambda.tuple.Tuple;
-import org.jooq.lambda.tuple.Tuple2;
+import lombok.Value;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,30 +8,40 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 
+//@Data
+@Value
+class ProductCount {
+    String productName;
+    int count;
+}
+// java 17 ❤️ un vis frumos
+//record ProductCount2( String productName,  int count) P{}
+
 public class MicroTypes {
 
+
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
+    public Map<Long, List<ProductCount>> extremeFP() {
         Long customerId = 1L;
         Integer product1Count = 2;
         Integer product2Count = 4;
         return Map.of(customerId, List.of(
-                Tuple.tuple("Table", product1Count),
-                Tuple.tuple("Chair", product2Count)
+                new ProductCount("Table", product1Count),
+                new ProductCount("Chair", product2Count)
         ));
     }
     //</editor-fold>
 
     @Test
     void lackOfAbstractions() {
-        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
+        Map<Long, List<ProductCount>> map = extremeFP();
         // Joke: try "var" above :)
 
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).stream()
-                    .map(t -> t.v2 + " of " + t.v1)
+        for (Long customerId : map.keySet()) {
+            String pl = map.get(customerId).stream()
+                    .map(productCount -> productCount.getCount() + " of " + productCount.getProductName())
                     .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
+            System.out.println("cid=" + customerId + " got " + pl);
         }
     }
 }
