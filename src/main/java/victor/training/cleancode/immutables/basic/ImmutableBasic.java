@@ -14,9 +14,11 @@ public class ImmutableBasic {
       Immutable immutable = new Immutable(2, numbers, new Other(13));
 
 
+
       System.out.println(immutable);
 
       adanc(immutable);
+      numbers.clear();;
       // LOTS OF BUSINESS LOGIC HERE
 
       System.out.println(immutable.getNumbers());
@@ -29,11 +31,9 @@ public class ImmutableBasic {
          System.out.println("ceva cod important");
       }
    }
-
    private static void horror(Immutable immutable) {
       simaiAdanc(immutable);
    }
-
    private static void simaiAdanc(Immutable immutable) {
       // chestt
       // e tarziu Vinerim =de Neversea, si ... am un bug. ce ma fac? Orice pot
@@ -48,7 +48,7 @@ class Immutable {
 
    public Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = numbers;
+      this.numbers = new ArrayList<>(numbers);
       this.other = other;
    }
 
@@ -75,7 +75,7 @@ class Immutable {
 
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -85,7 +85,5 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
+
 }
