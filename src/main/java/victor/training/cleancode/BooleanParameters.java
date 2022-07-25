@@ -2,6 +2,9 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -49,32 +52,41 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // Lord gave us tests!
-   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
+   public void bossLevelFluff(List<Task> tasks, boolean cr323) {
       int j = tasks.size();
       System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-
-            taskIds.add(task.getId());
-
-            if (cr323) { // TODO remove the boolean
-               System.out.println("My Logic: " + task);
-            }
-
-            index++;
-            System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
-         }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+      System.out.println("Logic3");
+      // 1 for --> 4 foruri:
+      // performanta nu doare. O(N)
+      // dar poate sa faca buguri daca:
+         // mutezi date din afara forului pe care un akl doilea for le citeste.
+         // break; continue; return; throw
+      int index = 0;
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
       }
+
+      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+
+      for (Task task : tasks) {
+         if (cr323) { // TODO remove the boolean
+            System.out.println("My Logic: " + task);
+         }
+      }
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
+      }
+      System.out.println("Logic6 " + j);
+      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic7");
+   }
+   public void bossLevelNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
       System.out.println("Logic7");
    }
 
