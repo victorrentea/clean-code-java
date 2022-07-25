@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutables.basic;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,11 +11,9 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.of(1, 2, 3, 4, 5);
 
       Immutable immutable = new Immutable(2, numbers, new Other(13));
-
-
 
       System.out.println(immutable);
 
@@ -43,12 +43,12 @@ public class ImmutableBasic {
 
 class Immutable {
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers;
    private final Other other;
 
-   public Immutable(int x, List<Integer> numbers, Other other) {
+   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = new ArrayList<>(numbers);
+      this.numbers = numbers;
       this.other = other;
    }
 
@@ -60,9 +60,10 @@ class Immutable {
       return x;
    }
 
-   public List<Integer> getNumbers() {
+   public ImmutableList<Integer> getNumbers() {
 //      return new ArrayList<>(numbers); // malloc
-      return Collections.unmodifiableList(numbers);
+//      return Collections.unmodifiableList(numbers);
+      return numbers;
    }
 
    public Other getOther() {
