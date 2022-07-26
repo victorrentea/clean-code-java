@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -37,25 +38,27 @@ public class SplitLoop {
     EmployeeService employeeService;
 
     public String computeStatsHard(List<Employee> employees) {
-        long totalEmpAge = 0;
+        if (employees.stream().filter(Employee::isConsultant).anyMatch(e -> e.getId() == null)) {
+            return  "Employee(s) not persisted";
+        }
         double totalConsultantSalary = 0;
+        long totalEmpAge = employees.stream()
+                .filter(Predicate.not(Employee::isConsultant))
+                .mapToLong(Employee::getAge)
+                .sum();
+
         for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
-            }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
+            if (employee.isConsultant())  {
+                if (employee.getSalary() == null) {
+                    Integer salary = employeeService.retrieveSalary(employee.getId());
+                    if (salary == null) {
+                        throw new RuntimeException("NO salary found for employee " + employee.getId());
+                    } else {
+                        employee.setSalary(salary);
+                    }
                 }
+                totalConsultantSalary += employee.getSalary();
             }
-            totalConsultantSalary += employee.getSalary();
         }
 
         long averageAge = 0;
