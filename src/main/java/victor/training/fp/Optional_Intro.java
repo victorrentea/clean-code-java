@@ -19,9 +19,11 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return getApplicableDiscountPercentage(customer.getMemberCard())
-				.map(discount -> "Discount: " + discount.getGlobalPercentage())
-				.orElse("No discount");
+		return
+				customer.getMemberCard()
+					.flatMap(card -> getApplicableDiscountPercentage(card))
+					.map(discount -> "Discount: " + discount.getGlobalPercentage())
+					.orElse("No discount");
 	}
 	// un api pe care-l chemmi =-----------------------
 

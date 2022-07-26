@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+// sfanta entitate
 public class Customer {
    private String name;
    private MemberCard memberCard;
@@ -15,8 +16,8 @@ public class Customer {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   public Optional<MemberCard> getMemberCard() {
+      return Optional.ofNullable(memberCard);
    }
 
    public Customer setMemberCard(MemberCard memberCard) {
