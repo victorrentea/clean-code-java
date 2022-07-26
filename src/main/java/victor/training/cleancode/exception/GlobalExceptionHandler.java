@@ -7,7 +7,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+
+class MyFilter implements Filter {
+
+   @Override
+   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+      try {
+         chain.doFilter(request, response);
+      } catch (IOException | ServletException e) {
+         throw new RuntimeException(e);
+      }
+   }
+}
 
 @RequiredArgsConstructor
 @RestControllerAdvice

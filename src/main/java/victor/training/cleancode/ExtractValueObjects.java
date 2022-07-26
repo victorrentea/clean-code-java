@@ -105,6 +105,11 @@ class CarModel {
         yearInterval = yearInterval1;
     }
 
+    // GUNOI: "Middle Man" code smell
+//    public int getStartYear() {
+//        return yearInterval.getStart();
+//    }
+//
     public Interval getYearInterval() {
         return yearInterval;
     }
