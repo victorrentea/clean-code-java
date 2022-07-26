@@ -1,13 +1,8 @@
 package victor.training.cleancode.immutables.basic;
 
 import com.google.common.collect.ImmutableList;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
+import lombok.Value;
+import lombok.With;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
@@ -35,42 +30,58 @@ public class ImmutableBasic {
       simaiAdanc(immutable);
    }
    private static void simaiAdanc(Immutable immutable) {
+      int noulX = 9;
+      Immutable copia = immutable.withX(noulX);
+      System.out.println(copia);
       // chestt
       // e tarziu Vinerim =de Neversea, si ... am un bug. ce ma fac? Orice pot
       immutable.getNumbers().add(-1); // nici nu banuiesti ca te arzi
    }
+
 }
 
+@Value
 class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
+   @With
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
 
-   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
-
-   public int getX() {
-      return x;
-   }
-
-   public ImmutableList<Integer> getNumbers() {
-//      return new ArrayList<>(numbers); // malloc
-//      return Collections.unmodifiableList(numbers);
-      return numbers;
-   }
-
-   public Other getOther() {
-      return other;
-   }
-
+//   public Immutable withX(int noulX) {
+//      return new Immutable(noulX, getNumbers(), getOther());
+//   }
 }
+
+// class Immutable {
+//   private final int x;
+//   private final ImmutableList<Integer> numbers;
+//   private final Other other;
+//
+//   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//      this.x = x;
+//      this.numbers = numbers;
+//      this.other = other;
+//   }
+//
+//   public String toString() {
+//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+//   }
+//
+//   public int getX() {
+//      return x;
+//   }
+//
+//   public ImmutableList<Integer> getNumbers() {
+////      return new ArrayList<>(numbers); // malloc
+////      return Collections.unmodifiableList(numbers);
+//      return numbers;
+//   }
+//
+//   public Other getOther() {
+//      return other;
+//   }
+//
+//}
 
 
 

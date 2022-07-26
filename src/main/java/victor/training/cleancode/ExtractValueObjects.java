@@ -96,6 +96,9 @@ class CarModel {
     private CarModel() {
     } // for Hibernate
 
+//    public void rahat() {
+//        return "\t%s    %d".formatted(make, yearInterval.)
+//    }
     public CarModel(String make, String model, Interval yearInterval1) {
         this.make = make;
         this.model = model;
