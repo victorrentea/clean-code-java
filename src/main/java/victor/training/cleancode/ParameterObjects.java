@@ -18,6 +18,10 @@ class AnotherClass {
    public void otherMethod(FullName fullName, int x) {
       if (fullName.getfName() == null || fullName.getlName() == null) throw new IllegalArgumentException();
 
+
+
+      // TODO victorrentea 2022-07-26: de sters luni
+
       System.out.println("Another distant Logic " + x);
       System.out.println("Person: " + fullName.getlName());
    }
