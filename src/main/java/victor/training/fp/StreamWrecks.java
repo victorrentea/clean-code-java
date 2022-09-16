@@ -19,10 +19,7 @@ public class StreamWrecks {
 	private ProductRepo productRepo;
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		Map<Product, Integer> productCount = orders.stream()
-				.filter(StreamWrecks::isRecent)
-				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
+		Map<Product, Integer> productCount = getProductCounts(orders);
 		log.trace("look: {}", productCount);
 		List<Product> frequentProducts = productCount.entrySet().stream()
 				.filter(e -> e.getValue() >= 10)
@@ -40,8 +37,15 @@ public class StreamWrecks {
 		List<Long> hiddenProductIds = productRepo.getHiddenProductIds(); //1 REPO call, not N
 		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
-				.filter(p -> !hiddenProductIds.contains(p.getId()))
+				.filter(p	 -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
+	}
+
+	private static Map<Product, Integer> getProductCounts(List<Order> orders) {
+		return orders.stream()
+				.filter(StreamWrecks::isRecent)
+				.flatMap(o -> o.getOrderLines().stream())
+				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
 	}
 
 	private static boolean isRecent(Order o) {

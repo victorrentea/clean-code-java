@@ -5,29 +5,32 @@ import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
-      int result;
-      if (marine != null) {// defensive programming
-         if (!isDead(marine)) { // network call
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // HEAVY logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            result = deadAmount();
-         }
-      } else {
+      if (marine == null) {
          throw new RuntimeException("Marine is null");
+      }// defensive programming
+      if (isDead(marine)) {
+         return deadAmount(); // TODO ALT-ENTER move return closer
+      } // network call
+      if (marine.isRetired()) {
+         System.out.println("30 more lines of code here, but I would bet 10EUR that thhis code is nwever ever ever called in prod today");
+         System.out.println("30 more lines of code here, but I would bet 10EUR that thhis code is nwever ever ever called in prod today");
+         System.out.println("30 more lines of code here, but I would bet 10EUR that thhis code is nwever ever ever called in prod today");
+         System.out.println("30 more lines of code here, but I would bet 10EUR that thhis code is nwever ever ever called in prod today");
+         System.out.println("30 more lines of code here, but I would bet 10EUR that thhis code is nwever ever ever called in prod today");
+         System.out.println("30 more lines of code here, but I would bet 10EUR that thhis code is nwever ever ever called in prod today");
+         return retiredAmount(); // TODO ALT-ENTER move return closer
       }
+      if (marine.getYearsService() == null) {
+         throw new IllegalArgumentException("Any marine should have the years of service set");
+      }
+      int result = marine.getYearsService() * 100;
+      if (!marine.getAwards().isEmpty()) {
+         result += 1000;
+      }
+      if (marine.getAwards().size() >= 3) {
+         result += 2000;
+      }
+      // HEAVY logic here...
       return result; // TODO ALT-ENTER move return closer
    }
 
