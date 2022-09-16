@@ -49,14 +49,12 @@ public class ImmutableBasic {
 
 //
 @Value
-class Immutable {
+class Immutable { // shallow immutable if Other is not Immutable.
    @With
    int x;
    ImmutableList<Integer> numbers;
    Other other;
 }
-
-
 
 //final class Immutable {
 //   private final int x;
@@ -94,7 +92,7 @@ class Immutable {
 //}
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -104,7 +102,4 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
 }
