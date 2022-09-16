@@ -4,9 +4,10 @@ import javax.persistence.Embeddable;
 
 //@Embeddable
 public class Interval {
-    private final int start;
-    private final int end;
+    private int start;
+    private int end;
 
+    protected Interval() {}
     public Interval(int start, int end) {
         if (start > end) {
             throw new IllegalArgumentException("Not a valid interval.");
