@@ -6,7 +6,7 @@ import java.util.List;
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
       int result;
-      if (marine != null) {
+      if (marine != null) {// defensive programming
          if (!isDead(marine)) { // network call
             if (!marine.isRetired()) {
                if (marine.getYearsService() != null) {

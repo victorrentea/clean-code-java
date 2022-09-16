@@ -39,7 +39,7 @@ public class ImmutableBasic {
 }
 
 // Immutable object = they cannot change after creation.
-class Immutable {
+final class Immutable {
    private final int x;
    private final ImmutableList<Integer> numbers; // #4 guava, hibernate = BUM
    private final Other other;
