@@ -1,6 +1,8 @@
 package victor.training.cleancode.immutables.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
+import lombok.With;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -18,7 +20,7 @@ public class ImmutableBasic {
       Immutable changedCopy = darkLong10KLOCBizLogic(immutable);
       // LOTS OF BUSINESS LOGIC HERE
 
-      System.out.println(immutable.numbers());
+      System.out.println(immutable.getNumbers());
       System.out.println(immutable);
    }
 
@@ -26,9 +28,9 @@ public class ImmutableBasic {
       another(immutable);
       another(immutable);
 
-      immutable.numbers().clear();
+      immutable.getNumbers().clear();
 
-      Immutable immutable2 = immutable.x(immutable.x() + 1);
+      Immutable immutable2 = immutable.withX(immutable.getX() + 1);
       another(immutable2);
       another(immutable2);
       return immutable2;
@@ -38,21 +40,21 @@ public class ImmutableBasic {
    }
 }
 
-record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-   public Immutable x(int x) {
-      return new Immutable(x, numbers, other);
-   }
-}
+//record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//   public Immutable x(int x) {
+//      return new Immutable(x, numbers, other);
+//   }
+//}
 
 
 //
-//@Value
-//class Immutable {
-//   @With
-//   int x;
-//   ImmutableList<Integer> numbers;
-//   Other other;
-//}
+@Value
+class Immutable {
+   @With
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
+}
 
 
 
