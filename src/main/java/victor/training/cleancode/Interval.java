@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+
+//@Embeddable
 public class Interval {
     private final int start;
     private final int end;
