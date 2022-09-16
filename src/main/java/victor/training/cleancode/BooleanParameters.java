@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,41 +51,37 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // Lord gave us tests!
-   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int j = tasks.size();
+   public void bossLevelFluff(List<Task> tasks, boolean cr323) {
       System.out.println("Logic1");
       System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         List<Integer> taskIds = new ArrayList<>();
-
-         innocentFunction(tasks);
-         int index = 0;
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-
-            taskIds.add(task.getId());
-
-            if (cr323) { // TODO remove the boolean
-               System.out.println("My Logic: " + task);
-            }
-
-            index++;
-            System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
-         }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+      System.out.println("Logic3");
+      List<Integer> taskIds = new ArrayList<>();
+      int index = 0;
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setRunning();
       }
+      for (Task task : tasks) {
+         taskIds.add(task.getId());
+      }
+      for (Task task : tasks) {
+         if (cr323) { // TODO remove the boolean
+            System.out.println("My Logic: " + task);
+         }
+      }
+      for (Task task : tasks) {
+         index++;
+         System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
+      }
+      System.out.println("Logic6 " + tasks.size());
+      System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
-
-   private void innocentFunction(List<Task> tasks) { // DO NOT MUTATE PARAMETERS!!
-      // reject pull request;
-      tasks.get(0).setRunning();
-      tasks.add(new Task(1));
+   public void bossLevelNoFluff(List<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
    }
 
 }
