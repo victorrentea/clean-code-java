@@ -15,7 +15,8 @@ public class Rental {
 	}
 
 	public double determinePrice() {
-		double price = 0;
+		double price = 0/*Math.random()*/;
+//		counter++
 		switch (movie.getCategory()) {
 			case REGULAR:
 				price += 2;
