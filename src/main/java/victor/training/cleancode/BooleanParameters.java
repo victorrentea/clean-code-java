@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,13 +54,15 @@ public class BooleanParameters {
 
    // Lord gave us tests!
    public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
       int j = tasks.size();
       System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
       if (fluff) {
          System.out.println("Logic3");
+         List<Integer> taskIds = new ArrayList<>();
+
+         innocentFunction(tasks);
+         int index = 0;
          for (Task task : tasks) {
             System.out.println("Logic4: Validate " + task);
             task.setRunning();
@@ -78,6 +82,12 @@ public class BooleanParameters {
          System.out.println("Logic7 " + tasks);
       }
       System.out.println("Logic7");
+   }
+
+   private void innocentFunction(List<Task> tasks) { // DO NOT MUTATE PARAMETERS!!
+      // reject pull request;
+      tasks.get(0).setRunning();
+      tasks.add(new Task(1));
    }
 
 }
