@@ -1,6 +1,8 @@
 package victor.training.cleancode.immutables.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
+import lombok.With;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -38,41 +40,48 @@ public class ImmutableBasic {
    }
 }
 
-// Immutable object = they cannot change after creation.
-final class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers; // #4 guava, hibernate = BUM
-   private final Other other;
 
-   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-//      this.numbers = List.copyOf(numbers); // i still malloc memory but only ONCE per instance. #2 cool, no on @Entity
-      this.numbers = numbers;
-      this.other = other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-   }
-
-   public int getX() {
-      return x;
-   }
-
-   public ImmutableList<Integer> getNumbers() {
-//      return new ArrayList<>(numbers); // the most commont, yet most inefficient solution. #1
-//      return Collections.unmodifiableList(numbers); // #3 return a decorator (pattern) around the original list.
-      return numbers;
-   }
-
-   public Other getOther() {
-      return other;
-   }
-
-   public Immutable withX(int newX) {
-      return new Immutable(newX, this.numbers, this.other);
-   }
+@Value
+class Immutable {
+   @With
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
 }
+//final class Immutable {
+//   private final int x;
+//   private final ImmutableList<Integer> numbers; // #4 guava, hibernate = BUM
+//   private final Other other;
+//
+//   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//      this.x = x;
+////      this.numbers = List.copyOf(numbers); // i still malloc memory but only ONCE per instance. #2 cool, no on @Entity
+//      this.numbers = numbers;
+//      this.other = other;
+//   }
+//
+//   public String toString() {
+//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
+//   }
+//
+//   public int getX() {
+//      return x;
+//   }
+//
+//   public ImmutableList<Integer> getNumbers() {
+////      return new ArrayList<>(numbers); // the most commont, yet most inefficient solution. #1
+////      return Collections.unmodifiableList(numbers); // #3 return a decorator (pattern) around the original list.
+//      return numbers;
+//   }
+//
+//   public Other getOther() {
+//      return other;
+//   }
+//
+//   public Immutable withX(int newX) {
+//      return new Immutable(newX, this.numbers, this.other);
+//   }
+//}
 
 class Other {
    private int a;
