@@ -15,8 +15,8 @@ public class Customer {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   public Optional<MemberCard> getMemberCard() {
+      return ofNullable(memberCard);
    }
 
    public Customer setMemberCard(MemberCard memberCard) {

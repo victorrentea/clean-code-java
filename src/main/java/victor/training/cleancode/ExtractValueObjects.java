@@ -64,7 +64,7 @@ class CarSearchCriteria { // JSON
 }
 
 //@Entity
-class CarModel {
+class CarModel { // domain model. peace. harmony. ying and yang. zen
     //   @Id
     private Long id;
     private String make;
