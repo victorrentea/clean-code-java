@@ -55,16 +55,7 @@ public class BooleanParameters {
 
     // Lord gave us tests!
     public void bossLevelFluff(List<Task> tasks, boolean cr323) {
-        System.out.println("Logic1");
-        System.out.println("Logic2");
-        System.out.println("Logic3");
-
-        List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
-
-        for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
-        }
+        bossStart(tasks);
 
         if (cr323) { // TODO remove the boolean
             for (Task task : tasks) {
@@ -72,17 +63,33 @@ public class BooleanParameters {
             }
         }
 
+        bossEnd(tasks);
+    }
+
+    private static void bossEnd(List<Task> tasks) {
         int index = 0;
         for (Task task : tasks) {
             index++;
             System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
         }
         System.out.println("Logic6 " + tasks.size());
+        List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
         System.out.println("Task Ids: " + taskIds);
         System.out.println("Logic7");
     }
 
-//    private void computePrice(List<Task> tasks) {
+    private static void bossStart(List<Task> tasks) {
+        System.out.println("Logic1");
+        System.out.println("Logic2");
+        System.out.println("Logic3");
+
+        for (Task task : tasks) {
+            System.out.println("Logic4: Validate " + task);
+            task.setRunning();
+        }
+    }
+
+    //    private void computePrice(List<Task> tasks) {
 //        // late bugfix:
 ////        tasks.add(new Task(1)); if i ind you changing a param in a function named like this, your code is LYING . And for code review i
 //        // will pay you a visit, witha friend
