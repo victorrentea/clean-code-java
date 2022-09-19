@@ -8,100 +8,101 @@ import java.util.List;
  */
 public class BooleanParameters {
 
-   public static void main(String[] args) {
-      // The big method is called from various foreign places in the codebase
-      bigUglyMethod(new Task(5), 1);
-      bigUglyMethod(new Task(4), 2);
-      bigUglyMethod(new Task(3), 3);
-      bigUglyMethod(new Task(2), 4);
-      bigUglyMethod(new Task(1), 5);
+    public static void main(String[] args) {
+        // The big method is called from various foreign places in the codebase
+        bigUglyMethod(new Task(5), 1);
+        bigUglyMethod(new Task(4), 2);
+        bigUglyMethod(new Task(3), 3);
+        bigUglyMethod(new Task(2), 4);
+        bigUglyMethod(new Task(1), 5);
 
-      // TODO From my use-case #323, I call it too, to do more within:
-      Task task = new Task(1);
-      bigUglyMethod323(task, 2);
+        // TODO From my use-case #323, I call it too, to do more within:
+        Task task = new Task(1);
+        bigUglyMethod323(task, 2);
 
-   }
+    }
 
-   static void bigUglyMethod(Task task, int b) {
-      bigStart(task, b);
-      bigEnd(b);
-   }
-   static void bigUglyMethod323(Task task, int b) {
-      bigStart(task, b);
-      System.out.println("Logic just for CR323 : " + task);
-      bigEnd(b);
-   }
+    static void bigUglyMethod(Task task, int b) {
+        bigStart(task, b);
+        bigEnd(b);
+    }
 
-   private static void bigEnd(int b) {
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-   }
+    static void bigUglyMethod323(Task task, int b) {
+        bigStart(task, b);
+        System.out.println("Logic just for CR323 : " + task);
+        bigEnd(b);
+    }
 
-   private static void bigStart(Task task, int b) {
-      System.out.println("Complex Logic 1 " + task + " and " + b);
-      System.out.println("Complex Logic 2 " + task);
-      System.out.println("Complex Logic 3 " + task);
-   }
+    private static void bigEnd(int b) {
+        System.out.println("More Complex Logic " + b);
+        System.out.println("More Complex Logic " + b);
+        System.out.println("More Complex Logic " + b);
+    }
+
+    private static void bigStart(Task task, int b) {
+        System.out.println("Complex Logic 1 " + task + " and " + b);
+        System.out.println("Complex Logic 2 " + task);
+        System.out.println("Complex Logic 3 " + task);
+    }
 
 
-   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
+    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-   // Lord gave us tests!
-   public void bossLevel(boolean fluff2, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
-      int taskCount = tasks.size();
-      System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
-      System.out.println("Logic2");
-      if (fluff2) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setRunning();
+    // Lord gave us tests!
+    public void bossLevel(boolean fluff2, List<Task> tasks, boolean cr323) {
+        int index = 0; // TODO move closer to usages
+        int taskCount = tasks.size();
+        System.out.println("Logic1");
+        List<Integer> taskIds = new ArrayList<>();
+        System.out.println("Logic2");
+        if (fluff2) {
+            System.out.println("Logic3");
+            for (Task task : tasks) {
+                System.out.println("Logic4: Validate " + task);
+                task.setRunning();
 
-            taskIds.add(task.getId());
+                taskIds.add(task.getId());
 
-            if (cr323) { // TODO remove the boolean
-               System.out.println("My Logic: " + task);
+                if (cr323) { // TODO remove the boolean
+                    System.out.println("My Logic: " + task);
+                }
+
+                index++;
+                System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
             }
-
-            index++;
-            System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
-         }
-         System.out.println("Logic6 " + taskCount);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
-      }
-      System.out.println("Logic7");
-   }
+            System.out.println("Logic6 " + taskCount);
+            System.out.println("Task Ids: " + taskIds);
+        } else {
+            System.out.println("Logic7 " + tasks);
+        }
+        System.out.println("Logic7");
+    }
 
 }
 
 
 class Task {
-   private final int id;
-   private boolean running;
+    private final int id;
+    private boolean running;
 
-   Task(int id) {
-      this.id = id;
-   }
+    Task(int id) {
+        this.id = id;
+    }
 
-   public void setRunning() {
-      running = true;
-   }
+    public void setRunning() {
+        running = true;
+    }
 
-   public boolean isRunning() {
-      return running;
-   }
+    public boolean isRunning() {
+        return running;
+    }
 
-   public int getId() {
-      return id;
-   }
+    public int getId() {
+        return id;
+    }
 
-   @Override
-   public String toString() {
-      return "Task{" + "id=" + id + ", running=" + running + '}';
-   }
+    @Override
+    public String toString() {
+        return "Task{" + "id=" + id + ", running=" + running + '}';
+    }
 }
