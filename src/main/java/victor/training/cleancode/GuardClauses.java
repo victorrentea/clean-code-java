@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuardClauses {
+
+   public static final int DEAD_PAY_AMOUNT = 1;
+
    public int getPayAmount(Marine marine) {
       int result;
       if (marine != null) {
-         if (!isDead(marine)) { // network call
+         if (!isDead(marine)) {
             if (!marine.isRetired()) {
                if (marine.getYearsService() != null) {
                   result = marine.getYearsService() * 100;
@@ -23,7 +26,7 @@ public class GuardClauses {
                }
             } else result = retiredAmount();
          } else {
-            result = deadAmount();
+            result = DEAD_PAY_AMOUNT;
          }
       } else {
          throw new RuntimeException("Marine is null");
@@ -32,12 +35,7 @@ public class GuardClauses {
    }
 
    private boolean isDead(Marine marine) {
-      // after 500 millis
       return false;
-   }
-
-   private int deadAmount() {
-      return 1;
    }
 
    private int retiredAmount() {

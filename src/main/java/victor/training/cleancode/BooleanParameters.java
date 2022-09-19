@@ -27,7 +27,7 @@ public class BooleanParameters {
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
 
-      // System.out.println("Logic just for CR323 : " + task);
+      // System.out.println("Logic just for CR#323 : " + task);
 
       System.out.println("More Complex Logic " + b);
       System.out.println("More Complex Logic " + b);
@@ -48,7 +48,7 @@ public class BooleanParameters {
          System.out.println("Logic3");
          for (Task task : tasks) {
             System.out.println("Logic4: Validate " + task);
-            task.setRunning();
+            task.setStarted();
 
             taskIds.add(task.getId());
 
@@ -57,7 +57,7 @@ public class BooleanParameters {
             }
 
             index++;
-            System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
+            System.out.println("Audit task index=" + index + ": " + task);
          }
          System.out.println("Logic6 " + j);
          System.out.println("Task Ids: " + taskIds);
@@ -72,18 +72,18 @@ public class BooleanParameters {
 
 class Task {
    private final int id;
-   private boolean running;
+   private boolean started;
 
    Task(int id) {
       this.id = id;
    }
 
-   public void setRunning() {
-      running = true;
+   public void setStarted() {
+      started = true;
    }
 
-   public boolean isRunning() {
-      return running;
+   public boolean isStarted() {
+      return started;
    }
 
    public int getId() {
@@ -92,6 +92,6 @@ class Task {
 
    @Override
    public String toString() {
-      return "Task{" + "id=" + id + ", running=" + running + '}';
+      return "Task{" + "id=" + id + ", started=" + started + '}';
    }
 }
