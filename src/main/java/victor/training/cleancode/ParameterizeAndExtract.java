@@ -12,12 +12,15 @@ class ParameterizeAndExtract {
             }
         }
     }
-}
-class SomeOtherClass {
+
+
+
+    /// 1500 lines belowm in a different flow, completely unrelated to the code above
+
     public void g(int n) {
         System.out.println("Logic G");
         try {
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 5; j++) {
                 if (n + j < 0) {
                     System.out.println("Code" + j);
                 } else {
@@ -28,5 +31,7 @@ class SomeOtherClass {
             throw new RuntimeException("Rethrow", e);
         }
     }
+}
+class SomeOtherClass {
 
 }

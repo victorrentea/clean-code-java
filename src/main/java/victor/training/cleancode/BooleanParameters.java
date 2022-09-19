@@ -20,7 +20,6 @@ public class BooleanParameters {
         bigUglyMethod(new Task(3), 3);
         bigUglyMethod(new Task(2), 4);
         bigUglyMethod(new Task(1), 5);
-
         // TODO From my use-case #323, I call it too, to do more within:
         Task task = new Task(1);
         bigUglyMethod323(task, 2);
@@ -47,7 +46,25 @@ public class BooleanParameters {
     private static void bigStart(Task task, int b) {
         System.out.println("Complex Logic 1 " + task + " and " + b);
         System.out.println("Complex Logic 2 " + task);
+        System.out.println("Complex Logic 3s " + task);
         System.out.println("Complex Logic 3 " + task);
+        System.out.println("Complex Logic 3 " + task);
+        System.out.println("Complex Logic 3 " + task);
+        System.out.println("Complex Logic f3 " + task);
+        System.out.println("Complex Logic g3 " + task);
+        System.out.println("Complex Logic g3 " + task);
+    }
+
+    private static void bigStart2(Task task, int b) {
+        System.out.println("Complex Logic 1 " + task + " and " + b);
+        System.out.println("Complex Logic 2 " + task);
+        System.out.println("Complex Logic 3s " + task);
+        System.out.println("Complex Logic 3 " + task);
+        System.out.println("Complex Logic 3x " + task);
+        System.out.println("Complex Logic 3 " + task);
+        System.out.println("Complex Logic f3 " + task);
+        System.out.println("Complex Logic g3 " + task);
+        System.out.println("Complex Logic g3 " + task);
     }
 
 

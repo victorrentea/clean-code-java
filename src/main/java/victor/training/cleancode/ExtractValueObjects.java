@@ -115,16 +115,6 @@ class CarModelMapper {
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
         dto.startYear = carModel.getYearInterval().getStart();
-
-        dto.endYear = carModel.getYearInterval().getEnd();//replace this
-        dto.endYear = carModel.getYearInterval().getEnd();// with this, everywhere!!
-
-        dto.endYear = carModel.getYearInterval().getEnd();
-        dto.endYear = carModel.getYearInterval().getEnd();
-        dto.endYear = carModel.getYearInterval().getEnd();
-        dto.endYear = carModel.getYearInterval().getEnd();
-        dto.endYear = carModel.getYearInterval().getEnd();
-        dto.endYear = carModel.getYearInterval().getEnd();
         dto.endYear = carModel.getYearInterval().getEnd();
         return dto;
     }
