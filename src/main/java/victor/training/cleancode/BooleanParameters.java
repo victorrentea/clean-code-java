@@ -10,30 +10,38 @@ public class BooleanParameters {
 
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
-      bigUglyMethod(new Task(5), 1, false);
-      bigUglyMethod(new Task(4), 2, false);
-      bigUglyMethod(new Task(3), 3, false);
-      bigUglyMethod(new Task(2), 4, false);
-      bigUglyMethod(new Task(1), 5, false);
+      bigUglyMethod(new Task(5), 1);
+      bigUglyMethod(new Task(4), 2);
+      bigUglyMethod(new Task(3), 3);
+      bigUglyMethod(new Task(2), 4);
+      bigUglyMethod(new Task(1), 5);
 
       // TODO From my use-case #323, I call it too, to do more within:
       Task task = new Task(1);
-      bigUglyMethod(task, 2, true);
+      bigUglyMethod323(task, 2);
 
    }
 
-   static void bigUglyMethod(Task task, int b, boolean cr323) {
+   static void bigUglyMethod(Task task, int b) {
+      bigStart(task, b);
+      bigEnd(b);
+   }
+   static void bigUglyMethod323(Task task, int b) {
+      bigStart(task, b);
+      System.out.println("Logic just for CR323 : " + task);
+      bigEnd(b);
+   }
+
+   private static void bigEnd(int b) {
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + b);
+   }
+
+   private static void bigStart(Task task, int b) {
       System.out.println("Complex Logic 1 " + task + " and " + b);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
-
-      if (cr323) {
-         System.out.println("Logic just for CR323 : " + task);
-      }
-
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
    }
 
 
