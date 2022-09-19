@@ -4,13 +4,14 @@ import java.util.Collections;
 import java.util.Map;
 
 public class SplitPhase {
-    public float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
-        String[] orderData = orderString.split("\\s+");
-        Integer productPrice = priceList.get(orderData[0].split("-")[1]);
-        return Integer.parseInt(orderData[1]) * productPrice;
+    public float calculateOrderPrice(String order5String, Map<String, Integer> priceList) {
+        String[] order5Data = order5String.split("\\s+");
+        Integer productPrice = priceList.get(order5Data[0].split("-")[1]);
+        return Integer.parseInt(order5Data[1]) * productPrice;
     }
 
     public static void main(String[] args) {
-        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
+        SplitPhase splitPhase = new SplitPhase();
+        System.out.println(splitPhase.calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
     }
 }

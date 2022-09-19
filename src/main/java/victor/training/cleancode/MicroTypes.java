@@ -1,38 +1,62 @@
 package victor.training.cleancode;
 
-import org.jooq.lambda.tuple.Tuple;
-import org.jooq.lambda.tuple.Tuple2;
+import lombok.Value;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.joining;
 
 public class MicroTypes {
 
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
-        Long customerId = 1L;
+    public Map<CustomerId, List<ProductCount>> extremeFP() {
+        CustomerId customerId = new CustomerId(1L);
         Integer product1Count = 2;
         Integer product2Count = 4;
         return Map.of(customerId, List.of(
-                Tuple.tuple("Table", product1Count),
-                Tuple.tuple("Chair", product2Count)
+                new ProductCount("Table", product1Count),
+                new ProductCount("Chair", product2Count)
+//              productCountOf("Table", product1Count),
+//              productCountOf("Chair", product2Count)
         ));
     }
     //</editor-fold>
 
+    @Value
+    static class CustomerId {
+        long id;
+    }
+    @Value
+    static class ProductCount{
+        String productName;
+        int itemCount;
+
+        public ProductCount(String productName, int itemCount) {
+            this.productName = Objects.requireNonNull(productName);
+            this.itemCount = itemCount;
+        }
+
+//        public static ProductCount oneItem(String productName) {
+//            return new ProductCount(productName, 1);
+//        }
+//        public static ProductCount productCountOf(String productName, int itemCount) {
+//            return new ProductCount(productName, itemCount);
+//        }
+    }
+
     @Test
     void lackOfAbstractions() {
-        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
-        // Joke: try "var" above :)
+        Map<CustomerId, List<ProductCount>> map = extremeFP();
+        // Joke: try "var" above :) : only use var in tests.
 
-        for (Long cid : map.keySet()) {
+        for (CustomerId cid : map.keySet()) {
             String pl = map.get(cid).stream()
-                    .map(t -> t.v2 + " of " + t.v1)
+                    .map(t -> t.getItemCount() + " of " + t.getProductName())
                     .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
+            System.out.println("cid=" + cid.getId() + " got " + pl);
         }
     }
 }
