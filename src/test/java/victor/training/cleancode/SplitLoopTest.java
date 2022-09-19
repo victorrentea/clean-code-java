@@ -29,7 +29,7 @@ public class SplitLoopTest {
 
    @Nested
    @ExtendWith(MockitoExtension.class)
-   class Hard {
+   class HaRrd {
       @Mock
       EmployeeService employeeService;
       @InjectMocks

@@ -58,6 +58,7 @@ public class BooleanParameters {
         System.out.println("Logic1");
         System.out.println("Logic2");
         System.out.println("Logic3");
+
         List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
 
         for (Task task : tasks) {
