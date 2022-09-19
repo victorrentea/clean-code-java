@@ -15,19 +15,22 @@ public class Optional_Intro {
         // test: 60, 10, no MemberCard
         System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
         System.out.println(getDiscountLine(new Customer(new MemberCard(10))));
+        System.out.println(getDiscountLine(new Customer()));
     }
 
     public static String getDiscountLine(Customer customer) {
-        return getApplicableDiscountPercentage(customer.getMemberCard())
-                .map(disc -> "Discount: " + disc.getGlobalPercentage())
-                .orElse("");
+        return customer.getMemberCard()
+                        .map(MemberCard::getFidelityPoints)
+                        .flatMap(Optional_Intro::getApplicableDiscountPercentage)
+                        .map(disc -> "Discount: " + disc.getGlobalPercentage())
+                        .orElse("");
     }
 
-    public static Optional<Discount> getApplicableDiscountPercentage(MemberCard card) {
-        if (card.getFidelityPoints() >= 100) {
+    public static Optional<Discount> getApplicableDiscountPercentage(int fidelityPoints) {
+        if (fidelityPoints >= 100) {
             return Optional.of(new Discount(5));
         }
-        if (card.getFidelityPoints() >= 50) {
+        if (fidelityPoints >= 50) {
             return Optional.of(new Discount(3));
         }
         return Optional.empty();
