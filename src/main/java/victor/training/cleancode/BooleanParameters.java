@@ -1,7 +1,12 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -49,32 +54,43 @@ public class BooleanParameters {
     // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
     // Lord gave us tests!
-    public void bossLevel(boolean fluff2, List<Task> tasks, boolean cr323) {
-        int index = 0; // TODO move closer to usages
-        int taskCount = tasks.size();
+    public void bossLevelFluff(List<Task> tasks, boolean cr323) {
         System.out.println("Logic1");
-        List<Integer> taskIds = new ArrayList<>();
         System.out.println("Logic2");
-        if (fluff2) {
-            System.out.println("Logic3");
-            for (Task task : tasks) {
-                System.out.println("Logic4: Validate " + task);
-                task.setRunning();
+        System.out.println("Logic3");
+        List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
 
-                taskIds.add(task.getId());
-
-                if (cr323) { // TODO remove the boolean
-                    System.out.println("My Logic: " + task);
-                }
-
-                index++;
-                System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
-            }
-            System.out.println("Logic6 " + taskCount);
-            System.out.println("Task Ids: " + taskIds);
-        } else {
-            System.out.println("Logic7 " + tasks);
+        for (Task task : tasks) {
+            System.out.println("Logic4: Validate " + task);
+            task.setRunning();
         }
+
+        if (cr323) { // TODO remove the boolean
+            for (Task task : tasks) {
+                System.out.println("My Logic: " + task);
+            }
+        }
+
+        int index = 0;
+        for (Task task : tasks) {
+            index++;
+            System.out.println("Logic5 index=" + index + " on running=" + task.isRunning());
+        }
+        System.out.println("Logic6 " + tasks.size());
+        System.out.println("Task Ids: " + taskIds);
+        System.out.println("Logic7");
+    }
+
+//    private void computePrice(List<Task> tasks) {
+//        // late bugfix:
+////        tasks.add(new Task(1)); if i ind you changing a param in a function named like this, your code is LYING . And for code review i
+//        // will pay you a visit, witha friend
+//    }
+
+    public void bossLevelNoFluff(List<Task> tasks) {
+        System.out.println("Logic1");
+        System.out.println("Logic2");
+        System.out.println("Logic7 " + tasks);
         System.out.println("Logic7");
     }
 
