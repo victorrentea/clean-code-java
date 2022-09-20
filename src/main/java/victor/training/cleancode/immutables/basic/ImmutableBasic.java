@@ -39,7 +39,10 @@ public class ImmutableBasic {
       // bug fix
 //      immutable.getOther().setX
 //      immutable.getNumbers().add(-1); // deprecated now!! + exception
-      Immutable changedCopy = immutable.withX(immutable.x() + 1);
+      Immutable changedCopy = null;
+      for (int i = 0; i < 1000; i++) {
+         changedCopy = immutable.withX(immutable.x() + 1);
+      }
       return changedCopy;
    }
 
