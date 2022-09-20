@@ -33,16 +33,12 @@ class Rental {
 	}
 
 	public double getPrice() {
-		switch (movie.getCategory()) {
-			case REGULAR:
-				return getRegularPrice();
-			case NEW_RELEASE:
-				return getNewReleasePrice();
-			case CHILDREN:
-				return getChildrenPrice();
-			default:
-				throw new IllegalStateException("Unexpected value: " + movie.getCategory());
-		}
+		return switch (movie.getCategory()) {
+			case REGULAR -> getRegularPrice();
+			case NEW_RELEASE -> getNewReleasePrice();
+			case CHILDREN -> getChildrenPrice();
+//			case ELDERS -> 0.0;
+		};
 	}
 
 	private double getChildrenPrice() {

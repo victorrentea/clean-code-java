@@ -8,6 +8,7 @@ final public class Movie {
         CHILDREN,
         REGULAR,
         NEW_RELEASE,
+//        ELDERS
     }
 
     private final String title;
