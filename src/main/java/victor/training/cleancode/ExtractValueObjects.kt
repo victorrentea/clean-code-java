@@ -1,140 +1,99 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Collectors
 
-class ExtractValueObjects {
-
+internal class ExtractValueObjects {
     // see tests
-    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
-                .collect(Collectors.toList());
-        System.out.println("More filtering logic");
-        return results;
+    fun filterCarModels(criteria: CarSearchCriteria, models: List<CarModel>): List<CarModel> {
+        val results = models
+            .filter { model: CarModel ->
+                MathUtil.intervalsIntersect(
+                    criteria.startYear, criteria.endYear,
+                    model.startYear, model.endYear
+                )
+            }
+        println("More filtering logic")
+        return results
     }
 
-    private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-    }
-
-}
-
-class Alta {
-    private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-    }
-
-}
-
-class MathUtil {
-
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+    private fun applyCapacityFilter() {
+        println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000))
     }
 }
 
-
-class CarSearchCriteria { // smells like JSON ...
-    private final int startYear;
-    private final int endYear;
-    private final String make;
-
-    public CarSearchCriteria(int startYear, int endYear, String make) {
-        this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+internal class Alta {
+    private fun applyCapacityFilter() {
+        println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000))
     }
+}
 
-    public int getStartYear() {
-        return startYear;
+ object MathUtil {
+    fun intervalsIntersect(start1: Int, end1: Int, start2: Int, end2: Int): Boolean {
+        return start1 <= end2 && start2 <= end1
     }
+}
 
-    public int getEndYear() {
-        return endYear;
-    }
+ class CarSearchCriteria(startYear: Int, endYear: Int, val make: String) {
+    // smells like JSON ...
+    val startYear: Int
+    val endYear: Int
 
-    public String getMake() {
-        return make;
+    init {
+        require(startYear <= endYear) { "start larger than end" }
+        this.startYear = startYear
+        this.endYear = endYear
     }
 }
 
 //@Entity
-class CarModel { // the wholy Entity Model
+ class CarModel {
+    // the wholy Entity Model
     //   @Id
-    private Long id;
-    private String make;
-    private String model;
-    private int startYear;
-    private int endYear;
+    val id: Long? = null
+    var make: String? = null
+        private set // TODO way of doing in kt?... explore
+    var model: String? = null
+        private set
+    var startYear = 0
+        private set
+    var endYear = 0
+        private set
 
-    protected CarModel() {
-    } // for Hibernate
-
-    public CarModel(String make, String model, int startYear, int endYear) {
-        this.make = make;
-        this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+//    protected constructor() {} // for Hibernate
+    constructor(make: String?, model: String?, startYear: Int, endYear: Int) {
+        this.make = make
+        this.model = model
+        require(startYear <= endYear) { "start larger than end" }
+        this.startYear = startYear
+        this.endYear = endYear
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public String getMake() {
-        return make;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "CarModel{" +
-               "make='" + make + '\'' +
-               ", model='" + model + '\'' +
-               '}';
+                "make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                '}'
     }
 }
 
-
-class CarModelMapper {
-    public CarModelDto toDto(CarModel carModel) {
-        CarModelDto dto = new CarModelDto();
-        dto.make = carModel.getMake();
-        dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
-        return dto;
+ class CarModelMapper {
+    fun toDto(carModel: CarModel): CarModelDto {
+        val dto = CarModelDto()
+        dto.make = carModel.make
+        dto.model = carModel.model
+        dto.startYear = carModel.startYear
+        dto.endYear = carModel.endYear
+        return dto
     }
 
-    public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+    fun fromDto(dto: CarModelDto): CarModel {
+        return CarModel(dto.make, dto.model, dto.startYear, dto.endYear)
     }
 }
 
-class CarModelDto {
-    public String make;
-    public String model;
-    public int startYear;
-    public int endYear;
+ class CarModelDto {
+    var make: String? = null
+    var model: String? = null
+    var startYear = 0
+    var endYear = 0
 }

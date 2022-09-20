@@ -1,16 +1,19 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.*
 
-public class SplitPhase {
-    public float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
-        String[] orderData = orderString.split("\\s+");
-        Integer productPrice = priceList.get(orderData[0].split("-")[1]);
-        return Integer.parseInt(orderData[1]) * productPrice;
+class SplitPhase {
+    fun calculateOrderPrice(orderString: String, priceList: Map<String?, Int?>): Float {
+        val orderData = orderString.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val productPrice = priceList[orderData[0].split("-".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()[1]]
+        return (orderData[1].toInt() * productPrice!!).toFloat()
     }
 
-    public static void main(String[] args) {
-        System.out.println(new SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)));
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println(SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)))
+        }
     }
 }

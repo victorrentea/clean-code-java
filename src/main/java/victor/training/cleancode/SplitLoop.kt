@@ -1,86 +1,75 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor
+import lombok.Data
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
  */
-public class SplitLoop {
-
+class SplitLoop {
     // see tests
-    public String computeStats(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
-        List<Integer> consultantIds = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                averageAge += employee.getAge();
+    fun computeStats(employees: List<Employee>): String {
+        var averageAge: Long = 0
+        var averageSalary = 0.0
+        val consultantIds: MutableList<Int> = ArrayList()
+        for (employee in employees) {
+            if (!employee.consultant) {
+                averageAge += employee.age.toLong()
             } else {
-                consultantIds.add(employee.getId());
+                employee.id?.let { consultantIds.add(it) }
             }
-            averageSalary += employee.getSalary();
+            averageSalary += (employee.salary ?: 0)
         }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
-        System.out.println("Consultant IDs: " + consultantIds);
-        return "Average age = " + averageAge + "; Average salary = " + averageSalary;
+        averageAge /= employees.count { e: Employee -> !e.consultant }
+        averageSalary /= employees.size
+        println("Consultant IDs: $consultantIds")
+        return "Average age = $averageAge; Average salary = $averageSalary"
     }
-
 
     // ======= hard core =========
-
-    EmployeeService employeeService;
-
-    public String computeStatsHard(List<Employee> employees) {
-        long totalEmpAge = 0;
-        double totalConsultantSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
+    private var employeeService: EmployeeService? = null
+    fun computeStatsHard(employees: List<Employee>): String {
+        var totalEmpAge: Long = 0
+        var totalConsultantSalary = 0.0
+        for (employee in employees) {
+            if (!employee.consultant) {
+                totalEmpAge += employee.age.toLong()
+                continue
             }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
+            if (employee.id == null) {
+                return "Employee(s) not persisted"
             }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
+            if (employee.salary == null) {
+                val salary = employeeService!!.retrieveSalary(employee.id!!)
                 if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
+                    throw RuntimeException("NO salary found for employee " + employee.id)
                 } else {
-                    employee.setSalary(salary);
+                    employee.salary= salary
                 }
             }
-            totalConsultantSalary += employee.getSalary();
+            totalConsultantSalary += employee.salary!!.toDouble()
         }
-
-        long averageAge = 0;
-        if (totalEmpAge != 0) {
-            averageAge = totalEmpAge / employees.stream().filter(e -> !e.isConsultant()).count();
+        var averageAge: Long = 0
+        if (totalEmpAge != 0L) {
+            averageAge = totalEmpAge / employees.stream().filter { e: Employee -> !e.consultant }.count()
         }
-        double averageConsultantSalary = 0;
-        if (totalConsultantSalary != 0) {
-            averageConsultantSalary = totalConsultantSalary / employees.size();
+        var averageConsultantSalary = 0.0
+        if (totalConsultantSalary != 0.0) {
+            averageConsultantSalary = totalConsultantSalary / employees.size
         }
-        return "Average employee age = " + averageAge + "; Average consultant salary = " + averageConsultantSalary;
+        return "Average employee age = $averageAge; Average consultant salary = $averageConsultantSalary"
     }
-
-
-
 }
+
 interface EmployeeService {
-    Integer retrieveSalary(int employeeId);
+    fun retrieveSalary(employeeId: Int): Int?
 }
 
 @Data
 @AllArgsConstructor
-class Employee {
-    private Integer id;
-    private int age;
-    private Integer salary;
-    private boolean consultant;
+data class Employee(
+    var id: Int? = null,
+    val age:Int = 0,
+    var salary: Int? = null,
+    val consultant:Boolean = false) {
 }

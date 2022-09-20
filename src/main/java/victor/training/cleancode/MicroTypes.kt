@@ -1,38 +1,35 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import org.jooq.lambda.tuple.Tuple;
-import org.jooq.lambda.tuple.Tuple2;
-import org.junit.jupiter.api.Test;
+import org.jooq.lambda.tuple.Tuple
+import org.jooq.lambda.tuple.Tuple2
+import org.junit.jupiter.api.Test
+import java.util.stream.Collectors
 
-import java.util.List;
-import java.util.Map;
-
-import static java.util.stream.Collectors.joining;
-
-public class MicroTypes {
-
+class MicroTypes {
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
-        Long customerId = 1L;
-        Integer product1Count = 2;
-        Integer product2Count = 4;
-        return Map.of(customerId, List.of(
+    fun extremeFP(): Map<Long, List<Tuple2<String, Int>>> {
+        val customerId = 1L
+        val product1Count = 2
+        val product2Count = 4
+        return java.util.Map.of(
+            customerId, java.util.List.of(
                 Tuple.tuple("Table", product1Count),
                 Tuple.tuple("Chair", product2Count)
-        ));
+            )
+        )
     }
+
     //</editor-fold>
 
     @Test
-    void lackOfAbstractions() {
-        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
+    fun lackOfAbstractions() {
+        val map = extremeFP()
         // Joke: try "var" above :)
-
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).stream()
-                    .map(t -> t.v2 + " of " + t.v1)
-                    .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
+        for (cid in map.keys) {
+            val pl = map[cid]!!
+                .map { t: Tuple2<String, Int> -> t.v2.toString() + " of " + t.v1 }
+                .joinToString(", ")
+            println("cid=$cid got $pl")
         }
     }
 }
