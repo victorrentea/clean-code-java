@@ -41,46 +41,18 @@ class Customer {
     }
 
     private String generateBodyRow(Rental rental) {
-        return "\t" + rental.getMovie().getTitle() + "\t" + getPrice(rental) + "\n";
+        return "\t" + rental.getMovie().getTitle() + "\t" + rental.getPrice() + "\n";
     }
 
     private int getTotalFrequentRenterPoints() {
-        return rentals.stream().mapToInt(this::getBonusPoints).sum();
-    }
-
-    private int getBonusPoints(Rental rental) {
-        int bonus = 1;
-        if (rental.earnsBonus()) {
-            bonus ++;
-        }
-        return bonus;
+        return rentals.stream().mapToInt(Rental::getBonusPoints).sum();
     }
 
     private String generateFooter() {
         int frequentRenterPoints = getTotalFrequentRenterPoints();
-        double totalPrice = rentals.stream().mapToDouble(Customer::getPrice).sum();
+        double totalPrice = rentals.stream().mapToDouble(Rental::getPrice).sum();
         return "Amount owed is " + totalPrice + "\n" +
                "You earned " + frequentRenterPoints + " frequent renter points";
     }
 
-    private static double getPrice(Rental rental) {
-        double thisAmount = 0;
-        // determine amounts for each line
-        switch (rental.getMovie().getCategory()) {
-            case REGULAR:
-                thisAmount += 2;
-                if (rental.getDaysRented() > 2)
-                    thisAmount += (rental.getDaysRented() - 2) * 1.5;
-                break;
-            case NEW_RELEASE:
-                thisAmount += rental.getDaysRented() * 3;
-                break;
-            case CHILDREN:
-                thisAmount += 1.5;
-                if (rental.getDaysRented() > 3)
-                    thisAmount += (rental.getDaysRented() - 3) * 1.5;
-                break;
-        }
-        return thisAmount;
-    }
 }
