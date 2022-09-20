@@ -5,6 +5,7 @@ import java.util.List;
 
 public class GuardClauses {
    public int getPayAmount(Marine marine) {
+      // this check has no place in a function also implementing biz rules > mixes low level + high level code.
       if (marine == null) {
          throw new RuntimeException("Marine is null");
       }
@@ -14,7 +15,7 @@ public class GuardClauses {
       if (marine.isRetired()) {
          return retiredAmount();
       }
-      if (marine.getYearsService() == null) {
+      if (marine.getYearsService() == null) { // data inconsistency for historical reasons. eg UPDATE MARINE SET YEARS=0 WHERE YEARS is null
          throw new IllegalArgumentException("Any marine should have the years of service set");
       }
       int result = marine.getYearsService() * 100;
