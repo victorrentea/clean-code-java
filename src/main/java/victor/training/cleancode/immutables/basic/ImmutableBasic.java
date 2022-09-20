@@ -25,7 +25,7 @@ public class ImmutableBasic {
       dark1000KbizLogic(immutable);
       // LOTS OF BUSINESS LOGIC HERE
 
-      System.out.println(immutable.getNumbers());
+      System.out.println(immutable.numbers());
       System.out.println(immutable);
    }
 
@@ -39,7 +39,7 @@ public class ImmutableBasic {
       // bug fix
 //      immutable.getOther().setX
 //      immutable.getNumbers().add(-1); // deprecated now!! + exception
-      Immutable changedCopy = immutable.withX(immutable.getX() + 1);
+      Immutable changedCopy = immutable.withX(immutable.x() + 1);
       return changedCopy;
    }
 
@@ -58,13 +58,18 @@ public class ImmutableBasic {
 //   private final Other other;
 //}
 
-@Value // ❤️
-//@Builder // failure in design. You had so large immutable objects that you lost it. the ctor is horror. so , to survive: builder
-class Immutable {
-   @With
-   int x;
-   ImmutableList<Integer> numbers;
-   Other other;
+//@Value // ❤️
+////@Builder // failure in design. You had so large immutable objects that you lost it. the ctor is horror. so , to survive: builder
+//class Immutable {
+//   @With
+//   int x;
+//   ImmutableList<Integer> numbers;
+//   Other other;
+//}
+
+record Immutable(@With int x,
+                 ImmutableList<Integer> numbers,
+                 Other other) {
 }
 
 //// java standard solution
@@ -101,15 +106,6 @@ class Immutable {
 //   }
 //}
 
-class Other {
-   private final int a;
-
-   public Other(int a) {
-      this.a = a;
-   }
-
-   public int getA() {
-      return a;
-   }
+record Other(int a) {
 
 }
