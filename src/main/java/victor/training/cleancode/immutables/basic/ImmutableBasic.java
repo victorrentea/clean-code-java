@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutables.basic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,7 +30,7 @@ public class ImmutableBasic {
 
    private static Immutable layersBelow(Immutable immutable) {
       // bug fix
-      immutable.getNumbers().add(-1); // no error, nothing. just silence. but your change is discarded.
+      immutable.getNumbers().add(-1); // runtime exception : might miss it if you don't have tests
       Immutable changedCopy = new Immutable(immutable.getX() + 1, immutable.getNumbers(), immutable.getOther());
       return changedCopy;
    }
@@ -51,7 +52,8 @@ class Immutable {
       return x;
    }
    public List<Integer> getNumbers() {
-      return new ArrayList<>(numbers); // malloc / free  inefficient + lying: the client adding to this list MIGHT HAVE the impressiion that it's changing my list. no exeption.
+//      return new ArrayList<>(numbers); // #1 malloc / free  inefficient + lying: the client adding to this list MIGHT HAVE the impressiion that it's changing my list. no exeption.
+      return Collections.unmodifiableList(numbers); // #2 you return a Decorator™️ Pattern over the original list that blocks any attempt to mutate the list. common in hibernate entities
    }
    public Other getOther() {
       return other;
