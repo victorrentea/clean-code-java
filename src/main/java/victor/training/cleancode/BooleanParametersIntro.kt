@@ -8,19 +8,23 @@ fun main() {
     bigUglyMethod(4, Task(2))
     bigUglyMethod(5, Task(1))
 
-    // TODO From my use-case #323, I call it too, to do more within:
+    // TODO From my CR #323, I call it too, to do more within:
     val task = Task(1)
-    bigUglyMethod(2, task)
+    bigUglyMethod(2, task, true)
+
 }
 
 
 
-fun bigUglyMethod(b: Int, task: Task) {
+fun bigUglyMethod(b: Int, task: Task, cr323: Boolean = false) {
     println("Complex Logic 1 $task and $b")
     println("Complex Logic 2 $task")
     println("Complex Logic 3 $task")
 
-    // System.out.println("Logic just for CR#323 : " + task);
+    if (cr323) {
+        println("Logic just for CR#323 : $task");
+    }
+
     println("More Complex Logic $b")
     println("More Complex Logic $b")
     println("More Complex Logic $b")
