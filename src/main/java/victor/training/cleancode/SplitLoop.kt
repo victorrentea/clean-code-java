@@ -29,25 +29,23 @@ class SplitLoop {
     // ======= hard core =========
     private var employeeService: EmployeeService? = null
     fun computeStatsHard(employees: List<Employee>): String {
-        var totalEmpAge: Long = 0
+        val totalEmpAge = employees.filter { !it.consultant }.sumOf { it.age.toLong() }
         var totalConsultantSalary = 0.0
         for (employee in employees) {
-            if (!employee.consultant) {
-                totalEmpAge += employee.age.toLong()
-                continue
-            }
-            if (employee.id == null) {
-                return "Employee(s) not persisted"
-            }
-            if (employee.salary == null) {
-                val salary = employeeService!!.retrieveSalary(employee.id!!)
-                if (salary == null) {
-                    throw RuntimeException("NO salary found for employee " + employee.id)
-                } else {
-                    employee.salary= salary
+            if (employee.consultant)  {
+                if (employee.id == null) {
+                    return "Employee(s) not persisted"
                 }
+                if (employee.salary == null) {
+                    val salary = employeeService!!.retrieveSalary(employee.id!!)
+                    if (salary == null) {
+                        throw RuntimeException("NO salary found for employee " + employee.id)
+                    } else {
+                        employee.salary = salary
+                    }
+                }
+                totalConsultantSalary += employee.salary!!.toDouble()
             }
-            totalConsultantSalary += employee.salary!!.toDouble()
         }
         var averageAge: Long = 0
         if (totalEmpAge != 0L) {
