@@ -17,24 +17,23 @@ public class StreamWrecks {
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		Map<Product, Integer> numberOfItemsPerProduct = getNumberOfItemsPerProduct(orders);
-
-		// avoid keeping variables of type Stream because they can be mistakenly consumed
-		List<Product> frequentProducts = numberOfItemsPerProduct.entrySet().stream()
-				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey)
-				.collect(toList());
-
-		// tomorrow...
-//		if (frequentProducts.count() > 10) {
-//			System.out.println("The client is regular");
-//		}
-
+		List<Product> frequentProducts = getFrequentProducts(numberOfItemsPerProduct);
+		if (frequentProducts.size() > 10) {
+			System.out.println("The client is regular");
+		}
 		//careful with functions in variables!
 //		Predicate<Product> done = p -> !productRepo.getHiddenProductIds().contains(p.getId());
 		List<Long> hiddenProductIds = productRepo.getHiddenProductIds(); // only 1 DB call.
 		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
 				.filter(p -> !hiddenProductIds.contains(p.getId()))
+				.collect(toList());
+	}
+
+	private static List<Product> getFrequentProducts(Map<Product, Integer> numberOfItemsPerProduct) {
+		return numberOfItemsPerProduct.entrySet().stream()
+				.filter(e -> e.getValue() >= 10)
+				.map(Entry::getKey)
 				.collect(toList());
 	}
 

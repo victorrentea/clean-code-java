@@ -44,7 +44,9 @@ class Product  {
 
    public enum Category {
       HOME,
-      ELECTRONICS
+      ELECTRONICS;
+
+//      public abstract Integer method(Integer x);
    }
 
    public Long getId() {

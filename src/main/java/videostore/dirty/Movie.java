@@ -1,25 +1,38 @@
 package videostore.dirty;
+
+import lombok.Data;
+import lombok.Getter;
+
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
+
 public class Movie {
-	public static final int CATEGORY_CHILDRENS = 2;
-	public static final int CATEGORY_REGULAR = 0;
-	public static final int CATEGORY_NEW_RELEASE = 1;
-	private String _title;
-	private int _priceCode;
+    enum Category {
+        CHILDRENS(2),
+        REGULAR(0),
+        NEW_RELEASE(1),
+        ;
+        public final int key;
+        Category(int key) {
+            this.key = key;
+        }
+    }
 
-	public Movie(String title, int priceCode) {
-		_title = title;
-		_priceCode = priceCode;
-	}
+    private final String title;
+    private final Category priceCode;
 
-	public int getPriceCode() {
-		return _priceCode;
-	}
+    public Movie(String title, Category priceCode) {
+        this.title = requireNonNull(title);
+        this.priceCode = requireNonNull(priceCode);
+    }
 
-	public void setPriceCode(int arg) {
-		_priceCode = arg;
-	}
+    public Category getPriceCode() {
+        return priceCode;
+    }
 
-	public String getTitle() {
-		return _title;
-	};
+    public String getTitle() {
+        return title;
+    }
 }
