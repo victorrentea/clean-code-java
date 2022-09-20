@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutables.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -38,39 +39,60 @@ public class ImmutableBasic {
    }
 
 }
-
+// Lombok
 // "immutable" = you can't change after you instantiated it
-final class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
+//@Getter
+//@ToString
+//@AllArgsConstructor
 
-   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
+//@Data // i normally avoid. instead, i love @Value
+//final class Immutable {
+//   @With
+//   private final int x;
+//   private final ImmutableList<Integer> numbers;
+//   private final Other other;
+//}
 
-   public Immutable withX(int newX) { // "with"er
-      return new Immutable(newX, numbers, other);
-   }
-
-   public int getX() {
-      return x;
-   }
-   public ImmutableList<Integer> getNumbers() {
-//      return new ArrayList<>(numbers); // #1 malloc / free  inefficient + lying: the client adding to this list MIGHT HAVE the impressiion that it's changing my list. no exeption.
-//      return Collections.unmodifiableList(numbers); // #2 you return a Decorator™️ Pattern over the original list that blocks any attempt to mutate the list. common in hibernate entities
-      return numbers; // #3 give up Java Collections and use Guava; - hibernate has allergy to this + works with Mongo, Cassandra, MyBatis, Jackson, JdbcTemplate + manual extract
-   }
-   public Other getOther() {
-      return other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
-   }
+@Value // ❤️
+class Immutable {
+   @With
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
 }
+//// java standard solution
+//// "immutable" = you can't change after you instantiated it
+//final class Immutable {
+//   private final int x;
+//   private final ImmutableList<Integer> numbers;
+//   private final Other other;
+//
+//   public Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//      this.x = x;
+//      this.numbers = numbers;
+//      this.other = other;
+//   }
+//
+//   public Immutable withX(int newX) { // "with"er
+//      return new Immutable(newX, numbers, other);
+//   }
+//
+//   public int getX() {
+//      return x;
+//   }
+//   public ImmutableList<Integer> getNumbers() {
+////      return new ArrayList<>(numbers); // #1 malloc / free  inefficient + lying: the client adding to this list MIGHT HAVE the impressiion that it's changing my list. no exeption.
+////      return Collections.unmodifiableList(numbers); // #2 you return a Decorator™️ Pattern over the original list that blocks any attempt to mutate the list. common in hibernate entities
+//      return numbers; // #3 give up Java Collections and use Guava; - hibernate has allergy to this + works with Mongo, Cassandra, MyBatis, Jackson, JdbcTemplate + manual extract
+//   }
+//   public Other getOther() {
+//      return other;
+//   }
+//
+//   public String toString() {
+//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
+//   }
+//}
 
 class Other {
    private final int a;
