@@ -1,67 +1,53 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-public class ParameterObjects {
-   public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
-   }
+import java.util.*
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
-
-      System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
-
-   }
+class ParameterObjects {
+    fun placeOrder(fName: String?, lName: String?, city: String, streetName: String, streetNumber: Int) {
+        require(!(fName == null || lName == null))
+        println("Some Logic")
+        println("Shipping to $city on St. $streetName $streetNumber")
+    }
 }
 
-class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-
-      System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
-   }
+fun main() {
+    ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99)
+}
+internal class AnotherClass {
+    fun otherMethod(firstName: String?, lastName: String?, x: Int) {
+        require(!(firstName == null || lastName == null))
+        println("Another distant Logic $x")
+        println("Person: $lastName")
+    }
 }
 
-class Person {
-   private Long id;
-   private String firstName;
-   private String lastName;
-   private String phone;
+internal class Person(firstName: String?, lastName: String?) {
+    private val id: Long? = null
+    val firstName: String
 
-   public Person(String firstName, String lastName) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
-      this.firstName = firstName;
-      this.lastName = lastName;
-   }
+    // TODO hard-core: implement setter
+    var lastName: String
+    private val phone: String? = null
 
-   // TODO hard-core: implement setter
-   public void setLastName(String lastName) {
-      this.lastName = lastName;
-   }
-
-   public String getFirstName() {
-      return firstName;
-   }
-
-   public String getLastName() {
-      return lastName;
-   }
+    init {
+        require(!(firstName == null || lastName == null))
+        this.firstName = firstName
+        this.lastName = lastName
+    }
 }
 
-class PersonService {
-   public void f(Person person) {
-      System.out.println("Hi there, " + person.getFirstName());
+internal class PersonService {
+    fun f(person: Person) {
+        println("Hi there, " + person.firstName)
+        val fullNameStr = person.firstName + " " + person.lastName.uppercase(Locale.getDefault())
+        println("Record for $fullNameStr")
+    }
 
-      String fullNameStr = person.getFirstName() + " " + person.getLastName().toUpperCase();
-      System.out.println("Record for " + fullNameStr);
-   }
+    fun p(streetName: String, city: String, streetNumber: Int) {
+        println("Living in $city on St. $streetName $streetNumber")
+    }
 
-   public void p(String streetName, String city, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
-   }
-
-   public void pcaller() {
-       p("Dristor", "Bucharest", 91);
-   }
+    fun pcaller() {
+        p("Dristor", "Bucharest", 91)
+    }
 }
