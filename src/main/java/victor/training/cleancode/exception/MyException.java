@@ -3,9 +3,9 @@ package victor.training.cleancode.exception;
 public class MyException extends  RuntimeException {
 
    public enum ErrorCode {
-      GENERAL,
-      BAD_CONFIG,
-      CONDITION_RED,
+      GENERAL, // instead of GeneralException
+      BAD_CONFIG, // instead of BadConfigException
+      CONDITION_RED, // instead of ConditionRedException
    }
 
    private final ErrorCode code;
