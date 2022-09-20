@@ -6,29 +6,44 @@ package victor.training.cleancode
 class BooleanParametersBoss {
     // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
     // Lord gave us tests!
-    fun bossLevel(fluff: Boolean, tasks: List<Task>, cr323: Boolean) {
-        var index = 0 // TODO move closer to usages
-        val j = tasks.size
-        println("Logic1")
-        val taskIds: MutableList<Int> = ArrayList()
-        println("Logic2")
-        if (fluff) {
-            println("Logic3")
-            for (task in tasks) {
-                println("Logic4: Validate $task")
-                task.setStarted()
-                taskIds.add(task.id)
-                if (cr323) { // TODO remove the boolean
-                    println("My Logic: $task")
-                }
-                index++
-                println("Audit task index=$index: $task")
-            }
-            println("Logic6 $j")
-            println("Task Ids: $taskIds")
-        } else {
-            println("Logic7 $tasks")
+    fun bossLevelFluff(tasks: List<Task>) {
+        f1(tasks)
+        f2(tasks)
+    }
+    fun bossLevelFluff323(tasks: List<Task>) {
+        f1(tasks)
+        for (task in tasks) {
+            println("My Logic: $task")
         }
+        f2(tasks)
+    }
+
+    private fun f2(tasks: List<Task>) {
+        var index = 0
+        for (task in tasks) {
+            index++
+            println("Audit task index=$index: $task")
+        }
+        println("Logic6 ${tasks.size}")
+        val taskIds = tasks.map { it.id }
+        println("Task Ids: $taskIds")
+        println("Logic7")
+    }
+
+    private fun f1(tasks: List<Task>) {
+        println("Logic1")
+        println("Logic2")
+        println("Logic3")
+        for (task in tasks) {
+            println("Logic4: Validate $task")
+            task.setStarted()
+        }
+    }
+
+    fun bossLevelNoFluff(tasks: List<Task>) {
+        println("Logic1")
+        println("Logic2")
+        println("Logic7 $tasks")
         println("Logic7")
     }
 
