@@ -31,6 +31,7 @@ public class ImmutableBasic {
 
    private static Immutable layersBelow(Immutable immutable) {
       // bug fix
+//      immutable.getOther().setX
 //      immutable.getNumbers().add(-1); // deprecated now!! + exception
       Immutable changedCopy = immutable.withX(immutable.getX() + 1);
       return changedCopy;
@@ -72,7 +73,7 @@ final class Immutable {
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -82,7 +83,4 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
 }
