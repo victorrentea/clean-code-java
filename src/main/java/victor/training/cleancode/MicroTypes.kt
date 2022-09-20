@@ -5,7 +5,12 @@ import org.jooq.lambda.tuple.Tuple2
 import org.junit.jupiter.api.Test
 import java.util.stream.Collectors
 
+//@JvmInline
+//value class CId(val id: Long) {}
+
 class MicroTypes {
+
+
     //<editor-fold desc="Unknown source of data">
     fun extremeFP(): Map<Long, List<Tuple2<String, Int>>> {
         val customerId = 1L
