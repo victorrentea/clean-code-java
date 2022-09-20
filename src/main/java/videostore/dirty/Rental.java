@@ -18,4 +18,9 @@ class Rental {
 	public Movie getMovie() {
 		return movie;
 	}
+
+	public boolean earnsBonus() { // "Indirection without abstraction"
+		return getMovie().getCategory() == Movie.Category.NEW_RELEASE
+			   && getDaysRented() >= 2;
+	}
 }
