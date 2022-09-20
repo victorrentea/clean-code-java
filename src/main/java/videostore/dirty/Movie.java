@@ -1,35 +1,25 @@
 package videostore.dirty;
 
-import lombok.Data;
-import lombok.Getter;
-
-import java.util.Objects;
-
 import static java.util.Objects.requireNonNull;
 
 
-public class Movie {
+final public class Movie {
     enum Category {
-        CHILDRENS(2),
-        REGULAR(0),
-        NEW_RELEASE(1),
-        ;
-        public final int key;
-        Category(int key) {
-            this.key = key;
-        }
+        CHILDREN,
+        REGULAR,
+        NEW_RELEASE,
     }
 
     private final String title;
-    private final Category priceCode;
+    private final Category category;
 
-    public Movie(String title, Category priceCode) {
+    public Movie(String title, Category category) {
         this.title = requireNonNull(title);
-        this.priceCode = requireNonNull(priceCode); // hey biz if this is always present how about ALTER TABLE MOVIE ADD CONSTRATIN PRICE_CODE NOT NULL;
+        this.category = requireNonNull(category);
     }
 
-    public Category getPriceCode() {
-        return priceCode;
+    public Category getCategory() {
+        return category;
     }
 
     public String getTitle() {
