@@ -1,10 +1,8 @@
 package victor.training.cleancode.exception;
 
-import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -13,8 +11,8 @@ import java.util.Date;
 import java.util.Properties;
 
 
-@Component
-public class Config {
+@Service
+public class SomeService {
 
     //   @SneakyThrows // tricks the javac to ignore the checked exceptions. breaks the language.
     public Date getLastPromoDate() {
@@ -26,6 +24,8 @@ public class Config {
             return format.parse(properties.getProperty("last.promo.date"));
         } catch (IOException | ParseException e) {
             throw new MyException(MyException.ErrorCode.BAD_CONFIG);
+            //instead of
+//            throw new BadConfigException();
 //            throw new RuntimeException(e); // traditional way to cover the sins of youth of java.
         }
         //      return new Date();

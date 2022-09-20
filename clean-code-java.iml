@@ -140,5 +140,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.3.10" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-test:5.3.10" level="project" />
     <orderEntry type="library" name="Maven: org.xmlunit:xmlunit-core:2.8.2" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:2.1.214" level="project" />
   </component>
 </module>
