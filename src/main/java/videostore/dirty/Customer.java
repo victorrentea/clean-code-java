@@ -18,36 +18,47 @@ class Customer {
         return name;
     }
 
-    public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        String result = "Rental Record for " + getName() + "\n";
+    public String generateStatement() {
+        double totalPrice = 0;
+        String result = generateHeader();
 
+        int frequentRenterPoints = getTotalFrequentRenterPoints();
         for (Rental rental : rentals) {
-            // add frequent renter points
-            frequentRenterPoints++;
-            if (rental.earnsBonus())
-                frequentRenterPoints++;
-
-        }
-        for (Rental rental : rentals) {
-            double thisAmount = getThisAmount(rental);
-
-            // show figures for this rental
-            result += "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
+            double price = getPrice(rental);
+            result += generateBodyRow(rental, price);
+            totalPrice += price;
         }
 
-        result += addFooterLines(totalAmount, frequentRenterPoints);
+        result += generateFooter(totalPrice, frequentRenterPoints);
         return result;
     }
 
-    private String addFooterLines(double totalAmount, int frequentRenterPoints) {
-        return "Amount owed is " + totalAmount + "\n" +
+    private String generateHeader() {
+        return "Rental Record for " + getName() + "\n";
+    }
+
+    private String generateBodyRow(Rental rental, double price) {
+        return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+    }
+
+    private int getTotalFrequentRenterPoints() {
+        return rentals.stream().mapToInt(this::getBonusPoints).sum();
+    }
+
+    private int getBonusPoints(Rental rental) {
+        int bonus = 1;
+        if (rental.earnsBonus()) {
+            bonus ++;
+        }
+        return bonus;
+    }
+
+    private String generateFooter(double totalPrice, int frequentRenterPoints) {
+        return "Amount owed is " + totalPrice + "\n" +
                "You earned " + frequentRenterPoints + " frequent renter points";
     }
 
-    private static double getThisAmount(Rental rental) {
+    private static double getPrice(Rental rental) {
         double thisAmount = 0;
         // determine amounts for each line
         switch (rental.getMovie().getCategory()) {
