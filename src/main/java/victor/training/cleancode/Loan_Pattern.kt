@@ -1,13 +1,12 @@
 package victor.training.fp
 
 import lombok.RequiredArgsConstructor
-import lombok.SneakyThrows
 import lombok.extern.slf4j.Slf4j
 import org.jooq.lambda.Unchecked
-import victor.training.fp.model.Order
+import victor.training.cleancode.OrderRepo
+import victor.training.cleancode.model.Order
 import java.io.File
 import java.io.FileWriter
-import java.io.IOException
 
 @Slf4j
 data class FileExporter(private val orderRepo: OrderRepo) {

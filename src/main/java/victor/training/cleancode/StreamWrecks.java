@@ -1,9 +1,9 @@
-package victor.training.fp;
+package victor.training.cleancode;
 
-import victor.training.fp.model.Order;
-import victor.training.fp.model.OrderLine;
-import victor.training.fp.model.Product;
-import victor.training.fp.model.ProductRepo;
+import victor.training.cleancode.model.Order;
+import victor.training.cleancode.model.OrderLine;
+import victor.training.cleancode.model.Product;
+import victor.training.cleancode.model.ProductRepo;
 
 import java.time.LocalDate;
 import java.util.List;

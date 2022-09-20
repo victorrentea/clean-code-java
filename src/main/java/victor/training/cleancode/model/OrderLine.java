@@ -1,4 +1,4 @@
-package victor.training.fp.model;
+package victor.training.cleancode.model;
 
 public class OrderLine {
     private Product product;

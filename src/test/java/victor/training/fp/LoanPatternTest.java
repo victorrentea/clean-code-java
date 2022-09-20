@@ -5,7 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import victor.training.fp.model.Order;
+import victor.training.cleancode.OrderRepo;
+import victor.training.cleancode.model.Order;
 
 import java.io.IOException;
 import java.util.stream.Stream;

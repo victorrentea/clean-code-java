@@ -1,7 +1,7 @@
-package victor.training.fp;
+package victor.training.cleancode;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import victor.training.fp.model.Order;
+import victor.training.cleancode.model.Order;
 
 import java.util.stream.Stream;
 

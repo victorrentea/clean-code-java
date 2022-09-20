@@ -1,6 +1,6 @@
 package victor.training.fp
 
-import victor.training.fp.model.Order
+import victor.training.cleancode.model.Order
 
 fun useStreams(orders: List<Order>) {
     var sum = 0

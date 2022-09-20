@@ -1,4 +1,4 @@
-package victor.training.fp.model;
+package victor.training.cleancode.model;
 
 import java.util.List;
 
