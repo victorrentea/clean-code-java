@@ -14,6 +14,11 @@ public class ImmutableBasic {
 
       Immutable immutable = new Immutable(2, ImmutableList.copyOf(numbers), new Other(13));
 
+//      new Immutable.ImmutableBuilder()
+//              .h(1)
+//              .f(345)
+//              .build();
+
       System.out.println(immutable);
 //      numbers.clear(); // bo!!
 
@@ -54,12 +59,14 @@ public class ImmutableBasic {
 //}
 
 @Value // ❤️
+//@Builder // failure in design. You had so large immutable objects that you lost it. the ctor is horror. so , to survive: builder
 class Immutable {
    @With
    int x;
    ImmutableList<Integer> numbers;
    Other other;
 }
+
 //// java standard solution
 //// "immutable" = you can't change after you instantiated it
 //final class Immutable {
