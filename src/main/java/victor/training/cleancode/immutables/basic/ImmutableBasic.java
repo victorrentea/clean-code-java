@@ -14,6 +14,7 @@ public class ImmutableBasic {
       Immutable immutable = new Immutable(2, numbers, new Other(13));
 
       System.out.println(immutable);
+//      numbers.clear(); // bo!!
 
       dark1000KbizLogic(immutable);
       // LOTS OF BUSINESS LOGIC HERE
@@ -30,21 +31,21 @@ public class ImmutableBasic {
 
    private static Immutable layersBelow(Immutable immutable) {
       // bug fix
-      immutable.getNumbers().add(-1); // runtime exception : might miss it if you don't have tests
+//      immutable.getNumbers().add(-1); // runtime exception : might miss it if you don't have tests
       Immutable changedCopy = new Immutable(immutable.getX() + 1, immutable.getNumbers(), immutable.getOther());
       return changedCopy;
    }
 }
 
 // "immutable" = you can't change after you instantiated it
-class Immutable {
+final class Immutable {
    private final int x;
    private final List<Integer> numbers;
    private final Other other;
 
    public Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = numbers;
+      this.numbers = new ArrayList<>(numbers); // defensive copy ; waste of memory, in practice, a bit paranoia
       this.other = other;
    }
 
