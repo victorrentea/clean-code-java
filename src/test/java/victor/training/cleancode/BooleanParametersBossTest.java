@@ -10,9 +10,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
-class BooleanParametersHardTest {
+class BooleanParametersBossTest {
 
-   private final BooleanParametersHard target = new BooleanParametersHard();
+   private final BooleanParametersBoss target = new BooleanParametersBoss();
 
    @Test
    @CaptureSystemOutput

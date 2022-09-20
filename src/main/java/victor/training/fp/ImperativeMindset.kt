@@ -1,16 +1,11 @@
-package victor.training.fp;
+package victor.training.fp
 
-import java.util.List;
+import victor.training.fp.model.Order
 
-public class ImperativeMindset {
-   public void useStreams(List<Order> orders) {
-      int sum = 0;
-      orders.stream()
-          .filter(order -> order.isActive())
-          .forEach(order -> {
-             // imperative mindset: let's *add* to ...
-             // sum += order.getPrice();
-          });
-      System.out.println("Total price of active orders: " + sum);
-   }
+fun useStreams(orders: List<Order>) {
+    var sum = 0
+    orders.stream()
+        .filter { order: Order -> order.isActive }
+        .forEach { order: Order -> sum += order.price }
+    println("Total price of active orders: $sum")
 }

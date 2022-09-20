@@ -3,7 +3,7 @@ package victor.training.cleancode
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
  */
-class BooleanParametersHard {
+class BooleanParametersBoss {
     // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
     // Lord gave us tests!
     fun bossLevel(fluff: Boolean, tasks: List<Task>, cr323: Boolean) {
