@@ -2,6 +2,8 @@ package videostore.dirty;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
@@ -18,27 +20,28 @@ class Customer {
         return name;
     }
 
+
+        // what can go wrong if you call getPrice(rental) TWICE?!!
+        // bug#1 the returned value might be different =NOT  Referential Transparent
+        // bug#2 it might repeat some side-effect (++, INSERT, sendKafka, 2xPOST)
+        // 😱😱😱 PERFORMANCE : SPEED?
+        // a PURE Function (extemely fast 99%) won't (1) nor (2)
     public String generateStatement() {
-        double totalPrice = 0;
-        String result = generateHeader();
+        return generateHeader()
+               + generateBody()
+               + generateFooter();
+    }
 
-        int frequentRenterPoints = getTotalFrequentRenterPoints();
-        for (Rental rental : rentals) {
-            double price = getPrice(rental);
-            result += generateBodyRow(rental, price);
-            totalPrice += price;
-        }
-
-        result += generateFooter(totalPrice, frequentRenterPoints);
-        return result;
+    private String generateBody() {
+        return rentals.stream().map(this::generateBodyRow).collect(joining());
     }
 
     private String generateHeader() {
         return "Rental Record for " + getName() + "\n";
     }
 
-    private String generateBodyRow(Rental rental, double price) {
-        return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+    private String generateBodyRow(Rental rental) {
+        return "\t" + rental.getMovie().getTitle() + "\t" + getPrice(rental) + "\n";
     }
 
     private int getTotalFrequentRenterPoints() {
@@ -53,7 +56,9 @@ class Customer {
         return bonus;
     }
 
-    private String generateFooter(double totalPrice, int frequentRenterPoints) {
+    private String generateFooter() {
+        int frequentRenterPoints = getTotalFrequentRenterPoints();
+        double totalPrice = rentals.stream().mapToDouble(Customer::getPrice).sum();
         return "Amount owed is " + totalPrice + "\n" +
                "You earned " + frequentRenterPoints + " frequent renter points";
     }
