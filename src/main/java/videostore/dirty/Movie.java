@@ -25,7 +25,7 @@ public class Movie {
 
     public Movie(String title, Category priceCode) {
         this.title = requireNonNull(title);
-        this.priceCode = requireNonNull(priceCode);
+        this.priceCode = requireNonNull(priceCode); // hey biz if this is always present how about ALTER TABLE MOVIE ADD CONSTRATIN PRICE_CODE NOT NULL;
     }
 
     public Category getPriceCode() {
