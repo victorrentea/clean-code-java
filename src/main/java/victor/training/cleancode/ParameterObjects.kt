@@ -9,6 +9,9 @@ class ParameterObjects {
         println("Shipping to $city on St. $streetName $streetNumber")
     }
 }
+//data class PlaceOrderRequest()
+//data class CustomerData()
+//data class Address()
 
 fun main() {
     ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99)
