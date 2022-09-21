@@ -10,17 +10,15 @@ import java.util.stream.Collectors
 
 class MicroTypes {
 
-
     //<editor-fold desc="Unknown source of data">
-    fun extremeFP(): Map<Long, List<Tuple2<String, Int>>> {
+    fun extremeFP(): Map<Long, List<Pair<String, Int>>> {
         val customerId = 1L
         val product1Count = 2
         val product2Count = 4
-        return java.util.Map.of(
-            customerId, java.util.List.of(
-                Tuple.tuple("Table", product1Count),
-                Tuple.tuple("Chair", product2Count)
-            )
+        return mapOf(
+            customerId to listOf(
+                "Table" to product1Count,
+                "Chair" to product2Count)
         )
     }
 
@@ -32,7 +30,7 @@ class MicroTypes {
         // Joke: try "var" above :)
         for (cid in map.keys) {
             val pl = map[cid]!!
-                .map { t: Tuple2<String, Int> -> t.v2.toString() + " of " + t.v1 }
+                .map { (p,i) -> "$i of $p"}
                 .joinToString(", ")
             println("cid=$cid got $pl")
         }

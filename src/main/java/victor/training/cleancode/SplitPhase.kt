@@ -10,10 +10,8 @@ class SplitPhase {
         return (orderData[1].toInt() * productPrice!!).toFloat()
     }
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            println(SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)))
-        }
-    }
+}
+
+fun main(args: Array<String>) {
+    println(SplitPhase().calculateOrderPrice("Chair-CHR 4", Collections.singletonMap("CHR", 5)))
 }
