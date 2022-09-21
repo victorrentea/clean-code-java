@@ -7,8 +7,13 @@ class ParameterObjects {
         require(!(fName == null || lName == null))
         println("Some Logic")
         println("Shipping to $city on St. $streetName $streetNumber")
+        X(1)
     }
 }
+
+data class X(val x:Int = 0)
+
+
 //data class PlaceOrderRequest()
 //data class CustomerData()
 //data class Address()
