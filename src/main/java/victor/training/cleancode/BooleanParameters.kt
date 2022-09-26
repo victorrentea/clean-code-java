@@ -6,29 +6,40 @@ package victor.training.cleancode
 class BooleanParameters {
     // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
     // Lord gave us tests!
-    fun bossLevel(fluff: Boolean, tasks: List<Task>, cr323: Boolean) {
-        var index = 0 // TODO move closer to usages
-        val j = tasks.size
-        println("Logic1")
-        val taskIds: MutableList<Int> = ArrayList()
-        println("Logic2")
-        if (fluff) {
-            println("Logic3")
+    fun bossLevelFluff(tasks: List<Task>, cr323: Boolean) {
+        bossStart(tasks)
+
+        if (cr323) { // TODO remove the boolean
             for (task in tasks) {
-                println("Logic4: Validate $task")
-                task.started=true
-                taskIds.add(task.id)
-                if (cr323) { // TODO remove the boolean
-                    println("My Logic: $task")
-                }
-                index++
-                println("Audit task index=$index: $task")
+                println("My Logic: $task")
             }
-            println("Logic6 $j")
-            println("Task Ids: $taskIds")
-        } else {
-            println("Logic7 $tasks")
         }
+
+        bossEnd(tasks)
+    }
+
+    private fun bossEnd(tasks: List<Task>) {
+        tasks.forEachIndexed {index,task->println("Audit task index=$index: $task") }
+        println("Logic6 ${tasks.size}")
+        val taskIds = tasks.map { it.id }
+        println("Task Ids: $taskIds")
+        println("Logic7")
+    }
+
+    private fun bossStart(tasks: List<Task>) {
+        println("Logic1")
+        println("Logic2")
+        println("Logic3")
+        for (task in tasks) {
+            println("Logic4: Validate $task")
+            task.started = true
+        }
+    }
+
+    fun bossLevelNoFluff(tasks: List<Task>) {
+        println("Logic1")
+        println("Logic2")
+        println("Logic7 $tasks")
         println("Logic7")
     }
 
