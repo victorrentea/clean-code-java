@@ -29,33 +29,11 @@ internal class AnotherClass {
     }
 }
 
-internal class Person(firstName: String?, lastName: String?) {
-    private val id: Long? = null
-    val firstName: String
-
-    // TODO hard-core: implement setter
-    var lastName: String
-    private val phone: String? = null
-
+data class FullName(val firstName: String?, val lastName: String?) {
     init {
         require(!(firstName == null || lastName == null))
-        this.firstName = firstName
-        this.lastName = lastName
     }
 }
 
-internal class PersonService {
-    fun f(person: Person) {
-        println("Hi there, " + person.firstName)
-        val fullNameStr = person.firstName + " " + person.lastName.uppercase(Locale.getDefault())
-        println("Record for $fullNameStr")
-    }
-
-    fun p(streetName: String, city: String, streetNumber: Int) {
-        println("Living in $city on St. $streetName $streetNumber")
-    }
-
-    fun pcaller() {
-        p("Dristor", "Bucharest", 91)
-    }
+internal class Person(val fullName: FullName, val phoneNum:String?) {
 }
