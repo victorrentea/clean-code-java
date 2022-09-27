@@ -1,12 +1,14 @@
 package victor.training.cleancode
 
+import victor.training.prod.calkt.sample1.Appointment
 import javax.persistence.Embedded
+import javax.persistence.OneToMany
 
 class ExtractValueObjects {
     // see tests
     fun filterCarModels(criteria: CarSearchCriteria, models: List<CarModel>): List<CarModel> {
         val criteriaInterval = criteria.yearInterval
-        val results = models.filter { criteriaInterval.intersects(Interval(it.startYear, it.endYear)) }
+        val results = models.filter { criteriaInterval.intersects(Interval(it.yearInterval.start, it.yearInterval.end)) }
         println("More filtering logic")
         return results
     }
@@ -42,18 +44,20 @@ data class CarSearchCriteria(
         get() = Interval(startYear, endYear)
 }
 
+//when(patient.getInsurance()).thenReturn(OMG) // anti-patterbn
+//Patient(Insurance(30 attr)) // disgusting iff immutable entities
+//Patient(TestData.fullInsurance()) // too much coupling to TestData class
+// HORROR QUESTION: isn't the Patient/Insurance class too big?
+
 
 
 class CarModel(    val id: Long? = null,
                    val make: String? = null,
                    val model: String? = null,
+//                   @OneToMany
+//                   val children: List<Appointment>,
                    @Embedded
                    val yearInterval: Interval) {
-
-    val startYear: Int
-        get() = yearInterval.start
-    val endYear: Int
-        get() = yearInterval.end
 
 }
 
@@ -62,8 +66,8 @@ class CarModelMapper {
         val dto = CarModelDto()
         dto.make = carModel.make
         dto.model = carModel.model
-        dto.startYear = carModel.startYear
-        dto.endYear = carModel.endYear
+        dto.startYear = carModel.yearInterval.start
+        dto.endYear = carModel.yearInterval.end
         return dto
     }
 
