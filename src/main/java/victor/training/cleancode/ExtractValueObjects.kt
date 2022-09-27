@@ -1,140 +1,80 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.Embedded
 
 class ExtractValueObjects {
-
     // see tests
-    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
-                .collect(Collectors.toList());
-        System.out.println("More filtering logic");
-        return results;
+    fun filterCarModels(criteria: CarSearchCriteria, models: List<CarModel>): List<CarModel> {
+        val criteriaInterval = criteria.yearInterval
+        val results = models.filter { criteriaInterval.intersects(Interval(it.startYear, it.endYear)) }
+        println("More filtering logic")
+        return results
     }
 
-    private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    private fun applyCapacityFilter() {
+        println(Interval(1000, 1600).intersects(Interval(1250, 2000)))
     }
-
 }
 
 class Alta {
-    private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-    }
-
-}
-
-class MathUtil {
-
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+    private fun applyCapacityFilter() {
+        println(Interval(1000, 1600).intersects(Interval(1250, 2000)))
     }
 }
 
-
-class CarSearchCriteria { // smells like JSON ...
-    private final int startYear;
-    private final int endYear;
-    private final String make;
-
-    public CarSearchCriteria(int startYear, int endYear, String make) {
-        this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+data class Interval(val start:Int, val end:Int) {
+    init {
+        require(start <= end) { "start larger than end" }
     }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public String getMake() {
-        return make;
+    fun intersects(other: Interval): Boolean {
+        return start <= other.end && other.start <= end
     }
 }
 
-//@Entity
-class CarModel { // the wholy Entity Model
-    //   @Id
-    private Long id;
-    private String make;
-    private String model;
-    private int startYear;
-    private int endYear;
 
-    protected CarModel() {
-    } // for Hibernate
+// smells like JSON ... FROZEN. I can't/ too expensive to change
+data class CarSearchCriteria(
+    private val startYear: Int,
+    private val endYear: Int,
+    val make: String) {
 
-    public CarModel(String make, String model, int startYear, int endYear) {
-        this.make = make;
-        this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public String getMake() {
-        return make;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-
-    @Override
-    public String toString() {
-        return "CarModel{" +
-               "make='" + make + '\'' +
-               ", model='" + model + '\'' +
-               '}';
-    }
+    val yearInterval: Interval
+        get() = Interval(startYear, endYear)
 }
 
+
+
+class CarModel(    val id: Long? = null,
+                   val make: String? = null,
+                   val model: String? = null,
+                   @Embedded
+                   val yearInterval: Interval) {
+
+    val startYear: Int
+        get() = yearInterval.start
+    val endYear: Int
+        get() = yearInterval.end
+
+}
 
 class CarModelMapper {
-    public CarModelDto toDto(CarModel carModel) {
-        CarModelDto dto = new CarModelDto();
-        dto.make = carModel.getMake();
-        dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
-        return dto;
+    fun toDto(carModel: CarModel): CarModelDto {
+        val dto = CarModelDto()
+        dto.make = carModel.make
+        dto.model = carModel.model
+        dto.startYear = carModel.startYear
+        dto.endYear = carModel.endYear
+        return dto
     }
 
-    public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+    fun fromDto(dto: CarModelDto): CarModel {
+        return CarModel(null, dto.make, dto.model, Interval(dto.startYear, dto.endYear))
     }
 }
 
 class CarModelDto {
-    public String make;
-    public String model;
-    public int startYear;
-    public int endYear;
+    var make: String? = null
+    var model: String? = null
+    var startYear = 0
+    var endYear = 0
 }

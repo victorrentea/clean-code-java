@@ -1,38 +1,45 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import org.jooq.lambda.tuple.Tuple;
-import org.jooq.lambda.tuple.Tuple2;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test
 
-import java.util.List;
-import java.util.Map;
-
-import static java.util.stream.Collectors.joining;
-
-public class MicroTypes {
-
+class MicroTypes {
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
-        Long customerId = 1L;
-        Integer product1Count = 2;
-        Integer product2Count = 4;
-        return Map.of(customerId, List.of(
-                Tuple.tuple("Table", product1Count),
-                Tuple.tuple("Chair", product2Count)
-        ));
+    fun extremeFP(): Map<CustomerId, List<ProductCounts>> {
+        val customerId = CustomerId(1)
+        val product1Count = 2
+        val product2Count = 4
+        return mapOf(
+            customerId to listOf(
+               ProductCounts("Table",  product1Count),
+               ProductCounts("Chair",  product2Count)
+            )
+        )
     }
     //</editor-fold>
 
-    @Test
-    void lackOfAbstractions() {
-        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
-        // Joke: try "var" above :)
+    data class ProductCounts(val productName:String, val count: Int)
 
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).stream()
-                    .map(t -> t.v2 + " of " + t.v1)
-                    .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
+
+    @JvmInline
+    value class CustomerId(val id:Int)
+
+    // + more memory
+//    typealias CustomerId = Int
+
+    @Test
+    fun lackOfAbstractions() {
+        val map= extremeFP()
+        for (cid in map.keys) {
+            val pl = formatCustomer(map, cid)
+            println("cid=${cid} got $pl")
         }
     }
+
+    private fun formatCustomer(
+        map: Map<CustomerId, List<ProductCounts>>,
+        cid: CustomerId
+    ) = map[cid]!!
+        .joinToString(", ")
+        { "${it.count} of ${it.productName}" }
 }
+//typealias CustomerId = Int
