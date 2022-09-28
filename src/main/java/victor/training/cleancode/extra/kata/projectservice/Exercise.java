@@ -16,16 +16,16 @@ public class Exercise {
     private final UserServiceHelper userServiceHelper;
     private final ServiceService serviceService;
 
-    public void sendUserMessageOnCreate(UserInAProject userInAProject, MessageAction messageAction) {
-        List<Service> servicesToSend = determineServicesToSend(userInAProject.getProjectUser(), userInAProject.getProject());
-        User user = userService.findByUuid(userInAProject.getProjectUser().getUuid()).orElseThrow();
-        sendServices(userInAProject.getProjectUser(), userInAProject.getProject(), messageAction, servicesToSend, user);
+    public void sendUserMessageOnCreate(ProjectUserDto projectUser, Project project, MessageAction messageAction) {
+        List<Service> servicesToSend = determineServicesToSend(projectUser, project);
+        User user = userService.findByUuid(projectUser.getUuid()).orElseThrow();
+        sendServices(projectUser, project, messageAction, servicesToSend, user);
     }
 
     private void sendServices(ProjectUserDto projectUser, Project project, MessageAction messageAction, List<Service> servicesToSend, User user) {
         List<ProjectServiceDto> dtos = servicesToSend.stream().map(ProjectServiceDto::new).collect(toList());
         for (ProjectServiceDto dto : dtos) {
-            userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, projectUser.getRole().name());
+            userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser);
         }
     }
 
@@ -36,7 +36,6 @@ public class Exercise {
                     .filter(ProjectServices::isSubscribed)
                     .map(ProjectServices::getService)
                     .collect(toList());
-
         } else {
             return serviceService.findAll().stream()
                     .filter(projectUser::hasService)
