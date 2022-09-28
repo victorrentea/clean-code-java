@@ -1,51 +1,55 @@
 package victor.training.cleancode.extra.kata.projectservice;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
-@Service
+import static java.util.stream.Collectors.toList;
+import static victor.training.cleancode.extra.kata.projectservice.ProjectUserRoleType.*;
+
+@org.springframework.stereotype.Service
 @RequiredArgsConstructor
 public class Exercise {
-   private final ProjectServicesService projectServicesService;
-   private final UserService userService;
-   private final UserServiceHelper userServiceHelper;
-   private final ServiceService serviceService;
+    private final ProjectServicesService projectServicesService;
+    private final UserService userService;
+    private final UserServiceHelper userServiceHelper;
+    private final ServiceService serviceService;
 
-   public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
-      if (projectUser.getRole().equals(ProjectUserRoleType.ADMIN)) {
-         List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
-         List<ProjectServices> subscribedProjectServices = projectServices.stream()
-             .filter(projectService -> projectService.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED))
-             .collect(Collectors.toList());
+    public void sendUserMessageOnCreate(UserInAProject userInAProject, MessageAction messageAction) {
+        List<Service> servicesToSend = determineServicesToSend(userInAProject.getProjectUser(), userInAProject.getProject());
+        User user = userService.findByUuid(userInAProject.getProjectUser().getUuid()).orElseThrow();
+        sendServices(userInAProject.getProjectUser(), userInAProject.getProject(), messageAction, servicesToSend, user);
+    }
 
-         subscribedProjectServices.forEach(subscribedProjectService -> {
-            ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-            projectServicesDTO.setService(subscribedProjectService.getService());
-            User user = userService.findByUuid(projectUser.getUuid()).get();
-            userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.ADMIN.name());
-         });
-      } else {
-         List<String> projectServices = projectUser.getServices();
-         List<victor.training.cleancode.extra.kata.projectservice.Service> services = serviceService.findAll();
+    private void sendServices(ProjectUserDto projectUser, Project project, MessageAction messageAction, List<Service> servicesToSend, User user) {
+        List<ProjectServiceDto> dtos = servicesToSend.stream().map(ProjectServiceDto::new).collect(toList());
+        for (ProjectServiceDto dto : dtos) {
+            userServiceHelper.sendUserToServicesOnCreate(dto, project, messageAction, user, projectUser, projectUser.getRole().name());
+        }
+    }
 
-         projectServices.forEach(pS -> services.forEach(service -> {
-            if (service.getName().equals(pS)) {
-               ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-               if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
-                  ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-                  projectServicesDTO.setService(service);
-                  User user = userService.findByUuid(projectUser.getUuid()).get();
-                  if (projectUser.getRole().equals(ProjectUserRoleType.VIEW)) {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.VIEW.name());
-                  } else {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
-                  }
-               }
-            }
-         }));
-      }
-   }
+    @NotNull
+    private List<Service> determineServicesToSend(ProjectUserDto projectUser, Project project) {
+        if (projectUser.getRole() == ADMIN) {
+            return projectServicesService.getProjectServicesByProjectId(project.getId()).stream()
+                    .filter(ProjectServices::isSubscribed)
+                    .map(ProjectServices::getService)
+                    .collect(toList());
+
+        } else {
+            return serviceService.findAll().stream()
+                    .filter(projectUser::hasService)
+                    .filter(service -> hasSubscribedServices(project, service))
+                    .collect(toList());
+
+        }
+    }
+
+    private boolean hasSubscribedServices(Project project, Service service) {
+        return projectServicesService.findByServiceAndProject(service, project)
+                .filter(ProjectServices::isSubscribed)
+                .isPresent();
+    }
+
 }
