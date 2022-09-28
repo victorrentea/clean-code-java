@@ -1,42 +1,34 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.RequiredArgsConstructor
+import org.apache.commons.lang.StringUtils
+import javax.persistence.EntityManager
 
 @RequiredArgsConstructor
-public class ExtractMethodObject {
-    private final EntityManager em;
-
-    public List<Long> search(CustomerSearchCriteria criteria) {
-        String jpql = "SELECT c.id FROM Customer c WHERE 1=1 ";
-        Map<String, Object> params = new HashMap<>();
+class ExtractMethodObject {
+    private val em: EntityManager? = null
+    fun search(criteria: CustomerSearchCriteria): List<Long> {
+        var jpql = "SELECT c.id FROM Customer c WHERE 1=1 "
+        val params: MutableMap<String, Any?> = HashMap()
 
         if (StringUtils.isNotBlank(criteria.name)) {
-            jpql += " AND UPPER(c.name) LIKE '%' || UPPER(:name) || '%' ";
-            params.put("name", criteria.name);
+            jpql += " AND UPPER(c.name) LIKE '%' || UPPER(:name) || '%' "
+            params["name"] = criteria.name
         }
-
         if (criteria.countryId != null) {
-            jpql += " AND (c.residenceCountry.id = :countryId OR ..<5 lines of JPQL>..)";
-            params.put("countryId", criteria.countryId);
+            jpql += " AND (c.residenceCountry.id = :countryId OR ..<5 lines of JPQL>..)"
+            params["countryId"] = criteria.countryId
         }
 
-        TypedQuery<Long> query = em.createQuery(jpql + " ", Long.class);
-        for (String param : params.keySet()) {
-            query.setParameter(param, params.get(param));
+        val query = em!!.createQuery("$jpql ", Long::class.java)
+        for (param in params.keys) {
+            query.setParameter(param, params[param])
         }
-        return query.getResultList();
+        return query.resultList
     }
 }
 
 class CustomerSearchCriteria {
-
-    public String name;
-    public Long countryId;
+    var name: String? = null
+    var countryId: Long? = null
 }
