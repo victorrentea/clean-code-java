@@ -1,78 +1,51 @@
-package victor.training.cleancode;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class GuardClauses {
-
-   public static final int DEAD_PAY_AMOUNT = 1;
-
-   public int getPayAmount(Marine marine) {
-      int result;
-      if (marine != null) {
-         if (!isDead(marine)) {
-            if (!marine.isRetired()) {
-               if (marine.getYearsService() != null) {
-                  result = marine.getYearsService() * 100;
-                  if (!marine.getAwards().isEmpty()) {
-                     result += 1000;
-                  }
-                  if (marine.getAwards().size() >= 3) {
-                     result += 2000;
-                  }
-                  // HEAVY logic here...
-               } else {
-                  throw new IllegalArgumentException("Any marine should have the years of service set");
-               }
-            } else result = retiredAmount();
-         } else {
-            result = DEAD_PAY_AMOUNT;
-         }
-      } else {
-         throw new RuntimeException("Marine is null");
-      }
-      return result; // TODO ALT-ENTER move return closer
-   }
-
-   private boolean isDead(Marine marine) {
-      return false;
-   }
-
-   private int retiredAmount() {
-      return 2;
-   }
-
-}
-
-class Marine {
-   private final boolean dead;
-   private final boolean retired;
-   private final Integer yearsService;
-   private final List<Award> awards = new ArrayList<>();
-
-   Marine(boolean dead, boolean retired, Integer yearsService) {
-      this.dead = dead;
-      this.retired = retired;
-      this.yearsService = yearsService;
-   }
-
-   public List<Award> getAwards() {
-      return awards;
-   }
-
-   public Integer getYearsService() {
-      return yearsService;
-   }
-
-   public boolean isRetired() {
-      return retired;
-   }
-
-   public boolean isDead() {
-      return dead;
-   }
-}
-
-class Award {
-
-}
+//package victor.training.cleancode
+//
+//class GuardClauses {
+//    fun getPayAmount(marine: Marine?): Int {
+//        var result: Int
+//        if (marine == null) {
+//            throw RuntimeException("Marine is null")
+//        }
+//        if (!isDead(marine)) {
+//            if (!marine.isRetired) {
+//                if (marine.getYearsService() != null) {
+//                    result = marine.getYearsService()!! * 100
+//                    if (!marine.awards.isEmpty()) {
+//                        result += 1000
+//                    }
+//                    if (marine.awards.size >= 3) {
+//                        result += 2000
+//                    }
+//                    // HEAVY logic here...
+//                } else {
+//                    throw IllegalArgumentException("Any marine should have the years of service set")
+//                }
+//            } else result = retiredAmount()
+//        } else {
+//            result = DEAD_PAY_AMOUNT
+//        }
+//        return result // TODO ALT-ENTER move return closer
+//    }
+//
+//    private fun isDead(marine: Marine): Boolean {
+//        return false
+//    }
+//
+//    private fun retiredAmount(): Int {
+//        return 2
+//    }
+//
+//    companion object {
+//        const val DEAD_PAY_AMOUNT = 1
+//    }
+//}
+//
+//class Marine(val isDead: Boolean, val isRetired: Boolean, private val yearsService: Int) {
+//    val awards: List<Award> = ArrayList()
+//
+//    fun getYearsService(): Int? {
+//        return yearsService
+//    }
+//}
+//
+//internal class Award

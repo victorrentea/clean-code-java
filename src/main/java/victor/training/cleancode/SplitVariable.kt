@@ -1,11 +1,29 @@
-package victor.training.cleancode;
+package victor.training.cleancode
 
-public class SplitVariable {
+import java.lang.IllegalArgumentException
 
+object SplitVariable {
     // @see test
-    public static int discount(int price, int quantity) {
-        if (price > 50) price = price - 2;
-        if (quantity > 100) price = price - 1;
-        return price;
+    @JvmStatic
+    fun discount(price: Int, quantity: Int): Int {
+        var price = price
+        if (price > 50) price = price - 2
+        if (quantity > 100) price = price - 1
+        return price
     }
 }
+
+
+fun A(): Int {
+    throw IllegalArgumentException()
+    return 1
+}
+fun B(): Result<Int> {
+    return Result.failure(IllegalArgumentException())
+    return Result.success(1)
+}
+//
+//    return CamResult.failure(IllegalArgumentException())
+//    return CamResult.failure(errorCode)
+//    return CamResult.failure("message")
+

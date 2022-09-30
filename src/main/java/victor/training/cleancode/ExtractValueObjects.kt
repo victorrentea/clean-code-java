@@ -1,6 +1,5 @@
 package victor.training.cleancode
 
-import victor.training.prod.calkt.sample1.Appointment
 import javax.persistence.Embedded
 import javax.persistence.OneToMany
 
