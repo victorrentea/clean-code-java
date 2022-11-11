@@ -3,12 +3,7 @@ package victor.training.cleancode.immutables.advanced;
 import com.google.common.collect.ImmutableList;
 import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
@@ -24,14 +19,13 @@ public class ImmutableAdvanced {
    }
 
    private static void wildCode(Immutable immutable) {
-      immutable.getNumbers().clear(); // exception is better than silently ignoring the update.
+      immutable.numbers().clear(); // exception is better than silently ignoring the update.
    }
 }
-@Value
-class Immutable {
-   int x;
-    ImmutableList<Integer> numbers;
-    Other other;
+
+record Immutable(int x,
+                 ImmutableList<Integer> numbers,
+                 Other other) {
 }
 
 class Other {
