@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutables.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,40 +27,11 @@ public class ImmutableAdvanced {
       immutable.getNumbers().clear(); // exception is better than silently ignoring the update.
    }
 }
-
+@Value
 class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other; //shallow vs deep immutabiliy
-
-   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers =numbers;
-      this.other = other;
-   }
-//   public List<Integer> getNumbers() {
-//      return new ArrayList<>(numbers); // +1 malloc for the entire array KB/MB
-//   }
-
-//   public List<Integer> getNumbers() {
-//      return Collections.unmodifiableList(numbers); //20 bytes the most efficient
-//   }
-
-   public ImmutableList<Integer> getNumbers() {
-      return numbers;
-   }
-
-   public int getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
-   }
-
-   @Override
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+   int x;
+    ImmutableList<Integer> numbers;
+    Other other;
 }
 
 class Other {
