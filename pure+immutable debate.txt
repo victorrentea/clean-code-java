@@ -1,0 +1,29 @@
+*** pure+immutable debate ***
+
+Functional Programming - naive f(g); phyil = Immutability + Pure Functions
+
+Immutability
+    - why?
+        to ensure they don't change by accident in hidden dark places
+        avoid temporal coupling
+        do not pass mutable structures in deep complexity
+    = an obj whose state cannot chage after its creted 
+    - classes: plain java, Lombok, records, Immutables
+    - "wither" vs best practices
+    - collections: plain java, guava
+    - local variables + parameters
+
+Pure Functions
+    - problems
+    - definition
+    - pure functions are NOT allowed to:
+        -
+    - why?
+        - bugs
+        - readability
+        - tests
+        - refactoring
+    - debate: exceptions
+    - debate: static
+
+Functional Core / Imperative Shell 
