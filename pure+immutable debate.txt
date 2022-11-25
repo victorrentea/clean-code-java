@@ -8,22 +8,45 @@ Immutability
         avoid temporal coupling
         do not pass mutable structures in deep complexity
     = an obj whose state cannot chage after its creted 
-    - classes: plain java, Lombok, records, Immutables
+    - classes: plain java, Lombok, records, Immutables framework
     - "wither" vs best practices
-    - collections: plain java, guava
+    - collections: plain java unmodifiableList, guava ImmutableList
     - local variables + parameters
 
 Pure Functions
     - problems
-    - definition
+    - definition = no side effects + referential transparent
+    - definition = no changes do data + no networking
     - pure functions are NOT allowed to:
-        -
+        - change fields, data..., 
+        - INSERT
+        - kafka.send 
+        - rely on time: randomUUID(), LocalDateTime.now()
+        - GET
+        - SELECT
     - why?
-        - bugs
-        - readability
-        - tests
-        - refactoring
+        - bugs - a pure function should not cause temporal coupling
+        - readability - data flow is made explicit
+            - PURE cannot read from other datasources than parameter
+        - tests without @Mock for the most complex part of your logic
+                 <- can you imagine
+        - refactoring: repeat a method call (pure+fast)
     - debate: exceptions
+        - are pure functions allowed to throw? YES, but you could run now into temporal couplig issues (see below)
+        - are pure functions allowed to catch exceptions? YES <=> the ex you catch is thrown deterministically from inside the try {}
+        
     - debate: static
 
-Functional Core / Imperative Shell 
+Functional Core / Imperative Shell  ARchitecture
+
+Q? -> victorrentea@gmail.com
+
+imagine a customer with an INVALID addess and INVALID nationality
+m(customerImm) {
+    
+    checkAddress(customerImm); // throw if address is wrong
+    checkNationality(customerImm); // throw if nationality is wrong
+
+    // more calculation for stuff
+    return stuff;
+}
