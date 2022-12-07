@@ -2,7 +2,6 @@ package victor.training.cleancode;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,27 +60,20 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests!
-  public void bossLevelFluff(ImmutableList<Task> tasks, boolean cr323) {
-    System.out.println(SPACE);
-    System.out.println("Logic2");
-    System.out.println("Logic3");
+  public void bossLevelFluff(ImmutableList<Task> tasks) {
+    bossStart(tasks);
+    bossEnd(tasks);
+  }
+  public void bossLevelFluff323(ImmutableList<Task> tasks) {
+    bossStart(tasks);
+    for (Task task : tasks) {
+      System.out.println(SPACE + task);
+    }
+    bossEnd(tasks);
+  }
+
+  private static void bossEnd(ImmutableList<Task> tasks) {
     int index = 0;
-
-    int x = getClientActivesAndClearTasks(tasks);
-
-    List<Integer> taskIds = new ArrayList<>();
-    for (Task task : tasks) {
-      System.out.println("Logic4: Validate " + task);
-      task.setStarted();
-    }
-    for (Task task : tasks) {
-      taskIds.add(task.getId());
-    }
-    for (Task task : tasks) {
-      if (cr323) { // TODO remove the boolean
-        System.out.println(SPACE + task);
-      }
-    }
     for (Task task : tasks) {
       index++;
       System.out.println("Audit task index=" + index + ": " + task);
@@ -93,15 +85,23 @@ public class BooleanParameters {
 
     int j = tasks.size();
     System.out.println("Logic6 " + j);
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic7");
   }
 
+  private static void bossStart(ImmutableList<Task> tasks) {
+    System.out.println("Logic2");
+    System.out.println("Logic3");
 
+    for (Task task : tasks) {
+      System.out.println("Logic4: Validate " + task);
+      task.setStarted();
+    }
+  }
 
 
   public void bossLevelNoFluff(ImmutableList<Task> tasks) {
-    System.out.println(SPACE);
     System.out.println("Logic2");
     System.out.println("Logic7 " + tasks);
     System.out.println("Logic7");
