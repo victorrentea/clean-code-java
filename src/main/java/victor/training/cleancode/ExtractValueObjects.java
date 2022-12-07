@@ -1,8 +1,8 @@
 package victor.training.cleancode;
 
 
+import javax.persistence.Embeddable;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 class ExtractValueObjects {
@@ -10,7 +10,10 @@ class ExtractValueObjects {
   // see tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
     List<CarModel> results = models.stream()
-            .filter(model -> new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(new Interval(model.getStartYear(), model.getEndYear())))
+            .filter(model ->
+                    new Interval(criteria.getStartYear(), criteria.getEndYear())
+                            .intersects(
+                                    model.getInterval()))
             .collect(Collectors.toList());
     System.out.println("More filtering logic");
     return results;
@@ -48,11 +51,16 @@ class MathUtil {
 //     int start;
 //     int end;
 //}
+//@Embeddable
 class Interval {
   private final int start;
   private final int end;
 
   public Interval(int start, int end) {
+    if (start >= end) { // constrangeri de domeniu in modelu tau! PANICA!!
+      // da si poate si pe @Entity,
+      throw new IllegalArgumentException();
+    }
     this.start = start;
     this.end = end;
   }
@@ -68,19 +76,6 @@ class Interval {
 
   public int getEnd() {
     return end;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Interval interval = (Interval) o;
-    return start == interval.start && end == interval.end;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(start, end);
   }
 }
 
@@ -118,6 +113,7 @@ class CarModel { // the wholy Entity Model
   private String model;
   private int startYear;
   private int endYear;
+  private Interval interval;
 
   protected CarModel() {
   } // for Hibernate
@@ -128,6 +124,10 @@ class CarModel { // the wholy Entity Model
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  public Interval getInterval() {
+    return new Interval(getStartYear(), getEndYear());
   }
 
   public Long getId() {
