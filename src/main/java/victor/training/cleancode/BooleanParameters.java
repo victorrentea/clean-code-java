@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class BooleanParameters {
 
+  public static final String SPACE = " ";
+
   public static void main(String[] args) {
     // The big method is called from various foreign places in the codebase
     bigUglyMethod(1, new Task(5));
@@ -37,20 +39,21 @@ public class BooleanParameters {
   static void bigUglyMethod323(int b, Task task) {
     bigStart(b, task);
 
-    System.out.println("Logic just for CR#323 : " + task);
+    System.out.println(SPACE + task);
 
     sendNotificationTo3rdParties(b);
   }
 
   private static void sendNotificationTo3rdParties(int b) {
     System.out.println("More Complex Logic " + b);
-    System.out.println("More Complex Logic " + b);
+    System.out.println(SPACE + b);
+
     System.out.println("More Complex Logic " + b);
   }
 
   private static void bigStart(int b, Task task) {
     System.out.println("Complex Logic 1 " + task + " and " + b);
-    System.out.println("Complex Logic 2 " + task);
+    System.out.println(SPACE + task);
     System.out.println("Complex Logic 3 " + task);
   }
 
@@ -59,7 +62,7 @@ public class BooleanParameters {
 
   // Lord gave us tests!
   public void bossLevelFluff(ImmutableList<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
+    System.out.println(SPACE);
     System.out.println("Logic2");
     System.out.println("Logic3");
     int index = 0;
@@ -70,23 +73,35 @@ public class BooleanParameters {
     for (Task task : tasks) {
       System.out.println("Logic4: Validate " + task);
       task.setStarted();
-
+    }
+    for (Task task : tasks) {
       taskIds.add(task.getId());
-
+    }
+    for (Task task : tasks) {
       if (cr323) { // TODO remove the boolean
-        System.out.println("My Logic: " + task);
+        System.out.println(SPACE + task);
       }
-
+    }
+    for (Task task : tasks) {
       index++;
       System.out.println("Audit task index=" + index + ": " + task);
     }
+    // de ce ne sperie cand in loc de 1 for fac 4 ?
+    // - (fals) eficienta ?? => 4x O(N) = O(N)
+    // - (bug) ce face un for in AFARA influenteaza ce faci in urmatorul for.
+    //   <== bad practice, asta merge impotriva princ de Func Program
+
     int j = tasks.size();
     System.out.println("Logic6 " + j);
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic7");
   }
-  public void bossLevelNoFluff(ImmutableList<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
+
+
+
+
+  public void bossLevelNoFluff(ImmutableList<Task> tasks) {
+    System.out.println(SPACE);
     System.out.println("Logic2");
     System.out.println("Logic7 " + tasks);
     System.out.println("Logic7");

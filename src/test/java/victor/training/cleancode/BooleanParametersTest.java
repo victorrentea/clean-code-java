@@ -60,7 +60,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevelNoFluff(ImmutableList.of(new Task(5)), false);
+      target.bossLevelNoFluff(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
