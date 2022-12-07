@@ -1,6 +1,8 @@
 package victor.training.cleancode;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,10 +11,7 @@ class ExtractValueObjects {
   // see tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
     List<CarModel> results = models.stream()
-            .filter(model ->
-                    new Interval(criteria.getStartYear(), criteria.getEndYear())
-                            .intersects(
-                                    model.getInterval()))
+            .filter(model -> criteria.getInterval().intersects(model.getInterval()))
             .collect(Collectors.toList());
     System.out.println("More filtering logic");
     return results;
@@ -89,6 +88,11 @@ class CarSearchCriteria { // smells like JSON ...
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  @NotNull
+  public Interval getInterval() {
+    return new Interval(getStartYear(), getEndYear());
   }
 
   public int getStartYear() {
