@@ -1,10 +1,15 @@
 package victor.training.cleancode;
 
+import lombok.Value;
+import victor.training.cleancode.Interval.CarModel;
+import victor.training.cleancode.Interval.CarSearchCriteria;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 class ExtractValueObjects {
@@ -39,6 +44,57 @@ class MathUtil {
         return start1 <= end2 && start2 <= end1;
     }
 }
+
+
+
+// Value Object (doar grupeaza niste date intre ele) nu DTO
+// - imutabil (adica fara setteri)
+// - nu are identitate persistenta (PK) - adica nu e @Entity
+// - mic de obicei
+// - ?hashCode equals pe toate campurile\
+
+// record Interval(int start, int end) {}  - a la java 17
+
+//@Value // >80% din din Java BE folosesc Lombok
+//class Interval2 { // acceasi chestii dar generate integral de Lombok
+//     int start;
+//     int end;
+//}
+class Interval {
+    private final int start;
+    private final int end;
+
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Interval interval = (Interval) o;
+        return start == interval.start && end == interval.end;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
+    }
+}
+
+
+
+
+
 
 
 class CarSearchCriteria { // smells like JSON ...
