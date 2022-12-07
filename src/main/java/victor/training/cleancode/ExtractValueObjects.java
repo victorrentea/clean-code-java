@@ -1,7 +1,6 @@
 package victor.training.cleancode;
 
 
-import javax.persistence.Embeddable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,8 +110,7 @@ class CarModel { // the wholy Entity Model
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  // DB tables nu trebuei impactate:=> @Embeddable (ORM)
   private Interval interval;
 
   protected CarModel() {
@@ -121,25 +119,15 @@ class CarModel { // the wholy Entity Model
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    interval = new Interval(startYear, endYear);
   }
 
   public Interval getInterval() {
-    return new Interval(getStartYear(), getEndYear());
+    return interval;
   }
 
   public Long getId() {
     return id;
-  }
-
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
   }
 
   public String getMake() {
@@ -166,8 +154,8 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getInterval().getStart();
+    dto.endYear = carModel.getInterval().getEnd();
     return dto;
   }
 
