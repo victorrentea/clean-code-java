@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,14 +57,16 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // Lord gave us tests!
-   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
-      int j = tasks.size();
+   public void bossLevel(boolean fluff, ImmutableList<Task> tasks, boolean cr323) {
       System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
       if (fluff) {
          System.out.println("Logic3");
+         int index = 0;
+
+         int x = getClientActivesAndClearTasks(tasks);
+
+         List<Integer> taskIds = new ArrayList<>();
          for (Task task : tasks) {
             System.out.println("Logic4: Validate " + task);
             task.setStarted();
@@ -76,12 +80,18 @@ public class BooleanParameters {
             index++;
             System.out.println("Audit task index=" + index + ": " + task);
          }
+         int j = tasks.size();
          System.out.println("Logic6 " + j);
          System.out.println("Task Ids: " + taskIds);
       } else {
          System.out.println("Logic7 " + tasks);
       }
       System.out.println("Logic7");
+   }
+
+   private int getClientActivesAndClearTasks(ImmutableList<Task> tasks) {
+//      tasks.clear();
+      return 0;
    }
 
 }
