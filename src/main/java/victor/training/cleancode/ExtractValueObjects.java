@@ -116,10 +116,10 @@ class CarModel { // the wholy Entity Model
   protected CarModel() {
   } // for Hibernate
 
-  public CarModel(String make, String model, int startYear, int endYear) {
+  public CarModel(String make, String model, Interval interval) {
     this.make = make;
     this.model = model;
-    interval = new Interval(startYear, endYear);
+    this.interval = interval;
   }
 
   public Interval getInterval() {
@@ -160,7 +160,7 @@ class CarModelMapper {
   }
 
   public CarModel fromDto(CarModelDto dto) {
-    return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+    return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
   }
 }
 
