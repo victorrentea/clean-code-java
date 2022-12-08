@@ -1,8 +1,11 @@
 package victor.training.fp;
 
+import java.util.function.Function;
+
 class Movie {
 	enum Type {
-		REGULAR, NEW_RELEASE, CHILDREN
+		REGULAR, NEW_RELEASE, CHILDREN, ELDERS
+
 	}
 
 	private final Type type;
@@ -12,15 +15,12 @@ class Movie {
 	}
 
 	public int computePrice(int days) {
-		switch (type) {
-		case REGULAR:
-			return days + 1;
-		case NEW_RELEASE:
-			return days * 2;
-		case CHILDREN:
-			return 5;
-		}
-		return 0; // ?!.. Free!! Deducted from your salary!
+		return switch (type) {
+			case REGULAR -> days + 1;
+			case NEW_RELEASE -> days * 2;
+			case CHILDREN -> 5;
+			case ELDERS -> 6;
+		};
 	}
 }
 

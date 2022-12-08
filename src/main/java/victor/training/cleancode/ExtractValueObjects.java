@@ -68,6 +68,15 @@ class Interval {
     return start <= other.end && other.start <= end;
   }
 
+
+  // |--this----||---other---|
+  // |--other----||---this---|
+  public boolean consecutiveWith(Interval other) {
+//    (StartDate1 == EndDate2) || (StartDate2 == EndDate1)
+      return start== other.end || other.start == end;
+
+  }
+  
   public int getStart() {
     return start;
   }

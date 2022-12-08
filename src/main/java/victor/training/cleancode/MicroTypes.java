@@ -22,7 +22,7 @@ public class MicroTypes {
         ));
     }
     //</editor-fold>
-
+//    class CustomerId2 extends Long {} ar fi fost super cool sa mearga. dar nu in Java. : merge in C#,kt,scala,
     record CustomerId(long id){}
     record OrderLine(String productName, int count) {}
 
