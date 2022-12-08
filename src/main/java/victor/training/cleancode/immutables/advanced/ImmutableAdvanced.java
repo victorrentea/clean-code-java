@@ -10,11 +10,18 @@ public class ImmutableAdvanced {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
       Immutable immutable = null;//new Immutable(1, numbers, new Other(15));
-      System.out.println(immutable);
+      System.out.println("Before: " + immutable);
 
-      // wilderness
+      wilderness(immutable);
+      // reasons to use immutable objects:
+      // -
+      // -
 
-      System.out.println(immutable);
+      System.out.println("After: " + immutable);
+   }
+
+   private static void wilderness(Immutable immutable) {
+      // dark deep logic
    }
 }
 

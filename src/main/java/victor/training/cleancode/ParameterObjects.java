@@ -3,6 +3,7 @@ package victor.training.cleancode;
 public class ParameterObjects {
    public static void main(String[] args) {
       new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new AnotherClass().otherMethod("John", "Doe", 17);
    }
 
    public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
@@ -23,6 +24,7 @@ class AnotherClass {
    }
 }
 
+// Domain Entity
 class Person {
    private Long id;
    private String firstName;

@@ -67,7 +67,7 @@ class CarSearchCriteria { // smells like JSON ...
 }
 
 //@Entity
-class CarModel { // the wholy Entity Model
+class CarModel { // the holy Entity Model
     //   @Id
     private Long id;
     private String make;
