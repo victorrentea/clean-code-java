@@ -24,14 +24,14 @@ public class ImmutableAdvanced {
    }
 
    private static void codHorror(Immutable immutable) {
-      immutable.getOther().setA(1);
+//      immutable.getOther().setA(1);
 
 //      immutable.getNumbers().add(99); + hint
       // da' dup-aia il scot, da uita.
    }
 }
 
-class Immutable { // shallow immutable acum
+class Immutable { // deep immutable acum
    private final int x;
    private final ImmutableList<Integer> numbers;
    private final Other other;
@@ -77,7 +77,7 @@ class Immutable { // shallow immutable acum
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -85,9 +85,5 @@ class Other {
 
    public int getA() {
       return a;
-   }
-
-   public void setA(int a) {
-      this.a = a;
    }
 }
