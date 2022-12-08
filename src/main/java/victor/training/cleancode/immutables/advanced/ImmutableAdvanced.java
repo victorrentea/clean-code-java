@@ -24,6 +24,8 @@ public class ImmutableAdvanced {
    }
 
    private static void codHorror(Immutable immutable) {
+      immutable.getOther().setA(1);
+
 //      immutable.getNumbers().add(99); + hint
       // da' dup-aia il scot, da uita.
    }
