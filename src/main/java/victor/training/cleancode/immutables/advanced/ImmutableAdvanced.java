@@ -15,19 +15,18 @@ public class ImmutableAdvanced {
       System.out.println("Before: " + immutable);
 
       // wilderness
-      codHorror(immutable);
+      Immutable changedImmutable = codHorror(immutable);
       //a)  120 ifuri in total sub functia => 120 teste. eg ComputePrice(ShoppingCart), ComputeDamage(HeroInventory)
       //b) multi threading/reactive -> sa eviti race conditions
 
 
-      System.out.println("After: " + immutable); //TAKEME
+      System.out.println("After: " + changedImmutable); //TAKEME
    }
 
-   private static void codHorror(Immutable immutable) {
+   private static Immutable codHorror(Immutable immutable) {
 //      immutable.getOther().setA(1);
-
-//      immutable.getNumbers().add(99); + hint
-      // da' dup-aia il scot, da uita.
+//      immutable.getNumbers().add(99); + hint da' dup-aia il scot, da uita.
+      return immutable.withX(99);
    }
 }
 
@@ -73,6 +72,10 @@ class Immutable { // deep immutable acum
    @Override
    public String toString() {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+   }
+
+   public Immutable withX(int newX) { // "withers"
+      return new Immutable(newX, numbers, other);
    }
 }
 
