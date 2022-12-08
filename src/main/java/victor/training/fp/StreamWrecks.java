@@ -2,6 +2,7 @@ package victor.training.fp;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,15 +19,8 @@ public class StreamWrecks {
 
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		Map<Product, Integer> productToCount = orders.stream()
-						.filter(o -> isRecent(o))
-						.flatMap(o -> o.getOrderLines().stream())
-						.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
-		// nu tii Stream<> ca variabila
-		List<Product> frequentProducts = productToCount.entrySet().stream()
-						.filter(e -> e.getValue() >= 10)
-						.map(Entry::getKey)
-						.toList();
+		Map<Product, Integer> productToCount = getProductToCount(orders);
+		List<Product> frequentProducts = selectFrequentProducts(productToCount);
 
 		// change request: sa logezi daca avem > 100 de produse frecvente!!
 		if (frequentProducts.size() > 100) {
@@ -39,6 +33,24 @@ public class StreamWrecks {
 				.filter(p -> !p.isDeleted())
 				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
+	}
+
+	@NotNull
+	private static List<Product> selectFrequentProducts(Map<Product, Integer> productToCount) {
+		List<Product> frequentProducts = productToCount.entrySet().stream()
+				.filter(e -> e.getValue() >= 10)
+				.map(Entry::getKey)
+				.toList();
+		return frequentProducts;
+	}
+
+	@NotNull
+	private static Map<Product, Integer> getProductToCount(List<Order> orders) {
+		Map<Product, Integer> productToCount = orders.stream()
+				.filter(o -> isRecent(o))
+				.flatMap(o -> o.getOrderLines().stream())
+				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
+		return productToCount;
 	}
 
 	// "daca orderurile sunt recente (adica in plasate in ultimul an)
