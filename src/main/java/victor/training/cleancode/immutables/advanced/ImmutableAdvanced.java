@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutables.advanced;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -7,30 +9,58 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
+      ImmutableList<Integer> numbers = ImmutableList.of(1, 2, 3);
 
-      Immutable immutable = null;//new Immutable(1, numbers, new Other(15));
-      System.out.println(immutable);
+      Immutable immutable = new Immutable(1, numbers, new Other(15));
+      System.out.println("Before: " + immutable);
 
       // wilderness
+      codHorror(immutable);
+      //a)  120 ifuri in total sub functia => 120 teste. eg ComputePrice(ShoppingCart), ComputeDamage(HeroInventory)
+      //b) multi threading/reactive -> sa eviti race conditions
 
-      System.out.println(immutable);
+
+      System.out.println("After: " + immutable); //TAKEME
+   }
+
+   private static void codHorror(Immutable immutable) {
+//      immutable.getNumbers().add(99); + hint
+      // da' dup-aia il scot, da uita.
    }
 }
 
-class Immutable {
+class Immutable { // shallow immutable acum
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers;
    private final Other other;
 
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
    }
-   public List<Integer> getNumbers() {
+
+//   public List<Integer> getNumbers() {
+//      // RAU pt ca malloc la fiecare get si
+//      // RAU pt ca saracu care face ADD e inselat > ma doar in *** de cine ma cheama
+//      return new ArrayList<>(numbers);
+//   }
+
+   // bun, traditional:
+//   public List<Integer> getNumbers() {
+//      return Collections.unmodifiableList(numbers); // Decorator Design Pattern = iti inapoi o ALTA implementare
+//      // a interfetei List care delega toate citirile la lista originala dar BLOCHEAZA (EX) orice incercare de scriere
+//   }
+
+   // prea geek
+//   public Iterable<Integer> getNumbers() {
+//      return numbers;
+//   }
+
+   public ImmutableList<Integer> getNumbers() {
       return numbers;
    }
+
    public int getX() {
       return x;
    }
