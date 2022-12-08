@@ -1,6 +1,14 @@
 package victor.training.cleancode.immutables.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.NonNull;
+import lombok.Value;
+import lombok.With;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
@@ -25,12 +33,28 @@ public class ImmutableAdvanced {
    }
 }
 
-record Immutable(int x, ImmutableList<Integer> numbers, Other other) { // deep immutable acum
-
-   public Immutable withX(int newX) { // "withers"
-      return new Immutable(newX, numbers, other);
-   }
+@Value // e mai bun ca @Data ca face campurile "private final" automat
+class Immutable {
+    @With
+    int x;
+    ImmutableList<Integer> numbers;
+    @NonNull // prea mult? sara exceptie din cod invizibil generat?
+    Other other;
+//
+//   public Immutable withX(int newX) { // "withers"
+//      return new Immutable(newX, numbers, other);
+//   }
 }
+
+// java 17
+// record Immutable(int x, ImmutableList<Integer> numbers, Other other) { // deep immutable acum
+//
+//   public Immutable withX(int newX) { // "withers"
+//      return new Immutable(newX, numbers, other);
+//   }
+//}
+
+
 //class Immutable { // deep immutable acum
 //   private final int x;
 //   private final ImmutableList<Integer> numbers;
