@@ -14,7 +14,10 @@ public class Biz {
       System.out.println("START");
       if (order.getOfferDate().before(config.getLastPromoDate())) { // TODO inside
          System.out.println("APPLYING DISCOUNT");
-         Integer points = customer.getMemberCard().getFidelityPoints();
+         Integer points = customer.getMemberCard()
+                 .map(d -> d.getFidelityPoints()) // tocmai am fixat bugulul altuia (dupa ce l-am luat pe chat)
+                 // = collaborative code ownership -> adica Ne Pasa™️
+                 .orElse(0);
          order.setPrice(order.getPrice() * (100 - 2 * points) / 100);
       } else {
          System.out.println("NO DISCOUNT");
