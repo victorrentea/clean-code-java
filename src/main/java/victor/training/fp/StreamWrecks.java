@@ -1,28 +1,49 @@
 package victor.training.fp;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
+@Slf4j
 public class StreamWrecks {
 	private ProductRepo productRepo;
 
+
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
-				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
-				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
-				.entrySet()
-				.stream()
-				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey)
+		Map<Product, Integer> productToCount = orders.stream()
+						.filter(o -> isRecent(o))
+						.flatMap(o -> o.getOrderLines().stream())
+						.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
+		// nu tii Stream<> ca variabila
+		List<Product> frequentProducts = productToCount.entrySet().stream()
+						.filter(e -> e.getValue() >= 10)
+						.map(Entry::getKey)
+						.toList();
+
+		// change request: sa logezi daca avem > 100 de produse frecvente!!
+		if (frequentProducts.size() > 100) {
+			log.info("MARFA!");
+		}
+
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
+		// GATA, da !
+		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
+	}
+
+	// "daca orderurile sunt recente (adica in plasate in ultimul an)
+	private static boolean isRecent(Order order) {
+		return order.getCreationDate().isAfter(LocalDate.now().minusYears(1));
 	}
 }
 
