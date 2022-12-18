@@ -1,4 +1,4 @@
-package victor.training.fp.repo.custom;
+package victor.training.cleancode.fp.repo.custom;
 
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

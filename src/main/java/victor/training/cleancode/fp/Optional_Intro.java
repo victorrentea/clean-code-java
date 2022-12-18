@@ -1,5 +1,5 @@
 
-package victor.training.fp;
+package victor.training.cleancode.fp;
 
 import lombok.Data;
 import victor.training.cleancode.exception.model.Customer;

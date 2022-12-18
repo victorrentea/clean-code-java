@@ -1,4 +1,4 @@
-package victor.training.fp;
+package victor.training.cleancode.fp;
 
 public class Optional_Chain {
 	private static final MyMapper mapper = new MyMapper();
