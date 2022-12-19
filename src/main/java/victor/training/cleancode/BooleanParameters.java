@@ -64,31 +64,43 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // Lord gave us tests!
-   public void bossLevelFluff(ImmutableList<Task> tasks, boolean cr323) {
-      System.out.println("Logic1");
-      System.out.println("Logic2");
-      System.out.println("Logic3");
-      int index = 0;
-      for (Task task : tasks) { // 2000
-         System.out.println("Logic4: Validate " + task);
-         task.setStarted();
-      }
-      List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
+   public void bossLevelFluff(ImmutableList<Task> tasks) {
+      bossStart(tasks);
 
-      if (cr323) { // TODO remove the boolean
-        for (Task task : tasks) {
-            System.out.println("My Logic: " + task);
-         }
-      }
+      bossEnd(tasks);
+   }
+   public void bossLevelFluff323(ImmutableList<Task> tasks) {
+      bossStart(tasks);
+
+      for (Task task : tasks) {
+          System.out.println("My Logic: " + task);
+       }
+      bossEnd(tasks);
+   }
+
+   private static void bossEnd(ImmutableList<Task> tasks) {
+      int index = 0;
       for (Task task : tasks) {
          index++;
          System.out.println("Audit task index=" + index + ": " + task);
       }
       int j = tasks.size();
       System.out.println("Logic6 " + j);
+      List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
       System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
    }
+
+   private static void bossStart(ImmutableList<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic3");
+      for (Task task : tasks) { // 2000
+         System.out.println("Logic4: Validate " + task);
+         task.setStarted();
+      }
+   }
+
    public void bossLevelNoFluff(ImmutableList<Task> tasks) {
       System.out.println("Logic1");
       System.out.println("Logic2");

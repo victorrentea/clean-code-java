@@ -15,7 +15,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevelFluff(ImmutableList.of(new Task(5)), false);
+      target.bossLevelFluff(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -30,7 +30,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevelFluff(ImmutableList.of(new Task(5)), true);
+      target.bossLevelFluff323(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -47,7 +47,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevelFluff(ImmutableList.of(), false);
+      target.bossLevelFluff(ImmutableList.of());
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -72,7 +72,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevelFluff(ImmutableList.of(new Task(5),new Task(6)), false);
+      target.bossLevelFluff(ImmutableList.of(new Task(5),new Task(6)));
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())
