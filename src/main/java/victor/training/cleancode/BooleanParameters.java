@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
@@ -62,33 +63,40 @@ public class BooleanParameters {
    // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
    // Lord gave us tests!
-   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
-      int j = tasks.size();
+   public void bossLevelFluff(ImmutableList<Task> tasks, boolean cr323) {
       System.out.println("Logic1");
-      List<Integer> taskIds = new ArrayList<>();
       System.out.println("Logic2");
-      if (fluff) {
-         System.out.println("Logic3");
-         for (Task task : tasks) {
-            System.out.println("Logic4: Validate " + task);
-            task.setStarted();
+      System.out.println("Logic3");
+      inocentaCica(tasks);
+      List<Integer> taskIds = new ArrayList<>();
+      int index = 0;
+      for (Task task : tasks) {
+         System.out.println("Logic4: Validate " + task);
+         task.setStarted();
 
-            taskIds.add(task.getId());
+         taskIds.add(task.getId());
 
-            if (cr323) { // TODO remove the boolean
-               System.out.println("My Logic: " + task);
-            }
-
-            index++;
-            System.out.println("Audit task index=" + index + ": " + task);
+         if (cr323) { // TODO remove the boolean
+            System.out.println("My Logic: " + task);
          }
-         System.out.println("Logic6 " + j);
-         System.out.println("Task Ids: " + taskIds);
-      } else {
-         System.out.println("Logic7 " + tasks);
+
+         index++;
+         System.out.println("Audit task index=" + index + ": " + task);
       }
+      int j = tasks.size();
+      System.out.println("Logic6 " + j);
+      System.out.println("Task Ids: " + taskIds);
       System.out.println("Logic7");
+   }
+   public void bossLevelNoFluff(ImmutableList<Task> tasks) {
+      System.out.println("Logic1");
+      System.out.println("Logic2");
+      System.out.println("Logic7 " + tasks);
+      System.out.println("Logic7");
+   }
+
+   private void inocentaCica(ImmutableList<Task> tasks) {
+      tasks.clear();
    }
 
 }
