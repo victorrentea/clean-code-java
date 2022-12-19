@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +12,18 @@ public class GuardClauses {
     if (marine == null) {
       throw new RuntimeException("Marine is null");
     }
+    if (marine.getYearsService() == null) {
+      throw new IllegalArgumentException("Any marine should have the years of service set");
+    }
+    return doGetPayAnount(marine);
+  }
+
+  private int doGetPayAnount(Marine marine) {
     if (isDead(marine)) {
       return DEAD_PAY_AMOUNT;
     }
     if (marine.isRetired()) {
       return retiredAmount();
-    }
-    if (marine.getYearsService() == null) {
-      throw new IllegalArgumentException("Any marine should have the years of service set");
     }
     int result = marine.getYearsService() * 100;
     if (!marine.getAwards().isEmpty()) {
