@@ -95,8 +95,10 @@ class CarModel { // the holy Entity Model
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  private Interval yearInterval;
+//  private int startYear;
+//  private int endYear;
+  // => -1 camp => eu :)  = deep domain model
 
   protected CarModel() {
   } // for Hibernate
@@ -104,13 +106,14 @@ class CarModel { // the holy Entity Model
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+//    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    yearInterval = new Interval(startYear, endYear);
   }
 
     public Interval getModelInterval() {
-        return new Interval(startYear, endYear);
+      return yearInterval;
     }
 
     public Long getId() {
@@ -118,11 +121,12 @@ class CarModel { // the holy Entity Model
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.getEnd();
   }
 
+  // code smell : metoda e useless "Middle Man" code smell
   public int getStartYear() {
-    return startYear;
+    return yearInterval.getStart();
   }
 
   public String getMake() {
