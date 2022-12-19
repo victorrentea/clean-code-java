@@ -1,11 +1,13 @@
 package victor.training.cleancode;
 
+import lombok.Value;
 import org.jooq.lambda.tuple.Tuple;
 import org.jooq.lambda.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.joining;
 
@@ -23,7 +25,10 @@ public class MicroTypes {
     }
     //</editor-fold>
 
-    record CustomerId(long id) {} // java 17 kung fu
+    @Value
+    static class CustomerId {
+        long id;
+    } // java 17 kung fu
     record ProductCount(String productName, int count) {}
 
     @Test
