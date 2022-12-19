@@ -2,15 +2,15 @@ package victor.training.cleancode;
 
 public class ParameterObjects {
    public static void main(String[] args) {
-      new ParameterObjects().placeOrder("John", "Doe", "St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder("John", "Doe", new Address("St. Albergue", "Paris", 99));
       new AnotherClass().otherMethod("John", "Doe", 17);
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
+   public void placeOrder(String fName, String lName, Address address) {
       if (fName == null || lName == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + address.city() + " on St. " + address.streetName() + " " + address.streetNumber());
 
    }
 }
@@ -59,11 +59,11 @@ class PersonService {
       System.out.println("Record for " + fullNameStr);
    }
 
-   public void p(String streetName, String city, Integer streetNumber) {
-      System.out.println("Living in " + city + " on St. " + streetName + " " + streetNumber);
+   public void p(Address address) {
+      System.out.println("Living in " + address.city() + " on St. " + address.streetName() + " " + address.streetNumber());
    }
 
    public void pcaller() {
-       p("Dristor", "Bucharest", 91);
+       p(new Address("Bucharest", "Dristor", 91));
    }
 }
