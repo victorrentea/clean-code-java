@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implement the variation required for CR323 without adding a boolean parameter
@@ -67,19 +68,19 @@ public class BooleanParameters {
       System.out.println("Logic1");
       System.out.println("Logic2");
       System.out.println("Logic3");
-      inocentaCica(tasks);
-      List<Integer> taskIds = new ArrayList<>();
       int index = 0;
-      for (Task task : tasks) {
+      for (Task task : tasks) { // 2000
          System.out.println("Logic4: Validate " + task);
          task.setStarted();
+      }
+      List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
 
-         taskIds.add(task.getId());
-
-         if (cr323) { // TODO remove the boolean
+      if (cr323) { // TODO remove the boolean
+        for (Task task : tasks) {
             System.out.println("My Logic: " + task);
          }
-
+      }
+      for (Task task : tasks) {
          index++;
          System.out.println("Audit task index=" + index + ": " + task);
       }
