@@ -106,9 +106,6 @@ class CarModel { // the holy Entity Model
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-//    this.startYear = startYear;
-//    this.endYear = endYear;
-//    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     yearInterval = new Interval(startYear, endYear);
   }
 
@@ -120,13 +117,8 @@ class CarModel { // the holy Entity Model
     return id;
   }
 
-  public int getEndYear() {
-    return yearInterval.getEnd();
-  }
-
-  // code smell : metoda e useless "Middle Man" code smell
-  public int getStartYear() {
-    return yearInterval.getStart();
+  public Interval getYearInterval() {
+    return yearInterval;
   }
 
   public String getMake() {
@@ -153,8 +145,12 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.endYear = carModel.getYearInterval().getEnd();
     return dto;
   }
 
