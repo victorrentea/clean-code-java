@@ -19,16 +19,29 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    return getApplicableDiscountPercentage(customer.getMemberCard())
+
+//    if (customer.getMemberCard().isPresent()) {
+//      MemberCard card = customer.getMemberCard().get();
+//      return getApplicableDiscountPercentage(card)
+//              .map(discount -> "You got a discount of %" + discount.getGlobalPercentage())
+//              .orElse("");
+//    } else {
+//      return "";
+//    }
+
+    return customer.getMemberCard()
+            .flatMap(Optional_Intro::getApplicableDiscountPercentage)
             .map(discount -> "You got a discount of %" + discount.getGlobalPercentage())
             .orElse("");
+
+
   }
 
-
+// de ce e dubios sa accepti param asta Optional<> => de ce ma mai chemi daca nu imi dai nimic
   private static Optional<Discount> getApplicableDiscountPercentage(MemberCard card) {
-    if (card == null) {
-      return Optional.empty();
-    }
+//    if (card == null) {
+//      return Optional.empty();
+//    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5));
     }
@@ -37,6 +50,9 @@ public class Optional_Intro {
     }
     return Optional.empty();
   }
+//  enum {
+//    SMALL_DISCOUNT(3), BIG_DISCOUNT
+//  }
 
   @Data
   public static class Discount {

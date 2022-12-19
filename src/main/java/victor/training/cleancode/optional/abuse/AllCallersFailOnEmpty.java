@@ -1,6 +1,7 @@
 package victor.training.cleancode.optional.abuse;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import victor.training.cleancode.optional.abuse.repo.custom.CustomJpaRepository;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,13 +12,14 @@ public class AllCallersFailOnEmpty {
     @Id
     Long id;
   }
-  private interface TenantRepo extends JpaRepository<Tenant, Long> {
+  private interface TenantRepo extends CustomJpaRepository<Tenant, Long> {
   }
 
   private TenantRepo tenantRepo;
 
   public void allCallersFailOnEmpty(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // done in 30 places in code,
+    Tenant tenant = tenantRepo.getExactlyOne(tenantId); // done in 30 places in code,
+    // 0 palces in care continuam executia
     System.out.println("Stuff with tenant: " + tenant);
   }
 }
