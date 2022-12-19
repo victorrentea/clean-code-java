@@ -12,27 +12,29 @@ import static java.util.stream.Collectors.joining;
 public class MicroTypes {
 
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
-        Long customerId = 1L;
+    public Map<CustomerId, List<ProductCount>> extremeFP() {
+        CustomerId customerId = new CustomerId(1L);
         Integer product1Count = 2;
         Integer product2Count = 4;
         return Map.of(customerId, List.of(
-                Tuple.tuple("Table", product1Count),
-                Tuple.tuple("Chair", product2Count)
+                new ProductCount("Table", product1Count),
+                new ProductCount("Chair", product2Count)
         ));
     }
     //</editor-fold>
 
+    record CustomerId(long id) {} // java 17 kung fu
+    record ProductCount(String productName, int count) {}
+
     @Test
     void lackOfAbstractions() {
-        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
-        // Joke: try "var" above :)
+        Map<CustomerId, List<ProductCount>> customerIdToProductdWithCount = extremeFP();
 
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).stream()
-                    .map(t -> t.v2 + " of " + t.v1)
+        for (CustomerId cid : customerIdToProductdWithCount.keySet()) {
+            String pl = customerIdToProductdWithCount.get(cid).stream()
+                    .map(tuple -> tuple.count() + " of " + tuple.productName())
                     .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
+            System.out.println("cid=" + cid.id + " got " + pl);
         }
     }
 }
