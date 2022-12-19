@@ -1,5 +1,5 @@
 
-package victor.training.cleancode.fp;
+package victor.training.cleancode.optional;
 
 import lombok.Data;
 import victor.training.cleancode.exception.model.Customer;
@@ -28,10 +28,10 @@ public class Optional_Intro {
 		}
 		return null;
 	}
+	@Data
+	public static class Discount {
+		private final int globalPercentage;
+		private Map<String, Integer> categoryDiscounts = new HashMap<>();
+	}
 }
 
-@Data
-class Discount {
-	private final int globalPercentage;
-	private Map<String, Integer> categoryDiscounts = new HashMap<>();
-}
