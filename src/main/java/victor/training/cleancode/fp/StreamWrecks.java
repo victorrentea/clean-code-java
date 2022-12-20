@@ -1,28 +1,42 @@
 package victor.training.cleancode.fp;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
+@Slf4j
 public class StreamWrecks {
 	private ProductRepo productRepo;
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
-				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
-				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
-				.entrySet()
-				.stream()
-				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey)
-				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
-				.collect(toList());
+		Map<Product, Integer> recentProductCounts = orders.stream()
+						.filter(StreamWrecks::isRecent)
+						.flatMap(o -> o.getOrderLines().stream())
+						.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
+
+		List<Product> topProducts = recentProductCounts.entrySet().stream()
+						.filter(e -> e.getValue() >= 10)
+						.map(Entry::getKey)
+						.toList();
+
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
+
+		return topProducts.stream()
+						.filter(p -> !p.isDeleted())
+						.filter(p -> !hiddenProductIds.contains(p.getId()))
+						.collect(toList());
+	}
+
+	private static boolean isRecent(Order order) {
+		return order.getCreationDate().isAfter(LocalDate.now().minusYears(1));
 	}
 }
 
