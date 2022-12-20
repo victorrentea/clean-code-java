@@ -16,8 +16,13 @@ public class AllCallersFailOnEmpty {
 
   private TenantRepo tenantRepo;
 
-  public void allCallersFailOnEmpty(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // done in 30 places in code,
-    System.out.println("Stuff with tenant: " + tenant);
+  public void flow1(long tenantId) {
+    Tenant tenant = tenantRepo.findById(tenantId).get();
+    System.out.println("Stuff1 with tenant: " + tenant);
+  }
+
+  public void flow2(long tenantId) {
+    Tenant tenant = tenantRepo.findById(tenantId).get(); // done in 30 more places in code,
+    System.out.println("Stuff2 with tenant: " + tenant);
   }
 }

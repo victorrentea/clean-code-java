@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +9,18 @@ import java.util.List;
  * Implement the variation required for CR323 without adding a boolean parameter
  */
 public class BooleanParameters {
+   @GetMapping("some/url")
+   public void pretendEndpoint() {
+      serviceMethod(2, new Task(4));
+   }
+
+   private static void serviceMethod(int id, Task task) {
+      bigUglyMethod(id, task);
+   }
 
    public static void main(String[] args) {
       // The big method is called from various foreign places in the codebase
       bigUglyMethod(1, new Task(5));
-      bigUglyMethod(2, new Task(4));
       bigUglyMethod(3, new Task(3));
       bigUglyMethod(4, new Task(2));
       bigUglyMethod(5, new Task(1));
@@ -22,16 +31,16 @@ public class BooleanParameters {
 
    }
 
-   static void bigUglyMethod(int b, Task task) {
-      System.out.println("Complex Logic 1 " + task + " and " + b);
+   static void bigUglyMethod(int id, Task task) {
+      System.out.println("Complex Logic 1 " + task + " and " + id);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);
 
       // System.out.println("Logic just for CR#323 : " + task);
 
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
-      System.out.println("More Complex Logic " + b);
+      System.out.println("More Complex Logic " + id);
+      System.out.println("More Complex Logic " + id);
+      System.out.println("More Complex Logic " + id);
    }
 
 
@@ -39,7 +48,7 @@ public class BooleanParameters {
 
    // Lord gave us tests!
    public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-      int index = 0; // TODO move closer to usages
+      int index = 0; // TODO move closer to usages in a safe way
       int j = tasks.size();
       System.out.println("Logic1");
       List<Integer> taskIds = new ArrayList<>();

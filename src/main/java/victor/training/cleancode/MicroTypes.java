@@ -30,7 +30,7 @@ public class MicroTypes {
 
         for (Long cid : map.keySet()) {
             String pl = map.get(cid).stream()
-                    .map(t -> t.v2 + " of " + t.v1)
+                    .map(t -> t.v2 + " pcs. of " + t.v1)
                     .collect(joining(", "));
             System.out.println("cid=" + cid + " got " + pl);
         }
