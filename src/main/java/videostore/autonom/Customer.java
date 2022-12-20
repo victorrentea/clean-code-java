@@ -2,7 +2,7 @@ package videostore.autonom;
 
 import java.util.*;
 
-public class Customer {
+ class Customer {
    private String name;
    private List<Rental> rentals = new ArrayList<>();
 
