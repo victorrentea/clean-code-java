@@ -1,6 +1,8 @@
 package victor.training.cleancode.fp.pure;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +17,19 @@ class PriceService {
   private final ProductRepo productRepo;
 
   // TODO extract a pure function with as much logic possible
-  public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
+  public Map<Long, Double> computePrices(
+          long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds);
+
+    PriceComputationResult result = computePrice(internalPrices, customer, products);
+
+    couponRepo.markUsedCoupons(customerId, result.getUsedCoupons());
+    return result.getFinalPrices();
+  }
+
+  @NotNull
+  private PriceComputationResult computePrice(Map<Long, Double> internalPrices, Customer customer, List<Product> products) {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
@@ -33,8 +45,13 @@ class PriceService {
       }
       finalPrices.put(product.getId(), price);
     }
-    couponRepo.markUsedCoupons(customerId, usedCoupons);
-    return finalPrices;
+    PriceComputationResult result = new PriceComputationResult(usedCoupons, finalPrices);
+    return result;
   }
 }
 
+@Value
+class PriceComputationResult {
+  List<Coupon> usedCoupons;
+  Map<Long, Double> finalPrices;
+}
