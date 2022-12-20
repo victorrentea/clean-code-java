@@ -2,6 +2,7 @@ package victor.training.cleancode.fp;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class StreamWrecks {
 						.filter(e -> e.getValue() >= 10)
 						.map(Entry::getKey)
 						.toList();
+
 
 		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
 

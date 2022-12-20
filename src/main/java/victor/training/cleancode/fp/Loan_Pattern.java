@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import io.vavr.collection.Stream.Cons;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -26,8 +28,8 @@ class FileExporter {
          writer.write("order_id;date\n");
          orderRepo.findByActiveTrue()
              .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
+//             .forEach(wrap(writer::write));
              .forEach(Unchecked.consumer(writer::write));
-
          log.info("Export DONE");
       } catch (Exception e) {
          log.error("Export FAILED!", e); // TERROR-Driven Development
@@ -38,6 +40,23 @@ class FileExporter {
          log.info("Export completed in {} seconds ", (t1 - t0) / 1000);
       }
    }
+   interface ThrowingConsumer<T> {
+      void accept(T t) throws  Exception;
+   }
+   // tre sa rearunce orice ex checked in aruncator() invelita intr-un RuntimeEx
+   public static <T> Consumer<T> wrap(ThrowingConsumer<T> aruncator) {
+      return t -> {
+         try {
+            aruncator.accept(t);
+         } catch (Exception e) {
+            throw new RuntimeException(e);
+         }
+      };
+      // bad practice sa scrii fct din astea prea des.
+      // da brain damage dev average din Java
+   }
+
+
 }
 
 @RequiredArgsConstructor
