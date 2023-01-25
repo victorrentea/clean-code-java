@@ -7,6 +7,7 @@ import victor.training.cleancode.exception.model.MemberCard;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @SuppressWarnings("ConstantConditions")
 public class Optional_Intro {
@@ -17,19 +18,24 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" +
-			   getApplicableDiscountPercentage(customer.getMemberCard()).getGlobalPercentage();
+		Optional<Discount> discountOpt = getApplicableDiscountPercentage(customer.getMemberCard());
+		if (discountOpt.isPresent()) {
+			return "You got a discount of %" +
+				   discountOpt.get().getGlobalPercentage();
+		} else {
+			return "😏";
+		}
 	}
 
-	private static Discount getApplicableDiscountPercentage(MemberCard card) {
+	// Optionalul a fost introdus in Java pentru a oferi o MODALITATE de a ANUNTA callerul ca ii poti da NIMIC inapoi.
+	private static Optional<Discount> getApplicableDiscountPercentage(MemberCard card) {
 		if (card.getFidelityPoints() >= 100) {
-			return new Discount(5);
+			return Optional.of(new Discount(5));
 		}
 		if (card.getFidelityPoints() >= 50) {
-			return new Discount(3);
+			return Optional.of(new Discount(3));
 		}
-		return Discount.NONE; // alternativa la optional, se numeste "Null Object Pattern"
-			// reprezinta un obiect cu o stare care inseamna 'nimic' de fapt
+		return Optional.empty();
 	}
 	@Data
 	public static class Discount {
