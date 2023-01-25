@@ -1,5 +1,10 @@
 package victor.training.cleancode.optional;
 
+import victor.training.cleancode.optional.MyMapper.ContactPerson;
+import victor.training.cleancode.optional.MyMapper.Delivery;
+import victor.training.cleancode.optional.MyMapper.DeliveryDto;
+import victor.training.cleancode.optional.MyMapper.Parcel;
+
 public class Optional_Chain {
 	private static final MyMapper mapper = new MyMapper();
    public static void main(String[] args) {
@@ -14,7 +19,15 @@ public class Optional_Chain {
 class MyMapper {
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
-      dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+      if (
+              parcel != null &&
+              parcel.getDelivery() != null &&
+              parcel.getDelivery().getAddress() != null &&
+              parcel.getDelivery().getAddress().getContactPerson() != null &&
+              parcel.getDelivery().getAddress().getContactPerson().getName() != null
+      ) {
+        dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+      }
       return dto;
    }
 }
