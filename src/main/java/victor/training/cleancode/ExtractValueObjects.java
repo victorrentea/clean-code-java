@@ -1,8 +1,7 @@
 package victor.training.cleancode;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +10,7 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> new Interval(criteria.getStartYear(), criteria.getEndYear())
-                        .intersects(new Interval(model.getStartYear(), model.getEndYear())))
+                .filter(model -> criteria.getCriteriaInterval().intersects(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -31,11 +29,17 @@ class Alta {
 
 class MathUtil {
 }
-class Interval {
-    private final int start;
-    private final int end;
+@Embeddable
+class Interval { //  = Value Object (imutabil, de obicei mic, si fara PK)
+    private int start;
+    private int end;
 
-    Interval(int start, int end) {
+    protected Interval() {} //pt Hibernate
+
+    public Interval(int start, int end) {
+        if (start > end) {
+            throw new IllegalArgumentException("start larger than end");
+        }
         this.start = start;
         this.end = end;
     }
@@ -51,12 +55,14 @@ class Interval {
     public int getEnd() {
         return end;
     }
+    // nu pui setteri ca sa tii obiectul practic IMUTABIL pt developeri
 }
 
 
-class CarSearchCriteria { // smells like JSON ...
+class CarSearchCriteria { // smells like JSON ... se mapeaza pe un ecran din FE
     private final int startYear;
     private final int endYear;
+//    private final Interval yearInterval;// NU fac asta, pentru ca as strica API modelul - tre sunati frontenzii.
     private final String make;
 
     public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -66,6 +72,10 @@ class CarSearchCriteria { // smells like JSON ...
         this.endYear = endYear;
     }
 
+    public Interval getCriteriaInterval() {
+        return new Interval(getStartYear(), getEndYear());
+    }
+
     public int getStartYear() {
         return startYear;
     }
@@ -79,14 +89,14 @@ class CarSearchCriteria { // smells like JSON ...
     }
 }
 
-@Entity
+@Entity // acel loc unde-ti dai jos bocancii cand intri
 class CarModel { // the holy Entity Model
     @Id
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+    @Embedded // + 2 coloane in tabela CAR_MODEL
+    private Interval yearInterval;
 
     protected CarModel() {
     } // for Hibernate
@@ -94,25 +104,20 @@ class CarModel { // the holy Entity Model
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+
+        yearInterval = new Interval(startYear, endYear);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
+    public Interval getYearInterval() {
+        return yearInterval;
     }
 
     public String getMake() {
         return make;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getModel() {
@@ -127,6 +132,8 @@ class CarModel { // the holy Entity Model
                ", model='" + model + '\'' +
                '}';
     }
+
+
 }
 
 
@@ -135,8 +142,8 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.endYear = carModel.getYearInterval().getEnd();
         return dto;
     }
 
