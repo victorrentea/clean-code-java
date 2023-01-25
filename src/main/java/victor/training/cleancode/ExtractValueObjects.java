@@ -11,29 +11,25 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> {
-                    return MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear()));
-                })
+                .filter(model -> new Interval(criteria.getStartYear(), criteria.getEndYear())
+                        .intersects(new Interval(model.getStartYear(), model.getEndYear())))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 }
 
 class MathUtil {
-    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
-    }
 }
 class Interval {
     private final int start;
@@ -42,6 +38,10 @@ class Interval {
     Interval(int start, int end) {
         this.start = start;
         this.end = end;
+    }
+
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
     }
 
     public int getStart() {
