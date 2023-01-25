@@ -87,7 +87,20 @@ public class BooleanParameters {
       int index = 0;
       List<Integer> taskIds = new ArrayList<>();
       for (Task task : tasks) {
-        index = theFor(cr323, index, taskIds, task);
+        System.out.println("Logic4: Validate " + task);
+        task.setStarted();
+      }
+      for (Task task : tasks) {
+        taskIds.add(task.getId());
+      }
+      for (Task task : tasks) {
+        if (cr323) { // TODO remove the boolean
+          System.out.println("My Logic: " + task);
+        }
+      }
+      for (Task task : tasks) {
+        index++;
+        System.out.println("Audit task index=" + index + ": " + task);
       }
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
@@ -95,20 +108,6 @@ public class BooleanParameters {
       System.out.println("Logic7 " + tasks);
     }
     System.out.println("Logic7");
-  }
-
-  private static int theFor(boolean cr323, int index, List<Integer> taskIds, Task task) {
-    System.out.println("Logic4: Validate " + task);
-    task.setStarted();
-
-    taskIds.add(task.getId());
-
-    if (cr323) { // TODO remove the boolean
-      System.out.println("My Logic: " + task);
-    }
-    index++;
-    System.out.println("Audit task index=" + index + ": " + task);
-    return index;
   }
 
   private void checkTasks(List<Task> tasks) {
