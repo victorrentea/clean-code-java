@@ -85,8 +85,6 @@ public class BooleanParameters {
     System.out.println("Logic2");
     if (fluff) {
       System.out.println("Logic3");
-    int j = tasks.size();
-      checkTasks(tasks);
       int index = 0;
       for (Task task : tasks) {
         System.out.println("Logic4: Validate " + task);
@@ -100,7 +98,7 @@ public class BooleanParameters {
         index++;
         System.out.println("Audit task index=" + index + ": " + task);
       }
-      System.out.println("Logic6 " + j);
+      System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 " + tasks);
