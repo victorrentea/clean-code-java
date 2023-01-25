@@ -2,26 +2,26 @@ package victor.training.cleancode;
 
 public class ParameterObjects {
    public static void main(String[] args) {
-      StreetAddress streetAddress = new StreetAddress("St. Albergue", "Paris", 99);
-      new ParameterObjects().placeOrder(new FullName("John", "Doe"), streetAddress);
-      new AnotherClass().otherMethod(new FullName("John", "Doe"), 17);
+      PlaceOrderParams params = new PlaceOrderParams("John", "Doe", "St. Albergue", "Paris", 99);
+      new ParameterObjects().placeOrder(params);
+      new AnotherClass().otherMethod("John", "Doe", 17);
    }
 
-   public void placeOrder(FullName fullName, StreetAddress streetAddress) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
+   public void placeOrder(PlaceOrderParams placeOrderParams) {
+      if (placeOrderParams.getfName() == null || placeOrderParams.getlName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + streetAddress.getCity() + " on St. " + streetAddress.getStreetName() + " " + streetAddress.getStreetNumber());
+      System.out.println("Shipping to " + placeOrderParams.getCity() + " on St. " + placeOrderParams.getStreetName() + " " + placeOrderParams.getStreetNumber());
 
    }
 }
 
 class AnotherClass {
-   public void otherMethod(FullName fullName, int x) {
-      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
+   public void otherMethod(String firstName, String lastName, int x) {
+      if (firstName == null || lastName == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + fullName.getLastName());
+      System.out.println("Person: " + lastName);
    }
 }
 
