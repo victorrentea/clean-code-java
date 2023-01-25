@@ -17,9 +17,7 @@ class SomeController {
 }
 
 class SomeService {
-
   public void blueMethod(int id, Task task) {
-    // blue code
     BooleanParameters.bigUglyMethod(id, task);
   }
 
@@ -34,19 +32,18 @@ class SomeService {
   public void redMethod(int id, Task task) {
     BooleanParameters.bigUglyMethod(id, task);
   }
+}
 
+class MyService {
   public void useCase323(int id, Task task) {
     // TODO From my use-case #323, I call the method too, but have it do more within:
     BooleanParameters.bigUglyMethod(2, task);
   }
 }
 
-/**
- * Implement the variation required for CR323 without adding a boolean parameter
- */
 public class BooleanParameters {
 
-  // The big method might be called from multiple places in the codebase
+  // Note: this method might be called from multiple places in the codebase ...
   static void bigUglyMethod(int storeId, Task task) {
     System.out.println("Complex Logic 1 " + task + " and " + storeId);
     System.out.println("Complex Logic 2 " + task);
@@ -54,9 +51,9 @@ public class BooleanParameters {
 
     // System.out.println("Logic just for CR#323 : " + task);
 
-    System.out.println("More Complex Logic " + storeId);
-    System.out.println("More Complex Logic " + storeId);
-    System.out.println("More Complex Logic " + storeId);
+    System.out.println("Donkey Logic 1 " + storeId);
+    System.out.println("Donkey Logic 2 " + storeId);
+    System.out.println("Donkey Logic 3 " + storeId);
   }
 
 
