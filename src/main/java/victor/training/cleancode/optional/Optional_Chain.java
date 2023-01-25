@@ -1,9 +1,8 @@
 package victor.training.cleancode.optional;
 
-import victor.training.cleancode.optional.MyMapper.ContactPerson;
-import victor.training.cleancode.optional.MyMapper.Delivery;
-import victor.training.cleancode.optional.MyMapper.DeliveryDto;
-import victor.training.cleancode.optional.MyMapper.Parcel;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+import java.util.Optional;
 
 public class Optional_Chain {
 	private static final MyMapper mapper = new MyMapper();
@@ -19,15 +18,11 @@ public class Optional_Chain {
 class MyMapper {
    public DeliveryDto convert(Parcel parcel) {
       DeliveryDto dto = new DeliveryDto();
-      if (
-              parcel != null &&
-              parcel.getDelivery() != null &&
-              parcel.getDelivery().getAddress() != null &&
-              parcel.getDelivery().getAddress().getContactPerson() != null &&
-              parcel.getDelivery().getAddress().getContactPerson().getName() != null
-      ) {
-        dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
-      }
+     dto.recipientPerson = parcel.getDelivery()
+             .flatMap(delivery -> delivery.getAddress().getContactPerson())
+             .map(cp -> cp.getName().toUpperCase())
+             .orElse(null)
+     ;
       return dto;
    }
 }
@@ -38,8 +33,8 @@ class DeliveryDto {
 class Parcel {
    private Delivery delivery; // NULL until a delivery is scheduled
 
-   public Delivery getDelivery() {
-      return delivery;
+   public Optional<Delivery> getDelivery() {
+      return Optional.ofNullable(delivery);
    }
 	public void setDelivery(Delivery delivery) {
       this.delivery = delivery;
@@ -48,14 +43,15 @@ class Parcel {
 
 
 class Delivery {
+//  @NotNull // alternativa la requireNonNull
    private Address address; // NOT NULL IN DB
 
    public Delivery(Address address) {
-      this.address = address;
+     this.address = Objects.requireNonNull(address);
    }
 
 	public void setAddress(Address address) {
-		this.address = address; // TODO null safe
+      this.address = Objects.requireNonNull(address); // TODO null safe
 	}
 
 	public Address getAddress() {
@@ -70,16 +66,16 @@ class Address {
       this.contactPerson = contactPerson;
    } // TODO allow not setting
 
-   public ContactPerson getContactPerson() {
-      return contactPerson;
+   public Optional<ContactPerson> getContactPerson() {
+      return Optional.ofNullable(contactPerson);
    }
 }
 
 class ContactPerson {
-   private final String name; // NOT NULL
+   private final String name; // NOT NULL in DB
 
    public ContactPerson(String name) {
-      this.name = name;
+     this.name = Objects.requireNonNull(name);
    }
 
    public String getName() {
