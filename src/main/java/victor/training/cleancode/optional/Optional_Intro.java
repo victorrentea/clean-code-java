@@ -7,6 +7,7 @@ import victor.training.cleancode.exception.model.MemberCard;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @SuppressWarnings("ConstantConditions")
@@ -15,6 +16,7 @@ public class Optional_Intro {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
 		System.out.println(getDiscountLine(new Customer(new MemberCard(10))));
+		System.out.println(getDiscountLine(new Customer(null)));
 	}
 
 	public static String getDiscountLine(Customer customer) {
@@ -25,6 +27,9 @@ public class Optional_Intro {
 
 	// Optionalul a fost introdus in Java pentru a oferi o MODALITATE de a ANUNTA callerul ca ii poti da NIMIC inapoi.
 	private static Optional<Discount> getApplicableDiscountPercentage(MemberCard card) {
+		if (card == null) { // fix la panica.
+			return Optional.empty();
+		}
 		if (card.getFidelityPoints() >= 100) {
 			return Optional.of(new Discount(5));
 		}
