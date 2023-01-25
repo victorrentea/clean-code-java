@@ -81,22 +81,13 @@ public class BooleanParameters {
   // Lord gave us tests!
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     System.out.println("Logic2");
     if (fluff) {
       System.out.println("Logic3");
       int index = 0;
+      List<Integer> taskIds = new ArrayList<>();
       for (Task task : tasks) {
-        System.out.println("Logic4: Validate " + task);
-        task.setStarted();
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-        index++;
-        System.out.println("Audit task index=" + index + ": " + task);
+        index = theFor(cr323, index, taskIds, task);
       }
       System.out.println("Logic6 " + tasks.size());
       System.out.println("Task Ids: " + taskIds);
@@ -104,6 +95,20 @@ public class BooleanParameters {
       System.out.println("Logic7 " + tasks);
     }
     System.out.println("Logic7");
+  }
+
+  private static int theFor(boolean cr323, int index, List<Integer> taskIds, Task task) {
+    System.out.println("Logic4: Validate " + task);
+    task.setStarted();
+
+    taskIds.add(task.getId());
+
+    if (cr323) { // TODO remove the boolean
+      System.out.println("My Logic: " + task);
+    }
+    index++;
+    System.out.println("Audit task index=" + index + ": " + task);
+    return index;
   }
 
   private void checkTasks(List<Task> tasks) {
