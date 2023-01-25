@@ -9,28 +9,28 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 
-public class MicroTypes {
+public class MicroTypesTuples {
 
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, Map<String, Integer>> extremeFP() {
+    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
         Long customerId = 1L;
         Integer product1Count = 2;
         Integer product2Count = 4;
-        return Map.of(customerId, Map.of(
-                "Table", product1Count,
-                "Chair", product2Count
+        return Map.of(customerId, List.of(
+                Tuple.tuple("Table", product1Count),
+                Tuple.tuple("Chair", product2Count)
         ));
     }
     //</editor-fold>
 
     @Test
     void lackOfAbstractions() {
-        Map<Long, Map<String, Integer>> map = extremeFP();
+        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
         // Joke: try "var" above :)
 
         for (Long cid : map.keySet()) {
-            String pl = map.get(cid).entrySet().stream()
-                    .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+            String pl = map.get(cid).stream()
+                    .map(t -> t.v2 + " pcs. of " + t.v1)
                     .collect(joining(", "));
             System.out.println("cid=" + cid + " got " + pl);
         }
