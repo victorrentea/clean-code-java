@@ -48,6 +48,15 @@ public class BooleanParameters {
     moreComplexLogic(id);
   }
 
+  // dar asta nu inseamna ca duplicam cod?
+  // daca am 11 linii de cod si trebuie inca una dupa 6 din ele.
+  // #1) primele5Linii() <- faci o metoda cu un nume stupid pentru ca cele 5 linii
+  //    de cod nu AU DEFAPT nimic clar sub care sa le poti grupa
+  // #2) cele11Linii(boolean flag)
+
+  // !! ambele-s naspa, dar mai bune decat sa repeti 11 linii de cod =>
+  //    DRY =  nu repeti aceeasi LOGICA in mai multe locuri in proj
+
   static void bigUglyMethodCR323(int id, Task task) {
     complexLogic(id, task);
     System.out.println("Logic just for CR#323 : " + task);
