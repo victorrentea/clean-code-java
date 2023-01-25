@@ -16,10 +16,10 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" + getApplicableDiscountPercentage(customer.getMemberCard()).getGlobalPercentage();
+		return "You got a discount of %" + computeDiscount(customer.getMemberCard()).getGlobalPercentage();
 	}
 
-	private static Discount getApplicableDiscountPercentage(MemberCard card) {
+	private static Discount computeDiscount(MemberCard card) {
 		if (card.getFidelityPoints() >= 100) {
 			return new Discount(5);
 		}
