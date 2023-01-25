@@ -67,6 +67,8 @@ public class BooleanParameters {
     System.out.println("More Complex Logic " + id);
     System.out.println("More Complex Logic " + id);
     System.out.println("More Complex Logic " + id);
+    System.out.println("More Complex Logic " + id);
+    System.out.println("More Complex Logic " + id);
   }
 
   private static void complexLogic(int id, Task task) {
@@ -85,6 +87,7 @@ public class BooleanParameters {
   }
   public void bossLevel323(List<Task> tasks) {
     bo$$Start(tasks);
+    // TODO victorrentea 2023-01-25: Tre sa-l scot luni
     for (Task task : tasks) {
       System.out.println("My Logic: " + task);
     }
