@@ -80,13 +80,14 @@ public class BooleanParameters {
 
   // Lord gave us tests!
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
-    int j = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     System.out.println("Logic2");
     if (fluff) {
       System.out.println("Logic3");
+    int j = tasks.size();
+      checkTasks(tasks);
+      int index = 0;
       for (Task task : tasks) {
         System.out.println("Logic4: Validate " + task);
         task.setStarted();
@@ -96,7 +97,6 @@ public class BooleanParameters {
         if (cr323) { // TODO remove the boolean
           System.out.println("My Logic: " + task);
         }
-
         index++;
         System.out.println("Audit task index=" + index + ": " + task);
       }
@@ -106,6 +106,10 @@ public class BooleanParameters {
       System.out.println("Logic7 " + tasks);
     }
     System.out.println("Logic7");
+  }
+
+  private void checkTasks(List<Task> tasks) {
+    tasks.removeIf(t -> t.getId() < 0);
   }
 
 }
