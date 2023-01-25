@@ -21,40 +21,49 @@ public class BooleanParameters {
   }
 
   private static void extracted() {
-    bigUglyMethod(1, new Task(5), false);
+    bigUglyMethod(1, new Task(5));
   }
 
 
   private static void serviceMethod(int id, Task taskPotSiEuShiftF6) {
-    bigUglyMethod(id, taskPotSiEuShiftF6, false);
+    bigUglyMethod(id, taskPotSiEuShiftF6);
   }
 
   public static void main(String[] argsnuPoateSaCrape) {
     // The big method is called from various foreign places in the codebase
-    bigUglyMethod(3, new Task(3), false);
-    bigUglyMethod(4, new Task(2), false);
-    bigUglyMethod(5, new Task(1), false);
+    bigUglyMethod(3, new Task(3));
+    bigUglyMethod(4, new Task(2));
+    bigUglyMethod(5, new Task(1));
 
 
 
     // TODO From my use-case #323, I call it too, to do more within:
     Task task = new Task(1);
-    bigUglyMethod(2, task, true);
+    bigUglyMethodCR323(2, task);
   }
 
 
-  static void bigUglyMethod(int id, Task task, boolean cr323) {
+  static void bigUglyMethod(int id, Task task) {
+    complexLogic(id, task);
+    moreComplexLogic(id);
+  }
+
+  static void bigUglyMethodCR323(int id, Task task) {
+    complexLogic(id, task);
+    System.out.println("Logic just for CR#323 : " + task);
+    moreComplexLogic(id);
+  }
+
+  private static void moreComplexLogic(int id) {
+    System.out.println("More Complex Logic " + id);
+    System.out.println("More Complex Logic " + id);
+    System.out.println("More Complex Logic " + id);
+  }
+
+  private static void complexLogic(int id, Task task) {
     System.out.println("Complex Logic 1 " + task + " and " + id);
     System.out.println("Complex Logic 2 " + task);
     System.out.println("Complex Logic 3 " + task);
-
-    if (cr323) {
-      System.out.println("Logic just for CR#323 : " + task);
-    }
-
-    System.out.println("More Complex Logic " + id);
-    System.out.println("More Complex Logic " + id);
-    System.out.println("More Complex Logic " + id);
   }
 
 
