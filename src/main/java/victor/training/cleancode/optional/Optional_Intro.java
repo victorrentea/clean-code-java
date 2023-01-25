@@ -20,16 +20,15 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return getApplicableDiscountPercentage(customer.getMemberCard())
+		return customer.getMemberCard()
+						.flatMap(card -> getApplicableDiscountPercentage(card))
 						.map(discount -> "You got a discount of %" + discount.getGlobalPercentage())
 						.orElse("😏");
 	}
 
 	// Optionalul a fost introdus in Java pentru a oferi o MODALITATE de a ANUNTA callerul ca ii poti da NIMIC inapoi.
 	private static Optional<Discount> getApplicableDiscountPercentage(MemberCard card) {
-		if (card == null) { // fix la panica.
-			return Optional.empty();
-		}
+
 		if (card.getFidelityPoints() >= 100) {
 			return Optional.of(new Discount(5));
 		}
