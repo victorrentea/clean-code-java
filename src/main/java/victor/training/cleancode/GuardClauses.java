@@ -77,9 +77,6 @@ class Marine {
       return retired;
    }
 
-   public boolean isDead() {
-      return dead;
-   }
 }
 
 class Award {
