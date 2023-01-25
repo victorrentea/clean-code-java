@@ -26,33 +26,27 @@ class SwitchTest {
   @CaptureSystemOutput
   void processMovie_regular(OutputCapture outputCapture) {
     target.processMovie(new Movie(Category.REGULAR, "MMM"));
-    assertThat(outputCapture.toString()).isEqualToNormalizingNewlines("""
-            Some repo calls
-            Some shared initial stuff
-            Process regular movie: Movie{category=REGULAR, title='MMM'}
-            More common code after
-            """);
+    assertThat(outputCapture.toString()).isEqualToNormalizingNewlines("Some repo calls\n" +
+                                                                      "Some shared initial stuff\n" +
+                                                                      "Process regular movie: Movie{category=REGULAR, title='MMM'}\n" +
+                                                                      "More common code after\n");
   }
   @Test
   @CaptureSystemOutput
   void processMovie_new_release(OutputCapture outputCapture) {
     target.processMovie(new Movie(Category.NEW_RELEASE, "MMM"));
-    assertThat(outputCapture.toString()).isEqualToNormalizingNewlines("""
-            Some repo calls
-            Some shared initial stuff
-            Process new release movie: Movie{category=NEW_RELEASE, title='MMM'}
-            More common code after
-            """);
+    assertThat(outputCapture.toString()).isEqualToNormalizingNewlines("Some repo calls\n" +
+                                                                      "Some shared initial stuff\n" +
+                                                                      "Process new release movie: Movie{category=NEW_RELEASE, title='MMM'}\n" +
+                                                                      "More common code after\n");
   }
   @Test
   @CaptureSystemOutput
   void processMovie_children(OutputCapture outputCapture) {
     target.processMovie(new Movie(Category.CHILDREN, "MMM"));
-    assertThat(outputCapture.toString()).isEqualToNormalizingNewlines("""
-            Some repo calls
-            Some shared initial stuff
-            Process children movie: Movie{category=CHILDREN, title='MMM'}
-            More common code after
-            """);
+    assertThat(outputCapture.toString()).isEqualToNormalizingNewlines("Some repo calls\n" +
+                                                                      "Some shared initial stuff\n" +
+                                                                      "Process children movie: Movie{category=CHILDREN, title='MMM'}\n" +
+                                                                      "More common code after\n");
   }
 }

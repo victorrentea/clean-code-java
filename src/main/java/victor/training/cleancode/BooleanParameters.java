@@ -31,7 +31,7 @@ public class BooleanParameters {
 
    }
 
-   static void bigUglyMethod(int id, Task task) {
+      static void bigUglyMethod(int id, Task task) {
       System.out.println("Complex Logic 1 " + task + " and " + id);
       System.out.println("Complex Logic 2 " + task);
       System.out.println("Complex Logic 3 " + task);

@@ -36,7 +36,7 @@ class Immutable {
       this.other = other;
    }
    public List<Integer> getNumbers() {
-      return numbers;
+      return List.copyOf(numbers);
    }
    public int getX() {
       return x;

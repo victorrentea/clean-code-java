@@ -1,5 +1,6 @@
 package victor.training.cleancode.optional.abuse;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public class OptionalCollections {
 
   public void caller() {
     // with coupons:
-    calculatePrice(new Product(), Optional.of(List.of(new Coupon())));
+    calculatePrice(new Product(), Optional.of(Arrays.asList(new Coupon())));
 
     // without coupons:
     calculatePrice(new Product(), Optional.empty());
