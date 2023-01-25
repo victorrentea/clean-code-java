@@ -6,7 +6,6 @@ import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -18,7 +17,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(true, Arrays.asList(new Task(5)), false);
+      target.bossLevel(Arrays.asList(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -33,7 +32,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(true, Arrays.asList(new Task(5)), true);
+      target.bossLevel323(Arrays.asList(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -50,7 +49,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevel(true, Collections.emptyList(), false);
+      target.bossLevel(Collections.emptyList());
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -63,7 +62,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevel(false, Arrays.asList(new Task(5)), false);
+      target.bossLevelNoFluff(Arrays.asList(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -75,7 +74,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(true, Arrays.asList(new Task(5),new Task(6)), false);
+      target.bossLevel(Arrays.asList(new Task(5),new Task(6)));
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())

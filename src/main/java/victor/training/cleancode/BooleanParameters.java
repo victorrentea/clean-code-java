@@ -2,9 +2,7 @@ package victor.training.cleancode;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,7 +35,6 @@ public class BooleanParameters {
     bigUglyMethod(3, new Task(3));
     bigUglyMethod(4, new Task(2));
     bigUglyMethod(5, new Task(1));
-
 
 
     // TODO From my use-case #323, I call it too, to do more within:
@@ -82,33 +79,44 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests!
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+  public void bossLevel(List<Task> tasks) {
+    bo$$Start(tasks);
+    bossEnd(tasks);
+  }
+  public void bossLevel323(List<Task> tasks) {
+    bo$$Start(tasks);
+    for (Task task : tasks) {
+      System.out.println("My Logic: " + task);
+    }
+    bossEnd(tasks);
+  }
+
+  private static void bossEnd(List<Task> tasks) {
+    int index = 0;
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task index=" + index + ": " + task);
+    }
+    System.out.println("Logic6 " + tasks.size());
+    List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
+    System.out.println("Task Ids: " + taskIds);
+    System.out.println("Logic7");
+  }
+
+  private static void bo$$Start(List<Task> tasks) {
     System.out.println("Logic1");
     System.out.println("Logic2");
-    if (fluff) {
-      System.out.println("Logic3");
-      int index = 0;
-      for (Task task : tasks) {
-        System.out.println("Logic4: Validate " + task);
-        task.setStarted();
-      }
-
-      List<Integer> taskIds = tasks.stream().map(Task::getId).collect(toList());
-
-      for (Task task : tasks) {
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-      }
-      for (Task task : tasks) {
-        index++;
-        System.out.println("Audit task index=" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + tasks.size());
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 " + tasks);
+    System.out.println("Logic3");
+    for (Task task : tasks) {
+      System.out.println("Logic4: Validate " + task);
+      task.setStarted();
     }
+  }
+
+  public void bossLevelNoFluff(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic2");
+    System.out.println("Logic7 " + tasks);
     System.out.println("Logic7");
   }
 
