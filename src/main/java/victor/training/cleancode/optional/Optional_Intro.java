@@ -13,10 +13,12 @@ public class Optional_Intro {
 	public static void main(String[] args) {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
+		System.out.println(getDiscountLine(new Customer(new MemberCard(10))));
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" + getApplicableDiscountPercentage(customer.getMemberCard()).getGlobalPercentage();
+		return "You got a discount of %" +
+			   getApplicableDiscountPercentage(customer.getMemberCard()).getGlobalPercentage();
 	}
 
 	private static Discount getApplicableDiscountPercentage(MemberCard card) {
@@ -26,7 +28,8 @@ public class Optional_Intro {
 		if (card.getFidelityPoints() >= 50) {
 			return new Discount(3);
 		}
-		return null;
+		return new Discount(0); // alternativa la optional, se numeste "Null Object Pattern"
+			// reprezinta un obiect cu o stare care inseamna 'nimic' de fapt
 	}
 	@Data
 	public static class Discount {
