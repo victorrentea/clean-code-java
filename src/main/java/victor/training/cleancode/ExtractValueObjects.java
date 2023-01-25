@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import victor.training.cleancode.Alta.MathUtil;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
