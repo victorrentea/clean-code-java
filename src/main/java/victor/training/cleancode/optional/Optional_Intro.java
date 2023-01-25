@@ -28,11 +28,12 @@ public class Optional_Intro {
 		if (card.getFidelityPoints() >= 50) {
 			return new Discount(3);
 		}
-		return new Discount(0); // alternativa la optional, se numeste "Null Object Pattern"
+		return Discount.NONE; // alternativa la optional, se numeste "Null Object Pattern"
 			// reprezinta un obiect cu o stare care inseamna 'nimic' de fapt
 	}
 	@Data
 	public static class Discount {
+		public static final Discount NONE = new Discount(0);
 		private final int globalPercentage;
 		private Map<String, Integer> categoryDiscounts = new HashMap<>();
 	}
