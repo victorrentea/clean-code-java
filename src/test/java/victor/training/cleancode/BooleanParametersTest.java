@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import victor.training.testing.tools.CaptureSystemOutput;
 import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +18,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)), false);
+      target.bossLevel(true, Arrays.asList(new Task(5)), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -32,7 +33,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)), true);
+      target.bossLevel(true, Arrays.asList(new Task(5)), true);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -62,7 +63,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevel(false, List.of(new Task(5)), false);
+      target.bossLevel(false, Arrays.asList(new Task(5)), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -74,7 +75,7 @@ class BooleanParametersTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5),new Task(6)), false);
+      target.bossLevel(true, Arrays.asList(new Task(5),new Task(6)), false);
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())

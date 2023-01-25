@@ -4,6 +4,8 @@ import org.jooq.lambda.tuple.Tuple;
 import org.jooq.lambda.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +18,10 @@ public class MicroTypes {
         Long customerId = 1L;
         Integer product1Count = 2;
         Integer product2Count = 4;
-        return Map.of(customerId, List.of(
-                Tuple.tuple("Table", product1Count),
-                Tuple.tuple("Chair", product2Count)
-        ));
+        Map<Long, List<Tuple2<String, Integer>>> results = new HashMap<>();
+        results.put(customerId, Arrays.asList(Tuple.tuple("Table", product1Count),
+                Tuple.tuple("Chair", product2Count)));
+        return results;
     }
     //</editor-fold>
 

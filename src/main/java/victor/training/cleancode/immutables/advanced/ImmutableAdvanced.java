@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutables.advanced;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -36,7 +37,7 @@ class Immutable {
       this.other = other;
    }
    public List<Integer> getNumbers() {
-      return List.copyOf(numbers);
+      return new ArrayList<>(numbers);
    }
    public int getX() {
       return x;

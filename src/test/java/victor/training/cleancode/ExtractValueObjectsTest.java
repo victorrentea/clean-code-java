@@ -22,7 +22,7 @@ class ExtractValueObjectsTest {
    void byYear_match() {
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
 
-      List<CarModel> models = searchEngine.filterCarModels(criteria, List.of(fordFocusMk2));
+      List<CarModel> models = searchEngine.filterCarModels(criteria, Arrays.asList(fordFocusMk2));
 
       assertThat(models).hasSize(1);
    }
@@ -30,7 +30,7 @@ class ExtractValueObjectsTest {
    void byYear_no_match() {
       CarSearchCriteria criteria = new CarSearchCriteria(2017, 2018, "Ford");
 
-      List<CarModel> models = searchEngine.filterCarModels(criteria, List.of(fordFocusMk2));
+      List<CarModel> models = searchEngine.filterCarModels(criteria, Arrays.asList(fordFocusMk2));
 
       assertThat(models).hasSize(0);
    }

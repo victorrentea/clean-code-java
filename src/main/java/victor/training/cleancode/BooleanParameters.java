@@ -14,11 +14,12 @@ public class BooleanParameters {
       serviceMethod(2, new Task(4));
    }
 
-   private static void serviceMethod(int id, Task task) {
-      bigUglyMethod(id, task);
+
+   private static void serviceMethod(int id, Task taskPotSiEuShiftF6) {
+      bigUglyMethod(id, taskPotSiEuShiftF6);
    }
 
-   public static void main(String[] args) {
+   public static void main(String[] argsnuPoateSaCrape) {
       // The big method is called from various foreign places in the codebase
       bigUglyMethod(1, new Task(5));
       bigUglyMethod(3, new Task(3));
