@@ -7,17 +7,20 @@ import java.util.Optional;
 
 public class OptionalParameters {
 
-  public void sendMessage(String recipient, String message, Optional<String> trackingRegistry) {
+  public void sendMessage(String recipient, String message) {
     System.out.println("Resolve phone number for " + recipient);
+  }
+  public void sendMessageWithTracking(String recipient, String message, String trackingRegistry) {
+    sendMessage(recipient, message);
 
-    trackingRegistry.ifPresent(reg -> System.out.println("Also notify the tracking registry"));
+    System.out.println("Also notify the tracking registry");
   }
 
   public void callers() {
     // with
-    sendMessage("jdoe", "message", Optional.of("REGLISS"));
+    sendMessageWithTracking("jdoe", "message", "REGLISS");
 
     // without
-    sendMessage("jdoe", "message", Optional.empty());
+    sendMessage("jdoe", "message");
   }
 }

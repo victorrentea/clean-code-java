@@ -17,8 +17,8 @@ public class AllCallersFailOnEmpty {
   private TenantRepo tenantRepo;
 
   public void flow1(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get();
-    System.out.println("Stuff1 with tenant: " + tenant);
+//    Tenant tenant = tenantRepo.findById(tenantId); // sau exceptie
+//    System.out.println("Stuff1 with tenant: " + tenant);
   }
 
   public void flow2(long tenantId) {
