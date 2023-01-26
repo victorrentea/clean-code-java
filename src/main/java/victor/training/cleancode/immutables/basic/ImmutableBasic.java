@@ -43,6 +43,10 @@ public class ImmutableBasic {
   }
 
 }
+//// java 17 ROCKS! 🤘
+//record ImmutableRecord(int x, ImmutableList<Integer> numbers, Other other)
+//{}
+
 
 // NU poti persista @Value sau ImmutableList cu Hibernate
 
