@@ -22,9 +22,10 @@ public class ImmutableBasic {
 
    private static Immutable bizLogic(Immutable immutable) {
 //      immutable.setX(17);
-      Immutable changedCopy = new Immutable(17, immutable.getNumbers(), immutable.getOther());
+      Immutable changedCopy = immutable.withX(17);
       return changedCopy;
    }
+
 }
 // immutable = nu poti schima starea obiectului dupa creere
 class Immutable {
@@ -32,11 +33,19 @@ class Immutable {
    private List<Integer> numbers;
    private Other other;
 
+//   public Immutable(int x, Immutable old) {
+//      this(x, old.numbers, old.other);
+//   }
    public Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
    }
+
+   public Immutable withX(int x) {
+      return new Immutable(x, getNumbers(), getOther());
+   }
+
    public int getX() {
       return x;
    }
