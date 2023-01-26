@@ -34,7 +34,6 @@ class Customer {
 
     for (Rental rental : rentals) {
       double price = rental.computePrice();
-      // show figures line for this rental
       result += generateStatementLine(rental, price);
       totalPrice += price;
     }
@@ -43,7 +42,6 @@ class Customer {
     return result;
   }
 
-  @NotNull
   private static String generateStatementLine(Rental rental, double price) {
     return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
   }
