@@ -5,6 +5,12 @@ import videostore.horror.Movie.PriceCode;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+//// mai DB-friendly
+//class CustomerRentals {
+//  long customerId;
+//  private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+//}
+
 class Customer {
   private String name;
   private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
@@ -13,10 +19,9 @@ class Customer {
     this.name = name;
   }
 
-  ;
-
-  public void addRental(Movie m, int d) {
-    rentals.put(m, d);
+  // decimals, discount, days
+  public void addRental(Movie movie, int d) {
+    rentals.put(movie, d);
   }
 
   public String getName() {
@@ -50,7 +55,7 @@ class Customer {
       frequentRenterPoints++;
       // add bonus for a two day new release rental
       if ((each.getPriceCode() == PriceCode.NEW_RELEASE)
-          && dr > 1)
+          && dr >= 2)
         frequentRenterPoints++;
       // show figures line for this rental
       result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
