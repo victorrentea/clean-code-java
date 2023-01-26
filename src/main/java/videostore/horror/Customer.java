@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import videostore.horror.Movie.PriceCode;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -47,7 +49,7 @@ class Customer {
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two day new release rental
-      if ((each.getPriceCode() == Movie.MovieType.NEW_RELEASE)
+      if ((each.getPriceCode() == PriceCode.NEW_RELEASE)
           && dr > 1)
         frequentRenterPoints++;
       // show figures line for this rental
