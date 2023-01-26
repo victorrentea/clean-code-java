@@ -21,6 +21,9 @@ class Coupon {
     this.autoApply = autoApply;
   }
 
+  // Cate logica pun in Model?
+  // R: atata cat sa n-ai nevoie vreodata s-o mockuiesti -> adica nu ff multa: 10 ifuri
+  // antipattern: sa mockuiest metode de pe Domain Model (exceptie: cand faci DDD Aggregates)
   public boolean isApplicableFor(Product product) {
     return (product.getCategory() == category || category == null) && !product.isPremium();
   }
