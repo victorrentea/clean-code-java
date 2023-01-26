@@ -30,18 +30,9 @@ class Customer {
     double totalPrice = 0;
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + getName() + "\n";
-    // TODO spargem foru? sa calculam total price si total points separat ?
     for (Rental rental : rentals) {
-
       double price = rental.computePrice();
-
-      // add frequent renter points
-      frequentRenterPoints++;
-      // add bonus for a two day new release rental
-      if ((rental.getMovie().getPriceCode() == PriceCode.NEW_RELEASE)
-          && rental.getDaysRented() >= 2)
-        frequentRenterPoints++;
-
+      frequentRenterPoints += computeRenterPoints(rental);
       // show figures line for this rental
       result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
       totalPrice += price;
@@ -50,6 +41,15 @@ class Customer {
     result += "Amount owed is " + totalPrice + "\n";
     result += "You earned " + frequentRenterPoints + " frequent renter points";
     return result;
+  }
+
+  private static int computeRenterPoints(Rental rental) {
+    int frequentRenterPoints = 1;
+    boolean isNewRelease = rental.getMovie().getPriceCode() == PriceCode.NEW_RELEASE;
+    if (isNewRelease && rental.getDaysRented() >= 2) {
+      frequentRenterPoints++;
+    }
+    return frequentRenterPoints;
   }
 
 }
