@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import videostore.horror.Movie.PriceCode;
+
 import java.util.Objects;
 
 public class Rental {
@@ -13,13 +15,29 @@ public class Rental {
 
   // am facut OOP
   public double computePrice() {
-    return switch (movie.getPriceCode()) { // switch a devenit EXPRESIE : da rezultat
-      case REGULAR -> computeRegularPrice();
-      case NEW_RELEASE -> daysRented * 3;
-      case CHILDREN -> computeChildrenPrice();
-      case ELDERS, BURLACI-> 1;
-    };
-  }
+    return movie.getPriceCode()
+            .priceFormula.apply(daysRented);
+    //    switch (movie.getPriceCode()) {
+//      case REGULAR:
+//        return computeRegularPrice();
+//      case NEW_RELEASE:
+//        return daysRented * 3;
+//      case CHILDREN:
+//        return computeChildrenPrice();
+//      case ELDERS: return 1;
+//      default:
+//        throw new IllegalStateException("Unexpected value: " + movie.getPriceCode());
+        // Switch rule #1 mai bine exceptie decat bani pierduti
+    }
+
+    // java 17 ... a dream ... prin 2025
+    //   return switch (movie.getPriceCode()) { // switch a devenit EXPRESIE : da rezultat
+    //      case REGULAR -> computeRegularPrice();
+    //      case NEW_RELEASE -> daysRented * 3;
+    //      case CHILDREN -> computeChildrenPrice();
+    //      case ELDERS, BURLACI-> 1;
+    //    };
+//  }
 
   public double computeMaxAllowedRentedDays() {
     switch (movie.getPriceCode()) {
@@ -42,9 +60,8 @@ public class Rental {
     return price;
   }
 
-  private double computeRegularPrice() {
-    double price;
-    price = 2;
+  public static double computeRegularPrice(int daysRented) {
+    double price = 2;
     if (daysRented > 2)
       price += (daysRented - 2) * 1.5;
     return price;
