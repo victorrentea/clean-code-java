@@ -48,20 +48,18 @@ class Customer {
     String result = "Rental Record for " + getName() + "\n";
     // TODO spargem foru? sa calculam total price si total points separat ?
     for (Rental rental : rentals) {
-      int daysRented = rental.getDaysRented();
-      Movie movie = rental.getMovie();
 
-      double price = computePrice(movie, daysRented);
+      double price = computePrice(rental);
 
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two day new release rental
-      if ((movie.getPriceCode() == PriceCode.NEW_RELEASE)
-          && daysRented >= 2)
+      if ((rental.getMovie().getPriceCode() == PriceCode.NEW_RELEASE)
+          && rental.getDaysRented() >= 2)
         frequentRenterPoints++;
 
       // show figures line for this rental
-      result += "\t" + movie.getTitle() + "\t" + price + "\n";
+      result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
       totalPrice += price;
     }
     // add footer lines
@@ -70,21 +68,22 @@ class Customer {
     return result;
   }
 
-  private static double computePrice(Movie movie, int daysRented) {
+  // code smell: metoda care tpt ce face e sa extraga date din param
+  private static double computePrice(Rental rental) {
     double price = 0;
-    switch (movie.getPriceCode()) {
+    switch (rental.getMovie().getPriceCode()) {
       case REGULAR:
         price = 2;
-        if (daysRented > 2)
-          price += (daysRented - 2) * 1.5;
+        if (rental.getDaysRented() > 2)
+          price += (rental.getDaysRented() - 2) * 1.5;
         break;
       case NEW_RELEASE:
-        price = daysRented * 3;
+        price = rental.getDaysRented() * 3;
         break;
       case CHILDREN:
         price = 1.5;
-        if (daysRented > 3)
-          price += (daysRented - 3) * 1.5;
+        if (rental.getDaysRented() > 3)
+          price += (rental.getDaysRented() - 3) * 1.5;
         break;
     }
     return price;
