@@ -17,6 +17,7 @@ public class ImmutableBasic {
       // LOTS OF BUSINESS LOGIC HERE
 
       System.out.println(changed.getNumbers());
+      System.out.println(changed.getOther());
       System.out.println(changed);
    }
 
@@ -28,24 +29,19 @@ public class ImmutableBasic {
 
 }
 // immutable = nu poti schima starea obiectului dupa creere
-class Immutable {
-   private int x;
-   private List<Integer> numbers;
-   private Other other;
+final class Immutable {
+   private final int x;
+   private final List<Integer> numbers;
+   private final Other other;
 
-//   public Immutable(int x, Immutable old) {
-//      this(x, old.numbers, old.other);
-//   }
    public Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
    }
-
    public Immutable withX(int x) {
       return new Immutable(x, getNumbers(), getOther());
    }
-
    public int getX() {
       return x;
    }
@@ -61,7 +57,7 @@ class Immutable {
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -69,9 +65,5 @@ class Other {
 
    public int getA() {
       return a;
-   }
-
-   public void setA(int a) {
-      this.a = a;
    }
 }
