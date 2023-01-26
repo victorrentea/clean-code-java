@@ -32,7 +32,6 @@ class Customer {
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + getName() + "\n";
     for (Movie movie : rentals.keySet()) { // TODO spargem foru? sa calculam total price si total points separat ?
-      // determine amounts for each line
       int daysRented = rentals.get(movie);
       double price = computePrice(movie, daysRented);
 
