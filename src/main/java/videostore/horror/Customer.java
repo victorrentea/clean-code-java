@@ -2,8 +2,7 @@ package videostore.horror;
 
 import videostore.horror.Movie.PriceCode;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 //// mai DB-friendly
 //class CustomerRentals {
@@ -11,16 +10,32 @@ import java.util.Map;
 //  private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 //}
 
+class Rental {
+  private final Movie movie;
+  private final int daysRented;
+
+  Rental(Movie movie, int daysRented) {
+    this.movie = Objects.requireNonNull(movie);
+    this.daysRented = daysRented;
+  }
+  public int getDaysRented() {
+    return daysRented;
+  }
+  public Movie getMovie() {
+    return movie;
+  }
+}
+
 class Customer {
   private String name;
-  private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+  private List<Rental> rentals = new ArrayList<>();
 
   public Customer(String name) {
     this.name = name;
   }
 
   public void addRental(Movie movie, int daysRented) {
-    rentals.put(movie, daysRented);
+    rentals.add(new Rental(movie, daysRented));
   }
 
   public String getName() {
@@ -31,8 +46,11 @@ class Customer {
     double totalPrice = 0;
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + getName() + "\n";
-    for (Movie movie : rentals.keySet()) { // TODO spargem foru? sa calculam total price si total points separat ?
-      int daysRented = rentals.get(movie);
+    // TODO spargem foru? sa calculam total price si total points separat ?
+    for (Rental rental : rentals) {
+      int daysRented = rental.getDaysRented();
+      Movie movie = rental.getMovie();
+
       double price = computePrice(movie, daysRented);
 
       // add frequent renter points
