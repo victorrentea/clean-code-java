@@ -31,38 +31,43 @@ class Customer {
     double totalPrice = 0;
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + getName() + "\n";
-    for (Movie each : rentals.keySet()) {
-      double price = 0;
+    for (Movie movie : rentals.keySet()) { // TODO spargem foru? sa calculam total price si total points separat ?
       // determine amounts for each line
-      int daysRented = rentals.get(each);
-      switch (each.getPriceCode()) {
-        case REGULAR:
-          price = 2;
-          if (daysRented > 2)
-            price += (daysRented - 2) * 1.5;
-          break;
-        case NEW_RELEASE:
-          price = daysRented * 3;
-          break;
-        case CHILDREN:
-          price = 1.5;
-          if (daysRented > 3)
-            price += (daysRented - 3) * 1.5;
-          break;
-      }
+      int daysRented = rentals.get(movie);
+      double price = computePrice(movie, daysRented);
       // add frequent renter points
-      frequentRenterPoints++;
+      frequentRenterPoints++; // TODO mai rapid calculat pe baza .size()
       // add bonus for a two day new release rental
-      if ((each.getPriceCode() == PriceCode.NEW_RELEASE)
+      if ((movie.getPriceCode() == PriceCode.NEW_RELEASE)
           && daysRented >= 2)
         frequentRenterPoints++;
       // show figures line for this rental
-      result += "\t" + each.getTitle() + "\t" + price + "\n";
+      result += "\t" + movie.getTitle() + "\t" + price + "\n";
       totalPrice += price;
     }
     // add footer lines
     result += "Amount owed is " + totalPrice + "\n";
     result += "You earned " + frequentRenterPoints + " frequent renter points";
     return result;
+  }
+
+  private static double computePrice(Movie movie, int daysRented) {
+    double price = 0;
+    switch (movie.getPriceCode()) {
+      case REGULAR:
+        price = 2;
+        if (daysRented > 2)
+          price += (daysRented - 2) * 1.5;
+        break;
+      case NEW_RELEASE:
+        price = daysRented * 3;
+        break;
+      case CHILDREN:
+        price = 1.5;
+        if (daysRented > 3)
+          price += (daysRented - 3) * 1.5;
+        break;
+    }
+    return price;
   }
 }
