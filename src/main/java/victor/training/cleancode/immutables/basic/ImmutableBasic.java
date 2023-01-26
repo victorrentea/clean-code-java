@@ -22,9 +22,19 @@ public class ImmutableBasic {
    }
 
    private static Immutable bizLogic(Immutable immutable) {
-//      immutable.setX(17);
       Immutable changedCopy = immutable.withX(17);
+      deeper(immutable);
       return changedCopy;
+   }
+
+   private static void deeper(Immutable immutable) {
+      evenDeeper(immutable);
+   }
+
+   private static void evenDeeper(Immutable immutable) {
+      // intr-un colt, intr-o noapte trista, facand un bugfix un coleg face un "dirty hack"
+      immutable.getNumbers().add(-1); // bugului lui trece daca face asta. SI fiind Fri noaptea, de ce nu?
+      // TODO n-ar trebui sa fac asta, dar repar Luni
    }
 
 }
