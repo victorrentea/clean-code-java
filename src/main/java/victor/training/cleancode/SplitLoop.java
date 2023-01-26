@@ -3,9 +3,11 @@ package victor.training.cleancode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -37,26 +39,21 @@ public class SplitLoop {
     EmployeeService employeeService;
 
     public String computeStatsHard(List<Employee> employees) {
-        long totalEmpAge = 0;
-        double totalConsultantSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
-            }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
-                }
-            }
-            totalConsultantSalary += employee.getSalary();
+        boolean consultantFoundWithoutId = employees.stream().filter(Employee::isConsultant).anyMatch(e -> e.getId() == null);
+        if (consultantFoundWithoutId) {
+            return "Employee(s) not persisted";
         }
+
+        long totalEmpAge = employees.stream()
+                .filter(e -> !e.isConsultant())
+                .mapToInt(Employee::getAge)
+                .sum();
+
+        updateConsultantSalaries(employees);
+        double totalConsultantSalary = employees.stream()
+                .filter(Employee::isConsultant)
+                .mapToDouble(Employee::getSalary)
+                .sum();
 
         long averageAge = 0;
         if (totalEmpAge != 0) {
@@ -69,6 +66,29 @@ public class SplitLoop {
         return "Average employee age = " + averageAge + "; Average consultant salary = " + averageConsultantSalary;
     }
 
+    private void updateConsultantSalaries(List<Employee> employees) {
+        for (Employee employee : employees) {
+            if (employee.isConsultant()) {
+                if (employee.getSalary() == null) {
+                    Integer salary = retrieveSallary(employee);
+                    employee.setSalary(salary);
+                }
+            }
+        }
+        // employees.stream()
+        //            .filter(Employee::isConsultant)
+        //            .filter(employee -> employee.getSalary() == null)
+        //            .forEach(employee -> employee.setSalary(retrieveSallary(employee)));
+    }
+
+    @NotNull
+    private Integer retrieveSallary(Employee employee) {
+        Integer salary = employeeService.retrieveSalary(employee.getId());
+        if (salary == null) {
+            throw new RuntimeException("NO salary found for employee " + employee.getId());
+        }
+        return salary;
+    }
 
 
 }
