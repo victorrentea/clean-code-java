@@ -2,12 +2,10 @@ package victor.training.cleancode;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -41,7 +39,7 @@ public class SplitLoop {
     public String computeStatsHard(List<Employee> employees) {
         boolean consultantFoundWithoutId = employees.stream().filter(Employee::isConsultant).anyMatch(e -> e.getId() == null);
         if (consultantFoundWithoutId) {
-            return "Employee(s) not persisted";
+            return "Employee(s) not " + "persisted";
         }
 
         // codul asta minte pentru ca variabila are alt SENS aici. nu e INCA average.

@@ -4,7 +4,7 @@ public class ParameterObjects {
    public static void main(String[] args) {
       PlaceOrderParams params = new PlaceOrderParams("John", "Doe", "St. Albergue", "Paris", 99);
       new ParameterObjects().placeOrder(params);
-      new AnotherClass().otherMethod("John", "Doe", 17);
+      new AnotherClass().otherMethod(new FullName("John", "Doe"), 17);
    }
 
    public void placeOrder(PlaceOrderParams placeOrderParams) {
@@ -17,11 +17,11 @@ public class ParameterObjects {
 }
 
 class AnotherClass {
-   public void otherMethod(String firstName, String lastName, int x) {
-      if (firstName == null || lastName == null) throw new IllegalArgumentException();
+   public void otherMethod(FullName fullName, int x) {
+      if (fullName.getFirstName() == null || fullName.getLastName() == null) throw new IllegalArgumentException();
 
       System.out.println("Another distant Logic " + x);
-      System.out.println("Person: " + lastName);
+      System.out.println("Person: " + fullName.getLastName());
    }
 }
 
