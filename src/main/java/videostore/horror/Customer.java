@@ -68,7 +68,7 @@ class Customer {
     return result;
   }
 
-  // code smell: metoda care tpt ce face e sa extraga date din param
+  // Feature Envy code smell: metoda care tpt ce face e sa extraga date din param
   private static double computePrice(Rental rental) {
     double price = 0;
     switch (rental.getMovie().getPriceCode()) {
