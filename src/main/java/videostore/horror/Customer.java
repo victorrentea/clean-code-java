@@ -33,10 +33,18 @@ class Customer {
 
     double totalPrice = 0;
     for (Rental rental : rentals) {
-      double price = rental.computePrice();
-      totalPrice += price;
-      result += generateStatementLine(rental, price);
+      totalPrice += rental.computePrice();
     }
+    for (Rental rental : rentals) {
+      // bis
+      result += generateStatementLine(rental, rental.computePrice());
+    }
+
+    // am repetat un apel de functie (computePrice). Cand e asta o idee proasta (in general)
+      // == cand nu E PURE
+    // #1 da alt rezultat a doua oara (la bis) de ce ? ca a adus de pe retea
+    // #2 daca modifica chestii : INSERT, MQ.send, event.fire
+    // obs: daca functia e PURA dar tine ff mult timp (eg> generam grafice, parsama XML din string)
 
     result += generateFooter(totalPrice, frequentRenterPoints);
     return result;
