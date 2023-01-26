@@ -36,30 +36,26 @@ class Customer {
       totalPrice += rental.computePrice();
     }
     for (Rental rental : rentals) {
-      // bis
-      result += generateStatementLine(rental, rental.computePrice());
+      result += generateStatementLine(rental);
     }
-
-    // am repetat un apel de functie (computePrice). Cand e asta o idee proasta (in general)
-      // == cand nu E PURE
-    // #1 da alt rezultat a doua oara (la bis) de ce ? ca a adus de pe retea
-    // #2 daca modifica chestii : INSERT, MQ.send, event.fire
-    // obs: daca functia e PURA dar tine ff mult timp (eg> generam grafice, parsama XML din string)
 
     result += generateFooter(totalPrice, frequentRenterPoints);
     return result;
   }
 
-  private static String generateStatementLine(Rental rental, double price) {
-    return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+  // ce are functia asta special de n-o s-o mutam in Rental?
+  // 1) incarca prea mult Rental cu logica ffff specifica doar mie. !
+  // nu este reusable domain logic, ci un detaliu marunt al usecaseului meu
+  // 2) Model (domain) <> VC (presentation)
+  // 3) SRP sa tii intreaga gemerare de statement aici , nu s-o imprastii
+  private static String generateStatementLine(Rental rental) {
+    return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
   }
 
-  @NotNull
   private String generateHeader() {
     return "Rental Record for " + getName() + "\n";
   }
 
-  @NotNull
   private static String generateFooter(double totalPrice, int frequentRenterPoints) {
     return "Amount owed is " + totalPrice + "\n" +
            "You earned " + frequentRenterPoints + " frequent renter points";
