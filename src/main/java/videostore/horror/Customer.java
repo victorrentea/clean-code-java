@@ -35,12 +35,14 @@ class Customer {
       // determine amounts for each line
       int daysRented = rentals.get(movie);
       double price = computePrice(movie, daysRented);
+
       // add frequent renter points
-      frequentRenterPoints++; // TODO mai rapid calculat pe baza .size()
+      frequentRenterPoints++;
       // add bonus for a two day new release rental
       if ((movie.getPriceCode() == PriceCode.NEW_RELEASE)
           && daysRented >= 2)
         frequentRenterPoints++;
+
       // show figures line for this rental
       result += "\t" + movie.getTitle() + "\t" + price + "\n";
       totalPrice += price;
