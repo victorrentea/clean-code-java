@@ -30,12 +30,12 @@ class Customer {
     String result = generateHeader();
 
     int frequentRenterPoints = rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
-    double totalPrice = 0;
 
+    double totalPrice = 0;
     for (Rental rental : rentals) {
       double price = rental.computePrice();
-      result += generateStatementLine(rental, price);
       totalPrice += price;
+      result += generateStatementLine(rental, price);
     }
 
     result += generateFooter(totalPrice, frequentRenterPoints);
