@@ -27,8 +27,12 @@ class MyMapper {
    }
 }
 
-class DeliveryDto {
+class DeliveryDto { // intors de un @GetMapping
 	public String recipientPerson;
+
+  public String getCreationDate() { // ~> "creationDate": "aa"
+    return "aa";
+  }
 }
 class Parcel {
    private Delivery delivery; // NULL until a delivery is scheduled

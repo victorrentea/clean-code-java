@@ -44,7 +44,10 @@ public class SplitLoop {
             return "Employee(s) not persisted";
         }
 
-        long totalEmpAge = employees.stream()
+        // codul asta minte pentru ca variabila are alt SENS aici. nu e INCA average.
+        // == abuz de variabile
+        // regula: variabilele trebuie sa aiba un singur inteles intr-o metoda.
+        long averageEmpAge = employees.stream()
                 .filter(e -> !e.isConsultant())
                 .mapToInt(Employee::getAge)
                 .sum();
@@ -55,15 +58,15 @@ public class SplitLoop {
                 .mapToDouble(Employee::getSalary)
                 .sum();
 
-        long averageAge = 0;
-        if (totalEmpAge != 0) {
-            averageAge = totalEmpAge / employees.stream().filter(e -> !e.isConsultant()).count();
+//        long averageAge = 0;
+        if (averageEmpAge != 0) {
+            averageEmpAge = averageEmpAge / employees.stream().filter(e -> !e.isConsultant()).count();
         }
         double averageConsultantSalary = 0;
         if (totalConsultantSalary != 0) {
             averageConsultantSalary = totalConsultantSalary / employees.size();
         }
-        return "Average employee age = " + averageAge + "; Average consultant salary = " + averageConsultantSalary;
+        return "Average employee age = " + averageEmpAge + "; Average consultant salary = " + averageConsultantSalary;
     }
 
     private void updateConsultantSalaries(List<Employee> employees) {
