@@ -57,13 +57,13 @@ class PriceService {
       }
       finalPrices.put(product.getId(), price);
     }
-    return new PriceCalculationResults(usedCoupons, finalPrices);
+    return new PriceCalculationResults(finalPrices, usedCoupons);
   }
 
 }
 @Value
 class PriceCalculationResults {
-  List<Coupon> usedCoupons;
   Map<Long, Double> finalPrices;
+  List<Coupon> usedCoupons;
 }
 
