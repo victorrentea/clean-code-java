@@ -1,8 +1,9 @@
 package videostore.horror;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 //// mai DB-friendly
 //class CustomerRentals {
@@ -27,20 +28,22 @@ class Customer {
   }
 
   public String generateStatement() {
-    String result = generateHeader();
+    return generateHeader()
+            + generateBody()
+            + generateFooter();
+    // m-am spart in figuri - epic, dar CLAR mult prea mult pt proiectul de zi cu zi.
+  }
 
-    int frequentRenterPoints = rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
+  private String generateBody() {
+    return rentals.stream().map(Customer::generateStatementLine).collect(joining());
+  }
 
-    double totalPrice = 0;
-    for (Rental rental : rentals) {
-      totalPrice += rental.computePrice();
-    }
-    for (Rental rental : rentals) {
-      result += generateStatementLine(rental);
-    }
+  private int computeTotalPoints() {
+    return rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
+  }
 
-    result += generateFooter(totalPrice, frequentRenterPoints);
-    return result;
+  private double computeTotalPrice() {
+    return rentals.stream().mapToDouble(Rental::computePrice).sum();
   }
 
   // ce are functia asta special de n-o s-o mutam in Rental?
@@ -56,9 +59,9 @@ class Customer {
     return "Rental Record for " + getName() + "\n";
   }
 
-  private static String generateFooter(double totalPrice, int frequentRenterPoints) {
-    return "Amount owed is " + totalPrice + "\n" +
-           "You earned " + frequentRenterPoints + " frequent renter points";
+  private  String generateFooter() {
+    return "Amount owed is " + computeTotalPrice() + "\n" +
+           "You earned " + computeTotalPoints() + " frequent renter points";
   }
 
 }
