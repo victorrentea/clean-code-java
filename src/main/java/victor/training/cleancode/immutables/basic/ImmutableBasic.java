@@ -9,28 +9,45 @@ public class ImmutableBasic {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
-      Immutable immutable = new Immutable();
-
-      immutable.x = 2;
-      immutable.numbers = numbers;
-      immutable.other = new Other(13);
+      Immutable immutable = new Immutable(2, numbers, new Other(13));
 
       System.out.println(immutable);
 
+      Immutable changed = bizLogic(immutable);
       // LOTS OF BUSINESS LOGIC HERE
 
-      System.out.println(immutable.numbers);
-      System.out.println(immutable);
+      System.out.println(changed.getNumbers());
+      System.out.println(changed);
+   }
+
+   private static Immutable bizLogic(Immutable immutable) {
+//      immutable.setX(17);
+      Immutable changedCopy = new Immutable(17, immutable.getNumbers(), immutable.getOther());
+      return changedCopy;
    }
 }
-
+// immutable = nu poti schima starea obiectului dupa creere
 class Immutable {
-   public int x;
-   public List<Integer> numbers;
-   public Other other;
+   private int x;
+   private List<Integer> numbers;
+   private Other other;
 
+   public Immutable(int x, List<Integer> numbers, Other other) {
+      this.x = x;
+      this.numbers = numbers;
+      this.other = other;
+   }
+   public int getX() {
+      return x;
+   }
+   public List<Integer> getNumbers() {
+      return numbers;
+   }
+   public Other getOther() {
+      return other;
+   }
    public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+      return String.format("Immutable{x=%d, numbers=%s, other=%s}", getX(), getNumbers(), getOther());
    }
 }
 
