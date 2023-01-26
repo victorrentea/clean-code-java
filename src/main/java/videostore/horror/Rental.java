@@ -13,6 +13,15 @@ public class Rental {
     this.daysRented = daysRented;
   }
 
+  public int computeRenterPoints() {
+    int frequentRenterPoints = 1;
+    boolean isNewRelease = getMovie().getPriceCode() == PriceCode.NEW_RELEASE;
+    if (isNewRelease && getDaysRented() >= 2) {
+      frequentRenterPoints++;
+    }
+    return frequentRenterPoints;
+  }
+
   // am facut OOP
   public double computePrice() {
     return movie.getPriceCode()

@@ -1,6 +1,6 @@
 package videostore.horror;
 
-import videostore.horror.Movie.PriceCode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -26,30 +26,37 @@ class Customer {
     return name;
   }
 
-  public String statement() {
+  public String generateStatement() {
+    String result = generateHeader();
+
+    int frequentRenterPoints = rentals.stream().mapToInt(Rental::computeRenterPoints).sum();
     double totalPrice = 0;
-    int frequentRenterPoints = 0;
-    String result = "Rental Record for " + getName() + "\n";
+
     for (Rental rental : rentals) {
       double price = rental.computePrice();
-      frequentRenterPoints += computeRenterPoints(rental);
       // show figures line for this rental
-      result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+      result += generateStatementLine(rental, price);
       totalPrice += price;
     }
-    // add footer lines
-    result += "Amount owed is " + totalPrice + "\n";
-    result += "You earned " + frequentRenterPoints + " frequent renter points";
+
+    result += generateFooter(totalPrice, frequentRenterPoints);
     return result;
   }
 
-  private static int computeRenterPoints(Rental rental) {
-    int frequentRenterPoints = 1;
-    boolean isNewRelease = rental.getMovie().getPriceCode() == PriceCode.NEW_RELEASE;
-    if (isNewRelease && rental.getDaysRented() >= 2) {
-      frequentRenterPoints++;
-    }
-    return frequentRenterPoints;
+  @NotNull
+  private static String generateStatementLine(Rental rental, double price) {
+    return "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+  }
+
+  @NotNull
+  private String generateHeader() {
+    return "Rental Record for " + getName() + "\n";
+  }
+
+  @NotNull
+  private static String generateFooter(double totalPrice, int frequentRenterPoints) {
+    return "Amount owed is " + totalPrice + "\n" +
+           "You earned " + frequentRenterPoints + " frequent renter points";
   }
 
 }
