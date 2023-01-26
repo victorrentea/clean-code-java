@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutables.basic;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ public class ImmutableBasic {
       System.out.println(changed.getNumbers());
       System.out.println(changed.getOther());
       System.out.println(changed);
+      System.out.println("Original: " + immutable);
    }
 
    private static Immutable bizLogic(Immutable immutable) {
@@ -49,15 +51,20 @@ final class Immutable {
       this.numbers = numbers;
       this.other = other;
    }
+
+   public List<Integer> getNumbers() {
+      return Collections.unmodifiableList(numbers); // creeaza un 'wrapper' peste lista ta originala care blocheaza (throw)
+      // orice apel ce ar modifica lista
+   }
+
    public Immutable withX(int x) {
       return new Immutable(x, getNumbers(), getOther());
    }
+
    public int getX() {
       return x;
    }
-   public List<Integer> getNumbers() {
-      return numbers;
-   }
+
    public Other getOther() {
       return other;
    }
