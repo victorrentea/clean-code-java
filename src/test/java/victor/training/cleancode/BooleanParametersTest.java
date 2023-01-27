@@ -21,7 +21,6 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic2\n" +
                                      "Logic3\n" +
                                      "Validate Task{id=5, started=false}\n" +
                                      "Audit task #1: Task{id=5, started=true}\n" +
@@ -36,7 +35,6 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic2\n" +
                                      "Logic3\n" +
                                      "Validate Task{id=5, started=false}\n" +
                                      "My Logic: Task{id=5, started=true}\n" +
@@ -53,7 +51,6 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic2\n" +
                                      "Logic3\n" +
                                      "Logic6 0\n" +
                                      "Task Ids: []\n" +
@@ -66,7 +63,6 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic2\n" +
                                      "Logic7 on fluff=false [Task{id=5, started=false}]\n" +
                                      "Logic8\n");
    }

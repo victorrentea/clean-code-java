@@ -45,9 +45,9 @@ public class BooleanParameters {
 
   // Note: this method might be called from multiple places in the codebase ...
   static void bigUglyMethod(int storeId, Task task) {
-    System.out.println("Complex Logic 1 " + task + " and " + storeId);
-    System.out.println("Complex Logic 2 " + task);
-    System.out.println("Complex Logic 3 " + task);
+    System.out.println("Cow Logic 1 " + task + " and " + storeId);
+    System.out.println("Cow Logic 2 " + task);
+    System.out.println("Cow Logic 3 " + task);
 
     // System.out.println("Logic just for CR#323 : " + task);
 
@@ -65,7 +65,6 @@ public class BooleanParameters {
     int j = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
-    System.out.println("Logic2");
     if (fluff) {
       System.out.println("Logic3");
       for (Task task : tasks) {
