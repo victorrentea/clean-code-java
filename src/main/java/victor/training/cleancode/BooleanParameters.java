@@ -18,77 +18,98 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 }
 
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO From my use-case #323, I call the method too, but have it do more within:
-    BooleanParameters.bigUglyMethod(2, task, true);
+    BooleanParameters.bigUglyMethod323(2, task);
   }
 }
 
 public class BooleanParameters {
 
   // Note: this method might be called from multiple places in the codebase ...
-  static void bigUglyMethod(int storeId, Task task, boolean cr323) {
-    System.out.println("Cow Logic 1 " + task + " and " + storeId);
-    System.out.println("Cow Logic 2 " + task);
-    System.out.println("Cow Logic 3 " + task);
+  static void bigUglyMethod(int storeId, Task task) {
+    cow(storeId, task);
+    donkey(storeId);
+  }
 
-    if (cr323) {
-      System.out.println("Logic just for CR#323 : " + task);
-    }
+  static void bigUglyMethod323(int storeId, Task task) { // SRP
+    cow(storeId, task);
+    System.out.println("Logic just for CR#323 : " + task);
+    donkey(storeId);
+  }
 
+  private static void donkey(int storeId) {
     System.out.println("Donkey Logic 1 " + storeId);
     System.out.println("Donkey Logic 2 " + storeId);
     System.out.println("Donkey Logic 3 " + storeId);
   }
 
+  private static void cow(int storeId, Task task) {
+    System.out.println("Cow Logic 1 " + task + " and " + storeId);
+    System.out.println("Cow Logic 2 " + task);
+    System.out.println("Cow Logic 3 " + task);
+  }
 
+
+  //        fix(tasks); // rau, da nu IAD
+  //        int points = getPoints(tasks); // IAD // o metoda care dupa nume pare ca doar iti niste rezultate
+  // nu se asteapta nimeni sa modifice date SOC si BUGURI
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests!
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
-    int j = tasks.size();
+  public void bossLevel(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Validate " + task);
-        task.setStarted();
-
-        taskIds.add(task.getId());
-
-        System.out.println("#sieu");
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+    System.out.println("Logic3");
+    int index = 0;
+    for (Task task : tasks) {
+      System.out.println("Validate " + task);
+      task.setStarted();
     }
+    for (Task task : tasks) {
+      taskIds.add(task.getId());
+    }
+    if (cr323) { // TODO remove the boolean
+      for (Task task : tasks) {
+        System.out.println("My Logic: " + task);
+      }
+    }
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+    System.out.println("Logic6 " + tasks.size());
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  // Lord gave us tests!
+  public void bossLevelNoFluff(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic7 on fluff=false " + tasks);
+    System.out.println("Logic8");
+  }
+
+  private int getPoints(List<Task> tasks) {
+    tasks.clear();
+    return 0;
   }
 
 }
