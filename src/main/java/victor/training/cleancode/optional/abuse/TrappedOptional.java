@@ -5,6 +5,8 @@ import lombok.Data;
 import java.util.Optional;
 
 public class TrappedOptional {
+  public void kafkaSend(String personName) {
+  }
   static class MyDto {
     public String recipientPerson;
   }
@@ -19,6 +21,14 @@ public class TrappedOptional {
             .map(String::toUpperCase)
             .ifPresent(name -> {
               entity.setRecipient(name);
+            });
+  }
+
+  public void trappedOptionalWithExternalSideEffect(MyDto dto) {
+    Optional.ofNullable(dto.recipientPerson)
+            .map(String::toUpperCase)
+            .ifPresent(name -> {
+              kafkaSend(name);
             });
   }
 }
