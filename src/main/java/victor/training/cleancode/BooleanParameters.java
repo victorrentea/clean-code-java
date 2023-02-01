@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 class SomeController {
   SomeService someService;
@@ -74,30 +77,40 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests!
-  public void bossLevel(List<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
-    System.out.println("Logic3");
+  public void bossLevel(List<Task> tasks) {
+    bossStart(tasks);
+    bossEnd(tasks);
+  }
+  public void bossLevel323(List<Task> tasks) {
+    bossStart(tasks);
+    tasks.forEach(BooleanParameters::sendToKafka);
+    bossEnd(tasks);
+  }
+
+  private static void sendToKafka(Task task) {
+    System.out.println("My Logic: " + task);
+  }
+
+  private static void bossEnd(List<Task> tasks) {
     int index = 0;
-    for (Task task : tasks) {
-      System.out.println("Validate " + task);
-      task.setStarted();
-    }
-    for (Task task : tasks) {
-      taskIds.add(task.getId());
-    }
-    if (cr323) { // TODO remove the boolean
-      for (Task task : tasks) {
-        System.out.println("My Logic: " + task);
-      }
-    }
     for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
+
     System.out.println("Logic6 " + tasks.size());
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  private static void bossStart(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
+    for (Task task : tasks) {
+      System.out.println("Validate " + task);
+      task.setStarted();
+    }
   }
 
   // Lord gave us tests!
