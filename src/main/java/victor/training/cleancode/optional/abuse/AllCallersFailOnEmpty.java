@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.lang.reflect.ParameterizedType;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class AllCallersFailOnEmpty {
   @Entity
@@ -24,20 +25,25 @@ public class AllCallersFailOnEmpty {
     }
   }
 
-//  private interface TenantRepo extends BaseRepo<Tenant, Long> {
-  private interface TenantRepo extends JpaRepository<Tenant, Long> {
+  //  private interface TenantRepo extends BaseRepo<Tenant, Long> {
+  private interface TenantRepo extends BaseRepo<Tenant, Long> {
+//    Optional<Tenant> findByName(String name);
+//    Tenant findByName(String name); // nicioadta nu intoarce null ci arunca ex daca nu a gasit dupa nume
   }
 
 
   private TenantRepo tenantRepo;
 
   public void flow1(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // throws if Optional is empty
+    Tenant tenant = tenantRepo.findOneById(tenantId)
+        /*.orElseThrow(
+            ()->new IllegalArgumentException("DE CE OARE DOAMNE SCRIU ASTA?!!")
+    )*/; // throws if Optional is empty
     System.out.println("Stuff1 with tenant: " + tenant);
   }
 
   public void flow2(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // done in 30 more places in code,
+    Tenant tenant = tenantRepo.findById(tenantId).orElseThrow(); // done in 30 more places in code,
     System.out.println("Stuff2 with tenant: " + tenant);
   }
 }

@@ -15,10 +15,30 @@ public class TrappedOptional {
 
   public void trappedOptional(MyDto dto) {
     MyEntity entity = new MyEntity();
-    Optional.ofNullable(dto.recipientPerson)
+//    Optional.ofNullable(dto.recipientPerson)
+//            .map(String::toUpperCase)
+//            .ifPresent(name -> {
+//              entity.setRecipient(name);
+//    sendKafka();
+//            });
+    String name;
+    if (dto.recipientPerson != null) {
+      name = dto.recipientPerson.toUpperCase();
+    } else {
+      name = fallback();
+    }
+    entity.setRecipient(name);
+  }
+
+  private String fallback() {
+    throw new RuntimeException("Method not implemented");
+  }
+
+  public void trappedOptionalWithoutSIdeEffects(MyDto dto) {
+    MyEntity entity = new MyEntity();
+    String name = Optional.ofNullable(dto.recipientPerson)
             .map(String::toUpperCase)
-            .ifPresent(name -> {
-              entity.setRecipient(name);
-            });
+            .orElse(fallback());
+    entity.setRecipient(name);
   }
 }
