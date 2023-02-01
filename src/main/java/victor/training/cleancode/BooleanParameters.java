@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,7 +70,7 @@ public class BooleanParameters {
       System.out.println("Logic3");
       for (Task task : tasks) {
         System.out.println("Validate " + task);
-        task.setStarted();
+        task.setStarted(true);
 
         taskIds.add(task.getId());
 
@@ -91,28 +92,8 @@ public class BooleanParameters {
 }
 
 
+@Data
 class Task {
   private final int id;
   private boolean started;
-
-  Task(int id) {
-    this.id = id;
-  }
-
-  public void setStarted() {
-    started = true;
-  }
-
-  public boolean isStarted() {
-    return started;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  @Override
-  public String toString() {
-    return "Task{" + "id=" + id + ", started=" + started + '}';
-  }
 }

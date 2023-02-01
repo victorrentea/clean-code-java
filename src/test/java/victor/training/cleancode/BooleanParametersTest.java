@@ -22,8 +22,8 @@ class BooleanParametersTest {
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic3\n" +
-                                     "Validate Task{id=5, started=false}\n" +
-                                     "Audit task #1: Task{id=5, started=true}\n" +
+                                     "Validate Task(id=5, started=false)\n" +
+                                     "Audit task #1: Task(id=5, started=true)\n" +
                                      "Logic6 1\n" +
                                      "Task Ids: [5]\n" +
                                      "Logic8\n");
@@ -36,9 +36,9 @@ class BooleanParametersTest {
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
                                      "Logic3\n" +
-                                     "Validate Task{id=5, started=false}\n" +
-                                     "My Logic: Task{id=5, started=true}\n" +
-                                     "Audit task #1: Task{id=5, started=true}\n" +
+                                     "Validate Task(id=5, started=false)\n" +
+                                     "My Logic: Task(id=5, started=true)\n" +
+                                     "Audit task #1: Task(id=5, started=true)\n" +
                                      "Logic6 1\n" +
                                      "Task Ids: [5]\n" +
                                      "Logic8");
@@ -63,7 +63,7 @@ class BooleanParametersTest {
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic7 on fluff=false [Task{id=5, started=false}]\n" +
+                                     "Logic7 on fluff=false [Task(id=5, started=false)]\n" +
                                      "Logic8\n");
    }
 
@@ -74,10 +74,10 @@ class BooleanParametersTest {
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())
-          .contains("Validate Task{id=5, started=false}")
-          .contains("Validate Task{id=6, started=false}")
-          .contains("Audit task #1: Task{id=5, started=true}")
-          .contains("Audit task #2: Task{id=6, started=true")
+          .contains("Validate Task(id=5, started=false)")
+          .contains("Validate Task(id=6, started=false)")
+          .contains("Audit task #1: Task(id=5, started=true)")
+          .contains("Audit task #2: Task(id=6, started=true)")
       ;
    }
 }
