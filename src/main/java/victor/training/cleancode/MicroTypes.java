@@ -11,28 +11,30 @@ import static java.util.stream.Collectors.joining;
 
 public class MicroTypes {
 
+    record CustomerId(long id){}
+    record ProductLine(String productName, int count){}
+
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, Map<String, Integer>> extremeFP() {
+    public Map<CustomerId, List<ProductLine>> extremeFP() {
         Long customerId = 1L;
         Integer product1Count = 2;
         Integer product2Count = 4;
-        return Map.of(customerId, Map.of(
-                "Table", product1Count,
-                "Chair", product2Count
-        ));
+        return Map.of(new CustomerId(customerId), List.of(
+                new ProductLine("Table", product1Count),
+                new ProductLine("Chair", product2Count
+                )));
     }
     //</editor-fold>
 
     @Test
     void lackOfAbstractions() {
-        Map<Long, Map<String, Integer>> map = extremeFP();
-        // Joke: try "var" above :)
+        Map<CustomerId, List<ProductLine>> map = extremeFP();
 
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).entrySet().stream()
-                    .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+        for (CustomerId cid : map.keySet()) {
+            String s = map.get(cid).stream()
+                    .map(pl -> pl.count() + " pcs. of " + pl.productName())
                     .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
+            System.out.println("cid=" + cid.id + " got " + s);
         }
     }
 }
