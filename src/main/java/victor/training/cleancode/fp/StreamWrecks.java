@@ -1,6 +1,9 @@
 package victor.training.cleancode.fp;
 
-import lombok.Data;
+import victor.training.cleancode.fp.support.Order;
+import victor.training.cleancode.fp.support.OrderLine;
+import victor.training.cleancode.fp.support.Product;
+import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,27 +31,4 @@ public class StreamWrecks {
 
 
 //VVVVVVVVV ==== supporting (dummy) code ==== VVVVVVVVV
-@Data
-class Product {
-	private Long id;
-	private boolean deleted;
-}
 
-@Data
-class Order {
-	private Long id;
-	private List<OrderLine> orderLines;
-	private LocalDate creationDate;
-	private boolean active;
-	private int price;
-}
-
-@Data
-class OrderLine {
-	private Product product;
-	private int itemCount;
-}
-
-interface ProductRepo {
-	List<Long> getHiddenProductIds();
-}

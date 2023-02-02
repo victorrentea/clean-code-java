@@ -1,7 +1,7 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp.support;
 
 import java.util.List;
 
-interface CouponRepo {
+public interface CouponRepo {
   void markUsedCoupons(long customerId, List<Coupon> usedCoupons);
 }

@@ -1,8 +1,9 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp.support;
 
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
+public
 class Coupon {
   private final ProductCategory category;
   private final int discountAmount;

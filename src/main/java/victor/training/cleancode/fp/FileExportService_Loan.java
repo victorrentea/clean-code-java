@@ -1,20 +1,18 @@
 package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.lambda.Unchecked;
-import org.springframework.data.jpa.repository.JpaRepository;
+import victor.training.cleancode.fp.support.OrderRepo;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
-class FileExporter {
+public class FileExportService_Loan {
    private final OrderRepo orderRepo;
 
    public void exportOrders() throws IOException {
@@ -40,21 +38,3 @@ class FileExporter {
    }
 }
 
-@RequiredArgsConstructor
-class ExportService {
-   private final FileExporter fileExporter;
-
-   @SneakyThrows
-   public void exportOrders() {
-      fileExporter.exportOrders();
-   }
-
-   @SneakyThrows
-   public void exportUsers() {
-      // TODO implement the export of users using *the same workflow* as for orders
-   }
-}
-
-interface OrderRepo extends JpaRepository<Order, Long> {
-   Stream<Order> findByActiveTrue(); // Streaming query over 1 million orders
-}

@@ -1,6 +1,9 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
+import victor.training.cleancode.fp.support.*;
+import victor.training.cleancode.fp.support.Product;
+import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-class PriceService {
+class PureRefactor {
   private final CustomerRepo customerRepo;
   private final ThirdPartyPrices thirdPartyPrices;
   private final CouponRepo couponRepo;
@@ -20,7 +23,7 @@ class PriceService {
     List<Product> products = productRepo.findAllById(productIds);
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
-    for (Product product : products) {
+    for (victor.training.cleancode.fp.support.Product product : products) {
       Double price = internalPrices.get(product.getId());
       if (price == null) {
         price = thirdPartyPrices.fetchPrice(product.getId());

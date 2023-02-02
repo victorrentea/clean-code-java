@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PureFunctionsIntro {
+public class PureIntro {
 
-  public PureFunctionsIntro(ImmutableMap<Integer, Double> prices) {
+  public PureIntro(ImmutableMap<Integer, Double> prices) {
     this.prices = prices;
   }
 

@@ -1,4 +1,4 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp.support;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+public
 class Product {
 
   @Id
@@ -25,6 +26,8 @@ class Product {
 
   private LocalDateTime createDate;
   private boolean premium;
+  private boolean deleted;
+
 
   public Product(String name, ProductCategory category) {
     this.name = name;

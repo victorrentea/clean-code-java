@@ -1,6 +1,6 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp.support;
 
-interface CustomerRepo {
+public interface CustomerRepo {
    Customer findById(long customerId);
    int countByEmail(String email);
 

@@ -5,10 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import victor.training.cleancode.fp.ExportService;
-import victor.training.cleancode.fp.FileExporter;
-import victor.training.cleancode.fp.Order;
-import victor.training.cleancode.fp.OrderRepo;
+import victor.training.cleancode.fp.support.Order;
+import victor.training.cleancode.fp.support.OrderRepo;
 
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -21,7 +19,7 @@ public class LoanPatternTest {
    @Mock
    private OrderRepo orderRepo;
    @InjectMocks
-   private FileExporter exporter;
+   private FileExportService_Loan exporter;
 
 
    @Test
@@ -31,7 +29,7 @@ public class LoanPatternTest {
       order.setCreationDate(parse("2021-01-07"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
 
-      new ExportService(exporter).exportOrders();
+      new FileExportService(exporter).exportOrders();
 
       // NOW read the file from the disk ... Yuck!
 

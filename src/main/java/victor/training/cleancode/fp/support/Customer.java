@@ -1,4 +1,4 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp.support;
 
 import lombok.Data;
 import org.apache.tomcat.jni.Address;
@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+public
 class Customer {
   private Long id;
   private String name;

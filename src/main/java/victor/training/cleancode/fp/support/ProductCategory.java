@@ -1,4 +1,4 @@
-package victor.training.cleancode.fp.pure;
+package victor.training.cleancode.fp.support;
 
 enum ProductCategory {
   ELECTRONICS, KIDS, ME, HOME, UNCATEGORIZED
