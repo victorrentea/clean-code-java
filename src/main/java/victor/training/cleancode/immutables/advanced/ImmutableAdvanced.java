@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutables.advanced;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -9,13 +10,14 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = null;//new Immutable(1, numbers, new Other(15));
+      Immutable immutable = new Immutable(1, numbers, new Other(15));
       System.out.println("Before: " + immutable);
 
       wilderness(immutable);
       // reasons to use immutable objects:
       // -
       // -
+      immutable.getNumbers().add(-1);
 
       System.out.println("After: " + immutable);
    }
@@ -36,7 +38,7 @@ class Immutable {
       this.other = other;
    }
    public List<Integer> getNumbers() {
-      return numbers;
+      return Collections.unmodifiableList(numbers);
    }
    public int getX() {
       return x;
