@@ -75,30 +75,39 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests!
-  public void bossLevel(List<Task> taskList, boolean cr323) {
+  public void bossLevel(List<Task> taskList) {
+    bossStart(taskList);
+
+    bossEnd(taskList);
+  }
+  public void bossLevel323(List<Task> taskList) {
+    bossStart(taskList);
+
+    for (Task task : taskList) {
+      System.out.println("My Logic: " + task);
+    }
+    bossEnd(taskList);
+  }
+
+  private static void bossEnd(List<Task> taskList) {
+    for (int i = 0; i < taskList.size(); i++) {
+      System.out.println("Audit task #" + (i+ 1) + ": " + taskList.get(i));
+    }
+    List<Integer> taskIds = taskList.stream().map(Task::getId).toList();
+    // if you benchmark this code very often you will see it WORKING FASTER in JAVA?!!?!?!?!  JIT
+    int taskCount = taskList.size();
+    System.out.println("Logic6 " + taskCount);
+    System.out.println("Task Ids: " + taskIds);
+    System.out.println("Logic8");
+  }
+
+  private static void bossStart(List<Task> taskList) {
     System.out.println("Logic1");
     System.out.println("Logic3");
     for (Task task : taskList) {
       System.out.println("Validate " + task);
       task.setStarted(true);
     }
-    List<Integer> taskIds = taskList.stream().map(Task::getId).toList();
-
-    if (cr323) {
-      for (Task task : taskList) {
-        System.out.println("My Logic: " + task);
-      }
-    }
-    int index = 0;
-    for (Task task : taskList) {
-      index++;
-      System.out.println("Audit task #" + index + ": " + task);
-    }
-    // if you benchmark this code very often you will see it WORKING FASTER in JAVA?!!?!?!?!  JIT
-    int taskCount = taskList.size();
-    System.out.println("Logic6 " + taskCount);
-    System.out.println("Task Ids: " + taskIds);
-    System.out.println("Logic8");
   }
 
 
