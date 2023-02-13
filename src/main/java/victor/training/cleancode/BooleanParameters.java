@@ -83,7 +83,7 @@ public class BooleanParameters {
   public void bossLevel323(List<Task> taskList) {
     bossStart(taskList);
 
-    for (Task task : taskList) {
+    for (Task task : taskList) { // optional if youwant to make it a stream.forEach()
       System.out.println("My Logic: " + task);
     }
     bossEnd(taskList);
@@ -93,7 +93,9 @@ public class BooleanParameters {
     for (int i = 0; i < taskList.size(); i++) {
       System.out.println("Audit task #" + (i+ 1) + ": " + taskList.get(i));
     }
+    //MANDATORY: if a part of a for accumulates somethign (ids here) -> Stream 100% of the cases.
     List<Integer> taskIds = taskList.stream().map(Task::getId).toList();
+
     // if you benchmark this code very often you will see it WORKING FASTER in JAVA?!!?!?!?!  JIT
     int taskCount = taskList.size();
     System.out.println("Logic6 " + taskCount);
