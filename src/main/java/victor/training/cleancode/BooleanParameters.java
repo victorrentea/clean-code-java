@@ -72,33 +72,41 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests!
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
-    int j = tasks.size();
+  public void bossLevel(List<Task> taskList, boolean cr323) {
     System.out.println("Logic1");
+    System.out.println("Logic3");
+    int index = 0;
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Validate " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+    for (Task task : taskList) {
+      System.out.println("Validate " + task);
+      task.setStarted(true);
     }
+    for (Task task : taskList) {
+      taskIds.add(task.getId());
+    }
+    for (Task task : taskList) {
+      if (cr323) {
+        System.out.println("My Logic: " + task);
+      }
+    }
+    for (Task task : taskList) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+    int taskCount = taskList.size();
+    System.out.println("Logic6 " + taskCount);
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
   }
+
+
+  // Lord gave us tests!
+  public void bossLevelNoFluff(List<Task> taskList) {
+    System.out.println("Logic1");
+    System.out.println("Logic7 on fluff=false " + taskList);
+    System.out.println("Logic8");
+  }
+
 
 }
 
