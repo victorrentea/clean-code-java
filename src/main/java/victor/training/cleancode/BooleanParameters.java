@@ -38,6 +38,7 @@ class MyService {
   public void useCase323(int id, Task task) {
     // TODO From my use-case #323, I call the method too, but have it do more within:
     BooleanParameters.bigUglyMethod323(2, task);
+    System.out.println("Logic for cr323");
   }
 }
 
