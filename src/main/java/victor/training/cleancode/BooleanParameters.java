@@ -82,7 +82,7 @@ public class BooleanParameters {
       System.out.println("Validate " + task);
       task.setStarted(true);
     }
-    List<Integer> taskIds = taskList.stream().map(Task::getId).collect(Collectors.toList());
+    List<Integer> taskIds = taskList.stream().map(Task::getId).toList();
 
     if (cr323) {
       for (Task task : taskList) {
