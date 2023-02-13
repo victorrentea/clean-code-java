@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class SomeController {
   SomeService someService;
@@ -34,6 +35,7 @@ class SomeService {
     BooleanParameters.bigUglyMethod(id, task);
   }
 }
+
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO From my use-case #323, I call the method too, but have it do more within:
@@ -51,6 +53,7 @@ public class BooleanParameters {
 
     donkey(storeId);
   }
+
   static void bigUglyMethod(int storeId, Task task) {
     cow(storeId, task);
     donkey(storeId);
@@ -75,24 +78,23 @@ public class BooleanParameters {
   public void bossLevel(List<Task> taskList, boolean cr323) {
     System.out.println("Logic1");
     System.out.println("Logic3");
-    int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
     for (Task task : taskList) {
       System.out.println("Validate " + task);
       task.setStarted(true);
     }
-    for (Task task : taskList) {
-      taskIds.add(task.getId());
-    }
-    for (Task task : taskList) {
-      if (cr323) {
+    List<Integer> taskIds = taskList.stream().map(Task::getId).collect(Collectors.toList());
+
+    if (cr323) {
+      for (Task task : taskList) {
         System.out.println("My Logic: " + task);
       }
     }
+    int index = 0;
     for (Task task : taskList) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
+    // if you benchmark this code very often you will see it WORKING FASTER in JAVA?!!?!?!?!  JIT
     int taskCount = taskList.size();
     System.out.println("Logic6 " + taskCount);
     System.out.println("Task Ids: " + taskIds);
