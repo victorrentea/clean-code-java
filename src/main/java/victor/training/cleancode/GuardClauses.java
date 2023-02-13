@@ -21,6 +21,7 @@ public class GuardClauses {
       return retiredAmount();
     }
     if (marine.getYearsService() == null) {
+      // this
       throw new IllegalArgumentException("Any marine should have the years of service set");
     }
     int result = marine.getYearsService() * 100 + bonusPackage.getValue();
