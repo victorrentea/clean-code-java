@@ -1,6 +1,9 @@
 package victor.training.cleancode;
 
 
+import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,8 +108,15 @@ class CarSearchCriteria { // smells like JSON ...
 }
 
 @Entity
+@Getter
+        //@Data // DANGEROUS on @ENtity: because
+        // 1 hashCode/equals will return a different value when Hib assings the id at repo.save()
+        // DO NOT implem hash/eq on @Entity
+        // 2 generated toString includes even children collections -~~~~> Lazy Loading  SQL running because of a tostring
+        // 3 setters for free
 class CarModel {
     @Id
+    @Exclude
     private Long id;
     private String make;
     private String model;
