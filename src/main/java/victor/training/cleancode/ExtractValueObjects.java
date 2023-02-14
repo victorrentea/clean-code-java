@@ -1,6 +1,11 @@
 package victor.training.cleancode;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -43,9 +48,14 @@ class Alta {
 //    - it does not have persistent ID (PK) - just a "value"
 //    - hashcode/equals involves all fields
 //@Embeddable
+
+// effectively immutable value object
+@Embeddable
 class Interval {
-    private final int start;
-    private final int end;
+    private /*final*/ int start;
+    private /*final*/ int end;
+
+    protected Interval() {} // just for Hibenate to hidrate the obj when loading from DB
 
     Interval(int start, int end) {
         // #kudos for this:
@@ -100,6 +110,7 @@ class CarModel {
     private Long id;
     private String make;
     private String model;
+    @Embedded
     private Interval yearInterval;
 
     protected CarModel() {
@@ -159,7 +170,9 @@ class CarModelMapper {
     }
 
     public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
+//        if (dto.startYear > dto.endYear) throw new IllegalArgumentException("start larger than end");
+        Interval yearInterval = new Interval(dto.startYear, dto.endYear);
+        return new CarModel(dto.make, dto.model, yearInterval);
     }
 }
 
@@ -174,21 +187,35 @@ class CarModelDto {
 //@Service
 //class ServiceA {
 //    @Autowired
-//    private ServiceB b;
+//    private MySmartXmlParser b;
+//    //    @Autowired
+//    //    private BFactory bf;
 //
 //    public void method() {
-//       getB(1);
+//        //       bf.getB(1).stuff(-1);
+//        getB(1).stuff(-1);
 //    }
-//
-//    public void getB(int param) {
-//        b.stuff(param);
+//    public MySmartXmlParser getB(int param) { // in testing this requires partial Mocks (@Spy) <- some ppl are very against these
+//        return new MySmartXmlParser(param); // in tests -> mocks returning mocks
 //    }
 //}
+////@Service
+////class BFactory {
+////    public MySmartXmlParser getB(int param) { // in testing this requires partial Mocks (@Spy) <- some ppl are very against these
+////        return new MySmartXmlParser(param); // in tests -> mocks returning mocks
+////    }
+////
+////}
 //
-//@Service
-//class ServiceB {
+//// XML parse
+//class MySmartXmlParser {
+//    private final int param; // state <  cached some stuff
 //
-//    public void stuff(int param) {
+//    public MySmartXmlParser(int param) {
+//        this.param = param;
+//    }
+//
+//    public void stuff(int arg) {
 //
 //    }
 //}
