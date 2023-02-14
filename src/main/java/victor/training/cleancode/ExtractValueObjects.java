@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -11,32 +12,36 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear())))
+                .filter(model -> new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(new Interval(model.getStartYear(), model.getEndYear())))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
-    }
-
-}
-
-class MathUtil {
-
-    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 }
 
+//class MathUtil {
+//    // cofession
+////    public static void method(DomainObject myObject) {
+////        // 3-5 lines of domain logic that would help me in many places => MOVE INSIDE the Domain Object
+////    }
+//}
+//we identified a new Value Object
+//    - (usually small) group of fields
+//    - immutable
+//    - it does not have persistent ID (PK) - just a "value"
+//    - hashcode/equals involves all fields
+//@Embeddable
 class Interval {
     private final int start;
     private final int end;
@@ -44,6 +49,10 @@ class Interval {
     Interval(int start, int end) {
         this.start = start;
         this.end = end;
+    }
+
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
     }
 
     public int getStart() {
