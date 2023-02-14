@@ -20,7 +20,7 @@ class ExtractValueObjects {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         Interval yearInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
         List<CarModel> results = models.stream()
-//                .filter(model -> model.matchesYears(criteria)) // violates arch rules: couples Domain Model👑 to the API
+                //                .filter(model -> model.matchesYears(criteria)) // violates arch rules: couples Domain Model👑 to the API
                 .filter(model -> yearInterval.intersects(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
