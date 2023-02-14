@@ -15,6 +15,11 @@ class SomeController {
   public void blueEndpoint(@PathVariable int storeId, @RequestBody Task task) {
     someService.blueMethod(storeId, task);
   }
+
+  @GetMapping("red/{storeId}")
+  public void redEndpoint(@PathVariable int storeId, @RequestBody Task task) {
+    someService.redMethod(storeId, task);
+  }
 }
 
 class SomeService {
@@ -37,8 +42,8 @@ class SomeService {
 
 class MyService {
   public void useCase323(int id, Task task) {
-    // TODO From my use-case #323, I call the method too, but have it do more within:
-    BooleanParameters.bigUglyMethod(2, task);
+    // TODO The shared called method must execute logic specific for my use-case #323
+    BooleanParameters.bigUglyMethod(id, task);
   }
 }
 
@@ -60,7 +65,7 @@ public class BooleanParameters {
 
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-  // Lord gave us tests!
+  // Lord gave us tests! 👌 TODO run tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     int index = 0; // TODO move closer to usages in a safe way
     int j = tasks.size();
