@@ -25,6 +25,9 @@ public class SplitLoop {
             }
             averageSalary += employee.getSalary();
         }
+        // at this line the "averageAge" variable lies ! => it's still SUM yet
+        // variables should have a single unambiguous meaning in a function
+        //
         averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
         averageSalary = averageSalary / employees.size();
         System.out.println("Consultant IDs: " + consultantIds);

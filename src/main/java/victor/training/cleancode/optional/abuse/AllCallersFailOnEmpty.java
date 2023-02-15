@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.lang.reflect.ParameterizedType;
 import java.util.NoSuchElementException;
 
@@ -12,6 +13,8 @@ public class AllCallersFailOnEmpty {
   private static class Tenant {
     @Id
     Long id;
+    //    @Transient
+    //    transient String IcanTooBeStupid;
   }
 
   private interface BaseRepo<T,PK> extends JpaRepository<T, PK> {

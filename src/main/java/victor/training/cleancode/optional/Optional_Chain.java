@@ -1,5 +1,6 @@
 package victor.training.cleancode.optional;
 
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Optional;
@@ -55,21 +56,25 @@ class Parcel {
 }
 
 
+// BAD REFLECTION
+
+
+@Entity // imagine
 class Delivery {
   @NotNull
   private Address address; // NOT NULL IN DB
 
-   public Delivery(Address address) {
-     this.address = requireNonNull(address);
-   }
+  public Delivery(Address address) {
+    this.address = requireNonNull(address);
+  }
 
-	public void setAddress(Address address) {
-      this.address = requireNonNull(address); // TODO null safe
-	}
+  public void setAddress(Address address) {
+    this.address = requireNonNull(address); // TODO null safe
+  }
 
-	public Address getAddress() {
-      return address;
-   }
+  public Address getAddress() {
+    return address;
+  }
 }
 
 class Address {
