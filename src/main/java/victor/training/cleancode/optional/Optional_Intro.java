@@ -18,7 +18,7 @@ public class Optional_Intro {
 
 	public static String getDiscountLine(Customer customer) {
 		Discount discount = computeDiscount(customer.getMemberCard());
-		if (discount != null)
+		if (discount.getGlobalPercentage() != 0) // worse< here you might not have thought of checking for zero
 			return "You got a discount of %" + discount.getGlobalPercentage();
 		return "";
 	}
@@ -30,7 +30,7 @@ public class Optional_Intro {
 		if (card.getFidelityPoints() >= 50) {
 			return new Discount(3);
 		}
-		return null;
+		return new Discount(0); // Null-Object pattern = you create a dummy instnace instead of passing a nul laround
 	}
 
 	@Data
