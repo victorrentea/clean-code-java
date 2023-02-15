@@ -1,10 +1,8 @@
 package victor.training.cleancode.fp;
 
 import com.google.common.annotations.VisibleForTesting;
-import io.vavr.Tuple2;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
 import victor.training.cleancode.fp.support.*;
 import victor.training.cleancode.fp.support.Product;
 import victor.training.cleancode.fp.support.ProductRepo;
@@ -13,11 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 class PureRefactor {
   private final CustomerRepo customerRepo;
-  private final ThirdPartyPrices thirdPartyPrices;
+  private final ThirdPartyPrices thirdPartyPricesApi;
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
@@ -59,15 +58,21 @@ class PureRefactor {
   }
 
   private Map<Long, Double> resolvePricesFromThirdParty(Map<Long, Double> internalPrices, List<Product> products) {
+    List<Long> unknownProductIds = products.stream()
+            .map(Product::getId)
+            .filter(id -> !internalPrices.containsKey(id))
+            //.filter(not(internalPrices::containsKey))
+            .collect(Collectors.toList());
+    Map<Long, Double> thirdPartyPrices = thirdPartyPricesApi.fetchAllPrices(unknownProductIds);
+
     Map<Long, Double> resolvedPrices = new HashMap<>();
-    for (Product product : products) {
-      Double price = internalPrices.get(product.getId());
-      if (price == null) {
-        price = thirdPartyPrices.fetchPrice(product.getId());
-      }
-      resolvedPrices.put(product.getId(), price);
-    }
+    resolvedPrices.putAll(internalPrices);
+    resolvedPrices.putAll(thirdPartyPrices);
     return resolvedPrices;
+  }
+
+  private void fetchAllPrices(List<Long> unknownProductIds) {
+    throw new RuntimeException("Method not implemented");
   }
 
 }
