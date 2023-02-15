@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import io.vavr.Tuple2;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -40,8 +41,8 @@ class PureRefactor {
     return result.getFinalPrices();
   }
 
-  @NotNull
-  private static PriceCalculationResult doComputePrices(Customer customer, List<Product> products, Map<Long, Double> resolvedPrices) {
+  @VisibleForTesting
+  static PriceCalculationResult doComputePrices(Customer customer, List<Product> products, Map<Long, Double> resolvedPrices) {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {

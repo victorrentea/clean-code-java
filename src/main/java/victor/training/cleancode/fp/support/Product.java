@@ -49,4 +49,8 @@ class Product {
   public void setPremium(boolean premium) {
     this.premium = premium;
   }
+
+  public boolean isActive() {
+    return !deleted;
+  }
 }
