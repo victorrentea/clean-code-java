@@ -2,15 +2,9 @@ package victor.training.cleancode.fp;
 
 import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import victor.training.cleancode.fp.support.*;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,8 +30,8 @@ class PureRefactor {
     PriceCalculationResult result = doComputePrices(customer, products, resolvedPrices);
 
     // rabbit.send("mesasge"); api post
-    couponRepo.markUsedCoupons(customerId, result.getUsedCoupons());
-    return result.getFinalPrices();
+    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
+    return result.finalPrices();
   }
 
   @VisibleForTesting
@@ -71,14 +65,17 @@ class PureRefactor {
     return resolvedPrices;
   }
 
-  private void fetchAllPrices(List<Long> unknownProductIds) {
-    throw new RuntimeException("Method not implemented");
-  }
-
 }
 
-@Value
-class PriceCalculationResult {
-  Map<Long, Double> finalPrices;
-  List<Coupon> usedCoupons;
+record PriceCalculationResult(Map<Long, Double> finalPrices,
+                              List<Coupon> usedCoupons) {
+  PriceCalculationResult {
+    Objects.requireNonNull(finalPrices);
+  }
+
+  public void logic() {
+
+  }
+  // jav 17
+  // getters, hash eq, tostring, ctor
 }
