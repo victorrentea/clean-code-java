@@ -15,6 +15,8 @@ public class Optional_Intro {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
 		System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
+		// "theory of conspiracy" friends ?
+		System.out.println(getDiscountLine(new Customer()));
 	}
 
 	public static String getDiscountLine(Customer customer) {
@@ -24,6 +26,10 @@ public class Optional_Intro {
 	}
 
 	private static Optional<Discount> computeDiscount(MemberCard card) {
+		if (card == null) { // guard condition to defend against invalid inputs in the
+			// core of your domain logic -> abstaction layer violation:
+			return Optional.empty();
+		}
 		if (card.getFidelityPoints() >= 100) {
 			return Optional.of(new Discount(5));
 		}
