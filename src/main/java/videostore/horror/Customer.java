@@ -5,12 +5,14 @@ import videostore.horror.Movie.PriceCode;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
+
+	;
 
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
