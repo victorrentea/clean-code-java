@@ -26,7 +26,6 @@ class Customer {
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + name + "\n";
     for (Movie each : rentals.keySet()) {
-      // determine amounts for each line
       int dr = rentals.get(each);
       double thisAmount = computeAmountForMovie(each, dr);
       // add frequent renter points
@@ -34,7 +33,7 @@ class Customer {
       // add bonus for a two day new release rental
       if (each.getPriceCode() != null &&
           (each.getPriceCode() == PriceCode.NEW_RELEASE)
-          && dr > 1)
+          && dr >= 2)
         frequentRenterPoints++;
       // show figures line for this rental
       result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
