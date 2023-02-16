@@ -1,7 +1,10 @@
 package videostore.horror;
 
-public class Movie {
+import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
+public class Movie {
   enum PriceCode {
     CHILDREN,
     REGULAR,
@@ -12,8 +15,8 @@ public class Movie {
   private final PriceCode priceCode;
 
   public Movie(String title, PriceCode priceCode) {
-    this.title = title;
-    this.priceCode = priceCode;
+    this.title = requireNonNull(title);
+    this.priceCode = requireNonNull(priceCode);
   }
 
   public PriceCode getPriceCode() {

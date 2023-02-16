@@ -1,12 +1,24 @@
 package videostore.horror;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import videostore.horror.Movie.PriceCode;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class CustomerTest {
+
+    @Test
+    void throwsForNullTitle() {
+        assertThatThrownBy(() -> new Movie(null, PriceCode.REGULAR));
+    }
+
+    @Test
+    void throwsForNullPriceCode() {
+        assertThatThrownBy(() -> new Movie("Asfd", null));
+    }
 
     @Test
     public void characterizationTest() {
