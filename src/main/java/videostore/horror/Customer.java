@@ -1,7 +1,5 @@
 package videostore.horror;
 
-import videostore.horror.Movie.PriceCode;
-
 import java.util.*;
 
 import static java.util.Objects.requireNonNull;
@@ -23,47 +21,24 @@ class Customer {
   }
 
   public String statement() {
-    double totalAmount = 0;
+    double totalPrice = 0;
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + name + "\n";
     for (Rental rental : rentals) {
-      Movie movie = rental.getMovie();
-      int daysRented = rental.getDaysRented();
-      double thisAmount = computeAmountForMovie(movie, daysRented);
+      double price = rental.computePriceForMovie();
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two day new release rental
-      if (movie.getPriceCode() != null &&
-          (movie.getPriceCode() == PriceCode.NEW_RELEASE)
-          && daysRented >= 2)
+      if (rental.earnsBonus())
         frequentRenterPoints++;
       // show figures line for this rental
-      result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
-      totalAmount += thisAmount;
+      result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
+      totalPrice += price;
     }
     // add footer lines
-    result += "Amount owed is " + totalAmount + "\n";
+    result += "Amount owed is " + totalPrice + "\n";
     result += "You earned " + frequentRenterPoints + " frequent renter points";
     return result;
   }
 
-  private static double computeAmountForMovie(Movie each, int dr) {
-    double thisAmount = 0;
-    switch (each.getPriceCode()) {
-      case REGULAR:
-        thisAmount = 2;
-        if (dr > 2)
-          thisAmount += (dr - 2) * 1.5;
-        break;
-      case NEW_RELEASE:
-        thisAmount = dr * 3;
-        break;
-      case CHILDREN:
-        thisAmount = 1.5;
-        if (dr > 3)
-          thisAmount += (dr - 3) * 1.5;
-        break;
-    }
-    return thisAmount;
-  }
 }
