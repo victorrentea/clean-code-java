@@ -3,6 +3,7 @@ package videostore.horror;
 import java.util.*;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 
 class Customer {
   private final String name;
@@ -21,24 +22,32 @@ class Customer {
   }
 
   public String statement() {
-    double totalPrice = 0;
-    int frequentRenterPoints = 0;
-    String result = "Rental Record for " + name + "\n";
-    for (Rental rental : rentals) {
-      double price = rental.computePriceForMovie();
-      // add frequent renter points
-      frequentRenterPoints++;
-      // add bonus for a two day new release rental
-      if (rental.earnsBonus())
-        frequentRenterPoints++;
-      // show figures line for this rental
-      result += "\t" + rental.getMovie().getTitle() + "\t" + price + "\n";
-      totalPrice += price;
-    }
-    // add footer lines
-    result += "Amount owed is " + totalPrice + "\n";
-    result += "You earned " + frequentRenterPoints + " frequent renter points";
-    return result;
+    return formatHeader() + formatBody() + formatFooter();
+  }
+
+  private String formatBody() {
+    return rentals.stream().map(Customer::formatBodyLine).collect(joining());
+  }
+
+  private double getTotalPrice() {
+    return rentals.stream().mapToDouble(Rental::computePriceForMovie).sum();
+  }
+
+  private int totalPoints() {
+    return rentals.stream().mapToInt(Rental::computeRentalPoints).sum();
+  }
+
+  private static String formatBodyLine(Rental rental) {
+    return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePriceForMovie() + "\n";
+  }
+
+  private String formatHeader() {
+    return "Rental Record for " + name + "\n";
+  }
+
+  private String formatFooter() {
+    return "Amount owed is " + getTotalPrice() + "\n"
+           + "You earned " + totalPoints() + " frequent renter points";
   }
 
 }

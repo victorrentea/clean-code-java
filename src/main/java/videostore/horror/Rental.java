@@ -16,6 +16,12 @@ public class Rental {
     this.daysRented = daysRented;
   }
 
+  public int computeRentalPoints() {
+    int frequentRenterPoints = 1;
+    if (earnsBonus()) frequentRenterPoints++;
+    return frequentRenterPoints;
+  }
+
   double computePriceForMovie() {
     //    return switch (movie.getPriceCode()) {
     //      case REGULAR -> computeRegularPrice();
