@@ -3,15 +3,9 @@ package videostore.horror;
 public class Movie {
 
   enum PriceCode {
-    CHILDREN(2),
-    REGULAR(0),
-    NEW_RELEASE(1);
-
-    private final int key;
-
-    PriceCode(int key) {
-      this.key = key;
-    }
+    CHILDREN,
+    REGULAR,
+    NEW_RELEASE
   }
 
   private final String title;
@@ -29,6 +23,4 @@ public class Movie {
   public String getTitle() {
     return title;
   }
-
-  ;
 }
