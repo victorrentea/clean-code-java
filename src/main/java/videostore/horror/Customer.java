@@ -12,8 +12,6 @@ class Customer {
 		this.name = name;
 	}
 
-	;
-
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
 	}
@@ -25,7 +23,7 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		String result = "Rental Record for " + name + "\n";
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for each line
