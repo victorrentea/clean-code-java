@@ -15,6 +15,11 @@ public class CustomerTest {
         assertThatThrownBy(() -> new Movie(null, PriceCode.REGULAR));
     }
 
+    //    @Test
+    //    void throwFor..() {
+    //        assertThatThrownBy(() -> new Movie(null, PriceCode.REGULAR));
+    //    }
+
     @Test
     void throwsForNullPriceCode() {
         assertThatThrownBy(() -> new Movie("Asfd", null));
