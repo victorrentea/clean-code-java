@@ -13,8 +13,8 @@ class Customer {
     this.name = name;
   }
 
-  public void addRental(Movie m, int d) {
-    rentals.put(m, d);
+  public void addRental(Movie movie, int daysRented) {
+    rentals.put(movie, daysRented);
   }
 
   public String getName() {
@@ -26,14 +26,14 @@ class Customer {
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + name + "\n";
     for (Movie each : rentals.keySet()) {
-      int dr = rentals.get(each);
-      double thisAmount = computeAmountForMovie(each, dr);
+      int daysRented = rentals.get(each);
+      double thisAmount = computeAmountForMovie(each, daysRented);
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two day new release rental
       if (each.getPriceCode() != null &&
           (each.getPriceCode() == PriceCode.NEW_RELEASE)
-          && dr >= 2)
+          && daysRented >= 2)
         frequentRenterPoints++;
       // show figures line for this rental
       result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
