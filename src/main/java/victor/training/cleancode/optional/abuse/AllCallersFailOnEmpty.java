@@ -32,12 +32,12 @@ public class AllCallersFailOnEmpty {
   private TenantRepo tenantRepo;
 
   public void flow1(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // throws if Optional is empty
+    Tenant tenant = tenantRepo.findById(tenantId).get(); // .get() throws if Optional is empty
     System.out.println("Stuff1 with tenant: " + tenant);
   }
 
   public void flow2(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // done in 30 more places in code,
+    Tenant tenant = tenantRepo.findById(tenantId).get(); // + 30 more places in a typical project
     System.out.println("Stuff2 with tenant: " + tenant);
   }
 }
