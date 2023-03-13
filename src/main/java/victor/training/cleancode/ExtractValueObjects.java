@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import victor.training.cleancode.MathUtil.CarModel;
+import victor.training.cleancode.MathUtil.CarSearchCriteria;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -10,32 +13,33 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                .filter(model -> {
+                    int start1 = criteria.getStartYear();
+                    int end1 = criteria.getEndYear();
+                    int start2 = model.getStartYear();
+                    int end2 = model.getEndYear();
+                    return new Interval(start1, end1).intersects(new Interval(start2, end2));
+                })
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1; // direct de pe SO
-    }
 }
 
 
@@ -46,6 +50,10 @@ class Interval {
     Interval(int start, int end) {
         this.start = start;
         this.end = end;
+    }
+
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end; // direct de pe SO
     }
 
     public int getEnd() {
