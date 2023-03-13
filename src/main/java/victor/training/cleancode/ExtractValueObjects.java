@@ -2,8 +2,6 @@ package victor.training.cleancode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,10 +34,28 @@ class Alta {
 class MathUtil {
 
     public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+        return start1 <= end2 && start2 <= end1; // direct de pe SO
     }
 }
 
+
+class Interval {
+    private final int start;
+    private final int end;
+
+    Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public int getStart() {
+        return start;
+    }
+}
 
 class CarSearchCriteria { // smells like JSON ...
     private final int startYear;
