@@ -77,6 +77,7 @@ public class BooleanParameters {
         System.out.println("Validate " + task);
         task.setStarted(true);
 
+
         taskIds.add(task.getId());
 
         if (cr323) { // TODO remove the boolean
