@@ -48,6 +48,10 @@ class Interval {
     if (start > end) throw new IllegalArgumentException("start larger than end");
   }
 
+  public Interval muta(int delta) {
+    return new Interval(start + delta, end + delta);
+  }
+
   @AssertTrue
   public boolean isCorrect() {
     return (start <= end);
