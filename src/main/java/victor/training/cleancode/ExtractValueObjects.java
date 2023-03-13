@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import org.springframework.validation.annotation.Validated;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -75,6 +73,7 @@ class CarSearchCriteria { // smells like JSON ...
   private final int startYear;
   private final int endYear;
   private final String make;
+//  private final Interval yearInterval; // API public !! PAZEA
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
     this.make = make;
@@ -127,13 +126,10 @@ class CarModel { // the holy Entity Model
     return id;
   }
 
-  public int getEndYear() {
-    return yearInterval.getEnd();
-  }
-
-  public int getStartYear() {
-    return yearInterval.getStart();
-  }
+  // MIddle man = ai o metoda degeaba ce cheama alta metoda cu acelasi cu aceeasi parametri
+  //  public int getEndYear() {
+  //    return yearInterval.getEnd();
+  //  }
 
   public String getMake() {
     return make;
@@ -159,8 +155,9 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.endYear = carModel.getYearInterval().getEnd();
+    //    dto.endYear = carModel.getYearInterval().getEnd();
     return dto;
   }
 
