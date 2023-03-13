@@ -1,4 +1,4 @@
-package victor.training.cleancode.immutables;
+package victor.training.cleancode.immutable;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

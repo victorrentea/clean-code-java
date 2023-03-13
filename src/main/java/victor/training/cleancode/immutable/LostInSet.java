@@ -1,4 +1,4 @@
-package victor.training.cleancode.immutables;
+package victor.training.cleancode.immutable;
 
 import java.util.HashSet;
 import java.util.Objects;

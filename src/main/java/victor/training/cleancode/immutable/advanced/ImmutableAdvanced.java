@@ -1,4 +1,4 @@
-package victor.training.cleancode.immutables.advanced;
+package victor.training.cleancode.immutable.advanced;
 
 import java.util.List;
 import java.util.stream.Stream;

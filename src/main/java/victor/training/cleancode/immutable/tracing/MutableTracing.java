@@ -1,4 +1,4 @@
-package victor.training.cleancode.immutables.tracing;
+package victor.training.cleancode.immutable.tracing;
 
 public class MutableTracing {
    static class Data {
