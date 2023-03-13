@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class SomeController {
   SomeService someService;
@@ -80,19 +81,22 @@ public class BouleanParameters {
   // Lord gave us tests! 👌 TODO run tests
   public void bossLevel(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     System.out.println("Logic3");
     int index = 0;
     for (Task task : tasks) {
       System.out.println("Validate " + task);
       task.setStarted(true);
+    }
 
-      taskIds.add(task.getId());
+    //    List<Integer> taskIds = tasks.map(t=>t.id); filter find any
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
 
+    for (Task task : tasks) {
       if (cr323) { // TODO remove the boolean
         System.out.println("My Logic: " + task);
       }
-
+    }
+    for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
