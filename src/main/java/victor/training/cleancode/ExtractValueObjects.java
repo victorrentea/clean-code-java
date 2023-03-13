@@ -1,40 +1,38 @@
 package victor.training.cleancode;
 
-import victor.training.cleancode.MathUtil.CarModel;
-import victor.training.cleancode.MathUtil.CarSearchCriteria;
+import org.springframework.validation.annotation.Validated;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.stream.Collectors;
 
 class ExtractValueObjects {
 
-    // see tests
-    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = models.stream()
-                .filter(model -> {
-                    int start1 = criteria.getStartYear();
-                    int end1 = criteria.getEndYear();
-                    int start2 = model.getStartYear();
-                    int end2 = model.getEndYear();
-                    return new Interval(start1, end1).intersects(new Interval(start2, end2));
-                })
-                .collect(Collectors.toList());
-        System.out.println("More filtering logic");
-        return results;
-    }
+  // see tests
+  public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
+    Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+    List<CarModel> results = models.stream()
+            .filter(model -> criteriaInterval.intersects(model.getYearInterval()))
+            .collect(Collectors.toList());
+    System.out.println("More filtering logic");
+    return results;
+  }
 
-    private void applyCapacityFilter() {
-        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
-    }
+  private void applyCapacityFilter() {
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+  }
 
 }
 
 class Alta {
-    private void applyCapacityFilter() {
-        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
-    }
+  private void applyCapacityFilter() {
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+  }
 
 }
 
@@ -43,122 +41,137 @@ class MathUtil {
 }
 
 
+@Embeddable
 class Interval {
-    private final int start;
-    private final int end;
+  private int start;
+  private int end;
 
-    Interval(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
+  Interval(int start, int end) {
+    this.start = start;
+    this.end = end;
+    // asta nu prea vezi in viata: face si testtarea mai comoplicata
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
 
-    public boolean intersects(Interval other) {
-        return start <= other.end && other.start <= end; // direct de pe SO
-    }
+  @AssertTrue
+  public boolean isCorrect() {
+    return (start <= end);
+  }
 
-    public int getEnd() {
-        return end;
-    }
+  public boolean intersects(Interval other) {
+    return start <= other.end && other.start <= end; // direct de pe SO
+  }
 
-    public int getStart() {
-        return start;
-    }
+  public int getEnd() {
+    return end;
+  }
+
+  public int getStart() {
+    return start;
+  }
 }
 
 class CarSearchCriteria { // smells like JSON ...
-    private final int startYear;
-    private final int endYear;
-    private final String make;
+  private final int startYear;
+  private final int endYear;
+  private final String make;
 
-    public CarSearchCriteria(int startYear, int endYear, String make) {
-        this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
+  public CarSearchCriteria(int startYear, int endYear, String make) {
+    this.make = make;
+    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    this.startYear = startYear;
+    this.endYear = endYear;
+  }
 
-    public int getStartYear() {
-        return startYear;
-    }
+  public int getStartYear() {
+    return startYear;
+  }
 
-    public int getEndYear() {
-        return endYear;
-    }
+  public int getEndYear() {
+    return endYear;
+  }
 
-    public String getMake() {
-        return make;
-    }
+  public String getMake() {
+    return make;
+  }
 }
 
+
+// tre sa fie prietenu tau.
 @Entity
 class CarModel { // the holy Entity Model
-    @Id
-    private Long id;
-    private String make;
-    private String model;
-    private int startYear;
-    private int endYear;
+  @Id
+  private Long id;
+  private String make;
+  private String model;
 
-    protected CarModel() {
-    } // for Hibernate
+  @Valid
+  @Embedded // campurile din Interval ajung tot in tabela Car_MODEL
+  private Interval yearInterval; // PK
 
-    public CarModel(String make, String model, int startYear, int endYear) {
-        this.make = make;
-        this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
-    }
+  protected CarModel() {
+  } // for Hibernate
 
-    public Long getId() {
-        return id;
-    }
+  public CarModel(String make, String model, int startYear, int endYear) {
+    this.make = make;
+    this.model = model;
+    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    yearInterval = new Interval(startYear, endYear);
+  }
 
-    public int getEndYear() {
-        return endYear;
-    }
+  public Interval getYearInterval() {
+    return yearInterval;
+  }
 
-    public int getStartYear() {
-        return startYear;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getMake() {
-        return make;
-    }
+  public int getEndYear() {
+    return yearInterval.getEnd();
+  }
 
-    public String getModel() {
-        return model;
-    }
+  public int getStartYear() {
+    return yearInterval.getStart();
+  }
+
+  public String getMake() {
+    return make;
+  }
+
+  public String getModel() {
+    return model;
+  }
 
 
-    @Override
-    public String toString() {
-        return "CarModel{" +
-               "make='" + make + '\'' +
-               ", model='" + model + '\'' +
-               '}';
-    }
+  @Override
+  public String toString() {
+    return "CarModel{" +
+           "make='" + make + '\'' +
+           ", model='" + model + '\'' +
+           '}';
+  }
 }
 
 
 class CarModelMapper {
-    public CarModelDto toDto(CarModel carModel) {
-        CarModelDto dto = new CarModelDto();
-        dto.make = carModel.getMake();
-        dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
-        return dto;
-    }
+  public CarModelDto toDto(CarModel carModel) {
+    CarModelDto dto = new CarModelDto();
+    dto.make = carModel.getMake();
+    dto.model = carModel.getModel();
+    dto.startYear = carModel.getStartYear();
+    dto.endYear = carModel.getEndYear();
+    return dto;
+  }
 
-    public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
-    }
+  public CarModel fromDto(CarModelDto dto) {
+    return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+  }
 }
 
 class CarModelDto {
-    public String make;
-    public String model;
-    public int startYear;
-    public int endYear;
+  public String make;
+  public String model;
+  public int startYear;
+  public int endYear;
 }
