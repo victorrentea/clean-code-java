@@ -40,6 +40,7 @@ class SomeService {
   }
 }
 
+
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO The shared called method must execute logic specific for my use-case #323
