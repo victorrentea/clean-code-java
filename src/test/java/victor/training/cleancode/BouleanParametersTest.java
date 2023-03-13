@@ -10,9 +10,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
-class BooleanParametersTest {
+class BouleanParametersTest {
 
-   private final BooleanParameters target = new BooleanParameters();
+   private final BouleanParameters target = new BouleanParameters();
 
    @Test
    @CaptureSystemOutput
@@ -20,13 +20,13 @@ class BooleanParametersTest {
       target.bossLevel(true, List.of(new Task(5)), false);
 
       assertThat(outputCapture.toString())
-          .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic3\n" +
-                                     "Validate Task(id=5, started=false)\n" +
-                                     "Audit task #1: Task(id=5, started=true)\n" +
-                                     "Logic6 1\n" +
-                                     "Task Ids: [5]\n" +
-                                     "Logic8\n");
+              .isEqualToIgnoringNewLines("Logic1\n" +
+                                         "Logic3\n" +
+                                         "Validate Task(id=5, started=false)\n" +
+                                         "Audit task #1: Task(id=5, started=true)\n" +
+                                         "Logic6 1\n" +
+                                         "Task Ids: [5]\n" +
+                                         "Logic8\n");
    }
    @Test
    @CaptureSystemOutput

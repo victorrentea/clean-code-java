@@ -24,30 +24,30 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BouleanParameters.bigUglyMethod(id, task);
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BouleanParameters.bigUglyMethod(id, task);
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BouleanParameters.bigUglyMethod(id, task);
   }
 
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BouleanParameters.bigUglyMethod(id, task);
   }
 }
 
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO The shared called method must execute logic specific for my use-case #323
-    BooleanParameters.bigUglyMethod(id, task);
+    BouleanParameters.bigUglyMethod(id, task);
   }
 }
 
-public class BooleanParameters {
+public class BouleanParameters {
 
   // Note: this method might be called from multiple places in the codebase ...
   static void bigUglyMethod(int storeId, Task task) {
