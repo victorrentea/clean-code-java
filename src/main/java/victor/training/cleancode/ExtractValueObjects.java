@@ -1,9 +1,6 @@
 package victor.training.cleancode;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import java.util.List;
@@ -101,6 +98,8 @@ class CarSearchCriteria { // smells like JSON ...
 class CarModel { // the holy Entity Model
   @Id
   private Long id;
+  //  @EmbeddedId
+  //  private CarModelId id;
   private String make;
   private String model;
 
