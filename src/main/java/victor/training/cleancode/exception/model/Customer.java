@@ -7,6 +7,7 @@ import static java.util.Optional.ofNullable;
 public class Customer {
    private String name;
    private MemberCard memberCard;
+   //   private boolean amCard; // = memberCard !=null
 
    public Customer() {
    }
@@ -15,8 +16,8 @@ public class Customer {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   public Optional<MemberCard> getMemberCard() {
+      return Optional.ofNullable(memberCard);
    }
 
    public Customer setMemberCard(MemberCard memberCard) {

@@ -15,12 +15,19 @@ public class Optional_Intro {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
 		System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
+		System.out.println(getDiscountLine(new Customer()));
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		Optional<Discount> optDiscount = computeDiscount(customer.getMemberCard());
 
-		return optDiscount.map(discount -> "You got a discount of %" + discount.getGlobalPercentage())
+		return customer.getMemberCard()
+						.flatMap(Optional_Intro::computeDiscount)
+
+						//						.map(Discount::getGlobalPercentage)
+						//						.map(per -> "You got a discount of %" + per)
+
+						.map(d -> "You got a discount of %" + d.getGlobalPercentage())
+
 						.orElse("Din pacate nu beneificiati de discount in aceasta zi minunata de SPring");
 
 	}
