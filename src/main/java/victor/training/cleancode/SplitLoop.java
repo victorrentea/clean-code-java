@@ -37,26 +37,28 @@ public class SplitLoop {
     EmployeeService employeeService;
 
     public String computeStatsHard(List<Employee> employees) {
-        long totalEmpAge = 0;
-        double totalConsultantSalary = 0;
-        for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
-                continue;
+      long totalEmpAge;
+      double totalConsultantSalary = 0;
+      totalEmpAge = employees.stream()
+              .filter(employee -> !employee.isConsultant())
+              .mapToLong(Employee::getAge)
+              .sum();
+      for (Employee employee : employees) {
+        if (!!employee.isConsultant()) {
+          if (employee.getId() == null) {
+            return "Employee(s) not persisted";
+          }
+          if (employee.getSalary() == null) {
+            Integer salary = employeeService.retrieveSalary(employee.getId());
+            if (salary == null) {
+              throw new RuntimeException("NO salary found for employee " + employee.getId());
+            } else {
+              employee.setSalary(salary);
             }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
-                }
-            }
-            totalConsultantSalary += employee.getSalary();
+          }
+          totalConsultantSalary += employee.getSalary();
         }
+      }
 
         long averageAge = 0;
         if (totalEmpAge != 0) {

@@ -1,5 +1,10 @@
 package victor.training.cleancode.immutable;
 
+import lombok.Data;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,12 +18,28 @@ public class LostInSet {
       set.add(childOne);
 
       System.out.println(set.contains(childOne));
+
+      // adolescenta
+
+      System.out.println("hash1=" + childOne.hashCode());
+      //      childOne.setName("Emma-Simona");
+      System.out.println("hash2=" + childOne.hashCode());
+      System.out.println(set.contains(childOne));
+
+      set.add(childOne);
+      System.out.println("Cati copii am ? " + set.size());
+
+
    }
 }
 
 
+//@Data @Entity
 class Child {
-   private String name;
+   //   @GeneratedValue
+   //  @Id
+   //   Long id;
+   private final String name;
 
    public Child(String name) {
       this.name = name;
@@ -28,9 +49,9 @@ class Child {
       return name;
    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+   //   public void setName(String name) {
+   //      this.name = name;
+   //   }
 
    @Override
    public boolean equals(Object o) {
