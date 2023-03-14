@@ -29,7 +29,7 @@ class Customer {
     }
 
     private int totalPoints() {
-        return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+        return rentals.stream().mapToInt(rental -> rental.getFrequentRenterPoints()).sum();
     }
 
     private double totalPrice() {
@@ -48,8 +48,8 @@ class Customer {
         return name;
     }
 
-    public void addRental(Movie movie, int daysRented) {
-        rentals.add(new Rental(movie, daysRented));
+    public void addRental(Rental rental) {
+        rentals.add(rental);
     }
 
 

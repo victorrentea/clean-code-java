@@ -10,22 +10,41 @@ public class Rental {
     }
 
     public double getPrice() {
-        double price = 0;
-        switch (getMovie().getPriceCode()) {
+        switch (movie.getPriceCode()) {
             case REGULAR:
-                price += 2;
-                if (getDaysRented() > 2)
-                    price += (getDaysRented() - 2) * 1.5;
-                break;
+                return getRegularPrice();
             case NEW_RELEASE:
-                price += getDaysRented() * 3;
-                break;
+                return getNewReleasePrice();
             case CHILDREN:
-                price += 1.5;
-                if (getDaysRented() > 3)
-                    price += (getDaysRented() - 3) * 1.5;
-                break;
+                return getChildrenPrice();
+            default:
+                throw new IllegalStateException("Unexpected value: " + movie.getPriceCode());
         }
+        //        return switch (movie.getPriceCode()) {
+        //            case REGULAR -> getRegularPrice();
+        //            case NEW_RELEASE -> getNewReleasePrice();
+        //            case CHILDREN -> getChildrenPrice();
+        //            default -> throw new IllegalStateException("Unexpected value: " + movie.getPriceCode());
+        //        };
+    }
+
+    private double getChildrenPrice() {
+        double price;
+        price = 1.5;
+        if (daysRented > 3)
+            price += (daysRented - 3) * 1.5;
+        return price;
+    }
+
+    private int getNewReleasePrice() {
+        return daysRented * 3;
+    }
+
+    private double getRegularPrice() {
+        double price;
+        price = 2;
+        if (daysRented > 2)
+            price += (daysRented - 2) * 1.5;
         return price;
     }
 
@@ -38,7 +57,7 @@ public class Rental {
     }
 
     public boolean isEligibleForBonus() {
-        return getMovie().getPriceCode() == PriceCode.NEW_RELEASE && getDaysRented() >= 2;
+        return movie.getPriceCode() == PriceCode.NEW_RELEASE && daysRented >= 2;
     }
 
     public int getDaysRented() {
