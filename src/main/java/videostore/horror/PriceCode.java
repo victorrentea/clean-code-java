@@ -1,6 +1,6 @@
 package videostore.horror;
 
-public enum MovieType {
+public enum PriceCode {
   CHILDREN,
   REGULAR,
   NEW_RELEASE
