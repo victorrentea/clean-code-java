@@ -1,11 +1,11 @@
 package victor.training.cleancode;
 
-import org.jooq.lambda.tuple.Tuple;
-import org.jooq.lambda.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
 
@@ -23,6 +23,10 @@ public class MicroTypes {
     }
     //</editor-fold>
 
+    public static <K, V, R> Function<Entry<K, V>, R> entry(BiFunction<K, V, R> f) {
+        return e -> f.apply(e.getKey(), e.getValue());
+    }
+
     @Test
     void lackOfAbstractions() {
         Map<Long, Map<String, Integer>> map = extremeFP();
@@ -31,6 +35,7 @@ public class MicroTypes {
         for (Long cid : map.keySet()) {
             String pl = map.get(cid).entrySet().stream()
                     .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+                    //              .map(entry((k,v) -> ...))
                     .collect(joining(", "));
             System.out.println("cid=" + cid + " got " + pl);
         }
