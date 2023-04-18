@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class SomeController {
@@ -76,37 +75,52 @@ public class BooleanParameters {
 
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-  // Lord gave us tests! 👌 TODO run tests
-  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
-    System.out.println("Logic3");
-    int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
-    for (Task task : tasks) {
-      System.out.println("Validate " + task);
-      task.setStarted(true);
-    }
-    for (Task task : tasks) {
-      taskIds.add(task.getId());
-    }
-    for (Task task : tasks) {
-      if (cr323) { // TODO remove the boolean
-        System.out.println("My Logic: " + task);
-      }
-      //      index++; // side effect on global mutable state (YUCK!) that impacts later elements
-    }
-    for (Task task : tasks) {
-      index++;
-      System.out.println("Audit task #" + index + ": " + task);
-    }
+  private static void bossEnd(List<Task> tasks) {
+    auditTasks(tasks);
     // you are afraid. why?
     // 1) operations must be done in the same order for a certain element: when doing step1 for all elements, then step2 for all
     //    produces different results than step1-step2 for each element in turn
     // 2) WORSE PERFORMANCE? NO! the compiler will optimize this for you. It will do the same thing as if you had done it in a single loop (almost)
     int tasksCount = tasks.size();
     System.out.println("Logic6 " + tasksCount);
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  private static void bossStart(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
+    startTasks(tasks);
+  }
+
+  private static void auditTasks(List<Task> tasks) {
+    int index = 0;
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+  }
+
+  private static void startTasks(List<Task> tasks) {
+    for (Task task : tasks) {
+      System.out.println("Validate " + task);
+      task.setStarted(true);
+    }
+  }
+
+  // Lord gave us tests! 👌 TODO run tests
+  public void bossLevelFluff(List<Task> tasks) {
+    bossStart(tasks);
+    bossEnd(tasks);
+  }
+
+  public void bossLevelFluff323(List<Task> tasks) {
+    bossStart(tasks);
+    for (Task task : tasks) {
+      System.out.println("My Logic: " + task);
+    }
+    bossEnd(tasks);
   }
 
   public void bossLevelNoFluff(List<Task> tasks) {
