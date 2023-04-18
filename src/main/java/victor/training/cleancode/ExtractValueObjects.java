@@ -1,9 +1,8 @@
 package victor.training.cleancode;
 
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,34 +11,56 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                .filter(model -> {
+                    return MathUtil.intervalsIntersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear()));
+                })
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        // BAD OLD
+        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        // BAD OLD
+        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+    public static boolean intervalsIntersect(Interval interval1, Interval interval2) { // GOOD NEW
+        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
     }
+
 }
 
+//record Interval(int start, int end) {} .// java 17
+
+class Interval { // = Value Object  (TM) = Immutable Small Object with no Identity
+    private final int start;
+    private final int end;
+
+    Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public int getStart() {
+        return start;
+    }
+}
 
 class CarSearchCriteria { // smells like JSON ...
     private final int startYear;
