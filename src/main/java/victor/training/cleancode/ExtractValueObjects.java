@@ -1,8 +1,6 @@
 package victor.training.cleancode;
 
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -117,20 +115,12 @@ class CarModel { // the holy Entity Model
         yearInterval = new Interval(startYear, endYear);
     }
 
-    public Interval getYearInterval() {
-        return yearInterval;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
+    public Interval getYearInterval() {
+        return yearInterval;
     }
 
     public String getMake() {
@@ -157,8 +147,12 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.endYear = carModel.getYearInterval().getEnd();
         return dto;
     }
 
