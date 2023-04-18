@@ -1,6 +1,10 @@
 package victor.training.cleancode;
 
 
+import org.jetbrains.annotations.NotNull;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -11,8 +15,7 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> new Interval(criteria.getStartYear(), criteria.getEndYear())
-                        .intersects(new Interval(model.getStartYear(), model.getEndYear())))
+                .filter(model -> criteria.getYearInterval().intersects(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -38,12 +41,17 @@ class IntervalUtil { // code smell: Util taking objects of yor own DOMAIN (that 
 }
 
 //record Interval(int start, int end) {} .// java 17
-
+@Embeddable
 class Interval { // = Value Object  (TM) = Immutable Small Object with no Identity
-    private final int start;
-    private final int end;
+    private int start;
+    private int end; // "effectively final" object -> no setters
 
-    Interval(int start, int end) {
+    protected Interval() {
+    } // for Hibernate
+
+    public Interval(int start, int end) {
+        if (start > end) throw new IllegalArgumentException("start larger than end");
+
         this.start = start;
         this.end = end;
     }
@@ -55,7 +63,6 @@ class Interval { // = Value Object  (TM) = Immutable Small Object with no Identi
     public int getEnd() {
         return end;
     }
-
     public int getStart() {
         return start;
     }
@@ -71,6 +78,10 @@ class CarSearchCriteria { // smells like JSON ...
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
+    }
+
+    Interval getYearInterval() {
+        return new Interval(getStartYear(), getEndYear());
     }
 
     public int getStartYear() {
@@ -92,8 +103,10 @@ class CarModel { // the holy Entity Model
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+    //    private int startYear; // -2
+    //    private int endYear;
+    @Embedded
+    private Interval yearInterval; // +1
 
     protected CarModel() {
     } // for Hibernate
@@ -101,9 +114,11 @@ class CarModel { // the holy Entity Model
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        yearInterval = new Interval(startYear, endYear);
+    }
+
+    public Interval getYearInterval() {
+        return yearInterval;
     }
 
     public Long getId() {
