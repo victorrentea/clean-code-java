@@ -80,8 +80,11 @@ public class BooleanParameters {
   private static void bossEnd(List<Task> tasks) {
     auditTasks(tasks);
     // you are afraid. why?
-    // 1) operations must be done in the same order for a certain element: when doing step1 for all elements, then step2 for all
-    //    produces different results than step1-step2 for each element in turn
+    // 1) operations must be done in the same order for a certain element: ie:
+    //    when doing step1 for all elements, then step2 for all
+    //    produces different results than
+    //    step1-step2 for each element in turn
+    // usually involves some kind of external global mutable state
     // 2) WORSE PERFORMANCE? NO! the compiler will optimize this for you. It will do the same thing as if you had done it in a single loop (almost)
     int tasksCount = tasks.size();
     System.out.println("Logic6 " + tasksCount);
