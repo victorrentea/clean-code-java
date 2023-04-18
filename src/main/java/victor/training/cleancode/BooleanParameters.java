@@ -77,32 +77,46 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
-    int tasksCount = tasks.size();
+  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
+    System.out.println("Logic3");
+    int index = 0;
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Validate " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + tasksCount);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+    for (Task task : tasks) {
+      System.out.println("Validate " + task);
+      task.setStarted(true);
     }
+    for (Task task : tasks) {
+      taskIds.add(task.getId());
+    }
+    for (Task task : tasks) {
+      if (cr323) { // TODO remove the boolean
+        System.out.println("My Logic: " + task);
+      }
+      //      index++; // side effect on global mutable state (YUCK!) that impacts later elements
+    }
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+    // you are afraid. why?
+    // 1) operations must be done in the same order for a certain element: when doing step1 for all elements, then step2 for all
+    //    produces different results than step1-step2 for each element in turn
+    // 2) WORSE PERFORMANCE? NO! the compiler will optimize this for you. It will do the same thing as if you had done it in a single loop (almost)
+    int tasksCount = tasks.size();
+    System.out.println("Logic6 " + tasksCount);
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  public void bossLevelNoFluff(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic7 on fluff=false " + tasks);
+    System.out.println("Logic8");
+  }
+
+  private void innocentMethod(List<Task> tasks) {
+    tasks.clear(); // BAAAAD PRACTICE! 😱
   }
 
 }
