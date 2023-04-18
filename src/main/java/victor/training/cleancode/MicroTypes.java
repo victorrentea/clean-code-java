@@ -2,42 +2,55 @@ package victor.training.cleancode;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
 
 public class MicroTypes {
 
-    //<editor-fold desc="Unknown source of data">
-    public Map<Long, Map<String, Integer>> extremeFP() {
-        Long customerId = 1L;
-        Integer product1Count = 2;
-        Integer product2Count = 4;
-        return Map.of(customerId, Map.of(
-                "Table", product1Count,
-                "Chair", product2Count
-        ));
-    }
-    //</editor-fold>
+  private static String createSummary(Entry<CustomerId, List<ProductCount>> e) {
+    return e.getValue().stream()
+            .map(entry -> entry.count() + " pcs. of " + entry.productName())
+            .collect(joining(", "));
+  }
+  //</editor-fold>
 
-    public static <K, V, R> Function<Entry<K, V>, R> entry(BiFunction<K, V, R> f) {
-        return e -> f.apply(e.getKey(), e.getValue());
-    }
+  //<editor-fold desc="Unknown source of data">
+  public Map<CustomerId, List<ProductCount>> extremeFP() {
+    Long customerId = 1L;
+    Integer product1Count = 2;
+    Integer product2Count = 4;
+    return Map.of(new CustomerId(customerId), List.of(
+            new ProductCount("Table", product1Count),
+            new ProductCount("Chair", product2Count)
+    ));
+  }
 
-    @Test
-    void lackOfAbstractions() {
-        Map<Long, Map<String, Integer>> map = extremeFP();
-        // Joke: try "var" above :)
+  @Test
+  void lackOfAbstractions() {
+    Map<CustomerId, List<ProductCount>> map = extremeFP();
+    // Joke: try "var" above :)
 
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).entrySet().stream()
-                    .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
-                    //              .map(entry((k,v) -> ...))
-                    .collect(joining(", "));
-            System.out.println("cid=" + cid + " got " + pl);
-        }
-    }
+    Map<CustomerId, String> productSummaries = map.entrySet().stream()
+            .collect(toMap(Entry::getKey, MicroTypes::createSummary));
+
+    productSummaries.forEach((cid, summ) -> System.out.println("cid=" + cid + " got " + summ));
+
+    //    for (CustomerId cid : map.keySet()) {
+    //      String productSummary = map.get(cid).stream()
+    //              .map(entry -> entry.count() + " pcs. of " + entry.productName())
+    //              .collect(joining(", "));
+    //      System.out.println("cid=" + cid + " got " + productSummary);
+    //    }
+  }
+
+  record CustomerId(long id) {
+  }
+
+  record ProductCount(String productName, int count) {
+  }
 }
