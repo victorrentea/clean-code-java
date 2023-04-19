@@ -51,17 +51,25 @@ public class BooleanParameters {
 
   // Note: this method might be called from multiple places in the codebase ...
   static void bigUglyMethod(int storeId, Task task, boolean cr323) {
-    System.out.println("Cow Logic 1 " + task + " and " + storeId);
-    System.out.println("Cow Logic 2 " + task);
-    System.out.println("Cow Logic 3 " + task);
+    cow(storeId, task);
 
     if (cr323) {
       System.out.println("Logic just for CR#323 : " + task);
     }
 
+    donkey(storeId);
+  }
+
+  private static void donkey(int storeId) {
     System.out.println("Donkey Logic 1 " + storeId);
     System.out.println("Donkey Logic 2 " + storeId);
     System.out.println("Donkey Logic 3 " + storeId);
+  }
+
+  private static void cow(int storeId, Task task) {
+    System.out.println("Cow Logic 1 " + task + " and " + storeId);
+    System.out.println("Cow Logic 2 " + task);
+    System.out.println("Cow Logic 3 " + task);
   }
 
 
