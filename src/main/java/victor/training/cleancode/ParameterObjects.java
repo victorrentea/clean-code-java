@@ -3,17 +3,16 @@ package victor.training.cleancode;
 public class ParameterObjects {
    public static void main(String[] args) {
       new ParameterObjects().placeOrder(
-              "John", "Doe",
-              "St. Albergue", "Paris", 99);
+              new FullName("John", "Doe"), new StreetAddress("St. Albergue", "Paris", 99));
 
       new AnotherClass().otherMethod("John", "Doe", 17);
    }
 
-   public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-      if (fName == null || lName == null) throw new IllegalArgumentException();
+   public void placeOrder(FullName fullName, StreetAddress streetAddress) {
+      if (fullName.fName() == null || fullName.lName() == null) throw new IllegalArgumentException();
 
       System.out.println("Some Logic");
-      System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+      System.out.println("Shipping to " + streetAddress.city() + " on St. " + streetAddress.streetName() + " " + streetAddress.streetNumber());
 
    }
 }

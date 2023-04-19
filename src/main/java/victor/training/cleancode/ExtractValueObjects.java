@@ -2,8 +2,7 @@ package victor.training.cleancode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,31 +11,36 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                .filter(model -> criteria.getYearInterval().intersectsWith(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+}
+
+record Interval(int start, int end) {
+    public Interval { // risky, few teams are that bold/insane?
+        if (start > end) throw new IllegalArgumentException("start larger than end");
+    }
+
+    public boolean intersectsWith(Interval other) {
+        return start() <= other.end() && other.start() <= end();
     }
 }
 
@@ -53,6 +57,12 @@ class CarSearchCriteria { // smells like JSON ...
         this.endYear = endYear;
     }
 
+    // enrich the data structures that sit there doing nothing around you, with bit of useful logic
+    // to strip the complexity out of your core business logic
+    Interval getYearInterval() {
+        return new Interval(startYear, endYear);
+    }
+
     public int getStartYear() {
         return startYear;
     }
@@ -67,13 +77,16 @@ class CarSearchCriteria { // smells like JSON ...
 }
 
 @Entity
-class CarModel { // the holy Entity Model
+class CarModel { // the holy Entity Model, your domain model object.
+    // the most sacred object in your code base.
+    // the object involved in the most complex business logic.
     @Id
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+    //    private int startYear;
+    //    private int endYear;
+    private Interval yearInterval;
 
     protected CarModel() {
     } // for Hibernate
@@ -81,21 +94,15 @@ class CarModel { // the holy Entity Model
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        this.yearInterval = new Interval(startYear, endYear);
+    }
+
+    Interval getYearInterval() {
+        return yearInterval;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
     }
 
     public String getMake() {
@@ -122,8 +129,9 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().start();
+        dto.endYear = carModel.getYearInterval().end();
+        dto.endYear = carModel.getYearInterval().end();
         return dto;
     }
 
