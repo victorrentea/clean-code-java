@@ -78,42 +78,37 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
-    int taskCount = tasks.size();
+  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
+    System.out.println("Logic3");
+    int index = 0;
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      if (fluff) {
-        if (fluff) {
-          if (fluff) {
-            if (fluff) {
-              if (fluff) {
-                System.out.println("Logic3");
-                for (Task task : tasks) {
-                  System.out.println("Validate " + task);
-                  task.setStarted(true);
+    for (Task task : tasks) {
+      System.out.println("Validate " + task);
+      task.setStarted(true);
+      taskIds.add(task.getId());
 
-                  taskIds.add(task.getId());
-
-                  if (cr323) { // TODO remove the boolean
-                    System.out.println("My Logic: " + task);
-                  }
-
-                  index++;
-                  System.out.println("Audit task #" + index + ": " + task);
-                }
-                System.out.println("Logic6 " + taskCount);
-                System.out.println("Task Ids: " + taskIds);
-              } else {
-                System.out.println("Logic7 on fluff=false " + tasks);
-              }
-            }
-          }
-        }
+      if (cr323) { // TODO remove the boolean
+        System.out.println("My Logic: " + task);
       }
+
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
     }
+    System.out.println("Logic6 " + tasks.size());
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  public void bossLevelNoFluff(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic7 on fluff=false " + tasks);
+    System.out.println("Logic8");
+  }
+
+  private void innocent(List<Task> tasks) { // chancing the state of the
+    // parameter in a method whose name doesn't suggest it it is a bad idea
+    tasks.clear();
   }
 
 }
