@@ -82,7 +82,7 @@ public class BooleanParameters {
         if (cr323) { // TODO remove the boolean
           System.out.println("My Logic: " + task);
         }
-
+shit
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
