@@ -49,10 +49,10 @@ class MyService {
 
 public class BooleanParameters {
 
-  // Note: this method might be called from multiple places in the codebase ...
+  // Warning⚠️: this method might be called from multiple places in the codebase ...
   static void bigUglyMethod(int storeId, Task task) {
     System.out.println("Cow Logic 1 " + task + " and " + storeId);
-    System.out.println("Cow Logic 2 " + task);
+    System.out.println(task);
     System.out.println("Cow Logic 3 " + task);
 
     // System.out.println("Logic just for CR#323 : " + task);
@@ -65,21 +65,21 @@ public class BooleanParameters {
 
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
-  // Lord gave us tests! 👌 TODO run tests
+  // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
+    int index = 0;
     int j = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
       System.out.println("Logic3");
       for (Task task : tasks) {
-        System.out.println("Validate " + task);
+        System.out.println("Starting " + task);
         task.setStarted(true);
 
         taskIds.add(task.getId());
 
-        if (cr323) { // TODO remove the boolean
+        if (cr323) { // TODO task = remove the boolean
           System.out.println("My Logic: " + task);
         }
 
