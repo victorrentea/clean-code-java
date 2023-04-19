@@ -85,16 +85,25 @@ public class BooleanParameters {
     List<Integer> taskIds = new ArrayList<>();
     for (Task task : tasks) {
       System.out.println("Validate " + task);
-      task.setStarted(true);
-      taskIds.add(task.getId());
-
+      task.setStarted(true);// A
+    }
+    for (Task task : tasks) {
+      taskIds.add(task.getId()); // B
+    }
+    for (Task task : tasks) {
       if (cr323) { // TODO remove the boolean
         System.out.println("My Logic: " + task);
       }
-
+    }
+    for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
+    // afraid of what?
+    // - performance if the tasks is huge 100K
+    // a) that list is brought over the network from a DB/API=> the network cost will make the for overhead impossible to measure
+    // b) that list is kept in memory => you could see a bit of overhead
+    // - sequence of execution: A1 B1 A2 B2 => A1 A2 B1 B2 =>source of bugs (rarely in practice)
     System.out.println("Logic6 " + tasks.size());
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
