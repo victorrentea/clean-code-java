@@ -77,32 +77,47 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0; // TODO move closer to usages in a safe way
-    int j = tasks.size();
+  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
+    System.out.println("Logic3");
+    int index = 0;
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Validate " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+    for (Task task : tasks) {
+      System.out.println("Validate " + task);
+      task.setStarted(true);
     }
+    for (Task task : tasks) {
+      taskIds.add(task.getId());
+    }
+    for (Task task : tasks) {
+      if (cr323) { // TODO remove the boolean
+        System.out.println("My Logic: " + task);
+      }
+    }
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+    // why does splitting a for into muptiple loops scare me?
+    // - performance you loop 4 times:  NEVER a performance hit on a Backend system if that data comes from remote systems.
+    // - BUGS: perhaps running step1(all), then step2(all) <> step1(1)-Step2(1); step1(2)-Step2(2); step1(3)-Step2(3), ...
+    // this only happens if you change some shared data outside of the loop
+
+
+    System.out.println("Logic6 " + tasks.size());
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  public void bossLevelNoFluff(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic7 on fluff=false " + tasks);
+    System.out.println("Logic8");
+  }
+
+  private void innocentMethod(List<Task> tasks) {
+    //    tasks.add(new Task(1)); // very bad practice to modify the input parameter
+    // especially if the method name does not indicate that
   }
 
 }
