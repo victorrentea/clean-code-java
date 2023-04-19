@@ -1,6 +1,8 @@
 package victor.training.cleancode;
 
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -11,9 +13,7 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                //                .filter(model -> new CriteriaHelper(criteria)
-                //                        .matchesIntersect(model.getStartYear(), model.getEndYear()))
-                .filter(model -> new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(new Interval(model.getStartYear(), model.getEndYear())))
+                .filter(model -> criteria.getYearInterval().intersects(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -48,11 +48,17 @@ class MathUtil {
     // OLD BAD
 }
 
-class Interval {
-    private final int start;
-    private final int end;
+@Embeddable
+class Interval { // effectively final object (no setters)
+    private int start;
+    private int end;
+
+    protected Interval() {
+    } // for Hibernate
 
     Interval(int start, int end) {
+        if (start > end) throw new IllegalArgumentException("start larger than end");
+
         this.start = start;
         this.end = end;
     }
@@ -97,6 +103,10 @@ class CarSearchCriteria { // smells like JSON ...
         this.endYear = endYear;
     }
 
+    public Interval getYearInterval() {
+        return new Interval(startYear, endYear);
+    }
+
     public int getStartYear() {
         return startYear;
     }
@@ -117,8 +127,10 @@ class CarModel { // the holy Entity Model
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+    @Embedded // the best feature of Hib when it comes to making @Entities simple
+    private Interval yearInterval;
+    //    private int startYear;
+    //    private int endYear;
 
     protected CarModel() {
     } // for Hibernate
@@ -126,28 +138,20 @@ class CarModel { // the holy Entity Model
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        yearInterval = new Interval(startYear, endYear);
     }
 
+    public Interval getYearInterval() {
+        return yearInterval;
+    }
 
     //    public boolean matches(CarSearchCriteria criteria) {
     //        return MathUtil.intersects(
     //                criteria.getStartYear(), criteria.getEndYear(),
     //                startYear, endYear);
     //    }
-
     public Long getId() {
         return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
     }
 
     public String getMake() {
@@ -174,8 +178,9 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.endYear = carModel.getYearInterval().getEnd();
         return dto;
     }
 
