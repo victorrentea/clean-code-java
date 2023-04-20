@@ -24,7 +24,7 @@ public class ImmutableAdvanced {
    private static Immutable wilderness(Immutable immutable) {
       // dark deep logic
       //      immutable.getNumbers().add(4);
-      int x = 7;
+      Integer x = 7;
       Immutable updated = immutable.withX(x);
       return updated;
    }
@@ -72,7 +72,8 @@ class Immutable {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
 
-   public Immutable withX(int x) {
+   public Immutable withX(Integer x) {
+      //      x=8;
       return this.x == x ? this : new Immutable(x, this.numbers, this.other);
    }
 }
