@@ -22,9 +22,12 @@ public class ImmutableAdvanced {
 
    private static void wilderness(Immutable immutable) {
       // dark deep logic
+      immutable.getNumbers().add(4);
    }
 }
 
+// an immutable object cannot change state after being created
+// is SHALLOW immutable now, not DEEP immutable
 class Immutable {
    private final int x;
    private final List<Integer> numbers;
@@ -35,12 +38,15 @@ class Immutable {
       this.numbers = numbers;
       this.other = other;
    }
+
    public List<Integer> getNumbers() {
       return numbers;
    }
+
    public int getX() {
       return x;
    }
+
    public Other getOther() {
       return other;
    }

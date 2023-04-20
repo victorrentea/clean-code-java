@@ -22,7 +22,8 @@ public class MicroTypes {
 
     @Test
     void lackOfAbstractions() {
-        Map<CustomerId, List<ProductCount>> customerProductCounts = extremeFP();
+        //        Map<CustomerId, List<ProductCount>> customerProductCounts = extremeFP();
+        var customerProductCounts = extremeFP();
 
         for (CustomerId customerId : customerProductCounts.keySet()) {
             String pl = customerProductCounts.get(customerId).stream()
