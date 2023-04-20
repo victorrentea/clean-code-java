@@ -13,7 +13,7 @@ public class LostInSet {
       set.add(childOne);
 
       System.out.println(childOne.hashCode());
-      childOne.setName("Emma-Simona");
+   //      childOne.setName("Emma-Simona");
       System.out.println(childOne.hashCode());
 
       set.add(childOne);
@@ -26,7 +26,7 @@ public class LostInSet {
 
 
 class Child {
-   private String name; // HASH CODE EQUALS SHOULD ONLY INVOLVE IMMUTABLE FIELDS
+   private final String name; // HASH CODE EQUALS SHOULD ONLY INVOLVE IMMUTABLE FIELDS
 
    public Child(String name) {
       this.name = name;
@@ -36,9 +36,6 @@ class Child {
       return name;
    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
 
    @Override
    public boolean equals(Object o) {
