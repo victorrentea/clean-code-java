@@ -1,5 +1,7 @@
 package victor.training.cleancode.exception.model;
 
+import org.checkerframework.checker.nullness.Opt;
+
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
@@ -15,8 +17,8 @@ public class Customer {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   public Optional<MemberCard> getMemberCard() {
+      return ofNullable(memberCard);
    }
 
    public Customer setMemberCard(MemberCard memberCard) {
