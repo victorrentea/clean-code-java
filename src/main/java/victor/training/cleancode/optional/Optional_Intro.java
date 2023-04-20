@@ -13,10 +13,16 @@ public class Optional_Intro {
 	public static void main(String[] args) {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
+		System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" + computeDiscount(customer.getMemberCard()).getGlobalPercentage();
+
+		int g = computeDiscount(customer.getMemberCard()).getGlobalPercentage();
+		if (g != 0)
+			return "You got a discount of %" +
+				   g;
+		else return "";
 	}
 
 	private static Discount computeDiscount(MemberCard card) {
@@ -26,8 +32,11 @@ public class Optional_Intro {
 		if (card.getFidelityPoints() >= 50) {
 			return new Discount(3);
 		}
-		return null;
+		return new Discount(0); // Null Object Pattern = you instantiate an object with neutral values
+		// PRO: the caller doesn't have to check for null/Optional
+		// CONS: the caller shoould do some special logic for the neutral values, but they forget to IF
 	}
+
 	@Data
 	public static class Discount {
 		private final int globalPercentage;

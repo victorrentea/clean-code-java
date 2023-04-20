@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
       return userMessage;
    }
 
-   @ExceptionHandler(MyException.class) // more specific, attempted first
+   @ExceptionHandler(MyException.class) // more specific, attempted getFirst
    @ResponseStatus
    public String handleMyException(MyException myException, HttpServletRequest request) {
       String userMessage = messageSource.getMessage(
