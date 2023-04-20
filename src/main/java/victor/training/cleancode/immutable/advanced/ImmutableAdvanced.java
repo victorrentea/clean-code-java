@@ -17,7 +17,7 @@ public class ImmutableAdvanced {
       // -
       // -
 
-      System.out.println("After: " + immutable);
+      System.out.println("After:  " + immutable);
    }
 
    private static void wilderness(Immutable immutable) {
@@ -45,7 +45,6 @@ class Immutable {
       return other;
    }
 
-   @Override
    public String toString() {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
