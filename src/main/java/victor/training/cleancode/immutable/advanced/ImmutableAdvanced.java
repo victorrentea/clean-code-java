@@ -2,8 +2,6 @@ package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -13,21 +11,22 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15, "a"));
       System.out.println("Before: " + immutable);
 
-      wilderness(immutable);
-      // reasons to use immutable objects:
-      // -
-      // -
+      Immutable updated = wilderness(immutable);
       //      numbers.add(4); unmodifiableList is vulnerable to this mutation
 
-      System.out.println("After: " + immutable);
+      System.out.println("After: " + updated);
+      // i want to use immutable but with a different X assigned inside the wilderness method
    }
 
-   private static void wilderness(Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // dark deep logic
-      immutable.getNumbers().add(4);
+      //      immutable.getNumbers().add(4);
+      int x = 7;
+      Immutable updated = immutable.withX(x);
+      return updated;
    }
 }
 
@@ -72,7 +71,15 @@ class Immutable {
    public String toString() {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
+
+   public Immutable withX(int x) {
+      return this.x == x ? this : new Immutable(x, this.numbers, this.other);
+   }
 }
 
-record Other(int a) {
+record Other(int a, String s) { // usable as DTOs(JSON) o objects stored in Mongo/cassandra/nosql
+   //   NEVER HIBERNATE!! because of the lifecycle of @Entity
+   public Other withA(int newA) {
+      return new Other(newA, s);
+   }
 }
