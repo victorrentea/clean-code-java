@@ -1,7 +1,6 @@
 package victor.training.cleancode.optional;
 
-import java.util.Objects;
-import java.util.Optional;
+import javax.annotation.Nullable;
 
 public class Optional_Chain {
   private static final MyMapper mapper = new MyMapper();
@@ -20,13 +19,7 @@ public class Optional_Chain {
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
-    //    dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
-
-    dto.recipientPerson = parcel.getDelivery()
-            .flatMap(delivery -> delivery.getAddress().getContactPerson())
-            .map(p -> p.getName().toUpperCase())
-            .orElse(null);
-
+    dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
     return dto;
   }
 }
@@ -38,8 +31,8 @@ class DeliveryDto {
 class Parcel {
   private Delivery delivery; // NULL until a delivery is scheduled
 
-  public Optional<Delivery> getDelivery() {
-    return Optional.ofNullable(delivery);
+  public Delivery getDelivery() {
+    return delivery;
   }
 
   public void setDelivery(Delivery delivery) {
@@ -52,11 +45,11 @@ class Delivery {
   private Address address; // NOT NULL IN DB
 
   public Delivery(Address address) {
-    this.address = Objects.requireNonNull(address);
+    this.address = address;
   }
 
   public void setAddress(Address address) {
-    this.address = Objects.requireNonNull(address); // TODO null safe
+    this.address = address; // TODO null safe
   }
 
   public Address getAddress() {
@@ -71,8 +64,8 @@ class Address {
     this.contactPerson = contactPerson;
   }
 
-  public Optional<ContactPerson> getContactPerson() {
-    return Optional.ofNullable(contactPerson);
+  public ContactPerson getContactPerson() {
+    return contactPerson;
   }
 }
 
@@ -80,7 +73,7 @@ class ContactPerson {
   private final String name; // NOT NULL
 
   public ContactPerson(String name) {
-    this.name = Objects.requireNonNull(name);
+    this.name = name;
   }
 
   public String getName() {

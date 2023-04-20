@@ -24,20 +24,22 @@ public class AllCallersFailOnEmpty {
     }
   }
 
-//  private interface TenantRepo extends BaseRepo<Tenant, Long> {
-  private interface TenantRepo extends JpaRepository<Tenant, Long> {
+  public void flow1(long tenantId) {
+    // when I go to DB with a PK, if I don't find it, i ALWAYS fail throw
+    //    Tenant tenant = tenantRepo.findById(tenantId).orElseThrow(); // .get() throws if Optional is empty
+    Tenant tenant = tenantRepo.findOneById(tenantId);
+    System.out.println("Stuff1 with tenant: " + tenant);
   }
 
 
   private TenantRepo tenantRepo;
 
-  public void flow1(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // .get() throws if Optional is empty
-    System.out.println("Stuff1 with tenant: " + tenant);
-  }
-
   public void flow2(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // + 30 more places in a typical project
+    Tenant tenant = tenantRepo.findOneById(tenantId);
     System.out.println("Stuff2 with tenant: " + tenant);
   }
+
+//  private interface TenantRepo extends BaseRepo<Tenant, Long> {
+private interface TenantRepo extends BaseRepo<Tenant, Long> {
+}
 }
