@@ -12,13 +12,21 @@ public class LostInSet {
       Child childOne = new Child("Emma");
       set.add(childOne);
 
+      System.out.println(childOne.hashCode());
+      childOne.setName("Emma-Simona");
+      System.out.println(childOne.hashCode());
+
+      set.add(childOne);
+
       System.out.println(set.contains(childOne));
+
+      System.out.println("I have : " + set);
    }
 }
 
 
 class Child {
-   private String name;
+   private String name; // HASH CODE EQUALS SHOULD ONLY INVOLVE IMMUTABLE FIELDS
 
    public Child(String name) {
       this.name = name;
