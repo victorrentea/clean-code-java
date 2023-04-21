@@ -13,10 +13,15 @@ public class Optional_Intro {
 	public static void main(String[] args) {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
+		System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" + computeDiscount(customer.getMemberCard()).getGlobalPercentage();
+		Discount discount = computeDiscount(customer.getMemberCard());
+		if (discount != null)
+			return "You got a discount of %" +
+				   discount.getGlobalPercentage();
+		else return "";
 	}
 
 	private static Discount computeDiscount(MemberCard card) {
@@ -28,6 +33,7 @@ public class Optional_Intro {
 		}
 		return null;
 	}
+
 	@Data
 	public static class Discount {
 		private final int globalPercentage;

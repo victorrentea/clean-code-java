@@ -16,6 +16,20 @@ public class ImperativeMindset {
       System.out.println("Total: " + sum);
    }
 
+   public void aa(List<Order> orders) {
+      Objec sum = new Objec();
+      // TODO victorrentea 2021-04-21: Should not go to Prod
+      orders.stream()
+              .filter(order -> order.isActive())
+              .forEach(order -> {
+                 System.out.println(sum);
+              });
+      System.out.println("Total: " + sum);
+   }
+
+   class Objec {
+   }
+
 
    public void accumulateInList(List<Order> orders) {
       List<Integer> prices = orders.stream()
