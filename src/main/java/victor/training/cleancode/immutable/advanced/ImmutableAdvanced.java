@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import com.google.errorprone.annotations.Var;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -8,19 +9,20 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
-   public static void main(final String[] args) {
-      final List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
-
-       final Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
+   public static void main(String[] args) {
+      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
+      ImmutableList<Integer> collect = numbers.stream().map(x -> x * 2)
+              .collect(ImmutableList.toImmutableList());
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
       System.out.println("Before: " + immutable);
 
-      final Immutable updated = wilderness(immutable);
+      Immutable updated = wilderness(immutable);
 
       // CR: this code has to work with the same immutable as the initial one, but with a different X computed inside wilderness
       System.out.println("After:  " + updated);
    }
 
-   private static Immutable wilderness(final Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // dark deep logic
 //      immutable.getNumbers().add(1);
       final int newX = -1;
@@ -34,7 +36,7 @@ class Immutable { // SHALLOW IMMUTABLE
    // #5
    private final Other other;
 
-   Immutable(final int x, final ImmutableList<Integer> numbers, final Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers; // List.copyOf(numbers); // #1 Java 11 - malloc
       this.other = other;
@@ -63,7 +65,7 @@ class Immutable { // SHALLOW IMMUTABLE
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
 
-   public Immutable withX(final int newX) {
+   public Immutable withX(int newX) {
       return new Immutable(newX, numbers, other);
    }
 }

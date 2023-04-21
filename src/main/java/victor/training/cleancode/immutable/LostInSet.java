@@ -9,16 +9,23 @@ public class LostInSet {
       // UC-123: Loosing you child at the Mall
       Set<Child> set = new HashSet<>();
 
-      Child childOne = new Child("Emma");
+      Child childOne = new Child("Emma"); // 1 single instance
       set.add(childOne);
 
+      System.out.println(childOne.hashCode());
+//      childOne.setName("Emma-Simona");
+      System.out.println(childOne.hashCode());
+
       System.out.println(set.contains(childOne));
+
+      set.add(childOne);
+      System.out.println(set.size());
    }
 }
 
 
 class Child {
-   private String name;
+   private final String name;
 
    public Child(String name) {
       this.name = name;
@@ -28,9 +35,9 @@ class Child {
       return name;
    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+//   public void setName(String name) {
+//      this.name = name;
+//   }
 
    @Override
    public boolean equals(Object o) {
