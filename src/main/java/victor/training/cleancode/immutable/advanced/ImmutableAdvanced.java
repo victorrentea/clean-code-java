@@ -25,7 +25,7 @@ public class ImmutableAdvanced {
    }
 }
 
-class Immutable {
+class Immutable { // SHALLOW IMMUTABLE
    private final int x;
    private final List<Integer> numbers;
    private final Other other;
