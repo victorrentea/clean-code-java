@@ -44,12 +44,10 @@ public class StreamWrecks {
 
     List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
     return frequentProducts.stream()
-            //            .filter(p -> !p.isDeleted())
             .filter(not(Product::isDeleted))
             .filter(p -> !hiddenProductIds.contains(p.getId()))
             .collect(toList());
   }
-
 }
 
 
