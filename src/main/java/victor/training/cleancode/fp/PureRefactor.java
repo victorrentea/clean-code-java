@@ -23,7 +23,7 @@ class PureRefactor {
     List<Product> products = productRepo.findAllById(productIds);
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
-    for (victor.training.cleancode.fp.support.Product product : products) {
+    for (Product product : products) {
       Double price = internalPrices.get(product.getId());
       if (price == null) {
         price = thirdPartyPrices.fetchPrice(product.getId());
