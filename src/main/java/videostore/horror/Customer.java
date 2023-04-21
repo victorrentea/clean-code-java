@@ -1,7 +1,11 @@
 package videostore.horror;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.joining;
 
 class Customer {
   private String name;
@@ -20,20 +24,33 @@ class Customer {
   }
 
   public String statement() {
-    int frequentRenterPoints = 0;
-    String result = "Rental Record for " + getName() + "\n";
-    double totalPrice = 0;
-    for (Rental rental : rentals) {
-      double price = rental.getPrice();
-      frequentRenterPoints += rental.getFrequentRenterPoints();
-      // show figures line for this rental
-      result += "\t" + rental.movie().title() + "\t" + price + "\n";
-      totalPrice += price;
-    }
-    // add footer lines
-    result += "Amount owed is " + totalPrice + "\n";
-    result += "You earned " + frequentRenterPoints + " frequent renter points";
-    return result;
+    return formatHeader() + formatBody() + formatFooter();
+  }
+
+  private String formatBody() {
+    return rentals.stream().map(Customer::formatLine).collect(joining());
+  }
+
+  @NotNull
+  private String formatHeader() {
+    return "Rental Record for " + name + "\n";
+  }
+
+  private  String formatFooter() {
+    return "Amount owed is " + totalPrice() + "\n"
+           + "You earned " + totalPoints() + " frequent renter points";
+  }
+
+  private static String formatLine(Rental rental) {
+    return "\t" + rental.movie().title() + "\t" + rental.getPrice() + "\n";
+  }
+
+  private double totalPrice() {
+    return rentals.stream().mapToDouble(Rental::getPrice).sum();
+  }
+
+  private int totalPoints() {
+    return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
   }
 
 }
