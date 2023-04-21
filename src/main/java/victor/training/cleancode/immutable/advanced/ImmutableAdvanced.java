@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -12,6 +13,7 @@ public class ImmutableAdvanced {
       Immutable immutable = new Immutable(1, numbers, new Other(15));
       System.out.println("Before: " + immutable);
 
+//      numbers.clear();
       wilderness(immutable);
 
       System.out.println("After:  " + immutable);
@@ -19,7 +21,7 @@ public class ImmutableAdvanced {
 
    private static void wilderness(Immutable immutable) {
       // dark deep logic
-      immutable.getNumbers().add(1);
+//      immutable.getNumbers().add(1);
    }
 }
 
@@ -30,12 +32,17 @@ class Immutable { // SHALLOW IMMUTABLE
 
    Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = numbers;
+      this.numbers = numbers; // List.copyOf(numbers); // #1 Java 11 - malloc
       this.other = other;
    }
    public List<Integer> getNumbers() {
-      return numbers;
+//      return new ArrayList<>(numbers); // #2 copy on getter: - malloc - misleading
+      return Collections.unmodifiableList(numbers); // #3 immutable decorate: - changing the original list passed to ctor -> mutation
    }
+
+//   public Stream<Integer> numbers() {
+//      return numbers.stream(); // #4 strange? - no .contains()
+//   }
    public int getX() {
       return x;
    }
