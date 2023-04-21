@@ -16,6 +16,7 @@ public class StreamWrecks {
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		return orders.stream()
+				.filter(Order::isActive)
 				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
 				.flatMap(o -> o.getOrderLines().stream())
 				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
