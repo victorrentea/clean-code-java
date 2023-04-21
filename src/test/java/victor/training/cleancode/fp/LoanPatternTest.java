@@ -29,7 +29,7 @@ public class LoanPatternTest {
       order.setCreationDate(parse("2021-01-07"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
 
-      new FileExportService(exporter).exportOrders();
+      new FileExportService(exporter,new UserExportWriter(), new OrderExportWriter(orderRepo)).exportOrders();
 
       // NOW read the file from the disk ... Yuck!
 

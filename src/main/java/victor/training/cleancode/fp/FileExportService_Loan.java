@@ -2,7 +2,7 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.lambda.Unchecked;
+import victor.training.cleancode.fp.FileExportService_Loan.VictorConsumer;
 import victor.training.cleancode.fp.support.OrderRepo;
 
 import java.io.File;
@@ -21,19 +21,15 @@ public class FileExportService_Loan {
 
       void accept(T t) throws Exception;
    }
-   private final OrderRepo orderRepo;
 
-   public void exportOrders() throws IOException {
-      File file = new File("target/orders.csv");
+
+   public void exportFile(String fileName, Consumer<Writer> writerFunction) throws IOException {
+      File file = new File("target/" + fileName + ".csv");
       log.info("Starting export into {} ...", file.getAbsolutePath());
       long t0 = System.currentTimeMillis();
       try (Writer writer = new FileWriter(file)) {
 
-         writer.write("order_id;date\n");
-
-         orderRepo.findByActiveTrue()
-                 .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
-                 .forEach(consumer(writer::write));
+         writerFunction.accept(writer);
 
          log.info("Export DONE");
       } catch (Exception e) {
@@ -44,6 +40,25 @@ public class FileExportService_Loan {
          long t1 = System.currentTimeMillis();
          log.info("Export completed in {} seconds ", (t1 - t0) / 1000);
       }
+   }
+
+}
+@RequiredArgsConstructor
+class OrderExportWriter {
+   private final OrderRepo orderRepo;
+
+   public void writeOrders(Writer writer) throws IOException {
+      writer.write("order_id;date\n");
+
+      orderRepo.findByActiveTrue()
+              .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
+              .forEach(consumer(writer::write));
+   }
+
+}
+class UserExportWriter {
+   public void writeUsers(Writer writer) throws IOException {
+      writer.write("pretend I am writing users from the user repo :)\n");
    }
 
 

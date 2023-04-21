@@ -66,9 +66,3 @@ class Profile {
     }
 }
 
-class UserRepo {
-
-    public User findById(int userId) {
-        return null;
-    }
-}
