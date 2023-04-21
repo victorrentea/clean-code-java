@@ -15,8 +15,8 @@ class Customer {
     return name;
   }
 
-  public void addRental(Movie movie, int daysRented) {
-    rentals.add(new Rental(movie, daysRented));
+  public void addRental(Rental rental) {
+    rentals.add(rental);
   }
 
   public String statement() {
@@ -26,7 +26,7 @@ class Customer {
     for (Rental rental : rentals) {
       Movie movie = rental.movie();
       int daysRented = rental.daysRented();
-      double price = getPrice(rental);
+      double price = rental.getPrice();
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two day new release rental
@@ -44,23 +44,4 @@ class Customer {
     return result;
   }
 
-  private double getPrice(Rental rental) {
-    double result = 0;
-    switch (rental.movie().priceCode()) {
-      case REGULAR:
-        result += 2;
-        if (rental.daysRented() > 2)
-          result += (rental.daysRented() - 2) * 1.5;
-        break;
-      case NEW_RELEASE:
-        result += rental.daysRented() * 3;
-        break;
-      case CHILDREN:
-        result += 1.5;
-        if (rental.daysRented() > 3)
-          result += (rental.daysRented() - 3) * 1.5;
-        break;
-    }
-    return result;
-  }
 }
