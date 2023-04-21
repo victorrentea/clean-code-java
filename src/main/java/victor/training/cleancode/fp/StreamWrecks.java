@@ -16,16 +16,16 @@ public class StreamWrecks {
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		return orders.stream()
-				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
-				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
-				.entrySet()
-				.stream()
-				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey)
-				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
-				.collect(toList());
+						.filter(o -> o.isActive() && o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
+						.flatMap(o -> o.getOrderLines().stream())
+						.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
+						.entrySet()
+						.stream()
+						.filter(e -> e.getValue() >= 10)
+						.map(Entry::getKey)
+						.filter(p -> !p.isDeleted())
+						.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+						.collect(toList());
 	}
 }
 
