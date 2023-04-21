@@ -11,26 +11,6 @@ class Customer {
     this.name = name;
   }
 
-  private static double getPrice(Movie movie, int daysRented) {
-    double result = 0;
-    switch (movie.priceCode()) {
-      case REGULAR:
-        result += 2;
-        if (daysRented > 2)
-          result += (daysRented - 2) * 1.5;
-        break;
-      case NEW_RELEASE:
-        result += daysRented * 3;
-        break;
-      case CHILDREN:
-        result += 1.5;
-        if (daysRented > 3)
-          result += (daysRented - 3) * 1.5;
-        break;
-    }
-    return result;
-  }
-
   public String getName() {
     return name;
   }
@@ -46,7 +26,7 @@ class Customer {
     for (Rental rental : rentals) {
       Movie movie = rental.movie();
       int daysRented = rental.daysRented();
-      double price = getPrice(movie, daysRented);
+      double price = getPrice(rental);
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two day new release rental
@@ -61,6 +41,26 @@ class Customer {
     // add footer lines
     result += "Amount owed is " + totalPrice + "\n";
     result += "You earned " + frequentRenterPoints + " frequent renter points";
+    return result;
+  }
+
+  private double getPrice(Rental rental) {
+    double result = 0;
+    switch (rental.movie().priceCode()) {
+      case REGULAR:
+        result += 2;
+        if (rental.daysRented() > 2)
+          result += (rental.daysRented() - 2) * 1.5;
+        break;
+      case NEW_RELEASE:
+        result += rental.daysRented() * 3;
+        break;
+      case CHILDREN:
+        result += 1.5;
+        if (rental.daysRented() > 3)
+          result += (rental.daysRented() - 3) * 1.5;
+        break;
+    }
     return result;
   }
 }
