@@ -1,6 +1,19 @@
 package videostore.horror;
 
 public record Rental(Movie movie, int daysRented) {
+  // too cryptic, and too far from what the requirements said.
+  public int getFrequentRenterPoints() {
+    return movie.eligibleForBonus(daysRented) ? 2 : 1;
+  }
+
+//  public int getFrequentRenterPoints() {
+//    int result = 1;
+//    if (movie.eligibleForBonus(daysRented)) {
+//      result ++;
+//    }
+//    return result;
+//  }
+
   public double getPrice() {
     double result = 0;
     switch (movie.priceCode()) {
