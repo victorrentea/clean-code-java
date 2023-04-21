@@ -1,11 +1,11 @@
 package videostore.horror;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 class Customer {
   private String name;
-  private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+  private List<Rental> rentals = new ArrayList<>();
 
   public Customer(String name) {
     this.name = name;
@@ -31,21 +31,21 @@ class Customer {
     return result;
   }
 
-  public void addRental(Movie movie, int daysRented) {
-    rentals.put(movie, daysRented);
-  }
-
   public String getName() {
     return name;
+  }
+
+  public void addRental(Movie movie, int daysRented) {
+    rentals.add(new Rental(movie, daysRented));
   }
 
   public String statement() {
     int frequentRenterPoints = 0;
     String result = "Rental Record for " + getName() + "\n";
     double totalPrice = 0;
-    for (Movie movie : rentals.keySet()) {
-      // determine amounts for each line
-      int daysRented = rentals.get(movie);
+    for (Rental rental : rentals) {
+      Movie movie = rental.movie();
+      int daysRented = rental.daysRented();
       double price = getPrice(movie, daysRented);
       // add frequent renter points
       frequentRenterPoints++;
