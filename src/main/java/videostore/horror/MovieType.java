@@ -1,7 +1,7 @@
 package videostore.horror;
 
 public enum MovieType {
-  CHILDREN{
+  CHILDREN/*{
     @Override
     public double getPrice(int daysRented) {
       double result =  1.5;
@@ -9,8 +9,8 @@ public enum MovieType {
         result += (daysRented - 3) * 1.5;
       return result;
     }
-  },
-  REGULAR {
+  }*/,
+  REGULAR/* {
     @Override
     public double getPrice(int daysRented) {
       double result = 2;
@@ -18,13 +18,14 @@ public enum MovieType {
         result += (daysRented - 2) * 1.5;
       return result;
     }
-  },
-  NEW_RELEASE {
+  }*/,
+  NEW_RELEASE/* {
     @Override
     public double getPrice(int daysRented) {
       return daysRented * 3;
     }
-  };
+  }*/,
+  ELDER;
 
-  public abstract double getPrice(int daysRented);
+//  public abstract double getPrice(int daysRented);
 }

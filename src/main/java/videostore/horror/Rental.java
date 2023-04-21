@@ -19,23 +19,27 @@ public record Rental(Movie movie, int daysRented) {
   }
 
   public double getPrice() {
-    return movie.priceCode().getPrice(daysRented);
-//    double result = 0;
-//    switch (movie.priceCode()) {
-//      case REGULAR:
-//        result = getRegularPrice();
-//        break;
-//      case NEW_RELEASE:
-//        result += getNewReleasePrice();
-//        break;
-//      case CHILDREN:
-//        result = getChildrenPrice();
-//        break;
-//      default:
-//        throw new IllegalStateException("Unexpected value: " + movie.priceCode());
-//    }
-//    return result;
+//    return movie.priceCode().getPrice(daysRented);
+
+    return switch (movie.priceCode()) {
+      case REGULAR -> getRegularPrice();
+      case NEW_RELEASE -> getNewReleasePrice();
+      case CHILDREN -> getChildrenPrice();
+      case ELDER -> 0;
+    };
   }
+  // pre java 17
+  //  switch (movie.priceCode()) {
+  //      case REGULAR:
+  //        return getRegularPrice();
+  //      case NEW_RELEASE:
+  //        return getNewReleasePrice();
+  //      case CHILDREN:
+  //        return getChildrenPrice();
+  //      default:
+  //        throw new IllegalStateException("Unexpected value: " + movie.priceCode());
+  //    }
+
 
   private double getChildrenPrice() {
     double result =  1.5;
