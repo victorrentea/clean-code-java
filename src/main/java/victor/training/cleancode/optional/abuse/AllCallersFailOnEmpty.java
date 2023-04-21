@@ -14,30 +14,32 @@ public class AllCallersFailOnEmpty {
     Long id;
   }
 
-  private interface BaseRepo<T,PK> extends JpaRepository<T, PK> {
-    @SuppressWarnings("unchecked")
-    default T findOneById(PK id) {
-      return findById(id).orElseThrow(() -> {
-        Class<T> persistentClass = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return new NoSuchElementException(persistentClass.getSimpleName() + " with id " + id + " not found ");
-      });
-    }
+  // if a methed returns optional but ALL callers CRASH on empty
+  // -> ? do I want to burden everyone
+  public void flow1(long tenantId) {
+    Tenant tenant = tenantRepo.findOneById(tenantId); // .get() throws if Optional is empty
+    System.out.println("Stuff1 with tenant: " + tenant);
   }
 
-//  private interface TenantRepo extends BaseRepo<Tenant, Long> {
-  private interface TenantRepo extends JpaRepository<Tenant, Long> {
+  public void flow2(long tenantId) {
+    Tenant tenant = tenantRepo.findOneById(tenantId); // + 30 more places in a typical project
+    System.out.println("Stuff2 with tenant: " + tenant);
   }
 
 
   private TenantRepo tenantRepo;
 
-  public void flow1(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // .get() throws if Optional is empty
-    System.out.println("Stuff1 with tenant: " + tenant);
+  private interface BaseRepo<T, PK> extends JpaRepository<T, PK> {
+    @SuppressWarnings("unchecked")
+    default T findOneById(PK id) {
+      return findById(id).orElseThrow(() -> {
+        Class<T> persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return new NoSuchElementException(persistentClass.getSimpleName() + " with id " + id + " not found ");
+      });
+    }
   }
 
-  public void flow2(long tenantId) {
-    Tenant tenant = tenantRepo.findById(tenantId).get(); // + 30 more places in a typical project
-    System.out.println("Stuff2 with tenant: " + tenant);
+  private interface TenantRepo extends BaseRepo<Tenant, Long> {
+    //  private interface TenantRepo extends JpaRepository<Tenant, Long> {
   }
 }
