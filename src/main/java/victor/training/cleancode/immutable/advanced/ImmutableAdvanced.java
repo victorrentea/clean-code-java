@@ -13,15 +13,13 @@ public class ImmutableAdvanced {
       System.out.println("Before: " + immutable);
 
       wilderness(immutable);
-      // reasons to use immutable objects:
-      // -
-      // -
 
-      System.out.println("After: " + immutable);
+      System.out.println("After:  " + immutable);
    }
 
    private static void wilderness(Immutable immutable) {
       // dark deep logic
+      immutable.getNumbers().add(1);
    }
 }
 
@@ -51,18 +49,5 @@ class Immutable { // SHALLOW IMMUTABLE
    }
 }
 
-class Other {
-   private int a;
-
-   public Other(int a) {
-      this.a = a;
-   }
-
-   public int getA() {
-      return a;
-   }
-
-   public void setA(int a) {
-      this.a = a;
-   }
+record Other(int a) {
 }
