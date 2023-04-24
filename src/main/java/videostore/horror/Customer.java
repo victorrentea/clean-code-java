@@ -3,15 +3,17 @@ package videostore.horror;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentalList = new ArrayList<>();
+
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentalList.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -22,14 +24,15 @@ class Customer {
 		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie movie : rentals.keySet()) {
-			// determine amounts for movie line
-			int daysRented = rentals.get(movie);
+		for (Rental rental : rentalList) {
+
+			Movie movie = rental.movie();
+			int daysRented = rental.daysRented();
 			double price = movie.category().computePrice(daysRented);
 
 			frequentRenterPoints += computeBonusPoints(daysRented, movie.category());
 
-			// show figures line for this rental
+
 			result += "\t" + movie.title() + "\t" + price + "\n";
 			totalPrice += price;
 		}
