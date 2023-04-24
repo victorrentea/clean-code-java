@@ -47,6 +47,9 @@ class Interval {
   private int end;
   protected Interval() {} // for Hibernate only
   public Interval(int start, int end) {
+    // intersant: self-validating data model, dar in practica HORROR, greu
+    // viata e greu, nu toti o poate
+    if (start > end) throw new IllegalArgumentException("start larger than end");
     this.start = start;
     this.end = end;
   }
@@ -115,7 +118,6 @@ class CarModel { // the holy Entity Model. sfantul. inegalabilul.
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     yearInterval = new Interval(startYear, endYear);
   }
 
@@ -155,7 +157,7 @@ class CarModelMapper {
     dto.startYear = carModel.getYearInterval().getStart();
     dto.startYear = carModel.getYearInterval().getStart();
     dto.startYear = carModel.getYearInterval().getStart();
-    dto.startYear = carModel.getYearInterval().getStart();
+//    dto.startYear = carModel.yearInterval.start;
     dto.startYear = carModel.getYearInterval().getStart();
     dto.startYear = carModel.getYearInterval().getStart();
     dto.startYear = carModel.getYearInterval().getStart();
