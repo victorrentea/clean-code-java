@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
+@SuppressWarnings("unused")
 @Service
 @RequiredArgsConstructor
 public class Exercise {
@@ -15,10 +16,10 @@ public class Exercise {
    private final ServiceService serviceService;
 
    public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
-      if (projectUser.getRole().equals(ProjectUserRoleType.ADMIN)) {
+      if (projectUser.getRole() == ProjectUserRoleType.ADMIN) {
          List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
          List<ProjectServices> subscribedProjectServices = projectServices.stream()
-             .filter(projectService -> projectService.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED))
+             .filter(projectService -> projectService.getProjectServiceStatus() == ProjectServiceStatus.SUBSCRIBED)
              .collect(Collectors.toList());
 
          subscribedProjectServices.forEach(subscribedProjectService -> {
@@ -34,11 +35,11 @@ public class Exercise {
          projectServices.forEach(pS -> services.forEach(service -> {
             if (service.getName().equals(pS)) {
                ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-               if (projectServices1 != null && projectServices1.getProjectServiceStatus().equals(ProjectServiceStatus.SUBSCRIBED)) {
+               if (projectServices1 != null && projectServices1.getProjectServiceStatus() == ProjectServiceStatus.SUBSCRIBED) {
                   ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
                   projectServicesDTO.setService(service);
                   User user = userService.findByUuid(projectUser.getUuid()).get();
-                  if (projectUser.getRole().equals(ProjectUserRoleType.VIEW)) {
+                  if (projectUser.getRole() == ProjectUserRoleType.VIEW) {
                      userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.VIEW.name());
                   } else {
                      userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
