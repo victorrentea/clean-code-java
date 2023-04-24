@@ -8,20 +8,21 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-public class ImmutableAdvanced {
-   public static void main(final String[] args) {
-      final List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
+// const > val in FE
 
-      final Immutable immutable =
-              new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
+public class ImmutableAdvanced {
+   public static void main(String[] args) {
+      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
+
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
       System.out.println("Before: " + immutable);
 
-      final Immutable updated = wilderness(immutable);
+      Immutable updated = wilderness(immutable);
 
       System.out.println("After:  " + updated);
    }
 
-   private static Immutable wilderness(final Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // dark deep logic
 //      immutable.getNumbers().add(-1);
       final int noulX = -7;
@@ -36,11 +37,11 @@ final class Immutable { // DEEP > shallow immutable
    // ! Hibernate nu poate persista asa ceva.
    private final Other other;
 
-   public Immutable withX(final int x) { // = @With
+   public Immutable withX(int x) { // = @With
       return new Immutable(x, numbers, other);
    }
 
-   Immutable(final int x, final ImmutableList<Integer> numbers, final Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
 
