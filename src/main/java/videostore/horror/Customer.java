@@ -7,15 +7,14 @@ import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
-	// preserves order
 	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie movie, int daysRented) {
-		rentals.add(new Rental(movie, daysRented));
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
 	public String getName() {
@@ -23,10 +22,15 @@ class Customer {
 	}
 
 	public String getReceipt() {
-		return getReceiptHeader() + getBody() + getReceiptFooter();
+		return getReceiptHeader() + getReceiptBody() + getReceiptFooter();
 	}
 
-	private String getBody() {
+	@NotNull
+	private String getReceiptHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String getReceiptBody() {
 		return rentals.stream().map(Customer::getLineItem).collect(Collectors.joining());
 	}
 
@@ -37,26 +41,16 @@ class Customer {
 
 	@NotNull
 	private String getReceiptFooter() {
-		String result = "Amount owed is " + sumPrice() + "\n";
-		result += "You earned " + sumEarnedPoints() + " frequent renter points";
-		return result;
-	}
-
-	@NotNull
-	private String getReceiptHeader() {
-		return "Rental Record for " + getName() + "\n";
+		return "Amount owed is " + sumPrice() + "\n" +
+			   "You earned " + sumEarnedPoints() + " frequent renter points";
 	}
 
 	private double sumPrice() {
-		return rentals.stream()
-				.mapToDouble(Rental::computePrice)
-				.sum();
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
 	private int sumEarnedPoints() {
-		return rentals.stream()
-				.mapToInt(Rental::computeBonusPoints)
-				.sum();
+		return rentals.stream().mapToInt(Rental::computeBonusPoints).sum();
 	}
 
 }
