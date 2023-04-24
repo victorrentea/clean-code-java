@@ -24,38 +24,39 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 }
 
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO The shared called method must execute logic specific for my use-case #323
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, true);
   }
 }
 
 public class BooleanParameters {
-
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  static void bigUglyMethod(int storeId, Task task) {
+  static void bigUglyMethod(int storeId, Task task, boolean cr323) {
     System.out.println("Cow Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Cow Logic 3 " + task);
 
-    // System.out.println("Logic just for CR#323 : " + task);
+    if (cr323) {
+      System.out.println("Logic just for CR#323 : " + task);
+    }
 
     System.out.println("Donkey Logic 1 " + storeId);
     System.out.println("Donkey Logic 2 " + storeId);
