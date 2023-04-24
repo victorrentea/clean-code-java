@@ -46,7 +46,7 @@ class Interval {
   private int start;
   private int end;
   protected Interval() {} // for Hibernate only
-  public Interval(int start, int end) {
+  public Interval(int start, int end) { // NOSONAR
     // intersant: self-validating data model, dar in practica HORROR, greu
     // viata e greu, nu toti o poate
     if (start > end) throw new IllegalArgumentException("start larger than end");
@@ -84,6 +84,8 @@ class CarSearchCriteria { // smells like JSON ...
     @NotNull
     public Interval getYearInterval() {
         return new Interval(startYear, endYear);
+        // NICIODATA NU VEI AVEA PROBLEME DE PERF AICI
+      //decat daca chemi getYearInterval intr-un for de 10M de itemi
     }
 
     public int getStartYear() {
@@ -99,8 +101,15 @@ class CarSearchCriteria { // smells like JSON ...
   }
 }
 
+//interface CarModelEnriched {
+//  default Interval getYearInterval() {
+//    return new Interval(getStartYear(), getEndYear());
+//  }
+//  int getStartYear();
+//  int getEndYear();
+//}
 @Entity
-class CarModel { // the holy Entity Model. sfantul. inegalabilul.
+class CarModel /*implements CarModelEnriched*/{ // the holy Entity Model. sfantul. inegalabilul.
     // model de date din BE tinut secret de API doar pentur a-ti scrie logica pe el.
     // ORM entity.
   @Id
