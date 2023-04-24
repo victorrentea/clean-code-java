@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -13,30 +14,28 @@ public class ImmutableAdvanced {
       System.out.println("Before: " + immutable);
 
       wilderness(immutable);
-      // reasons to use immutable objects:
-      // -
-      // -
 
       System.out.println("After:  " + immutable);
    }
 
    private static void wilderness(Immutable immutable) {
       // dark deep logic
+      immutable.getNumbers().add(-1);
+
+      System.out.println("elem meu in " + immutable.getNumbers());
    }
 }
-
-class Immutable {
+final class Immutable { // DEEP > shallow immutable
    private final int x;
    private final List<Integer> numbers;
    private final Other other;
-
    Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
    }
    public List<Integer> getNumbers() {
-      return numbers;
+      return new ArrayList<>(numbers);  // rau din 1) malloc 2) misleading
    }
    public int getX() {
       return x;
