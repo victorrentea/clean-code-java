@@ -19,15 +19,16 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    return computeDiscount(customer.getMemberCard())
-            .map(d-> "You got a discount of %" + d.getGlobalPercentage())
+    return Optional.ofNullable(customer.getMemberCard())
+            .flatMap(Optional_Intro::computeDiscount)
+            .map(d -> "You got a discount of %" + d.getGlobalPercentage())
             .orElse("");
   }
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
-    if (card == null) {
-      return Optional.empty();
-    }
+    //    if (card == null) {
+    //      return Optional.empty();
+    //    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5));
     }
