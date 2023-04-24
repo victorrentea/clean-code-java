@@ -26,12 +26,9 @@ class Customer {
 			// determine amounts for movie line
 			int daysRented = rentals.get(movie);
 			double price = movie.category().computePrice(daysRented);
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((movie.category() == MovieCategory.NEW_RELEASE)
-				 && daysRented > 1)
-				frequentRenterPoints++;
+
+			frequentRenterPoints += computeBonusPoints(daysRented, movie.category());
+
 			// show figures line for this rental
 			result += "\t" + movie.title() + "\t" + price + "\n";
 			totalPrice += price;
@@ -40,6 +37,14 @@ class Customer {
 		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private static int computeBonusPoints(int daysRented, MovieCategory movieCategory) {
+		int frequentRenterPoints = 1;
+
+		if (movieCategory == MovieCategory.NEW_RELEASE && daysRented >= 2)
+			frequentRenterPoints++;
+		return frequentRenterPoints;
 	}
 
 }
