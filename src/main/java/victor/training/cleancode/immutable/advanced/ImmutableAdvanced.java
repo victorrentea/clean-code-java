@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +13,7 @@ public class ImmutableAdvanced {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
 
-      Immutable immutable = new Immutable(1, numbers, new Other(15));
+      Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
       System.out.println("Before: " + immutable);
 
       wilderness(immutable);
@@ -21,23 +23,26 @@ public class ImmutableAdvanced {
 
    private static void wilderness(Immutable immutable) {
       // dark deep logic
-//      immutable.getNumbers().add(-1);
+      immutable.getNumbers().add(-1);
 
       System.out.println("elem meu in " + immutable.getNumbers());
    }
 }
 final class Immutable { // DEEP > shallow immutable
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers; // #3 treci de la Java collections la guava collections
+   // ! Hibernate nu poate persista asa ceva.
    private final Other other;
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = Collections.unmodifiableList(numbers);
+      this.numbers = numbers;
+
+//      this.numbers = Collections.unmodifiableList(numbers);
       // #2 intoarce o lista care nu poate fi modificata:
       this.other = other;
    }
 
-   public List<Integer> getNumbers() {
+   public ImmutableList<Integer> getNumbers() {
       return numbers;
    }
 
