@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -20,7 +21,7 @@ public class ImmutableAdvanced {
 
    private static void wilderness(Immutable immutable) {
       // dark deep logic
-      immutable.getNumbers().add(-1);
+//      immutable.getNumbers().add(-1);
 
       System.out.println("elem meu in " + immutable.getNumbers());
    }
@@ -31,12 +32,18 @@ final class Immutable { // DEEP > shallow immutable
    private final Other other;
    Immutable(int x, List<Integer> numbers, Other other) {
       this.x = x;
-      this.numbers = numbers;
+      this.numbers = Collections.unmodifiableList(numbers);
+      // #2 intoarce o lista care nu poate fi modificata:
       this.other = other;
    }
+
    public List<Integer> getNumbers() {
-      return new ArrayList<>(numbers);  // rau din 1) malloc 2) misleading
+      return numbers;
    }
+
+   //   public List<Integer> getNumbers() {
+//      return new ArrayList<>(numbers);  // rau din 1) malloc 2) misleading
+//   }
    public int getX() {
       return x;
    }
