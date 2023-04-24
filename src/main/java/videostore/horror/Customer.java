@@ -25,7 +25,7 @@ class Customer {
 		for (Movie movie : rentals.keySet()) {
 			// determine amounts for movie line
 			int daysRented = rentals.get(movie);
-			double price = calculatePrice(movie, daysRented);
+			double price = movie.category().computePrice(daysRented);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
@@ -42,25 +42,4 @@ class Customer {
 		return result;
 	}
 
-	private double calculatePrice(Movie movie, int daysRented) {
-		double price;
-		switch (movie.category()) {
-			case REGULAR:
-				price = 2;
-				if (daysRented > 2)
-					price += (daysRented - 2) * 1.5;
-				break;
-			case NEW_RELEASE:
-				price = daysRented * 3;
-				break;
-			case CHILDRENS:
-				price = 1.5;
-				if (daysRented > 3)
-					price += (daysRented - 3) * 1.5;
-				break;
-			default:
-				throw new IllegalStateException("Unexpected value: " + movie.category());
-		}
-		return price;
-	}
 }
