@@ -4,9 +4,8 @@ import java.util.*;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	// preserves order
 	private final List<Rental> rentalList = new ArrayList<>();
-
 
 	public Customer(String name) {
 		this.name = name;
@@ -21,20 +20,19 @@ class Customer {
 	}
 
 	public String getReceipt() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
+		double totalPrice;
+		int frequentRenterPoints;
 		String result = "Rental Record for " + getName() + "\n";
+		frequentRenterPoints = rentalList.stream()
+				.mapToInt(Customer::computeBonusPoints)
+				.sum();
+
+		totalPrice = rentalList.stream()
+				.mapToDouble(Rental::computePrice)
+				.sum();
+
 		for (Rental rental : rentalList) {
-
-			Movie movie = rental.movie();
-			int daysRented = rental.daysRented();
-			double price = movie.category().computePrice(daysRented);
-
-			frequentRenterPoints += computeBonusPoints(daysRented, movie.category());
-
-
-			result += "\t" + movie.title() + "\t" + price + "\n";
-			totalPrice += price;
+			result += "\t" + rental.movie().title() + "\t" + rental.computePrice() + "\n";
 		}
 		// add footer lines
 		result += "Amount owed is " + totalPrice + "\n";
@@ -42,10 +40,10 @@ class Customer {
 		return result;
 	}
 
-	private static int computeBonusPoints(int daysRented, MovieCategory movieCategory) {
+	private static int computeBonusPoints(Rental rental) {
 		int frequentRenterPoints = 1;
 
-		if (movieCategory == MovieCategory.NEW_RELEASE && daysRented >= 2)
+		if (rental.movie().category() == MovieCategory.NEW_RELEASE && rental.daysRented() >= 2)
 			frequentRenterPoints++;
 		return frequentRenterPoints;
 	}
