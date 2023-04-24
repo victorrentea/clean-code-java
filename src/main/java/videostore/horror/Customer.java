@@ -1,18 +1,21 @@
 package videostore.horror;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
 	// preserves order
-	private final List<Rental> rentalList = new ArrayList<>();
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
 	public void addRental(Movie movie, int daysRented) {
-		rentalList.add(new Rental(movie, daysRented));
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -20,32 +23,40 @@ class Customer {
 	}
 
 	public String getReceipt() {
-		double totalPrice;
-		int frequentRenterPoints;
-		String result = "Rental Record for " + getName() + "\n";
-		frequentRenterPoints = rentalList.stream()
-				.mapToInt(Customer::computeBonusPoints)
-				.sum();
+		return getReceiptHeader() + getBody() + getReceiptFooter();
+	}
 
-		totalPrice = rentalList.stream()
-				.mapToDouble(Rental::computePrice)
-				.sum();
+	private String getBody() {
+		return rentals.stream().map(Customer::getLineItem).collect(Collectors.joining());
+	}
 
-		for (Rental rental : rentalList) {
-			result += "\t" + rental.movie().title() + "\t" + rental.computePrice() + "\n";
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+	@NotNull
+	private static String getLineItem(Rental rental) {
+		return "\t" + rental.movie().title() + "\t" + rental.computePrice() + "\n";
+	}
+
+	@NotNull
+	private String getReceiptFooter() {
+		String result = "Amount owed is " + sumPrice() + "\n";
+		result += "You earned " + sumEarnedPoints() + " frequent renter points";
 		return result;
 	}
 
-	private static int computeBonusPoints(Rental rental) {
-		int frequentRenterPoints = 1;
+	@NotNull
+	private String getReceiptHeader() {
+		return "Rental Record for " + getName() + "\n";
+	}
 
-		if (rental.movie().category() == MovieCategory.NEW_RELEASE && rental.daysRented() >= 2)
-			frequentRenterPoints++;
-		return frequentRenterPoints;
+	private double sumPrice() {
+		return rentals.stream()
+				.mapToDouble(Rental::computePrice)
+				.sum();
+	}
+
+	private int sumEarnedPoints() {
+		return rentals.stream()
+				.mapToInt(Rental::computeBonusPoints)
+				.sum();
 	}
 
 }
