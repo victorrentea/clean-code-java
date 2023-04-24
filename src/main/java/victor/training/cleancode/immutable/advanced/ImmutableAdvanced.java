@@ -1,9 +1,8 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -16,23 +15,30 @@ public class ImmutableAdvanced {
       Immutable immutable = new Immutable(1, ImmutableList.copyOf(numbers), new Other(15));
       System.out.println("Before: " + immutable);
 
-      wilderness(immutable);
+      Immutable updated = wilderness(immutable);
 
-      System.out.println("After:  " + immutable);
+      System.out.println("After:  " + updated);
    }
 
-   private static void wilderness(Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // dark deep logic
-      immutable.getNumbers().add(-1);
-
+//      immutable.getNumbers().add(-1);
+      int noulX = -7;
       System.out.println("elem meu in " + immutable.getNumbers());
+      return immutable.withX(noulX);
    }
 }
 final class Immutable { // DEEP > shallow immutable
+//   @With
    private final int x;
    private final ImmutableList<Integer> numbers; // #3 treci de la Java collections la guava collections
    // ! Hibernate nu poate persista asa ceva.
    private final Other other;
+
+   public Immutable withX(int x) { // = @With
+      return new Immutable(x, numbers, other);
+   }
+
    Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
@@ -61,18 +67,8 @@ final class Immutable { // DEEP > shallow immutable
    }
 }
 
+// java 17 equivalent: record Other(int a) {}
+@Value // = getter constructor eq/hash tostring
 class Other {
-   private int a;
-
-   public Other(int a) {
-      this.a = a;
-   }
-
-   public int getA() {
-      return a;
-   }
-
-   public void setA(int a) {
-      this.a = a;
-   }
+   int a;
 }
