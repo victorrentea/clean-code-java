@@ -12,8 +12,6 @@ class ParameterizeAndExtract {
             }
         }
     }
-}
-class SomeOtherClass {
     public void g(int n) {
         System.out.println("Logic G");
         try {

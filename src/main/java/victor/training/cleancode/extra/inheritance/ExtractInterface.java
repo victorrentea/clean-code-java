@@ -17,15 +17,15 @@ class SomeOtherClass {
 }
 
 class AnotherDistantClass {
-    private final CsvWriter csvWriter;
+    private final CsvWriter csvWriterInterface;
 
-    public AnotherDistantClass(CsvWriter csvWriter) {
-        this.csvWriter = csvWriter;
+    public AnotherDistantClass(CsvWriter csvWriterInterface) {
+        this.csvWriterInterface = csvWriterInterface;
     }
     public void writeHeader() {
-        csvWriter.writeCell("Head1");
-        csvWriter.writeCell("Head2");
-        csvWriter.writeLine();
+        csvWriterInterface.writeCell("Head1");
+        csvWriterInterface.writeCell("Head2");
+        csvWriterInterface.writeLine();
     }
 
 }
