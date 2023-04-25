@@ -13,4 +13,8 @@ public class Order {
   private LocalDate creationDate;
   private boolean active;
   private int price;
+
+  public boolean isRecent() {
+    return creationDate.isAfter(LocalDate.now().minusYears(1));
+  }
 }

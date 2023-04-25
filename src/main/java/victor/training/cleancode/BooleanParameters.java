@@ -1,14 +1,24 @@
 package victor.training.cleancode;
 
 import lombok.Data;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 class SomeController {
   SomeService someService;
+
+//  @Resource(lookup = "")
+//  private DataSource dataSource;
+
+//  @AdnotareaMeaCaPotSiEu
+//  public void method() {
+//
+//  }
 
   @GetMapping("blue/{storeId}")
   public void blueEndpoint(@PathVariable int storeId, @RequestBody Task task) {

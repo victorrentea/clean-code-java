@@ -3,12 +3,12 @@ package victor.training.cleancode.fp;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import victor.training.cleancode.fp.support.*;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 class PureRefactor {
