@@ -12,13 +12,13 @@ public class FileExportService {
 
   @SneakyThrows
   public void exportOrders() {
-    fileExporterService.exportOrders("orders.csv", writer -> {
+    fileExporterService.exportOrders("orders.csv", Unchecked.consumer(writer -> {
       writer.write("order_id;date\n");
       orderRepo.findByActiveTrue()
               .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
               .forEach(Unchecked.consumer(writer::write));
 
-    });
+    }));
   }
 
   @SneakyThrows
