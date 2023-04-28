@@ -28,7 +28,12 @@ public enum PriceFactor {
       //
     }
   }
-//  ,ELDERS // enum doesn't compile!! missing implem
+//  ,ELDERS{
+//    @Override
+//    public double computePrice(int rentalDays) {
+//      return 0;
+//    }
+//  } // enum doesn't compile!! missing implem
   ;
 
 

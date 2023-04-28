@@ -23,7 +23,16 @@ public class RentalMovie {
   }
 
   double calculateMoviePrice() {
-    return movie.getPriceFactor().computePrice(rentalDays);
+//    return movie.getPriceFactor().computePrice(rentalDays);
+
+    return switch (movie.getPriceFactor()) {
+      case REGULAR -> calculateRegularPrice();
+      case NEW_RELEASE -> calculateNewReleasePrice();
+      case CHILDREN -> calculateChildrenPrice();
+//      default -> calculateChildrenPrice(); // discouraged in java 17!
+    };
+
+    // Java <=11:
 //    switch (movie.getPriceFactor()) {
 //      case REGULAR:
 //        return calculateRegularPrice();
