@@ -1,7 +1,9 @@
 package victor.training.cleancode.immutable.advanced;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.collect.ImmutableList;
 import lombok.With;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,6 +25,15 @@ public class ImmutableAdvanced {
 
       System.out.println("After:  " + changed);
    }
+
+
+//   public static void createStuff(int type) {
+//      switch (type) {
+//         case 1: return new Blue();
+//         case 2: return new Green();
+//      }
+//
+//   }
 
    private static Immutable wilderness(Immutable immutable) {
       // dark deep logic

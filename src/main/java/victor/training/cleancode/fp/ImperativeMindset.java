@@ -15,6 +15,9 @@ public class ImperativeMindset {
    }
 
 
+
+
+
    public void accumulateInList(List<Order> orders) {
       List<Integer> prices = orders.stream()
               .filter(Order::isActive)
@@ -26,3 +29,7 @@ public class ImperativeMindset {
       System.out.println("Prices: " + prices);
    }
 }
+
+
+
+

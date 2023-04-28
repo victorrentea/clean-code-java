@@ -25,8 +25,9 @@ public class SplitLoop {
             }
             averageSalary += employee.getSalary();
         }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
-        averageSalary = averageSalary / employees.size();
+
+        averageAge /= employees.stream().filter(e -> !e.isConsultant()).count();
+        averageSalary /= employees.size();
         System.out.println("Consultant IDs: " + consultantIds);
         return "Average age = " + averageAge + "; Average salary = " + averageSalary;
     }
