@@ -10,9 +10,6 @@
         <module name="clean-code-java" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="clean-code-java" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
