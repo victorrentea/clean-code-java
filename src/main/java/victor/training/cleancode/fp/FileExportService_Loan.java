@@ -17,19 +17,15 @@ import java.util.function.Consumer;
 public class FileExportService_Loan {
    private final OrderRepo orderRepo;
 
-   public void exportOrders() throws IOException {
-      File file = new File("target/orders.csv");
+   // New Feature: export USERS the "same way" you exported ORDERS
+
+   public void exportOrders(String fileName, Consumer<Writer> contentWriter) throws IOException {
+      File file = new File("target/" + fileName);
       log.info("Starting export into {} ...", file.getAbsolutePath());
       long t0 = System.currentTimeMillis();
-      try (Writer writer = /*new BufferedWriter(*/ new FileWriter(file)) {
+      try (Writer writer = new FileWriter(file)) {
 
-         writer.write("order_id;date\n");
-         //         Consumer<String> consumer = string -> f(writer, string);
-         orderRepo.findByActiveTrue()
-                 // SELECT o.ID || ';' || o.CREATION_DATE
-                 .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
-                 //                 .forEach(convert(writer::write));
-                 .forEach(Unchecked.consumer(writer::write));
+         contentWriter.accept(writer);
 
          log.info("Export DONE");
       } catch (Exception e) {

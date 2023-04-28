@@ -2,14 +2,23 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.jooq.lambda.Unchecked;
+import victor.training.cleancode.fp.support.OrderRepo;
 
 @RequiredArgsConstructor
 public class FileExportService {
   private final FileExportService_Loan fileExporterService;
+  private final OrderRepo orderRepo;
 
   @SneakyThrows
   public void exportOrders() {
-    fileExporterService.exportOrders();
+    fileExporterService.exportOrders("orders.csv", writer -> {
+      writer.write("order_id;date\n");
+      orderRepo.findByActiveTrue()
+              .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
+              .forEach(Unchecked.consumer(writer::write));
+
+    });
   }
 
   @SneakyThrows
