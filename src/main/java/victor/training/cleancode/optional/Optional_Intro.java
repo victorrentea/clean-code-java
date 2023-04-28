@@ -15,10 +15,12 @@ public class Optional_Intro {
     // test: 60, 10, no MemberCard
     System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
     System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
+    System.out.println(getDiscountLine(new Customer()));
   }
 
   public static String getDiscountLine(Customer customer) {
-    return computeDiscount(customer.getMemberCard())
+    return customer.getMemberCard()
+            .flatMap(Optional_Intro::computeDiscount)
             .map(value -> "You got a discount of %" + value.getGlobalPercentage())
             .orElse("Earn more fidelity points for a discount");
   }
