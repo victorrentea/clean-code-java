@@ -29,6 +29,7 @@ class Product {
   private boolean deleted;
 
 
+
   public Product(String name, ProductCategory category) {
     this.name = name;
     this.category = category;
@@ -49,4 +50,13 @@ class Product {
   public void setPremium(boolean premium) {
     this.premium = premium;
   }
+
+//  private Double price; // temporary,just to carry soem data for uc 1519 between
+//  public void setPrice(Double price) {
+//    this.price = price;
+//  }
+//
+//  public Double getPrice() {
+//    return price;
+//  }
 }

@@ -3,6 +3,7 @@ package victor.training.cleancode.exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,13 @@ public class Controller {
    private Biz biz;
 
    @GetMapping
-   public void webEndpoint() {
-//      biz.applyDiscount(new Order());
+   public ResponseEntity<Void> webEndpoint() {
+
+      try {
+         biz.applyDiscount(null, null);
+      } catch (Exception e) {
+         return ResponseEntity.badRequest().build();
+      }
+      return ResponseEntity.ok().build();
    }
 }

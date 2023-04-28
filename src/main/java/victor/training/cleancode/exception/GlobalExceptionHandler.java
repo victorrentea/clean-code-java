@@ -3,6 +3,7 @@ package victor.training.cleancode.exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,7 +18,7 @@ public class GlobalExceptionHandler {
    private final MessageSource messageSource;
 
    @ExceptionHandler(Exception.class)
-   @ResponseStatus
+   @ResponseStatus(HttpStatus.BAD_REQUEST)
    public String handleAnyException(Exception e, HttpServletRequest request) {
       String userMessage = messageSource.getMessage("GENERAL", null, request.getLocale());
 
