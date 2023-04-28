@@ -7,4 +7,5 @@ import java.util.stream.Stream;
 
 public interface OrderRepo extends JpaRepository<Order, Long> {
   Stream<Order> findByActiveTrue(); // Streaming query over 1 million orders
+  // ResultSet rs; rs.next()
 }
