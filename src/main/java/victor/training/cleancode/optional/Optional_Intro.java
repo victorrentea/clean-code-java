@@ -18,15 +18,9 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    //		Discount discount = Optional.ofNullable(computeDiscount(customer.getMemberCard()))
-    //						.orElse(new Discount(0));
-
-    Optional<Discount> discount = computeDiscount(customer.getMemberCard());
-    if (discount.isPresent()) {
-      return "You got a discount of %" + discount.get().getGlobalPercentage();
-    } else {
-      return "Earn more fidelity points for a discount";
-    }
+    return computeDiscount(customer.getMemberCard())
+            .map(value -> "You got a discount of %" + value.getGlobalPercentage())
+            .orElse("Earn more fidelity points for a discount");
   }
 
   // Optional is supposed to be used for return types of functions called by many
