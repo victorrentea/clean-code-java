@@ -1,25 +1,16 @@
 package videostore.horror;
 
+import lombok.NonNull;
+import lombok.Value;
+
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
-
+@Value
 public class Movie {
-	private final String title;
-	private final PriceFactor priceFactor;
-
-	public Movie(String title, PriceFactor priceFactor) {
-		this.title = requireNonNull(title);
-		this.priceFactor = requireNonNull(priceFactor);
-	}
-
-
-	public String getTitle() {
-		return title;
-	}
-
-	public PriceFactor getPriceFactor() {
-		return priceFactor;
-	}
+	@NonNull
+	String title;
+	@NonNull
+	PriceFactor priceFactor;
 }
