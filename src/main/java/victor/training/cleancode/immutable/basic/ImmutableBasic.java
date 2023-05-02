@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutable.basic;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -8,7 +10,7 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      ImmutableList<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(ImmutableList.toImmutableList());
 
       Immutable immutable = new Immutable(2, numbers, new Other(13));
 
@@ -40,11 +42,13 @@ public class ImmutableBasic {
 
 class Immutable {
    private final int x;
-   private final List<Integer> numbers;
+   private final ImmutableList<Integer> numbers;
    private final Other other;
 
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
       this.x = x;
+      // 4) copyOf -> malloc
+      //      this.numbers = List.copyOf(numbers); // nu e main stream
       this.numbers = numbers;
       this.other = other;
    }
@@ -74,8 +78,17 @@ class Immutable {
    // dar blocand apelurile de scriere
    // + nu aloca
    // + crapa clientul, nu-l lasi sa creada ca poate modifica
-   public List<Integer> getNumbers() { // pick this for normal cases + @Entity de Hibernate
-      return Collections.unmodifiableList(numbers);
+   // - callerul nu banuieste ca n-are voie sa faca add
+   //   public List<Integer> getNumbers() { // pick this for normal cases + @Entity de Hibernate
+   //      return Collections.unmodifiableList(numbers);
+   //   }
+
+
+   // 5) folosesti guava si renunti la ArrayList cu totul
+   // + au deprecat metodele ce muteaza lista
+   // - nu e Hiberante-friendly, nu poti s-o folosesti in @Entity
+   public ImmutableList<Integer> getNumbers() {
+      return numbers;
    }
 
    public Other getOther() {
