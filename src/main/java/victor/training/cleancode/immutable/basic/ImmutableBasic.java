@@ -11,12 +11,16 @@ public class ImmutableBasic {
 
       Immutable immutable = new Immutable(2, numbers, new Other(13));
 
-      System.out.println(immutable);
+      System.out.println("Before:" + immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
 
-      System.out.println(immutable.getNumbers());
-      System.out.println(immutable);
+      System.out.println("After: " + immutable);
+   }
+
+   private static void imagineDragons(Immutable immutable) {
+      // 1000 loc de biz logic horror. d-ala de intrebi bizu si el zice je ne sais pas
+      immutable.getNumbers().add(-1);
    }
 }
 
@@ -32,10 +36,6 @@ final class Immutable {
       this.other = other;
    }
 
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
-
    public int getX() {
       return x;
    }
@@ -46,6 +46,10 @@ final class Immutable {
 
    public Other getOther() {
       return other;
+   }
+
+   public String toString() {
+      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
 }
 
