@@ -1,12 +1,9 @@
 package victor.training.cleancode.immutable.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.*;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
@@ -17,88 +14,119 @@ public class ImmutableBasic {
       System.out.println("Before:" + immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
-      imagineDragons(immutable);
+      Immutable updated = imagineDragons(immutable);
 
-      System.out.println("After: " + immutable);
+      System.out.println("After: " + updated);
+      // aici vreau sa lucrez cu un obiect immutable care sa aiba un x calculat in imagineDragons()
+      // restul campurilor la fel ca la inceput
    }
 
-   private static void imagineDragons(Immutable immutable) {
+   private static Immutable imagineDragons(Immutable immutable) {
       // 1000 loc de biz logic horror. d-ala de intrebi bizu si el zice je ne sais pas
+      //      immutable.getNumbers().add(-1); // face degeaba add. isi ia tzeapa
+      //      System.out.println("ma astept ca intoarce: " +
+      //                         immutable.getNumbers().contains(-1));
 
-      immutable.getNumbers().add(-1); // face degeaba add. isi ia tzeapa
-      System.out.println("ma astept ca intoarce: " +
-                         immutable.getNumbers().contains(-1));
 
-      int xuMeu = 7;
+      int noulX = 7;
+      return immutable.withX(noulX);
       //      immutable.getNumbers().contains(xuMeu);
       //      immutable.getNumbers().stream();
       //      for (int i = 0; i < immutable.getNumbersCount(); i++) {
       //      }
       //      immutable.
    }
+
 }
 
 // unei clase imutabile nu ii poti schimba starea dupa ce ai instantiat-o
 
+
+// ce suntem noi? programatori Lombok
+//@Getter @AllArgsConstructor @ToString @EqualsAndHashCode
+//@Data
+//@Value // = @Data + private final
+//class Immutable {
+//   int x;
+//   ImmutableList<Integer> numbers;
+//   Other other;
+//}
+@Value // = @Data + private final
 class Immutable {
-   private final int x;
-   private final ImmutableList<Integer> numbers;
-   private final Other other;
+   //   @With
+   int x;
+   ImmutableList<Integer> numbers;
+   Other other;
 
-   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      // 4) copyOf -> malloc
-      //      this.numbers = List.copyOf(numbers); // nu e main stream
-      this.numbers = numbers;
-      this.other = other;
-   }
-
-   public int getX() {
-      return x;
-   }
-
-   // 1) prea mult?
-   //   public Integer getNumber(int index) {
-   //      return numbers.get(index);
-   //   }
-   //   public int getNumbersCount() {
-   //      return numbers.size();
-   //   }
-
-   // 2) ii dam o copie
-   // - misleading pt client: de ce il lasi sa creada ca poate modifica?
-   // - malloc
-   //   public List<Integer> getNumbers() {
-   //      return new ArrayList<>(numbers);
-   //   }
-
-
-   // 3) Decorator Pattern (GoF): o instanta care imbraca lista originala,
-   // delegand toate apelurile de citire la lista originala,
-   // dar blocand apelurile de scriere
-   // + nu aloca
-   // + crapa clientul, nu-l lasi sa creada ca poate modifica
-   // - callerul nu banuieste ca n-are voie sa faca add
-   //   public List<Integer> getNumbers() { // pick this for normal cases + @Entity de Hibernate
-   //      return Collections.unmodifiableList(numbers);
-   //   }
-
-
-   // 5) folosesti guava si renunti la ArrayList cu totul
-   // + au deprecat metodele ce muteaza lista
-   // - nu e Hiberante-friendly, nu poti s-o folosesti in @Entity
-   public ImmutableList<Integer> getNumbers() {
-      return numbers;
-   }
-
-   public Other getOther() {
-      return other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+   Immutable withX(int noulX) {
+      return new Immutable(noulX, numbers, other);
    }
 }
+
+// Java 17 <- vis
+//record Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//}
+
+
+//class Immutable {
+//   private final int x;
+//   private final ImmutableList<Integer> numbers;
+//   private final Other other;
+//
+//   Immutable(int x, ImmutableList<Integer> numbers, Other other) {
+//      this.x = x;
+//      // 4) copyOf -> malloc
+//      //      this.numbers = List.copyOf(numbers); // nu e main stream
+//      this.numbers = numbers;
+//      this.other = other;
+//   }
+//
+//   public int getX() {
+//      return x;
+//   }
+//
+//   // 1) prea mult?
+//   //   public Integer getNumber(int index) {
+//   //      return numbers.get(index);
+//   //   }
+//   //   public int getNumbersCount() {
+//   //      return numbers.size();
+//   //   }
+//
+//   // 2) ii dam o copie
+//   // - misleading pt client: de ce il lasi sa creada ca poate modifica?
+//   // - malloc
+//   //   public List<Integer> getNumbers() {
+//   //      return new ArrayList<>(numbers);
+//   //   }
+//
+//
+//   // 3) Decorator Pattern (GoF): o instanta care imbraca lista originala,
+//   // delegand toate apelurile de citire la lista originala,
+//   // dar blocand apelurile de scriere
+//   // + nu aloca
+//   // + crapa clientul, nu-l lasi sa creada ca poate modifica
+//   // - callerul nu banuieste ca n-are voie sa faca add
+//   //   public List<Integer> getNumbers() { // pick this for normal cases + @Entity de Hibernate
+//   //      return Collections.unmodifiableList(numbers);
+//   //   }
+//
+//
+//   // 5) folosesti guava si renunti la ArrayList cu totul
+//   // + au deprecat metodele ce muteaza lista
+//   // - nu e Hiberante-friendly, nu poti s-o folosesti in @Entity
+//   public ImmutableList<Integer> getNumbers() {
+//      return numbers;
+//   }
+//
+//   public Other getOther() {
+//      return other;
+//   }
+//
+//   public String toString() {
+//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+//   }
+//}
 
 class Other {
    private final int a;
