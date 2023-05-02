@@ -25,7 +25,7 @@ public class ImmutableBasic {
 }
 
 class Immutable {
-   public int x;
+   public Integer x;
    public List<Integer> numbers;
    public Other other;
 

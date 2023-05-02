@@ -26,11 +26,11 @@ public class ImmutableAdvanced {
 }
 
 class Immutable {
-   private final int x;
+   private final Integer x;
    private final List<Integer> numbers;
    private final Other other;
 
-   Immutable(int x, List<Integer> numbers, Other other) {
+   Immutable(Integer x, List<Integer> numbers, Other other) {
       this.x = x;
       this.numbers = numbers;
       this.other = other;
@@ -38,7 +38,7 @@ class Immutable {
    public List<Integer> getNumbers() {
       return numbers;
    }
-   public int getX() {
+   public Integer getX() {
       return x;
    }
    public Other getOther() {

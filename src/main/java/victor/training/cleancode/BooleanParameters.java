@@ -50,7 +50,7 @@ class MyService {
 public class BooleanParameters {
 
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  static void bigUglyMethod(int storeId, Task task) {
+  public static void bigUglyMethod(int storeId, Task task) {
     System.out.println("Cow Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Cow Logic 3 " + task);
