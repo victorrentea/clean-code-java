@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class SomeController {
   SomeService someService;
@@ -78,40 +79,52 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
-    // o functie 'adanca' cu multe taburi e greu de spart. => functiile sa fie plate!
-    System.out.println("Logic3");
+  public void bossLevelFluff(List<Task> tasks) {
+    bossStart(tasks);
+    auditTasks(tasks);
+    bossEnd(tasks);
+  }
+
+  public void bossLevelFluff323(List<Task> tasks) {
+    bossStart(tasks);
+    for (Task task : tasks) {
+      System.out.println("My Logic: " + task);
+    }
+    auditTasks(tasks);
+    bossEnd(tasks);
+  }
+
+  private static void bossEnd(List<Task> tasks) {
+    int taskCount = tasks.size();
+    System.out.println("Logic6 " + taskCount);
+    List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+    System.out.println("Task Ids: " + taskIds);
+    System.out.println("Logic8");
+  }
+
+  private static void auditTasks(List<Task> tasks) {
     int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
-    for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
-    }
-    for (Task task : tasks) {
-      taskIds.add(task.getId()); // A
-    }
-    for (Task task : tasks) {
-      if (cr323) { // TODO task = remove the boolean
-        System.out.println("My Logic: " + task);
-      }
-    }
     for (Task task : tasks) {
       index++; // mutable shared state !! yuuuuu 🤢
       System.out.println("Audit task #" + index + ": " + task); // B
     }
-    // Probleme cu 'Split Loop' Refactoring
-    // - mai multe linii de cod
-    // - performanta => de 4 x for => dc multe elemente eg 10k faci de prea multe ori JMP =>
-    //  daca datele vin de peste retea (eg DB,API), deja ai stat muuuuuult timp sa le aduci
-    //  relativ la asta, forul nu conteaza.
-    // - !! Buguri: daca ordinea operatiilor conteaza: A1 B1 A2 B2 <> A1 A2 B1 B2
-
-    int taskCount = tasks.size();
-    System.out.println("Logic6 " + taskCount);
-    System.out.println("Task Ids: " + taskIds);
-    System.out.println("Logic8");
   }
+
+  private static void bossStart(List<Task> tasks) {
+    System.out.println("Logic1");
+    // o functie 'adanca' cu multe taburi e greu de spart. => functiile sa fie plate!
+    System.out.println("Logic3");
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
+  }
+  // Probleme cu 'Split Loop' Refactoring
+  // - mai multe linii de cod
+  // - performanta => de 4 x for => dc multe elemente eg 10k faci de prea multe ori JMP =>
+  //  daca datele vin de peste retea (eg DB,API), deja ai stat muuuuuult timp sa le aduci
+  //  relativ la asta, forul nu conteaza.
+  // - !! Buguri: daca ordinea operatiilor conteaza: A1 B1 A2 B2 <> A1 A2 B1 B2
 
   public void bossLevelNoFluff(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
