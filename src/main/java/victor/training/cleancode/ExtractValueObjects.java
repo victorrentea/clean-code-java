@@ -1,7 +1,6 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,9 +35,13 @@ class MathUtil {
 
 }
 
+@Embeddable
 class Interval {
-    private final int start;
-    private final int end;
+    private int start; // pt ca hibernate nu poate final, dar nu pun setteri
+    private int end;
+
+    protected Interval() {
+    } // for Hibernate only
 
     Interval(int start, int end) {
         this.start = start;
@@ -98,6 +101,7 @@ class CarModel { // the holy Entity Model
     private String model;
     //    private int startYear;
     //    private int endYear;
+    @Embedded // nu schimba tabelul din DB: adica CAR_MODEL o sa aiba 5 coloane, desi CarModel @Entity are 4 campuri
     private Interval yearInterval;
 
     protected CarModel() {
