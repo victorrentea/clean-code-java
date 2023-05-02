@@ -44,6 +44,7 @@ class Interval {
     } // for Hibernate only
 
     Interval(int start, int end) {
+        if (start > end) throw new IllegalArgumentException("start larger than end");
         this.start = start;
         this.end = end;
     }
@@ -110,7 +111,6 @@ class CarModel { // the holy Entity Model
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         yearInterval = new Interval(startYear, endYear);
     }
 
