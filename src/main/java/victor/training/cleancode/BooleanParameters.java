@@ -87,16 +87,25 @@ public class BooleanParameters {
     for (Task task : tasks) {
       System.out.println("Starting " + task);
       task.setStarted(true);
-
-      taskIds.add(task.getId());
-
+    }
+    for (Task task : tasks) {
+      taskIds.add(task.getId()); // A
+    }
+    for (Task task : tasks) {
       if (cr323) { // TODO task = remove the boolean
         System.out.println("My Logic: " + task);
       }
-
-      index++;
-      System.out.println("Audit task #" + index + ": " + task);
     }
+    for (Task task : tasks) {
+      index++; // mutable shared state !! yuuuuu 🤢
+      System.out.println("Audit task #" + index + ": " + task); // B
+    }
+    // Probleme cu 'Split Loop' Refactoring
+    // - mai multe linii de cod
+    // - performanta => de 4 x for => dc multe elemente eg 10k faci de prea multe ori JMP =>
+    //  daca datele vin de peste retea (eg DB,API), deja ai stat muuuuuult timp sa le aduci
+    //  relativ la asta, forul nu conteaza.
+    // - !! Buguri: daca ordinea operatiilor conteaza: A1 B1 A2 B2 <> A1 A2 B1 B2
 
     int taskCount = tasks.size();
     System.out.println("Logic6 " + taskCount);
