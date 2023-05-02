@@ -78,34 +78,36 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
-    if (fluff) {
-      System.out.println("Logic3");
-      //      double d = computeTax(tasks); // sperjur
-      //      processTasks(tasks);
-      int index = 0;
-      List<Integer> taskIds = new ArrayList<>();
-      for (Task task : tasks) {
-        System.out.println("Starting " + task);
-        task.setStarted(true);
+    // o functie 'adanca' cu multe taburi e greu de spart. => functiile sa fie plate!
+    System.out.println("Logic3");
+    int index = 0;
+    List<Integer> taskIds = new ArrayList<>();
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
 
-        taskIds.add(task.getId());
+      taskIds.add(task.getId());
 
-        if (cr323) { // TODO task = remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
+      if (cr323) { // TODO task = remove the boolean
+        System.out.println("My Logic: " + task);
       }
 
-      int taskCount = tasks.size();
-      System.out.println("Logic6 " + taskCount);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
     }
+
+    int taskCount = tasks.size();
+    System.out.println("Logic6 " + taskCount);
+    System.out.println("Task Ids: " + taskIds);
+    System.out.println("Logic8");
+  }
+
+  public void bossLevelNoFluff(List<Task> tasks, boolean cr323) {
+    System.out.println("Logic1");
+    // o functie 'adanca' cu multe taburi e greu de spart. => functiile sa fie plate!
+    System.out.println("Logic7 on fluff=false " + tasks);
     System.out.println("Logic8");
   }
 
