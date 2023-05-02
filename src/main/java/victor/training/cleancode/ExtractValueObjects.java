@@ -2,8 +2,6 @@ package victor.training.cleancode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,9 +10,10 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
+                //                .filter(carModel -> carModel.intersects(criteria))
+                .filter(carModel -> MathUtil.intervalsIntersect(
                         criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                        carModel.getStartYear(), carModel.getEndYear()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -34,11 +33,11 @@ class Alta {
 }
 
 class MathUtil {
-
     public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
         return start1 <= end2 && start2 <= end1;
     }
 }
+
 
 
 class CarSearchCriteria { // smells like JSON ...
@@ -85,6 +84,24 @@ class CarModel { // the holy Entity Model
         this.startYear = startYear;
         this.endYear = endYear;
     }
+
+    // SOC: breaking news: Logica in model.
+    // 1) Clasa de model nu ar trebui sa se ocupe si de intersects. NU e treaba (resp) ei.
+    // responsab unui @Entity e sa descrie obiectul
+
+    // Modelul de Entitati sa NU contina logica de domeniu, ci doar date. (eg @Data)
+    // De ce doar date si nu si behavior?
+    //  pt ca deja are o rasp: sa descrie structura bazei -> @COlumn @OneToMany
+    //
+    // daca in entitati las doar date + @ => toata logica va fi in @Service.
+    // - Doar ca bucatele mici de logica de domeniu vor putea fi repetate in mai multe locuri. (sunt greu de reused in @SErvice/Util)
+
+    // de ce sa tin @Entity doar cu campuri:
+    // - multe campuri eg 40 (!de ce ai asa multe campuri?)
+    // - sa nu poluezi modelul cu logica care nu e de business ci de prez/infra
+
+
+    // 2) E ok sa depinda @Entity CarModel de CarSearchCriteria (DTO=JSON) ? coupling . NU. nu e ok
 
     public Long getId() {
         return id;
