@@ -79,12 +79,13 @@ public class BooleanParameters {
 
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0;
-    int taskCount = tasks.size();
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
       System.out.println("Logic3");
+      //      double d = computeTax(tasks); // sperjur
+      //      processTasks(tasks);
+      int index = 0;
+      List<Integer> taskIds = new ArrayList<>();
       for (Task task : tasks) {
         System.out.println("Starting " + task);
         task.setStarted(true);
@@ -98,12 +99,19 @@ public class BooleanParameters {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
+
+      int taskCount = tasks.size();
       System.out.println("Logic6 " + taskCount);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
     }
     System.out.println("Logic8");
+  }
+
+  private double computeTax(List<Task> tasks) {
+    tasks.clear();
+    return 0;
   }
 
 }
