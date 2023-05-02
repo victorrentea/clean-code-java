@@ -50,7 +50,7 @@ class MyService {
 public class BooleanParameters {
 
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  static void bigUglyMethod(int storeId, Task task) {
+  public static void bigUglyMethod(int storeId, Task task) {
     System.out.println("Cow Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Cow Logic 3 " + task);
@@ -68,7 +68,7 @@ public class BooleanParameters {
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int j = tasks.size();
+    int taskCount = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
@@ -86,7 +86,7 @@ public class BooleanParameters {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
-      System.out.println("Logic6 " + j);
+      System.out.println("Logic6 " + taskCount);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
