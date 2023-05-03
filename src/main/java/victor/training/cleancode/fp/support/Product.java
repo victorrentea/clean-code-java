@@ -7,9 +7,10 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity // sfantul Domain Model
 @Getter
 @Setter
 @ToString
@@ -27,6 +28,12 @@ class Product {
   private LocalDateTime createDate;
   private boolean premium;
   private boolean deleted;
+
+  // TEMPORARY FIELD CODE SMELL
+  // nu ajunge acest camp niciodata in DB. e doar lasat aiciea din faza 1 pt faza 2 a UC 323
+  // nimeni in tot codul nu are nevoie acest camp
+  // PRODUC PANICA
+  //  transient private Double initialPriceDoarPanaAplicCupoanele;
 
 
   public Product(String name, ProductCategory category) {
@@ -49,4 +56,5 @@ class Product {
   public void setPremium(boolean premium) {
     this.premium = premium;
   }
+
 }

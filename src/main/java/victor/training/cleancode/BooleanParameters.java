@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class SomeController {
@@ -97,7 +97,9 @@ public class BooleanParameters {
   private static void bossEnd(List<Task> tasks) {
     int taskCount = tasks.size();
     System.out.println("Logic6 " + taskCount);
-    List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+    List<Integer> taskIds = tasks.stream()
+            .map(task -> task.getId())
+            .collect(Collectors.toList());
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
   }
