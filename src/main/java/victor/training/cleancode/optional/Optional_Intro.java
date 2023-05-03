@@ -25,13 +25,6 @@ public class Optional_Intro {
   }
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
-    //    Optional<MemberCard> opt = Optional.ofNullable(card);
-    //    if (opt.isEmpty()) {
-    //      return Optional.empty();
-    //    }
-    if (card == null) {
-      return Optional.empty();
-    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5));
     }

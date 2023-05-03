@@ -16,7 +16,7 @@ public class Customer {
    }
 
    public MemberCard getMemberCard() {
-      return memberCard;
+      return memberCard != null ? memberCard : new MemberCard(0);
    }
 
    public Customer setMemberCard(MemberCard memberCard) {
