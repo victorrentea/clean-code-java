@@ -2,6 +2,7 @@ package videostore.horror;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
     private final String name;
@@ -16,14 +17,18 @@ class Customer {
     }
 
     public String createStatement() {
-        String result = createHeader();
-		for (Rental rental : rentals) {
-			result += "\t" + rental.getMovie().getTitle() + "\t" + rental.computeAmount() + "\n";
-		}
-
-		result += createFooter(computeTotalAmount(), computeTotalFrequentRenterPoints());
-        return result;
+		return createHeader() + createBody() + createFooter();
     }
+
+	private String createBody() {
+		return rentals.stream()
+				.map(Customer::createBodyLine)
+				.collect(Collectors.joining());
+	}
+
+	private static String createBodyLine(Rental rental) {
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computeAmount() + "\n";
+	}
 
 	private int computeTotalFrequentRenterPoints() {
 		return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
@@ -37,9 +42,9 @@ class Customer {
         return "Rental Record for " + name + "\n";
     }
 
-    private static String createFooter(double totalAmount, int frequentRenterPoints) {
-        return "Amount owed is " + totalAmount + "\n"
-                + "You earned " + frequentRenterPoints + " frequent renter points";
+    private String createFooter() {
+        return "Amount owed is " + computeTotalAmount() + "\n"
+                + "You earned " + computeTotalFrequentRenterPoints() + " frequent renter points";
     }
 
 }
