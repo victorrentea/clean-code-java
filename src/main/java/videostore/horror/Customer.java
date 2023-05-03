@@ -2,7 +2,8 @@ package videostore.horror;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 class Customer {
     private final String name;
@@ -21,30 +22,28 @@ class Customer {
     }
 
 	private String createBody() {
-		return rentals.stream()
-				.map(Customer::createBodyLine)
-				.collect(Collectors.joining());
+		return rentals.stream().map(Customer::createBodyLine).collect(joining());
 	}
 
 	private static String createBodyLine(Rental rental) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computeAmount() + "\n";
+		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
 	}
 
 	private int computeTotalFrequentRenterPoints() {
 		return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
 	}
 
-	private double computeTotalAmount() {
-		return rentals.stream().mapToDouble(Rental::computeAmount).sum();
+	private double computeTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::computePrice).sum();
 	}
 
 	private String createHeader() {
-        return "Rental Record for " + name + "\n";
-    }
+		return "Rental Record for " + name + "\n";
+	}
 
-    private String createFooter() {
-        return "Amount owed is " + computeTotalAmount() + "\n"
-                + "You earned " + computeTotalFrequentRenterPoints() + " frequent renter points";
-    }
+	private String createFooter() {
+		return "Amount owed is " + computeTotalPrice() + "\n"
+			   + "You earned " + computeTotalFrequentRenterPoints() + " frequent renter points";
+	}
 
 }

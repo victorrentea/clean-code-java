@@ -12,29 +12,36 @@ public class Rental {
         this.daysRented = daysRented;
     }
 
-    public double computeAmount() {
-        double thisAmount;
-        switch (getMovie().getCategory()) {
-            case REGULAR:
-                thisAmount = 2;
-                if (getDaysRented() > 2)
-                    thisAmount += (getDaysRented() - 2) * 1.5;
-                return thisAmount;
-            case NEW_RELEASE:
-                return getDaysRented() * 3;
-            case CHILDREN:
-                thisAmount = 1.5;
-                if (getDaysRented() > 3)
-                    thisAmount += (getDaysRented() - 3) * 1.5;
-                return thisAmount;
-
-            default:
-                throw new IllegalStateException("Unexpected value: " + getMovie().getCategory());
-        }
+    public double computePrice() {
+        return movie.getCategory().computePrice(daysRented);
+        //        switch (movie.getCategory()) {
+        //            case REGULAR:
+        //                return computeRegularPrice();
+        //            case NEW_RELEASE:
+        //                return computeNewReleasePrice();
+        //            case CHILDREN:
+        //                return computeChildrenPrice();
+        //            default:
+        //                throw new IllegalStateException("Unexpected value: " + movie.getCategory());
+        //        }
     }
 
-    public int getDaysRented() {
-        return daysRented;
+    private double computeChildrenPrice() {
+        double price = 1.5;
+        if (daysRented > 3)
+            price += (daysRented - 3) * 1.5;
+        return price;
+    }
+
+    private int computeNewReleasePrice() {
+        return daysRented * 3;
+    }
+
+    private double computeRegularPrice() {
+        double amount = 2;
+        if (daysRented > 2)
+            amount += (daysRented - 2) * 1.5;
+        return amount;
     }
 
     public Movie getMovie() {
@@ -42,7 +49,11 @@ public class Rental {
     }
 
     public int getFrequentRenterPoints() {
-        boolean isEligibleForBonus = getMovie().getCategory() == NEW_RELEASE && getDaysRented() >= 2;
-        return isEligibleForBonus ? 2 : 1;
+        int result = 1;
+        boolean isEligibleForBonus = movie.getCategory() == NEW_RELEASE && daysRented >= 2;
+        if (isEligibleForBonus) {
+            result++;
+        }
+        return result;
     }
 }

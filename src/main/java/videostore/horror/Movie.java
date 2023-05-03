@@ -1,5 +1,7 @@
 package videostore.horror;
 
+//public abstract class Movie { abstract computePrice(days);
+//class RegularMovie extends Movie { computePrice(..) {...}
 public final class Movie {
     private final String title;
     private final MovieCategory category;
@@ -10,10 +12,10 @@ public final class Movie {
     }
 
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public MovieCategory getCategory() {
-        return this.category;
+        return category;
     }
 }
