@@ -13,17 +13,25 @@ public class Rental {
     }
 
     public double computePrice() {
-        return movie.getCategory().computePrice(daysRented);
-        //        switch (movie.getCategory()) {
-        //            case REGULAR:
-        //                return computeRegularPrice();
-        //            case NEW_RELEASE:
-        //                return computeNewReleasePrice();
-        //            case CHILDREN:
-        //                return computeChildrenPrice();
-        //            default:
-        //                throw new IllegalStateException("Unexpected value: " + movie.getCategory());
-        //        }
+        //        return movie.getCategory().computePrice(daysRented);
+        switch (movie.category()) {
+            case REGULAR:
+                return computeRegularPrice();
+            case NEW_RELEASE:
+                return computeNewReleasePrice();
+            case CHILDREN:
+                return computeChildrenPrice();
+            default:
+                throw new IllegalStateException("Unexpected value: " + movie.category());
+        }
+
+        // vis: java 17
+        //        return switch (movie.getCategory()) {
+        //            // switch (enum) care intoarce valoare face default useless, chiar anti-pattern
+        //            case REGULAR -> computeRegularPrice();
+        //            case NEW_RELEASE -> computeNewReleasePrice();
+        //            case CHILDREN -> computeChildrenPrice();
+        //        };
     }
 
     private double computeChildrenPrice() {
@@ -50,7 +58,7 @@ public class Rental {
 
     public int getFrequentRenterPoints() {
         int result = 1;
-        boolean isEligibleForBonus = movie.getCategory() == NEW_RELEASE && daysRented >= 2;
+        boolean isEligibleForBonus = movie.category() == NEW_RELEASE && daysRented >= 2;
         if (isEligibleForBonus) {
             result++;
         }

@@ -26,7 +26,7 @@ class Customer {
 	}
 
 	private static String createBodyLine(Rental rental) {
-		return "\t" + rental.getMovie().getTitle() + "\t" + rental.computePrice() + "\n";
+		return "\t" + rental.getMovie().title() + "\t" + rental.computePrice() + "\n";
 	}
 
 	private int computeTotalFrequentRenterPoints() {
