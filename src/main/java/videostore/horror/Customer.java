@@ -26,12 +26,7 @@ class Customer {
 			int daysRented = rentals.get(movie);
 			double thisAmount = computeAmount(daysRented, movie.getCategory());
 			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((movie.getCategory() == NEW_RELEASE)
-					&& daysRented > 1) {
-				frequentRenterPoints++;
-			}
+			frequentRenterPoints += getFrequentRenterPoints(movie, daysRented);
 			// show figures line for this rental
 			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
@@ -40,6 +35,11 @@ class Customer {
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private int getFrequentRenterPoints(Movie movie, int daysRented) {
+		boolean isEligibleForBonus = movie.getCategory() == NEW_RELEASE && daysRented >= 2;
+		return isEligibleForBonus ? 2 : 1;
 	}
 
 	private static double computeAmount(int daysRented, MovieCategory movieCategory) {
