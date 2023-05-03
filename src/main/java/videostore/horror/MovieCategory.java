@@ -24,6 +24,12 @@ public enum MovieCategory {
         double computePrice(int daysRented) {
             return daysRented * 3;
         }
+        //    },
+        //    ELDERS {
+        //        @Override
+        //        double computePrice(int daysRented) {
+        //            return 0;
+        //        }
     };
 
 
