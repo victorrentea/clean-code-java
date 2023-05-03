@@ -1,5 +1,8 @@
 package videostore.horror;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 public enum MovieCategory {
     CHILDREN {
         @Override
@@ -32,6 +35,11 @@ public enum MovieCategory {
         //        }
     };
 
+    //  private final Function<Integer, Double> priceFunction;
+    //
+    //    MovieCategory(Function<Integer, Double> priceFunction) {
+    //        this.priceFunction = priceFunction;
+    //    }
 
     abstract double computePrice(int daysRented);
 }
