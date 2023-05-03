@@ -1,13 +1,23 @@
 package videostore.horror;
 
-import lombok.Value;
+public final class Movie {
 
-@Value
-public class Movie {
-	public static final int CHILDREN = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	String title;
-	int priceCode;
 
+	private final String title;
+	private final MovieCategory category;
+
+
+
+	public Movie(String title, MovieCategory category) {
+		this.title = title;
+		this.category = category;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public MovieCategory getCategory() {
+		return this.category;
+	}
 }

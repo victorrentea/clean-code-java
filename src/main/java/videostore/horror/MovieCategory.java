@@ -6,14 +6,14 @@ public enum MovieCategory {
 	NEW_RELEASE(1);
 
 
-	private int index;
+	private final int priceCode;
 
-	MovieCategory(int index) {
+	MovieCategory(int priceCode) {
 
-		this.index = index;
+		this.priceCode = priceCode;
 	}
 
-	public int getIndex() {
-		return index;
+	public int getPriceCode() {
+		return priceCode;
 	}
 }
