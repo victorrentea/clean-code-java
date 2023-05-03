@@ -1,29 +1,32 @@
 package videostore.horror;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static videostore.horror.MovieCategory.NEW_RELEASE;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>();
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
 	public void addRental(Movie movie, int daysRented) {
-		rentals.put(movie, daysRented);
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String createStatement() {
-		String result = "Rental Record for " + name + "\n";
+		String result = createHeader();
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		for (Movie movie : rentals.keySet()) {
+		for (Rental rental : rentals) {
 			// determine amounts for each line
-			int daysRented = rentals.get(movie);
+			int daysRented = rental.getDaysRented();
+			Movie movie = rental.getMovie();
 			double thisAmount = computeAmount(daysRented, movie.getCategory());
 			// add frequent renter points
 			frequentRenterPoints += getFrequentRenterPoints(movie, daysRented);
@@ -31,10 +34,18 @@ class Customer {
 			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+
+		result += createFooter(totalAmount, frequentRenterPoints);
 		return result;
+	}
+
+	private String createHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private static String createFooter(double totalAmount, int frequentRenterPoints) {
+		return "Amount owed is " + totalAmount + "\n"
+				+ "You earned " + frequentRenterPoints + " frequent renter points";
 	}
 
 	private int getFrequentRenterPoints(Movie movie, int daysRented) {
