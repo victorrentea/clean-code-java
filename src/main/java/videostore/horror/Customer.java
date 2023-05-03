@@ -3,8 +3,6 @@ package videostore.horror;
 import java.util.ArrayList;
 import java.util.List;
 
-import static videostore.horror.MovieCategory.NEW_RELEASE;
-
 class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
@@ -19,21 +17,23 @@ class Customer {
 
     public String createStatement() {
         String result = createHeader();
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        for (Rental rental : rentals) {
-            double thisAmount = computeAmount(rental);
-            frequentRenterPoints += getFrequentRenterPoints(rental);
-            // show figures line for this rental
-            result += "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
-        }
+		for (Rental rental : rentals) {
+			result += "\t" + rental.getMovie().getTitle() + "\t" + rental.computeAmount() + "\n";
+		}
 
-        result += createFooter(totalAmount, frequentRenterPoints);
+		result += createFooter(computeTotalAmount(), computeTotalFrequentRenterPoints());
         return result;
     }
 
-    private String createHeader() {
+	private int computeTotalFrequentRenterPoints() {
+		return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+	}
+
+	private double computeTotalAmount() {
+		return rentals.stream().mapToDouble(Rental::computeAmount).sum();
+	}
+
+	private String createHeader() {
         return "Rental Record for " + name + "\n";
     }
 
@@ -42,29 +42,4 @@ class Customer {
                 + "You earned " + frequentRenterPoints + " frequent renter points";
     }
 
-    private int getFrequentRenterPoints(Rental rental) {
-        boolean isEligibleForBonus = rental.getMovie().getCategory() == NEW_RELEASE && rental.getDaysRented() >= 2;
-        return isEligibleForBonus ? 2 : 1;
-    }
-
-    private static double computeAmount(Rental rental) {
-        double thisAmount = 0;
-        switch (rental.getMovie().getCategory()) {
-            case REGULAR:
-                thisAmount = 2;
-                if (rental.getDaysRented() > 2)
-                    thisAmount += (rental.getDaysRented() - 2) * 1.5;
-                return thisAmount;
-            case NEW_RELEASE:
-                return rental.getDaysRented() * 3;
-            case CHILDREN:
-                thisAmount = 1.5;
-                if (rental.getDaysRented() > 3)
-                    thisAmount += (rental.getDaysRented() - 3) * 1.5;
-                return thisAmount;
-
-            default:
-                throw new IllegalStateException("Unexpected value: " + rental.getMovie().getCategory());
-        }
-    }
 }
