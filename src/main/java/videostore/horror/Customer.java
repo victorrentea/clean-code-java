@@ -24,7 +24,7 @@ class Customer {
 		String result = "Rental Record for " + getName() + "\n";
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
-			// determine amounts for each line
+			// determine amounts for every line
 			int dr = rentals.get(each);
 			switch (each.getPriceCode()) {
 				case Movie.REGULAR:
