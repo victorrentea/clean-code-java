@@ -1,13 +1,9 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
@@ -57,12 +53,10 @@ class Immutable { // DEEP IMMUTABLE!
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
    }
 }
+@Value // = @Data + toate campurile  private final
 class Other {
-   private final int a;
-   public Other(int a) {
-      this.a = a;
-   }
-   public int getA() {
-      return a;
-   }
+   int a;
 }
+
+//record Other2(int a) { // Java 17
+//}
