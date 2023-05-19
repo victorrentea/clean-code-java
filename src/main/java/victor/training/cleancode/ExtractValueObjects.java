@@ -1,8 +1,12 @@
 package victor.training.cleancode;
 
+import lombok.Data;
+import lombok.Value;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 //        carModelRepo.findAll().stream().filter() => Pro: tii filtrarea in cod java nu jpql/sql
@@ -12,10 +16,16 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(criteria::matchesYears)
+                .filter(model -> matchesYears(criteria, model))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
+    }
+
+    private static boolean matchesYears(CarSearchCriteria criteria, CarModel model) {
+        return MathUtil.intervalsIntersect(
+            criteria.getStartYear(), criteria.getEndYear(),
+            model.getStartYear(), model.getEndYear());
     }
 
     private void applyCapacityFilter() {
@@ -33,8 +43,14 @@ class Alta {
 
 class MathUtil {
 //    public static boolean intervalsIntersect(List<Interval> intervale) { // OVERENGINEERING ca poate maine e mai reusable
+
+    // noua, buna
+    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd(); // SO
+    }
+    // veche, naspa
     public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1; // SO
+        return intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
     }
 }
 // DTO = Data Transfer Object = cara date peste retea (JSON)
@@ -42,8 +58,11 @@ class MathUtil {
 // VO = Value Object = immutabil❤️❤️❤️ @Value
 //class Wrapper3
 //class TwoIntervals {
-class TwoIntervals {
-    int start1, int end1, int start2, int end2
+//@Data // < NU!
+@Value // DA!mmutabil❤️❤️❤️ @Value = @Data + campuri private final (fara setter
+class Interval {
+    int start;
+    int end;
 }
 
 class CarSearchCriteria { // smells like JSON ...
@@ -56,12 +75,6 @@ class CarSearchCriteria { // smells like JSON ...
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
-    }
-
-    public boolean matchesYears(CarModel model) {
-        return MathUtil.intervalsIntersect(
-            getStartYear(), getEndYear(),
-            model.getStartYear(), model.getEndYear());
     }
 
     public int getStartYear() {
