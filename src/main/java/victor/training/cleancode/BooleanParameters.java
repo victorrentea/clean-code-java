@@ -84,13 +84,16 @@ public class BooleanParameters {
     for (Task task : tasks) {
       System.out.println("Starting " + task);
       task.setStarted(true);
-
+    }
+    for (Task task : tasks) {
       taskIds.add(task.getId());
-
+    }
+    for (Task task : tasks) {
       if (cr323) { // TODO task = remove the boolean
         System.out.println("My Logic: " + task);
       }
-
+    }
+    for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
