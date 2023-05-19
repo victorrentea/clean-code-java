@@ -2,6 +2,7 @@ package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
 import lombok.Value;
+import lombok.With;
 
 import java.util.stream.Stream;
 
@@ -12,18 +13,20 @@ public class ImmutableAdvanced {
       Immutable immutable = new Immutable(1, numbers, new Other(15));
       System.out.println("Before: " + immutable);
 
-      wilderness(immutable); // 500 de linii de logica horror
+      Immutable immutable2 = wilderness(immutable); // 500 de linii de logica horror
 
-      System.out.println("After:  " + immutable); // alta logica cu el
+      System.out.println("After:  " + immutable2);
    }
 
-   private static void wilderness(Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // dark deep logic
 //      immutable.getNumbers().add(-1);
 //      immutable.getNumbers().contains(-1)
+      return immutable.withX(17);
    }
 }
 class Immutable { // DEEP IMMUTABLE!
+   @With
    private final Integer x;
    private final ImmutableList<Integer> numbers; // renunti la colelction java si mergi la guava
    private final Other other;
