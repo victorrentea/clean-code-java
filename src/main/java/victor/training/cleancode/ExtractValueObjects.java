@@ -21,31 +21,26 @@ class ExtractValueObjects {
     }
 
     private static boolean matchesYears(CarSearchCriteria criteria, CarModel model) {
-        return MathUtil.intervalsIntersect(
-            new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear()));
+        return new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(
+            new Interval(model.getStartYear(), model.getEndYear()));
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
-//    public static boolean intervalsIntersect(List<Interval> intervale) { // OVERENGINEERING ca poate maine e mai reusable
+//    public static boolean intersects(List<Interval> intervale) { // OVERENGINEERING ca poate maine e mai reusable
 
-    // noua, buna
-    // veche, naspa
-    public static boolean intervalsIntersect(Interval interval, Interval interval1) {
-        return interval.getStart() <= interval1.getEnd() && interval1.getStart() <= interval.getEnd(); // SO
-    }
 }
 // DTO = Data Transfer Object = cara date peste retea (JSON)
 // POJO = camp private + getter setter @Data
@@ -57,6 +52,12 @@ class MathUtil {
 class Interval {
     int start;
     int end;
+
+    // noua, buna
+    // veche, naspa
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
 }
 
 class CarSearchCriteria { // smells like JSON ...
