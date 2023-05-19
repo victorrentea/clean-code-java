@@ -42,20 +42,23 @@ public class SplitLoop {
         for (Employee employee : employees) {
             if (!employee.isConsultant()) {
                 totalEmpAge += employee.getAge();
-                continue;
             }
-            if (employee.getId() == null) {
-                return "Employee(s) not persisted";
-            }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
-                if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
+        }
+        for (Employee employee : employees) {
+            if (employee.isConsultant()) {
+                if (employee.getId() == null) {
+                    return "Employee(s) not persisted";
                 }
+                if (employee.getSalary() == null) {
+                    Integer salary = employeeService.retrieveSalary(employee.getId());
+                    if (salary == null) {
+                        throw new RuntimeException("NO salary found for employee " + employee.getId());
+                    } else {
+                        employee.setSalary(salary);
+                    }
+                }
+                totalConsultantSalary += employee.getSalary();
             }
-            totalConsultantSalary += employee.getSalary();
         }
 
         long averageAge = 0;
