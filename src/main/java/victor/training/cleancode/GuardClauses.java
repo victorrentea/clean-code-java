@@ -32,7 +32,7 @@ public class GuardClauses {
         result = DEAD_PAY_AMOUNT;
       }
     } else{
-      throw new RuntimeException("Marine is null");
+      throw new IllegalArgumentException("Not applicable!");
     }
     return result; // TODO ALT-ENTER move return closer
   }
