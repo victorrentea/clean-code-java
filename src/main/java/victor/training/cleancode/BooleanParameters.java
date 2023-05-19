@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class SomeController {
   SomeService someService;
@@ -80,14 +81,12 @@ public class BooleanParameters {
     System.out.println("Logic1");
     System.out.println("Logic3");
     int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
     for (Task task : tasks) {
       System.out.println("Starting " + task);
       task.setStarted(true);
     }
-    for (Task task : tasks) {
-      taskIds.add(task.getId());
-    }
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
+
     for (Task task : tasks) {
       if (cr323) { // TODO task = remove the boolean
         System.out.println("My Logic: " + task);
