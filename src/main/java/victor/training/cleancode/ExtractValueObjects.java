@@ -3,7 +3,6 @@ package victor.training.cleancode;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 //        carModelRepo.findAll().stream().filter() => Pro: tii filtrarea in cod java nu jpql/sql
@@ -13,16 +12,10 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> matchesYears(criteria, model))
+                .filter(criteria::matchesYears)
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
-    }
-
-    private static boolean matchesYears(CarSearchCriteria criteria, CarModel model) {
-        return MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            model.getStartYear(), model.getEndYear());
     }
 
     private void applyCapacityFilter() {
@@ -39,12 +32,19 @@ class Alta {
 }
 
 class MathUtil {
-
+//    public static boolean intervalsIntersect(List<Interval> intervale) { // OVERENGINEERING ca poate maine e mai reusable
     public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+        return start1 <= end2 && start2 <= end1; // SO
     }
 }
-
+// DTO = Data Transfer Object = cara date peste retea (JSON)
+// POJO = camp private + getter setter @Data
+// VO = Value Object = immutabil❤️❤️❤️ @Value
+//class Wrapper3
+//class TwoIntervals {
+class TwoIntervals {
+    int start1, int end1, int start2, int end2
+}
 
 class CarSearchCriteria { // smells like JSON ...
     private final int startYear;
@@ -56,6 +56,12 @@ class CarSearchCriteria { // smells like JSON ...
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
+    }
+
+    public boolean matchesYears(CarModel model) {
+        return MathUtil.intervalsIntersect(
+            getStartYear(), getEndYear(),
+            model.getStartYear(), model.getEndYear());
     }
 
     public int getStartYear() {
