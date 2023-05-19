@@ -1,12 +1,10 @@
 package victor.training.cleancode;
 
-import lombok.Data;
 import lombok.Value;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 //        carModelRepo.findAll().stream().filter() => Pro: tii filtrarea in cod java nu jpql/sql
@@ -24,19 +22,18 @@ class ExtractValueObjects {
 
     private static boolean matchesYears(CarSearchCriteria criteria, CarModel model) {
         return MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            model.getStartYear(), model.getEndYear());
+            new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(model.getStartYear(), model.getEndYear()));
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
     }
 
 }
@@ -45,12 +42,9 @@ class MathUtil {
 //    public static boolean intervalsIntersect(List<Interval> intervale) { // OVERENGINEERING ca poate maine e mai reusable
 
     // noua, buna
-    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-        return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd(); // SO
-    }
     // veche, naspa
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+    public static boolean intervalsIntersect(Interval interval, Interval interval1) {
+        return interval.getStart() <= interval1.getEnd() && interval1.getStart() <= interval.getEnd(); // SO
     }
 }
 // DTO = Data Transfer Object = cara date peste retea (JSON)
