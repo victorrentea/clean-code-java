@@ -1,23 +1,33 @@
 package victor.training.cleancode;
 
+import org.springframework.data.jpa.repository.Query;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+//        carModelRepo.findAll().stream().filter() => Pro: tii filtrarea in cod java nu jpql/sql
+//        SELECT WHERE (@Query dedicate) => Pro: PERFORMANTA CPU+MEM+RETEA; reuse @Query
 class ExtractValueObjects {
 
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
+        Predicate<CarModel> yearPredicate = matchesYears(criteria);
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                .filter(yearPredicate)
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
+    }
+
+    private static Predicate<CarModel> matchesYears(CarSearchCriteria criteria) {
+        return model -> MathUtil.intervalsIntersect(
+            criteria.getStartYear(), criteria.getEndYear(),
+            model.getStartYear(), model.getEndYear());
     }
 
     private void applyCapacityFilter() {
