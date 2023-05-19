@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class SomeController {
   SomeService someService;
@@ -55,6 +53,7 @@ public class BooleanParameters {
     cow(storeId, task);
     donkey(storeId);
   }
+
   public static void bigUglyMethod323(int storeId, Task task) {
     cow(storeId, task);
     System.out.println("Logic just for CR#323 : " + task);
@@ -77,34 +76,45 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevel(List<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
-    System.out.println("Logic3");
-    int index = 0;
+  public void bossLevel(List<Task> tasks) {
+    bossStart(tasks);
+    bossEnd(tasks);
+  }
+  public void bossLevel323(List<Task> tasks) {
+    bossStart(tasks);
     for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
+      System.out.println("My Logic: " + task);
     }
-    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
+    bossEnd(tasks);
+  }
 
-    for (Task task : tasks) {
-      if (cr323) { // TODO task = remove the boolean
-        System.out.println("My Logic: " + task);
-      }
-    }
+  private static void bossEnd(List<Task> tasks) {
+    int index = 0;
     for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
     System.out.println("Logic6 " + tasks.size());
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
   }
+
+  private static void bossStart(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
+  }
+
   public void bossLevelNoFluff(List<Task> tasks) {
     System.out.println("Logic1");
     System.out.println("Logic7 on fluff=false " + tasks);
     System.out.println("Logic8");
   }
+
   private void inocenta(List<Task> tasks) {
     tasks.add(new Task(1));
 
