@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParameterObjects {
   public static void main(String[] args) {
     new ParameterObjects().placeOrder(
@@ -32,7 +35,7 @@ class Person {
   private Long id;
   private String firstName;
   private String lastName;
-  private String phone;
+  private List<String> phone = new ArrayList<>();
 
   public Person(String firstName, String lastName) {
     if (firstName == null || lastName == null) throw new IllegalArgumentException();
