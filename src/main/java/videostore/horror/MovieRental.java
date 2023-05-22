@@ -25,6 +25,7 @@ public record MovieRental(Movie movie, int daysRented) {
       case REGULAR -> regularPrice();
       case NEW_RELEASE -> newReleasePrice();
       case CHILDREN -> childrenPrice();
+      case ELDERS -> 1;
     };
 
     // cu default: throw
