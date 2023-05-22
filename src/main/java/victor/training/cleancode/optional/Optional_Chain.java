@@ -1,5 +1,7 @@
 package victor.training.cleancode.optional;
 
+import lombok.Getter;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,7 +77,9 @@ class Delivery {
   }
 }
 
+@Getter
 class Address {
+  private String streetName;
   private final ContactPerson contactPerson; // can be null if shipping to a company
 
   public Address(ContactPerson contactPerson) {
