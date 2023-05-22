@@ -20,7 +20,14 @@ public record MovieRental(Movie movie, int daysRented) {
   }
 
   public double calculateMoviePrice() {
-    return movie.priceCode().calculatePrice(daysRented);
+//    return movie.priceCode().calculatePrice(daysRented);
+    return switch (movie().priceCode()) {
+      case REGULAR -> regularPrice();
+      case NEW_RELEASE -> newReleasePrice();
+      case CHILDREN -> childrenPrice();
+    };
+
+    // cu default: throw
 //    switch (movie().priceCode()) {
 //      case REGULAR:
 //        return regularPrice();

@@ -6,7 +6,7 @@ import java.util.function.Function;
 public record Movie(String title, PriceCode priceCode) {
 
     enum PriceCode {
-        CHILDREN{
+        CHILDREN/*{
             @Override
             public double calculatePrice(int daysRented) {
                 double result = 1.5;
@@ -14,8 +14,8 @@ public record Movie(String title, PriceCode priceCode) {
                     result += (daysRented - 3) * 1.5;
                 return result;
             }
-        },
-        REGULAR {
+        }*/,
+        REGULAR /*{
             @Override
             public double calculatePrice(int daysRented) {
                 double result = 2;
@@ -23,17 +23,17 @@ public record Movie(String title, PriceCode priceCode) {
                     result += (daysRented - 2) * 1.5;
                 return result;
             }
-        },
-        NEW_RELEASE {
+        }*/,
+        NEW_RELEASE /*{
             @Override
             public double calculatePrice(int daysRented) {
                 return daysRented * 3;
             }
-        },
-//        ELDERS
+        }*/,
+        ELDERS
         ;
 
-        public abstract double calculatePrice(int daysRented);
+//        public abstract double calculatePrice(int daysRented);
     }
     //vezi si https://dzone.com/articles/functional-programming-patterns-with-java-8
 
