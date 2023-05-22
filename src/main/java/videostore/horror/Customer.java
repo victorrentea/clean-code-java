@@ -3,8 +3,6 @@ package videostore.horror;
 import java.util.ArrayList;
 import java.util.List;
 
-import static videostore.horror.Movie.PriceCode.NEW_RELEASE;
-
 
 class Customer {
     private final String name;
@@ -24,32 +22,30 @@ class Customer {
 
     public String statement() {
         double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        String result = "Rental Record for " + getName() + "\n";
-        for (MovieRental rental : rentals) {
+        int frequentRenterPoints;
+        String result = formatHeader();
+        frequentRenterPoints = rentals.stream().mapToInt(MovieRental::calculateRenterPoints).sum();
 
-            double moviePrice = rental.calculateMoviePrice();
-// add frequent renter points
-            var movieRenterPoints = calculateRenterPoints(rental);
-            frequentRenterPoints += movieRenterPoints;
-// show figures line for this rental
-            result += "\t" + rental.movie().title() + "\t" + moviePrice + "\n";
+        for (MovieRental rental : rentals) {
+            double moviePrice = rental.calculateMoviePrice(); // functie pura super fast (ca nu face retea)
+            result += formatBodyLine(rental, moviePrice);
             totalAmount += moviePrice;
         }
-// add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + frequentRenterPoints + " frequent renter points";
+        result += formatFooter(totalAmount, frequentRenterPoints);
         return result;
     }
 
-    private static int calculateRenterPoints(MovieRental rental) {
-        int result = 1;
+    private static String formatBodyLine(MovieRental rental, double moviePrice) {
+        return "\t" + rental.movie().title() + "\t" + moviePrice + "\n";
+    }
 
-        if ((rental.movie().priceCode() == NEW_RELEASE)
-                && rental.daysRented() >= 2) {
-            result++;
-        }
-        return result;
+    private String formatHeader() {
+        return "Rental Record for " + getName() + "\n";
+    }
+
+    private static String formatFooter(double totalAmount, int frequentRenterPoints) {
+        return "Amount owed is " + totalAmount + "\n" +
+               "You earned " + frequentRenterPoints + " frequent renter points";
     }
 
 }
