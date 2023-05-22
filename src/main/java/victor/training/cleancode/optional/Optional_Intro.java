@@ -18,6 +18,7 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
+//		if (opt.isPresent()) de evitat
 		return computeDiscount(customer.getMemberCard())
 				.map(d -> "You got a discount of %" + d.getGlobalPercentage())
 				.orElse("");
