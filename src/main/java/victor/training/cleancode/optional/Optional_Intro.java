@@ -7,6 +7,7 @@ import victor.training.cleancode.exception.model.MemberCard;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @SuppressWarnings("ConstantConditions")
 public class Optional_Intro {
@@ -17,22 +18,19 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		Discount discount = computeDiscount(customer.getMemberCard());
-		if (discount.getGlobalPercentage() != 0) {
-			return "You got a discount of %" + discount.getGlobalPercentage();
-		} else {
-			return "";
-		}
+		return computeDiscount(customer.getMemberCard())
+				.map(d -> "You got a discount of %" + d.getGlobalPercentage())
+				.orElse("");
 	}
 
-	private static Discount computeDiscount(MemberCard card) {
+	private static Optional<Discount> computeDiscount(MemberCard card) {
 		if (card.getFidelityPoints() >= 100) {
-			return new Discount(5);
+			return Optional.of(new Discount(5));
 		}
 		if (card.getFidelityPoints() >= 50) {
-			return new Discount(3);
+			return Optional.of(new Discount(3));
 		}
-		return new Discount(0); // Null object pattern (GoF)
+		return Optional.empty();
 	}
 	@Data
 	public static class Discount {
