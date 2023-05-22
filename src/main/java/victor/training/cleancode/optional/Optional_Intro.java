@@ -17,7 +17,12 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" + computeDiscount(customer.getMemberCard()).getGlobalPercentage();
+		Discount discount = computeDiscount(customer.getMemberCard());
+		if (discount.getGlobalPercentage() != 0) {
+			return "You got a discount of %" + discount.getGlobalPercentage();
+		} else {
+			return "";
+		}
 	}
 
 	private static Discount computeDiscount(MemberCard card) {
