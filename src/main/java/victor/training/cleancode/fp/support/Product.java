@@ -3,6 +3,7 @@ package victor.training.cleancode.fp.support;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+//@Accessors(chain = true)
 @ToString
 public
 class Product {
@@ -46,7 +48,4 @@ class Product {
     return premium;
   }
 
-  public void setPremium(boolean premium) {
-    this.premium = premium;
-  }
 }

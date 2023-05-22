@@ -2,6 +2,11 @@
 package victor.training.cleancode.optional;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import victor.training.cleancode.exception.model.Customer;
 import victor.training.cleancode.exception.model.MemberCard;
 
@@ -52,3 +57,26 @@ public class Optional_Intro {
   }
 }
 
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+class MyService {
+
+  public void method() {
+
+  }
+}
+
+
+interface Processor {
+
+}
+@Component
+class Proc1 implements  Processor{
+
+}
+@Component
+class Proc2 implements  Processor{
+
+}

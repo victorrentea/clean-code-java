@@ -18,11 +18,19 @@ class Coupon {
     return autoApply;
   }
 
-  public void setAutoApply(boolean autoApply) {
-    this.autoApply = autoApply;
-  }
-
   public boolean isApplicableFor(Product product) {
+    //*
+
+    System.out.println("ceva");
+
+    /*/
+
+        System.out.println("altceva");
+
+    //*/
+
+
+//    product.setCategory(ProductCategory.ME).setName("aa")
     return (product.getCategory() == category || category == null) && !product.isPremium();
   }
 
