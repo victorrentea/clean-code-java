@@ -8,6 +8,7 @@ import victor.training.cleancode.fp.support.ProductRepo;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.*;
 
@@ -26,8 +27,13 @@ public class StreamWrecks {
 				.map(Entry::getKey)
 				.filter(p -> !p.isDeleted())
 				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
-				.collect(toList());
+				.toList(); // immutable collection ftw
 	}
+
+//	Predicate<Order> createdBetween(LocalDate low, LocalDate high) {
+//		return o-> o.getCreationDate().isAfter(low) && ...
+//	}
+	// order1.createdBetween(low, high)
 }
 
 

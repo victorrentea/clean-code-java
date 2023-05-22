@@ -7,24 +7,37 @@ import java.util.List;
 
 public class ImperativeMindset {
    public void mutationInForeach(List<Order> orders) {
-      int sum = 0;
-      orders.stream()
-          .filter(order -> order.isActive())
-          .forEach(order -> {
-             // imperative mindset: let's *add* to the sum
-             // sum += order.getPrice();
-          });
+     //     final int[] sum = {0};
+     //       AtomicInteger sum = new AtomicInteger();
+      int sum = orders.stream()
+          .filter(Order::isActive)
+          .mapToInt(Order::getPrice)
+          .sum();// beton: numeric streams IntStream
+//          .map(Order::getPrice).reduce(0, Integer::sum); // merge, dar de evitat
       System.out.println("Total: " + sum);
    }
 
 
+
+
    public void accumulateInList(List<Order> orders) {
-      List<Integer> prices = new ArrayList<>();
-      orders.stream()
+      List<Integer> prices = orders.stream()
           .filter(order -> order.isActive())
-          .forEach(order -> {
-              prices.add(order.getPrice());
-          });
+          .map(Order::getPrice)
+              .toList();
+//          .forEach(order -> {
+//              prices.add(order.getPrice());
+//          });
+
+     // daca totusi side effect
+     prices.forEach(this::sideEffect1);
+//     prices.forEach(this::sideEffect2); etc
+//     prices.forEach(this::sideEffect3);
+
       System.out.println("Prices: " + prices);
    }
+
+  private void sideEffect1(Integer price) {
+    throw new RuntimeException("Method not implemented");
+  }
 }
