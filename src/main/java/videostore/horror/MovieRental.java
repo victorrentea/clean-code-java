@@ -1,5 +1,7 @@
 package videostore.horror;
 
+import java.util.List;
+
 import static videostore.horror.Movie.PriceCode.NEW_RELEASE;
 
 public record MovieRental(Movie movie, int daysRented) {
@@ -27,6 +29,8 @@ public record MovieRental(Movie movie, int daysRented) {
       case CHILDREN -> childrenPrice();
       case ELDERS -> 1;
     };
+
+
 
     // cu default: throw
 //    switch (movie().priceCode()) {
