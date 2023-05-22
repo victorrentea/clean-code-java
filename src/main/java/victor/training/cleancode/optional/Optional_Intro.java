@@ -13,6 +13,7 @@ public class Optional_Intro {
 	public static void main(String[] args) {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
+		System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
 	}
 
 	public static String getDiscountLine(Customer customer) {
@@ -26,7 +27,7 @@ public class Optional_Intro {
 		if (card.getFidelityPoints() >= 50) {
 			return new Discount(3);
 		}
-		return null;
+		return new Discount(0); // Null object pattern (GoF)
 	}
 	@Data
 	public static class Discount {
