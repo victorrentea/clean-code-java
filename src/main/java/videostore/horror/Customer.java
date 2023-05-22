@@ -43,7 +43,7 @@ class Customer {
     }
 
     private String formatHeader() {
-        return "Rental Record for " + getName() + "\n";
+        return "Rental Record for " + name + "\n";
     }
 
     private String formatFooter() {
