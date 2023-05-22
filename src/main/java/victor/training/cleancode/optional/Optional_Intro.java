@@ -29,7 +29,8 @@ public class Optional_Intro {
 //				.map(d -> "You got a discount of %" + d.getGlobalPercentage())
 
 				.map(Discount::getGlobalPercentage)
-				.map(p -> "You got a discount of %" + p)
+//				.map(p -> "You got a discount of %" + p)
+				.map("You got a discount of %%%d"::formatted)
 
 				.orElse("");
   }
