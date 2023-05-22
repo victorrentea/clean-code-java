@@ -2,6 +2,7 @@ package videostore.horror;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 class Customer {
@@ -20,32 +21,34 @@ class Customer {
         return name;
     }
 
-    public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints;
-        String result = formatHeader();
-        frequentRenterPoints = rentals.stream().mapToInt(MovieRental::calculateRenterPoints).sum();
-
-        for (MovieRental rental : rentals) {
-            double moviePrice = rental.calculateMoviePrice(); // functie pura super fast (ca nu face retea)
-            result += formatBodyLine(rental, moviePrice);
-            totalAmount += moviePrice;
-        }
-        result += formatFooter(totalAmount, frequentRenterPoints);
-        return result;
+    public String statement() { // over-refactoring !
+        return formatHeader() + formatBody() + formatFooter();
     }
 
-    private static String formatBodyLine(MovieRental rental, double moviePrice) {
-        return "\t" + rental.movie().title() + "\t" + moviePrice + "\n";
+    private String formatBody() {
+        return rentals.stream().map(Customer::formatBodyLine).collect(Collectors.joining());
+    }
+//    private fun formatBody() = rentals.map{formatBodyLine(it)}.join();
+
+    private int totalPoints() {
+        return rentals.stream().mapToInt(MovieRental::calculateRenterPoints).sum();
+    }
+
+    private double totalPrice() {
+        return rentals.stream().mapToDouble(MovieRental::calculateMoviePrice).sum();
+    }
+
+    private static String formatBodyLine(MovieRental rental) {
+        return "\t" + rental.movie().title() + "\t" + rental.calculateMoviePrice() + "\n";
     }
 
     private String formatHeader() {
         return "Rental Record for " + getName() + "\n";
     }
 
-    private static String formatFooter(double totalAmount, int frequentRenterPoints) {
-        return "Amount owed is " + totalAmount + "\n" +
-               "You earned " + frequentRenterPoints + " frequent renter points";
+    private String formatFooter() {
+        return "Amount owed is " + totalPrice() + "\n" +
+               "You earned " + totalPoints() + " frequent renter points";
     }
 
 }
