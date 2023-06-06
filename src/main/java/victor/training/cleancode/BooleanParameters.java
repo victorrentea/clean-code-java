@@ -49,17 +49,19 @@ class MyService {
 
 public class BooleanParameters {
 
+  public static final String SPACE = " ";
+
   // Warning⚠️: this method might be called from multiple places in the codebase ...
   public static void bigUglyMethod(int storeId, Task task) {
-    System.out.println("Cow Logic 1 " + task + " and " + storeId);
+    System.out.println("Cow" + SPACE + "Logic 1 " + task + SPACE + "and " + storeId);
     System.out.println(task);
-    System.out.println("Cow Logic 3 " + task);
+    System.out.println("Cow" + SPACE + "Logic 3 " + task);
 
     // System.out.println("Logic just for CR#323 : " + task);
 
-    System.out.println("Donkey Logic 1 " + storeId);
-    System.out.println("Donkey Logic 2 " + storeId);
-    System.out.println("Donkey Logic 3 " + storeId);
+    System.out.println("Donkey" + SPACE + "Logic 1 " + storeId);
+    System.out.println("Donkey" + SPACE + "Logic 2 " + storeId);
+    System.out.println("Donkey" + SPACE + "Logic 3 " + storeId);
   }
 
 
@@ -68,28 +70,28 @@ public class BooleanParameters {
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int j = tasks.size();
-    System.out.println("Logic1");
+    int taskSize = tasks.size();
+    System.out.println("Logic1" + SPACE);
     List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
-      System.out.println("Logic3");
+      System.out.println("Logic3" + SPACE);
       for (Task task : tasks) {
-        System.out.println("Starting " + task);
+        System.out.println("Starting" + SPACE + task);
         task.setStarted(true);
 
         taskIds.add(task.getId());
 
         if (cr323) { // TODO task = remove the boolean
-          System.out.println("My Logic: " + task);
+          System.out.println("My" + SPACE + "Logic: " + task);
         }
 
         index++;
-        System.out.println("Audit task #" + index + ": " + task);
+        System.out.println("Audit" + SPACE + "task #" + index + ":" + SPACE + task);
       }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
+      System.out.println("Logic6" + SPACE + taskSize);
+      System.out.println("Task" + SPACE + "Ids: " + taskIds);
     } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+      System.out.println("Logic7" + SPACE + "on fluff=false " + tasks);
     }
     System.out.println("Logic8");
   }
