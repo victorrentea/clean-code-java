@@ -70,7 +70,7 @@ public class BooleanParameters {
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int taskSize = tasks.size();
+    int taskCount = tasks.size();
     System.out.println("Logic1" + SPACE);
     List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
@@ -88,7 +88,7 @@ public class BooleanParameters {
         index++;
         System.out.println("Audit" + SPACE + "task #" + index + ":" + SPACE + task);
       }
-      System.out.println("Logic6" + SPACE + taskSize);
+      System.out.println("Logic6" + SPACE + taskCount);
       System.out.println("Task" + SPACE + "Ids: " + taskIds);
     } else {
       System.out.println("Logic7" + SPACE + "on fluff=false " + tasks);
