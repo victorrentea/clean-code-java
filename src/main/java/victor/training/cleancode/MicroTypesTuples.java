@@ -3,6 +3,8 @@ package victor.training.cleancode;
 import org.jooq.lambda.tuple.Tuple;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ public class MicroTypesTuples {
     record CustomerId(long id) {}
     @Test
     void lackOfAbstractions() {
+//        if (true) throw new FileNotFoundException();
         Map<CustomerId, List<ProductCount>> map = extremeFP();
         // Joke: try "var" above :)
 
