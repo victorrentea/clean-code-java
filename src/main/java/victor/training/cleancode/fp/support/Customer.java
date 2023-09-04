@@ -1,7 +1,7 @@
 package victor.training.cleancode.fp.support;
 
 import lombok.Data;
-import org.apache.tomcat.jni.Address;
+import victor.training.cleancode.optional.Address;
 
 import java.util.ArrayList;
 import java.util.Date;
