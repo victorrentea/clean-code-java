@@ -2,8 +2,6 @@ package victor.training.cleancode;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,34 +10,46 @@ class ExtractValueObjects {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                .filter(model -> {
+                    int start1 = criteria.getStartYear();
+                    int end1 = criteria.getEndYear();
+                    int start2 = model.getStartYear();
+                    int end2 = model.getEndYear();
+                    return new Interval(start1, end1).intersectsWith(new Interval(start2, end2));
+                })
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
     }
-
 }
-
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
+// de ce sa fac OOP (logica in structuri)? Eu sunt multumit cu structuri anemice @Data si atat,
+// si Util-uri, Helpere si Service-uri ?
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
-    }
+    // - bun simtz sa ai LOGICA/operatii langa concepte (mai usor pt creier)
+    // - Utilu/Helperu e locul in care codul "reusable" se duce sa fie uitat.
+    // -   mai usor de gasit metodele
+    // - metodele mai scurte si mai simple semnaturi
 }
 
+// the missing abstraction
+record Interval(int start, int end) {
+
+    public boolean intersectsWith(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+}
 
 class CarSearchCriteria { // smells like JSON ...
     private final int startYear;
