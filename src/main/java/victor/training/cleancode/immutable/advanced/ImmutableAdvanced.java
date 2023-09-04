@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import com.google.errorprone.annotations.Var;
 import lombok.With;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
-   public static void main(String[] args) {
+   public static void main(final String[] args) {
       ImmutableList<Integer> numbers = Stream.of(1, 2, 3).collect(ImmutableList.toImmutableList());
 
       Immutable immutable = new Immutable(1, numbers, new Other(15));
@@ -29,7 +30,7 @@ public class ImmutableAdvanced {
       // dark deep logic
 //      immutable.getNumbers().add(99);
       int x = 10;
-      return immutable.withX(x); // copie;
+      return immutable.withX(x); // copie modificata cu x = ..
    }
 }
 
