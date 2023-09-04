@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class SomeController {
@@ -80,28 +79,55 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
-    int taskCount = tasks.size();
-    System.out.println("Logic1");
-    System.out.println("Logic3");
-    int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
+  public void bossLevelFluff(List<Task> tasks) {
+    bossStart(tasks);
     for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
+      System.out.println("My Logic: " + task);
+    }
+    bossEnd(tasks);
+  }
 
-      taskIds.add(task.getId());
+  public void bossLevelFluff323(List<Task> tasks) {
+    bossStart(tasks);
+    for (Task task : tasks) {
+      System.out.println("My Logic: " + task);
+    }
+    bossEnd(tasks);
+  }
 
-      if (cr323) { // TODO task = remove the boolean
-        System.out.println("My Logic: " + task);
-      }
-
+  private static void bossEnd(List<Task> tasks) {
+    int index = 0;
+    for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
-    System.out.println("Logic6 " + taskCount);
+    //CAND SPARGI UN FOR, LA CE TRE SA AI GRIJA?
+    // 1) BUGURI
+    // for(e) { A(e); B(e); } => for (e) A(e); for (e) B(e);
+    // A1 B1 A2 B2 -> A1 A2 B1 B2 => daca efectul este diferit => BUG
+    // 2) Peformanta NU va degrada daca faci macar 1 apel
+    //   de networking catre alt sistem in use-caseul tau
+
+    System.out.println("Logic6 " + tasks.size());
+    // antipatterni in java 8+ sa faci list.add, map.put, total+= daca poti inloocui cu .stream()...
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList(); // immutable❤️❤️❤️❤️❤️ list ❤️
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  private static void bossStart(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
+//    innocenta(tasks); // side effects : o fuctie intoarce void si ia o lista param. te intrebi: modifici lista ?
+
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
+  }
+
+  private void innocenta(List<Task> tasks) {
+    tasks.clear();
   }
 
 
