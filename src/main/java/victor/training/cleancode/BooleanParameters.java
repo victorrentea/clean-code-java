@@ -57,6 +57,7 @@ public class BooleanParameters {
 
     bigEnd(storeId);
   }
+
   public static void bigUglyMethod323(int storeId, Task task) {
     bigStart(storeId, task);
     System.out.println("Logic just for CR#323 : " + task);
@@ -80,12 +81,12 @@ public class BooleanParameters {
 
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0;
     int taskCount = tasks.size();
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
       System.out.println("Logic3");
+      int index = 0;
+      List<Integer> taskIds = new ArrayList<>();
       for (Task task : tasks) {
         System.out.println("Starting " + task);
         task.setStarted(true);
