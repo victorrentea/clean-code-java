@@ -22,16 +22,18 @@ public record Rental(Movie movie, int days) {
 
   private double calculateChildrenPrice() {
     double result = 1.5;
-    if (days > 3) {
-      result += (days - 3) * 1.5;
+    int DAYS_THRESHOLD = 3;
+    if (days > DAYS_THRESHOLD) {
+      result += (days - DAYS_THRESHOLD) * 1.5;
     }
     return result;
   }
 
   private double calculateRegularPrice() {
     double result = 2;
-    if (days > 2) {
-      result += (days - 2) * 1.5;
+    int DAYS_THRESHOLD = 2;
+    if (days > DAYS_THRESHOLD) {
+      result += (days - DAYS_THRESHOLD) * 1.5;
     }
     return result;
   }
