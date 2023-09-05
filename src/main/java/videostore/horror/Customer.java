@@ -35,6 +35,8 @@ class Customer {
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
+	// la birou ma opresc aici. e arhi suficient. dar in joaca mea, 'fraeru insista'
+	//
 
 	private String formatRental(Rental rental) {
 		return "\t" + rental.getMovie().title() + "\t" + rental.calculateAmount() + "\n";
