@@ -1,9 +1,12 @@
 package videostore.horror;
 
-import java.util.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 class Customer {
 	private String name;
+
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
