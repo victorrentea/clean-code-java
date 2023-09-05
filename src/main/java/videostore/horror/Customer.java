@@ -25,38 +25,46 @@ class Customer {
 		int frequentRenterPoints = 0;
 		double totalAmount = 0;
 		for (Movie movie : rentals.keySet()) {
-			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(movie);
-			switch (movie.priceCode()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDREN:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (movie.priceCode() != null &&
-					(movie.priceCode() == NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
+			int daysRented = rentals.get(movie);
+			double thisAmount = calculateAmount(movie, daysRented);
 			// show figures line for this rental
-			result += "\t" + movie.title() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
+
+			result += "\t" + movie.title() + "\t" + thisAmount + "\n";
+
+			frequentRenterPoints += calculateFrequentRenterPoints(0, movie, daysRented);
+
 		}
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private int calculateFrequentRenterPoints(int frequentRenterPoints, Movie movie, int daysRented) {
+		// add frequent renter points
+		frequentRenterPoints++;
+		// add bonus for a two day new release rental
+		if (movie.priceCode() == NEW_RELEASE && daysRented > 1) frequentRenterPoints++;
+		return frequentRenterPoints;
+	}
+
+	private double calculateAmount(Movie movie, int daysRented) {
+		double thisAmount = 0;
+		switch (movie.priceCode()) {
+			case REGULAR -> {
+				thisAmount += 2;
+				if (daysRented > 2)
+					thisAmount += (daysRented - 2) * 1.5;
+			}
+			case NEW_RELEASE -> thisAmount += daysRented * 3;
+			case CHILDREN -> {
+				thisAmount += 1.5;
+				if (daysRented > 3)
+					thisAmount += (daysRented - 3) * 1.5;
+			}
+		}
+		return thisAmount;
 	}
 }
