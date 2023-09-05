@@ -17,6 +17,7 @@ public class ImmutableAdvanced {
       System.out.println("Before: " + immutable);
 
       // reasons to use immutable objects:
+//      immutable = wilderness(immutable);
       Immutable alta = wilderness(immutable);
       // -
       // -
