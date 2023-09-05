@@ -10,6 +10,7 @@ class Customer {
 
 	private String name;
 
+	// TODO: Lista de Rental
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
@@ -22,7 +23,6 @@ class Customer {
 
 	public String statement() {
 		String result = "Rental Record for " + this.name + "\n";
-		int frequentRenterPoints = 0;
 		double totalAmount = 0;
 		for (Movie movie : rentals.keySet()) {
 			// determine amounts for every line
@@ -32,22 +32,23 @@ class Customer {
 			totalAmount += thisAmount;
 
 			result += "\t" + movie.title() + "\t" + thisAmount + "\n";
-
-			frequentRenterPoints += calculateFrequentRenterPoints(0, movie, daysRented);
-
 		}
+
+		int frequentRenterPoints = rentals.keySet().stream()
+				.mapToInt(movie -> calculateFrequentRenterPoints(movie, rentals.get(movie)))
+				.sum();
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
 
-	private int calculateFrequentRenterPoints(int frequentRenterPoints, Movie movie, int daysRented) {
-		// add frequent renter points
-		frequentRenterPoints++;
-		// add bonus for a two day new release rental
-		if (movie.priceCode() == NEW_RELEASE && daysRented > 1) frequentRenterPoints++;
-		return frequentRenterPoints;
+	private int calculateFrequentRenterPoints(Movie movie, int daysRented) {
+//		int frequentRenterPoints = 1;
+//		if (movie.priceCode() == NEW_RELEASE && daysRented >= 2) frequentRenterPoints++;
+//		return frequentRenterPoints;
+
+		return movie.priceCode() == NEW_RELEASE && daysRented >= 2 ? 2 : 1;
 	}
 
 	private double calculateAmount(Movie movie, int daysRented) {
