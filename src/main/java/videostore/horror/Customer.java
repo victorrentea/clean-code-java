@@ -4,52 +4,31 @@ package videostore.horror;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static victor.training.cleancode.Movie.Category.*;
-
-enum X {
-	CHILDREN(2),
-	REGULAR(0),
-	NEW_RELEASE(1);
-
-
-	private final int i;
-
-	X(int i) {
-		this.i = i;
-	}
-
-	public int getI() {
-		return i;
-	}
-}
+import static videostore.horror.PriceCode.NEW_RELEASE;
 
 class Customer {
 
 	private String name;
 
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public String statement() {
-		double totalAmount = 0;
+		String result = "Rental Record for " + this.name + "\n";
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
-		for (Movie each : rentals.keySet()) {
+		double totalAmount = 0;
+		for (Movie movie : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
+			int dr = rentals.get(movie);
+			switch (movie.priceCode()) {
 				case REGULAR:
 					thisAmount += 2;
 					if (dr > 2)
@@ -67,12 +46,12 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == X.NEW_RELEASE.getI())
+			if (movie.priceCode() != null &&
+					(movie.priceCode() == NEW_RELEASE)
 				 && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			result += "\t" + movie.title() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
 		// add footer lines

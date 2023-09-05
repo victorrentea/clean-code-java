@@ -3,6 +3,7 @@ package videostore.horror;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static videostore.horror.PriceCode.*;
 
 
 public class CustomerTest {
@@ -10,9 +11,9 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", X.NEW_RELEASE.getI()), 6);
-        customer.addRental(new Movie("Sofia", X.CHILDREN.getI()), 7);
-        customer.addRental(new Movie("Inception", X.REGULAR.getI()), 5);
+        customer.addRental(new Movie("Star Wars", NEW_RELEASE), 6);
+        customer.addRental(new Movie("Sofia", CHILDREN), 7);
+        customer.addRental(new Movie("Inception", REGULAR), 5);
         
         String expected = "Rental Record for John Doe\n"
                 + "	Star Wars	18.0\n"
