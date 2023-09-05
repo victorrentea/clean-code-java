@@ -1,6 +1,8 @@
 package videostore.horror;
 
-import java.util.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 class Customer {
 	private String name;
