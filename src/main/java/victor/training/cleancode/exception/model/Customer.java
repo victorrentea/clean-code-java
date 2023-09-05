@@ -6,7 +6,7 @@ import static java.util.Optional.ofNullable;
 
 public class Customer {
    private String name;
-   private MemberCard memberCard;
+   private MemberCard memberCard; // nu Optional
 
    public Customer() {
    }
@@ -15,11 +15,12 @@ public class Customer {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   //faceti si voi asa ? din getter entitat sa intori optional
+   public Optional<MemberCard> getMemberCard() {
+      return Optional.ofNullable(memberCard);
    }
 
-   public Customer setMemberCard(MemberCard memberCard) {
+   public Customer setMemberCard(MemberCard memberCard) { // nu Optional
       this.memberCard = memberCard;
       return this;
    }

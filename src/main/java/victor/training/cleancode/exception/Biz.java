@@ -3,6 +3,7 @@ package victor.training.cleancode.exception;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import victor.training.cleancode.exception.model.Customer;
+import victor.training.cleancode.exception.model.MemberCard;
 import victor.training.cleancode.exception.model.Order;
 
 import java.io.IOException;
@@ -19,7 +20,11 @@ public class Biz {
          if (order.getOfferDate().before(config.getLastPromoDate())) { // TODO inside
 
             System.out.println("APPLYING DISCOUNT");
-            Integer points = customer.getMemberCard().getFidelityPoints();
+            // AICI tocmai ai gasit un bug in codul PROIECTULUI (Collaborative code ownership)
+            Integer points = customer.getMemberCard()
+                .map(MemberCard::getFidelityPoints)
+                .orElse(0);
+//                .orElse(new MemberCard()).getFidelityPoints();
             order.setPrice(order.getPrice() * (100 - 2 * points) / 100);
          } else {
             System.out.println("NO DISCOUNT");
