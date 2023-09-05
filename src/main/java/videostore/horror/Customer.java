@@ -1,45 +1,50 @@
 package videostore.horror;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-class Customer {
+import static java.util.stream.Collectors.joining;
 
+public class Customer {
 	private final String name;
 
-	// TODO: Lista de Rental
-	private final List<Rental> rentals = new ArrayList<>(); // preserves order
-
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Movie movie, int days) {
-		rentals.add(new Rental(movie, days));
+	public void addRental(Rental rental) {
+		rentals.add(rental);
 	}
 
-	public String statement() {
-
-		double totalAmount = rentals.stream().mapToDouble(Rental::calculateAmount).sum();
-
-		int frequentRenterPoints = rentals.stream()
-				.mapToInt(Rental::calculateFrequentRenterPoints)
-				.sum();
-
-		String result = "Rental Record for " + this.name + "\n";
-		result += rentals.stream().map(this::formatRental).collect(Collectors.joining());
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+	public String generateStatement() {
+		return generateHeader() + generateBody() + generateFooter();
 	}
-	// la birou ma opresc aici. e arhi suficient. dar in joaca mea, 'fraeru insista'
-	//
 
+	private String generateHeader() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String generateBody() {
+		return rentals.stream().map(this::formatRental).collect(joining());
+	}
+
+	private String generateFooter() {
+		return "Amount owed is " + calculateTotalPrice() + "\n" +
+				"You earned " + calculateTotalPoints() + " frequent renter points";
+	}
+
+	private int calculateTotalPoints() {
+		return rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
+	}
+
+	private double calculateTotalPrice() {
+		return rentals.stream().mapToDouble(Rental::calculatePrice).sum();
+	}
+
+	// nu merita dusa in Rental ca e presentation.
 	private String formatRental(Rental rental) {
-		return "\t" + rental.getMovie().title() + "\t" + rental.calculateAmount() + "\n";
+		return "\t" + rental.movie().title() + "\t" + rental.calculatePrice() + "\n";
 	}
-
 }
