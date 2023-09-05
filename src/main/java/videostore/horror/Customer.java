@@ -3,6 +3,7 @@ package videostore.horror;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
 
@@ -21,24 +22,22 @@ class Customer {
 	}
 
 	public String statement() {
-		String result = "Rental Record for " + this.name + "\n";
-		double totalAmount = 0;
-		for (Rental rental : rentals) {
-			// determine amounts for every line
-			double thisAmount = rental.calculateAmount();
-			// show figures line for this rental
-			totalAmount += thisAmount;
 
-			result += "\t" + rental.getMovie().title() + "\t" + thisAmount + "\n";
-		}
+		double totalAmount = rentals.stream().mapToDouble(Rental::calculateAmount).sum();
 
 		int frequentRenterPoints = rentals.stream()
 				.mapToInt(Rental::calculateFrequentRenterPoints)
 				.sum();
-		// add footer lines
+
+		String result = "Rental Record for " + this.name + "\n";
+		result += rentals.stream().map(this::formatRental).collect(Collectors.joining());
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private String formatRental(Rental rental) {
+		return "\t" + rental.getMovie().title() + "\t" + rental.calculateAmount() + "\n";
 	}
 
 }
