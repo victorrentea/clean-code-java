@@ -15,20 +15,21 @@ public class Optional_Intro {
 		// test: 60, 10, no MemberCard
 		System.out.println(getDiscountLine(new Customer(new MemberCard(60))));
 		System.out.println(getDiscountLine(new Customer(new MemberCard(1))));
+		System.out.println(getDiscountLine(new Customer(null))); // client nou
 	}
 
+	// + 100p pt ca functia ta incepe direct cu RETURN "expression functions" const f = (x,y) => x+y
 	public static String getDiscountLine(Customer customer) {
-		Optional<Discount> optDiscount = computeDiscount(customer.getMemberCard());
-
-		if (optDiscount.isEmpty()) {
-			return "Daca aveai puncte de fidelitate puteai beneficia de un discount!";
-		}
-		Discount discount = optDiscount.orElse(new Discount(0));
-		return "You got a discount of %" +
-				discount.getGlobalPercentage(); // rau!
+		return computeDiscount(customer.getMemberCard())
+				.map(Discount::getGlobalPercentage)
+				.map(per -> "You got a discount of %" + per)
+				.orElse("Daca aveai puncte de fidelitate puteai beneficia de un discount!");
 	}
 
 	private static Optional<Discount> computeDiscount(MemberCard card) {
+		if (card == null) {
+			return Optional.empty();
+		}
 		if (card.getFidelityPoints() >= 100) {
 			return Optional.of(new Discount(5));
 		}
