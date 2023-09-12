@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -45,9 +47,11 @@ class MathUtil {
 //  - fara PK (identitate persistenta, lacks continuity of change).
 //  - typically small (2-7 campuri)
 //  - hash/equals implica toate campurile (nu ca la @Entity)
+@Embeddable
 class Interval { // DOMAIN OBJECT
-    private final int start;
-    private final int end;
+    private int start;
+    private int end;
+    protected Interval() {} // for Hibernate only
 
     Interval(int start, int end) {
         this.start = start;
@@ -117,8 +121,11 @@ class CarModel { // the holy Entity Model
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+
+    @Embedded
+    private Interval yearInterval;  // ii spui lui ORM sa puna campurile Interval in tabela CAR_MODEL (flattening)
+//    private int startYear;
+//    private int endYear;
 
     protected CarModel() {
     } // for Hibernate
@@ -127,24 +134,15 @@ class CarModel { // the holy Entity Model
         this.make = make;
         this.model = model;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        yearInterval = new Interval(startYear, endYear);
     }
 
     public Interval getYearInterval() {
-        return new Interval(startYear, endYear);
+        return yearInterval;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
-    public int getStartYear() {
-        return startYear;
     }
 
     public String getMake() {
@@ -171,8 +169,18 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.getYearInterval().getStart(); // de la asta
+        dto.startYear = carModel.getYearInterval().getStart(); // la asta peste tot
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+        dto.startYear = carModel.getYearInterval().getStart();
+
+        // Law of Demeter: ("regula unui singur .") sa nu traversezi lanturi obiecte
+        // pt caller getEndYear e mai scurt si mai decuplat (nu afla de YearInterval)
+        // pt structura mea insa, implica boilerplate code (stupid)
+//        dto.endYear = carModel.getEndYear(); // NU
+        dto.endYear = carModel.getYearInterval().getEnd(); // DA ASA
         return dto;
     }
 
