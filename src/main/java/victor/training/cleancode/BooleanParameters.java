@@ -35,6 +35,7 @@ class SomeService {
     BooleanParameters.bigUglyMethod(id, task);
   }
 
+  //gunoi
   public void redMethod(int id, Task task) {
     BooleanParameters.bigUglyMethod(id, task);
   }
@@ -68,7 +69,7 @@ public class BooleanParameters {
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int j = tasks.size();
+    int taskSize = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
@@ -86,7 +87,7 @@ public class BooleanParameters {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
-      System.out.println("Logic6 " + j);
+      System.out.println("Logic6 " + taskSize);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
