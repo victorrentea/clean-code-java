@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class SomeController {
@@ -72,37 +71,58 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevelFluff(List<Task> tasks, boolean cr323) {
-    System.out.println("Logic1");
-    System.out.println("Logic3");
-    int index = 0;
-    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
-    // cand iterarea de 2 ori ar putea deveni o problema de performanta ?
-    // daca sunt milioane de elemente (tinute IN MEMORIE) in colectie si munca mea e ff rapida.
-    // - daca datele au venit din DB/API calls, for x 10 => nici un impact.
-    // - daca munca e grea per element, for x 10 => nici un impact
+  public void bossLevelFluff(List<Task> tasks) {
+    bossStart();
+    startTasks(tasks);
+    auditTasks(tasks);
+    bossEnd(tasks);
+  }
+  public void bossLevelFluff323(List<Task> tasks) {
+    bossStart();
+    startTasks(tasks);
+    myBo$$Logic(tasks);
+    auditTasks(tasks);
+    bossEnd(tasks);
+  }
+  // --- sub linie, doar low level details
 
+  private static void myBo$$Logic(List<Task> tasks) {
     for (Task task : tasks) {
-      // marcam started
-      System.out.println("Starting " + task);
-      task.setStarted(true);
-
-      // populam taskIds
-//      taskIds.add(task.getId());
-
-      if (cr323) { // TODO task = remove the boolean
-        System.out.println("My Logic: " + task);
-      }
-
-      // audit
-      index++;
-      System.out.println("Audit task #" + index + ": " + task);
+      System.out.println("My Logic: " + task);
     }
+  }
+
+  private static void bossEnd(List<Task> tasks) {
     System.out.println("Logic6 " + tasks.size());
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
   }
 
+  private static void auditTasks(List<Task> tasks) {
+    int index = 0;
+    for (Task task : tasks) {
+      // audit
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+  }
+
+  private static void bossStart() {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
+    // cand iterarea de 2 ori ar putea deveni o problema de performanta ?
+    // daca sunt milioane de elemente (tinute IN MEMORIE) in colectie si munca mea e ff rapida.
+    // - daca datele au venit din DB/API calls, for x 10 => nici un impact.
+    // - daca munca e grea per element, for x 10 => nici un impact
+  }
+
+  private static void startTasks(List<Task> tasks) {
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
+  }
 
 
   public void bossLevelNoFluff(List<Task> tasks) {
