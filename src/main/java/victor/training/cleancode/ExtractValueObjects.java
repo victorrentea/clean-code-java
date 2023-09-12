@@ -3,6 +3,9 @@ package victor.training.cleancode;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class ExtractValueObjects {
@@ -38,9 +41,18 @@ class Alta {
 
 class MathUtil {
     // veche naspa
+
+//    private static final BiPredicate<Interval, Interval> yearMatches = (Interval i1, Interval i2) -> {
+//
+//    }
 }
 // record Interval(int start, int end) {}  genereaza ce-i mai jos
 //@Value //  (lombok)  genereaza ce-i mai jos
+// TODO Value Object design pattern =
+//  - structura de date imutabila
+//  - fara PK (identitate persistenta, lacks continuity of change).
+//  - typically small (2-7 campuri)
+//  - hash/equals implica toate campurile (nu ca la @Entity)
 class Interval {
     private final int start;
     private final int end;
@@ -61,6 +73,19 @@ class Interval {
 
     public int getEnd() {
         return end;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Interval interval = (Interval) o;
+        return start == interval.start && end == interval.end;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
     }
 }
 
