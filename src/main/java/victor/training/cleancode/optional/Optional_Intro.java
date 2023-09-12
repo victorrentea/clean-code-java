@@ -18,8 +18,14 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
+		Optional<Discount> optDiscount = computeDiscount(customer.getMemberCard());
+
+		if (optDiscount.isEmpty()) {
+			return "Daca aveai puncte de fidelitate puteai beneficia de un discount!";
+		}
+		Discount discount = optDiscount.orElse(new Discount(0));
 		return "You got a discount of %" +
-				computeDiscount(customer.getMemberCard()).get().getGlobalPercentage(); // rau!
+				discount.getGlobalPercentage(); // rau!
 	}
 
 	private static Optional<Discount> computeDiscount(MemberCard card) {
