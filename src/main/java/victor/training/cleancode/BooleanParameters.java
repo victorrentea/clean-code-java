@@ -24,45 +24,53 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   //gunoi
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 }
 
 class MyService {
   public void useCase323(int id, Task task) { // YOUR new UC
     // TODO The shared called method must execute logic specific for my use-case #323
-    BooleanParameters.bigUglyMethod(id, task, true);
+    BooleanParameters.bigUglyMethod323(id, task);
   }
 }
 
 public class BooleanParameters {
 
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  public static void bigUglyMethod(int storeId, Task task, boolean cr323) {
-    System.out.println("Cow Logic 1 " + task + " and " + storeId);
-    System.out.println(task);
-    System.out.println("Cow Logic 3 " + task);
+  public static void bigUglyMethod(int storeId, Task task) {
+    bigStart(storeId, task);
+    bigEnd(storeId);
+  }
+  public static void bigUglyMethod323(int storeId, Task task) {
+    bigStart(storeId, task);
+    System.out.println("Logic just for CR#323 : " + task);
+    bigEnd(storeId);
+  }
 
-    if (cr323) {
-      System.out.println("Logic just for CR#323 : " + task);
-    }
-
+  private static void bigEnd(int storeId) {
     System.out.println("Donkey Logic 1 " + storeId);
     System.out.println("Donkey Logic 2 " + storeId);
     System.out.println("Donkey Logic 3 " + storeId);
+  }
+
+  private static void bigStart(int storeId, Task task) {
+    System.out.println("Cow Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Cow Logic 3 " + task);
   }
 
 
