@@ -31,7 +31,7 @@ public class SplitLoopTest {
    @ExtendWith(MockitoExtension.class)
    class Hard {
       @Mock
-      EmployeeService employeeService;
+      SplitLoop.EmployeeService employeeService;
       @InjectMocks
       SplitLoop splitLoop;
 
