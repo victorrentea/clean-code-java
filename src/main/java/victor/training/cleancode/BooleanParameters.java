@@ -77,6 +77,11 @@ public class BooleanParameters {
     System.out.println("Logic3");
     int index = 0;
     List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
+    // cand iterarea de 2 ori ar putea deveni o problema de performanta ?
+    // daca sunt milioane de elemente (tinute IN MEMORIE) in colectie si munca mea e ff rapida.
+    // - daca datele au venit din DB/API calls, for x 10 => nici un impact.
+    // - daca munca e grea per element, for x 10 => nici un impact
+
     for (Task task : tasks) {
       // marcam started
       System.out.println("Starting " + task);
