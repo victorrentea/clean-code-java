@@ -1,7 +1,9 @@
 package victor.training.cleancode;
 
+import lombok.Value;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
@@ -9,25 +11,31 @@ import static java.util.stream.Collectors.joining;
 public class MicroTypes {
 
   //<editor-fold desc="fetchData()">
-  public Map<Long, Map<String, Integer>> fetchData() {
+  public Map<CustomerId, List<ProductCount>> fetchData() {
     Long customerId = 1L;
-    Integer product1Count = 2;
-    Integer product2Count = 4;
-    return Map.of(customerId, Map.of(
-            "Table", product1Count,
-            "Chair", product2Count
+    return Map.of(new CustomerId(customerId), List.of(
+            new ProductCount("Table", 2),
+            new ProductCount("Chair", 4)
     ));
   }
   //</editor-fold>
 
+  @Value
+  class CustomerId {long customerId;}
+  @Value
+  class ProductCount {
+    String productName;
+    int count;
+  }
+
   @Test
   void lackOfAbstractions() {
-    Map<Long, Map<String, Integer>> map = fetchData();
+    Map<CustomerId, List<ProductCount>> productCounts = fetchData();
     // Joke: try "var" above 🤪
 
-    for (Long cid : map.keySet()) {
-      String pl = map.get(cid).entrySet().stream()
-              .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+    for (CustomerId cid : productCounts.keySet()) {
+      String pl = productCounts.get(cid).stream()
+              .map(pc -> pc.getCount() + " pcs. of " + pc.getProductName())
               .collect(joining(", "));
       System.out.println("cid=" + cid + " got " + pl);
     }
