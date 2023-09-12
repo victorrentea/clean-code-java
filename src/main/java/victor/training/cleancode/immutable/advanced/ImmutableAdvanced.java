@@ -38,7 +38,7 @@ public class ImmutableAdvanced {
 }
 // imutabil = obiect a carui stare nu o poti modifica dupa instantiere.
 // "shallow (pe primul nivel) vs deep(in jos pe toate altele ob referite)" clone, immutable, equals
-
+// hibernate + immutabile != ❤️
 record Immutable(Integer x, ImmutableList<Integer> numbers, Other other) {
    public Immutable withX(int newX) {
       return new Immutable(newX, numbers, other);
