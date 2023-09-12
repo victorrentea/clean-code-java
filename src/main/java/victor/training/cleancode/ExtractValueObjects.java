@@ -54,6 +54,9 @@ class Interval { // DOMAIN OBJECT
     protected Interval() {} // for Hibernate only
 
     Interval(int start, int end) {
+        if (start > end) { // 😱
+            throw new IllegalArgumentException("IMPOSIBIL!");
+        }
         this.start = start;
         this.end = end;
     }
