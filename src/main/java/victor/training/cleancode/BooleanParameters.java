@@ -24,56 +24,45 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, ()->{});
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, ()->{});
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, ()->{});
   }
 
-  //gunoi
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, ()->{});
   }
 }
 
 class MyService {
-  public void useCase323(int id, Task task) { // YOUR new UC
+  public void useCase323(int id, Task task) {
     // TODO The shared called method must execute logic specific for my use-case #323
-    BooleanParameters.bigUglyMethod323(id, task);
+    BooleanParameters.bigUglyMethod(id, task, () -> System.out.println("Logic just for CR#323 : " + task));
   }
 }
 
 public class BooleanParameters {
 
+  // BAZOOKA! foarte heavy solutia. Merita cand ai
+  // - o gramada de cod arbitrar (5-8) in calleri pe care vrei sa-l executi in centru
+  // - NU VREI SA PUI "Logic just for CR#323" in clasa. Vrei metoda de mai jos sa fie doar un
+  //    host pentru logica altora.
+  // - daca codul abitrar de executat trebuia rulat intr-un "try { lambda(); } catch"
+
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  public static void bigUglyMethod(int storeId, Task task) { // tata lor. functie high-level
-    bigStart(storeId, task);
-    bigEnd(storeId);
-  }
-  public static void bigUglyMethod323(int storeId, Task task) {
-    bigStart(storeId, task);
-    cr323Stuff(task);
-    bigEnd(storeId);
-  }
-  // high level
-  // ----- sub linia asta sunt low-level details
-
-  private static void cr323Stuff(Task task) {
-    System.out.println("Logic just for CR#323 : " + task);
-  }
-
-  private static void bigStart(int storeId, Task task) {
+  public static void bigUglyMethod(int storeId, Task task, Runnable lambda) {
     System.out.println("Cow Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Cow Logic 3 " + task);
-  }
 
-  private static void bigEnd(int storeId) {
+    lambda.run();
+
     System.out.println("Donkey Logic 1 " + storeId);
     System.out.println("Donkey Logic 2 " + storeId);
     System.out.println("Donkey Logic 3 " + storeId);
@@ -85,7 +74,7 @@ public class BooleanParameters {
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int taskSize = tasks.size();
+    int j = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (fluff) {
@@ -103,7 +92,7 @@ public class BooleanParameters {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
-      System.out.println("Logic6 " + taskSize);
+      System.out.println("Logic6 " + j);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
