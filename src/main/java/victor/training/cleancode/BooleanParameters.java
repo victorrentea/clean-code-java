@@ -76,17 +76,20 @@ public class BooleanParameters {
     System.out.println("Logic1");
     System.out.println("Logic3");
     int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
     for (Task task : tasks) {
+      // marcam started
       System.out.println("Starting " + task);
       task.setStarted(true);
 
-      taskIds.add(task.getId());
+      // populam taskIds
+//      taskIds.add(task.getId());
 
       if (cr323) { // TODO task = remove the boolean
         System.out.println("My Logic: " + task);
       }
 
+      // audit
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
