@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class ExtractValueObjects {
@@ -14,13 +12,7 @@ class ExtractValueObjects {
     public List<CarModel> filterCarModels(CarSearchCriteria criteria,
                                           List<CarModel> models) {
         List<CarModel> results = models.stream()
-                .filter(model -> {
-                    int start1 = criteria.getStartYear();
-                    int end1 = criteria.getEndYear();
-                    int start2 = model.getStartYear();
-                    int end2 = model.getEndYear();
-                    return new Interval(start1, end1).intersectsWith(new Interval(start2, end2));
-                })
+                .filter(model -> criteria.getYearInterval().intersectsWith(model.getYearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic");
         return results;
@@ -53,7 +45,7 @@ class MathUtil {
 //  - fara PK (identitate persistenta, lacks continuity of change).
 //  - typically small (2-7 campuri)
 //  - hash/equals implica toate campurile (nu ca la @Entity)
-class Interval {
+class Interval { // DOMAIN OBJECT
     private final int start;
     private final int end;
 
@@ -102,6 +94,10 @@ class CarSearchCriteria { // smells like JSON ...
         this.endYear = endYear;
     }
 
+    public Interval getYearInterval() {
+        return new Interval(startYear, endYear);
+    }
+
     public int getStartYear() {
         return startYear;
     }
@@ -133,6 +129,10 @@ class CarModel { // the holy Entity Model
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
+    }
+
+    public Interval getYearInterval() {
+        return new Interval(startYear, endYear);
     }
 
     public Long getId() {
