@@ -51,26 +51,32 @@ class MyService {
 public class BooleanParameters {
 
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  public static void bigUglyMethod(int storeId, Task task) {
+  public static void bigUglyMethod(int storeId, Task task) { // tata lor. functie high-level
     bigStart(storeId, task);
     bigEnd(storeId);
   }
   public static void bigUglyMethod323(int storeId, Task task) {
     bigStart(storeId, task);
-    System.out.println("Logic just for CR#323 : " + task);
+    cr323Stuff(task);
     bigEnd(storeId);
   }
+  // high level
+  // ----- sub linia asta sunt low-level details
 
-  private static void bigEnd(int storeId) {
-    System.out.println("Donkey Logic 1 " + storeId);
-    System.out.println("Donkey Logic 2 " + storeId);
-    System.out.println("Donkey Logic 3 " + storeId);
+  private static void cr323Stuff(Task task) {
+    System.out.println("Logic just for CR#323 : " + task);
   }
 
   private static void bigStart(int storeId, Task task) {
     System.out.println("Cow Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Cow Logic 3 " + task);
+  }
+
+  private static void bigEnd(int storeId) {
+    System.out.println("Donkey Logic 1 " + storeId);
+    System.out.println("Donkey Logic 2 " + storeId);
+    System.out.println("Donkey Logic 3 " + storeId);
   }
 
 
