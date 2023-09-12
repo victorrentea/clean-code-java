@@ -1,5 +1,10 @@
 package victor.training.cleancode.optional;
 
+import lombok.NonNull;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
 public class Optional_Chain {
   private static final MyMapper mapper = new MyMapper();
 
@@ -40,10 +45,12 @@ class Parcel {
 
 
 class Delivery {
+  @NotNull
   private Address address; // NOT NULL IN DB
 
+//  @NonNull
   public Delivery(Address address) {
-    this.address = address;
+    this.address = Objects.requireNonNull(address);
   }
 
   public void setAddress(Address address) {
