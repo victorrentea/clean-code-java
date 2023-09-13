@@ -18,6 +18,7 @@ class Customer {
 		return name;
 	}
 
+	// test
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
