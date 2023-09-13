@@ -1,8 +1,16 @@
 package videostore.horror;
 
 public enum PriceCode {
-    REGULAR,
+    REGULAR/*{
+        @Override
+        public double computePrice(int days) {
+            return 0;
+        }
+    }*/,
     NEW_RELEASE,
-    CHILDREN;
+    CHILDREN,
+//    BABACI
+
+//    public abstract double computePrice(int days);
 
 }
