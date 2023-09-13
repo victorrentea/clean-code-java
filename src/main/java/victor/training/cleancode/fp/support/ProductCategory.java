@@ -1,5 +1,5 @@
 package victor.training.cleancode.fp.support;
 
-enum ProductCategory {
+public enum ProductCategory {
   ELECTRONICS, KIDS, ME, HOME, UNCATEGORIZED
 }
