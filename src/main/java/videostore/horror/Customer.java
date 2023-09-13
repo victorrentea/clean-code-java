@@ -4,6 +4,11 @@ import java.util.*;
 
 import static videostore.horror.PriceCode.NEW_RELEASE;
 
+record Rental {
+    Movie movie;
+    int daysRented;
+}
+
 class Customer {
     private final String name;
     private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
@@ -24,29 +29,29 @@ class Customer {
 
     // test
     public String statement() {
-        double totalAmount = 0;
+        double totalPrice = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
-        for (Movie each : rentals.keySet()) {
-            double thisAmount = 0;
-            // determine amounts for every line
-            int daysRental = rentals.get(each);
-            thisAmount = calculatePrice(each.priceCode(), daysRental);
+        for (Movie movie : rentals.keySet()) {
+            int daysRented = rentals.get(movie);
+            totalPrice += calculatePrice(movie.priceCode(), daysRented);
 
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if ((each.priceCode() == NEW_RELEASE) && daysRental > 1)
-                frequentRenterPoints++;
+            frequentRenterPoints += calculatePoints(movie, daysRented);
 
             // show figures line for this rental
-            result += "\t" + each.title() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
+            result += "\t" + movie.title() + "\t" + calculatePrice(movie.priceCode(), daysRented) + "\n";
         }
         // add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
+        result += "Amount owed is " + totalPrice + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
+    }
+
+    private static int calculatePoints(Movie movie, int daysRental) {
+        int frequentRenterPoints = 1;
+        if ((movie.priceCode() == NEW_RELEASE) && daysRental >= 2)
+            frequentRenterPoints++;
+        return frequentRenterPoints;
     }
 
     private static double calculatePrice(PriceCode priceCode, final int daysRented) {
