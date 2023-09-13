@@ -31,7 +31,7 @@ class Customer {
             double thisAmount = 0;
             // determine amounts for every line
             int daysRental = rentals.get(each);
-            thisAmount = calculatePrice(each, daysRental);
+            thisAmount = calculatePrice(each.priceCode(), daysRental);
 
             // add frequent renter points
             frequentRenterPoints++;
@@ -49,24 +49,21 @@ class Customer {
         return result;
     }
 
-    private static double calculatePrice(final Movie each, final int dr) {
-        double thisAmount = 0;
-        switch (each.priceCode()) {
-            case REGULAR:
-                thisAmount += 2;
-                if (dr > 2)
-                    thisAmount += (dr - 2) * 1.5;
-                break;
-            case NEW_RELEASE:
-                thisAmount += dr * 3;
-                break;
-            case CHILDREN:
-                thisAmount += 1.5;
-                if (dr > 3)
-                    thisAmount += (dr - 3) * 1.5;
-                break;
-                // todo - default
+    private static double calculatePrice(PriceCode priceCode, final int daysRented) {
+        switch (priceCode) {
+            case REGULAR -> {
+                return 2 + ((daysRented > 2) ? (daysRented - 2) * 1.5 : 0);
+            }
+            case NEW_RELEASE -> {
+                return daysRented * 3;
+            }
+            case CHILDREN -> {
+                double price = 1.5;
+                if (daysRented > 3)
+                    price += (daysRented - 3) * 1.5;
+                return price;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + priceCode);
         }
-        return thisAmount;
     }
 }
