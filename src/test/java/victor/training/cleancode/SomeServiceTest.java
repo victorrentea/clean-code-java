@@ -13,6 +13,8 @@ class SomeServiceTest {
 
   @Test
   void yellowMethodTest() {
+
+    int x;
     new SomeService().yellowMethod(1, new Task(5));
   }
 }
