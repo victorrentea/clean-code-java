@@ -2,6 +2,8 @@ package victor.training.cleancode;
 
 import lombok.Value;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,9 @@ public class MicroTypes {
   @Test
   void lackOfAbstractions() {
     Map<CustomerId, List<ProductCount>> productCounts = fetchData();
-    // Joke: try "var" above 🤪
+    // Joke: try "var" above 🤪 - bad idea, type is CRITICAL here!
+//    var customer = customerRepo.findById()
+//    ResponseEntity<List<Mama>> response = new RestTemplate().exchange(.., List<String>.class)
 
     for (CustomerId cid : productCounts.keySet()) {
       String pl = productCounts.get(cid).stream()

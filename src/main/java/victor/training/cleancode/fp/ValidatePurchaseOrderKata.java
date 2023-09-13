@@ -17,7 +17,7 @@ public class ValidatePurchaseOrderKata {
 
   public boolean validatePurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
 
-    var result = new AtomicBoolean(Boolean.TRUE);
+    AtomicBoolean result = new AtomicBoolean(Boolean.TRUE);
 
     getPurchaseOrderItemValidators().stream()
             .takeWhile(v -> result.get())
@@ -29,7 +29,7 @@ public class ValidatePurchaseOrderKata {
                         purchaseOrderItem.getId(),
                         v.getClass().getName()
                 );
-                var message = new PurchaseOrderItemMessage();
+                PurchaseOrderItemMessage message = new PurchaseOrderItemMessage();
                 message.setMessageClass(v.getClass().getSimpleName());
                 message.setText(v.message(purchaseOrderItem));
                 message.setType(SAPMessageType.ERROR); // these 3 lines repeat somewhere else in code
