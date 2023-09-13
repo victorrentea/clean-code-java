@@ -1,7 +1,6 @@
 package victor.training.cleancode.optional.abuse;
 
 import victor.training.cleancode.exception.model.MemberCard;
-import victor.training.cleancode.optional.Optional_Intro.Discount;
 
 import java.util.Optional;
 
