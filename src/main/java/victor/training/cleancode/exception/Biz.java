@@ -6,6 +6,8 @@ import victor.training.cleancode.exception.model.Customer;
 import victor.training.cleancode.exception.model.MemberCard;
 import victor.training.cleancode.exception.model.Order;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class Biz {
@@ -13,7 +15,7 @@ public class Biz {
 
    public void applyDiscount(Order order, Customer customer) {
       System.out.println("START");
-      if (order.getOfferDate().before(config.getLastPromoDate())) { // TODO inside
+      if (isBefore(config.getLastPromoDate(), order.getOfferDate())) { // TODO inside
          System.out.println("APPLYING DISCOUNT");
          Integer points = customer.getMemberCard()
              .map(MemberCard::getFidelityPoints)
@@ -23,6 +25,13 @@ public class Biz {
       } else {
          System.out.println("NO DISCOUNT");
       }
+   }
+
+   private boolean isBefore(Date lastPromoDate, Date p) {
+      if (p == null) {
+         return true;
+      }
+      return p.before(lastPromoDate);
    }
 }
 

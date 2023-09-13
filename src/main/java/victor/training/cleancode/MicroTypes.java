@@ -12,7 +12,7 @@ public class MicroTypes {
 
   //<editor-fold desc="fetchData()">
   public Map<CustomerId, List<ProductCount>> fetchData() {
-    Long customerId = 1L;
+    long customerId = 1L;
     return Map.of(new CustomerId(customerId), List.of(
             new ProductCount("Table", 2),
             new ProductCount("Chair", 4)
