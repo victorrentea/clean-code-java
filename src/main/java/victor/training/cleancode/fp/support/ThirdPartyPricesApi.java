@@ -1,5 +1,5 @@
 package victor.training.cleancode.fp.support;
 
-public interface ThirdPartyPrices {
+public interface ThirdPartyPricesApi {
    double fetchPrice(Long id);
 }

@@ -13,7 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 class PureRefactor {
   private final CustomerRepo customerRepo;
-  private final ThirdPartyPrices thirdPartyPrices;
+  private final ThirdPartyPricesApi thirdPartyPricesApi;
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
@@ -27,7 +27,7 @@ class PureRefactor {
     for (Product product : products) {
       Double price = internalPrices.get(product.getId());
       if (price == null) {
-        price = thirdPartyPrices.fetchPrice(product.getId());
+        price = thirdPartyPricesApi.fetchPrice(product.getId());
       }
       for (Coupon coupon : customer.getCoupons()) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {

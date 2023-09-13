@@ -7,21 +7,18 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList());
+      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList()); // ArrayList
 
       Immutable immutable = new Immutable(1, numbers, new Other(15));
       System.out.println("Before: " + immutable);
 
       wilderness(immutable);
-      // reasons to use immutable objects:
-      // -
-      // -
 
       System.out.println("After:  " + immutable);
    }
 
    private static void wilderness(Immutable immutable) {
-      // dark deep logic
+      // dark, deep logic
    }
 }
 
