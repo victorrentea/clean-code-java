@@ -63,6 +63,7 @@ public class SplitLoopTest {
 
          splitLoop.computeStatsHard(asList(consultant));
 
+
          assertThat(consultant.getSalary()).isEqualTo(3000);
       }
 
