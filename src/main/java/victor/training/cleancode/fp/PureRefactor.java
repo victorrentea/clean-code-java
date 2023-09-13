@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
 import victor.training.cleancode.fp.support.Product;
@@ -46,7 +47,12 @@ class PureRefactor {
   }
 
   // functie statica(no network) care primeste doar ob imutabile(no changes) si nuface time/random este PURE
-  private static PriceCalculationResult applyCoupons(List<Product> products, Map<Long, Double> basePrices, List<Coupon> coupons) {
+
+  // "Teste subcutanate";
+  @VisibleForTesting // Sonar va tipa daca vede met asta chemata din /src/main din alta clasa din acelasi pachet
+  // au voie doar testele sa o cheme
+  // alternativa: muti metoda asta in alta clasa "PriceCalculationService"
+  static PriceCalculationResult applyCoupons(List<Product> products, Map<Long, Double> basePrices, List<Coupon> coupons) {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
