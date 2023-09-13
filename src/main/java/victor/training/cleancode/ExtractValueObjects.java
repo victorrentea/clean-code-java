@@ -20,6 +20,7 @@ class ExtractValueObjects {
         return results;
     }
 
+    //apply filter
     private void applyCapacityFilter() {
         System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
     }
