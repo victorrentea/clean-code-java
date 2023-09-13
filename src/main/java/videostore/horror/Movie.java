@@ -1,21 +1,11 @@
 package videostore.horror;
 
-public class Movie {
-	private final String title;
+import java.util.Objects;
 
-	private final int priceCode;
+public record Movie(String title, PriceCode priceCode) {
+    public Movie(String title, PriceCode priceCode) {
+        this.title = title;
+        this.priceCode = Objects.requireNonNull(priceCode);
+    }
 
-	public Movie(String title, int priceCode) {
-		this.title = title;
-		this.priceCode = priceCode;
-	}
-
-	public int getPriceCode() {
-		return priceCode;
-	}
-
-
-	public String getTitle() {
-		return title;
-	}
 }
