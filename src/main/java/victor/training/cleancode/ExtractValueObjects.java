@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 class ExtractValueObjects {
 
     // see tests
-    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> models) {
-        List<CarModel> results = models.stream()
-                .filter(model -> MathUtil.intervalsIntersect(
+    public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
+        List<CarModel> results = carModels.stream()
+                .filter(carModel -> MathUtil.intervalsIntersect(
                         criteria.getStartYear(), criteria.getEndYear(),
-                        model.getStartYear(), model.getEndYear()))
+                        carModel.getStartYear(), carModel.getEndYear()))
                 .collect(Collectors.toList());
-        System.out.println("More filtering logic");
+        System.out.println("More filtering logic ...");
         return results;
     }
 
