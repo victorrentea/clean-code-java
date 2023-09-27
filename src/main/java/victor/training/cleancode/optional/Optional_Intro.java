@@ -12,11 +12,13 @@ import java.util.Map;
 public class Optional_Intro {
 	public static void main(String[] args) {
 		// test: 60, 10, no MemberCard
-		System.out.println(getDiscountLine(new Customer(new MemberCard("bar", 60))));
+		System.out.println(getDiscountLine(new Customer(
+				new MemberCard("bar", 60))));
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return "You got a discount of %" + computeDiscount(customer.getMemberCard()).getGlobalPercentage();
+		Discount discount = computeDiscount(customer.getMemberCard());
+		return "You got a discount of %" + discount.getGlobalPercentage();
 	}
 
 	private static Discount computeDiscount(MemberCard card) {
