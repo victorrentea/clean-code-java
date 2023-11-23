@@ -71,10 +71,10 @@ class CarModel { // the holy Entity Model
   protected CarModel() {
   } // for Hibernate
 
-  public CarModel(String make, String model, Interval yearInterval) {
+  public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    this.yearInterval = yearInterval;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Interval getYearInterval() {
@@ -117,14 +117,14 @@ class CarModelMapper {
     dto.endYear = carModel.getYearInterval().end();
     dto.endYear = carModel.getYearInterval().end();
     dto.endYear = carModel.getYearInterval().end();
-    dto.endYear = carModel.getYearInterval().end();
+    dto.endYear = carModel.getYearInterval().end(); // the "get" prefix dies in Java...
     dto.endYear = carModel.getYearInterval().end();
     dto.endYear = carModel.getYearInterval().end();
     return dto;
   }
 
   public CarModel fromDto(CarModelDto dto) {
-    return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
+    return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
   }
 }
 

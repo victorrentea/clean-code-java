@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class SomeController {
   SomeService someService;
@@ -66,32 +67,41 @@ public class BooleanParameters {
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
+  public void bossLevel(List<Task> tasks, boolean cr323) {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
     int index = 0;
-    int j = tasks.size();
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
+
+    // can hurt performance if iterating on MANY elements AND/OR the work we do per element is tiny
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
+
+    if (cr323) { // TODO task = remove the boolean
+      for (Task task : tasks) {
+        System.out.println("My Logic: " + task);
+      }
+    }
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+    System.out.println("Logic6 " + tasks.size());
+    System.out.println("Task Ids: " + taskIds);
+    System.out.println("Logic8");
+  }
+
+  public void bossLevelNoFluff(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Starting " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO task = remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
-    }
+    System.out.println("Logic7 on fluff=false " + tasks);
     System.out.println("Logic8");
+  }
+
+  private void innocent(List<Task> tasks) {
+    tasks.clear();
   }
 
 }

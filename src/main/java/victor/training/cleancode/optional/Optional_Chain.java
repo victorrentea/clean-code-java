@@ -1,5 +1,11 @@
 package victor.training.cleancode.optional;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
+import javax.validation.constraints.Null;
+import java.util.Objects;
+
 public class Optional_Chain {
   private static final MyMapper mapper = new MyMapper();
 
@@ -17,7 +23,8 @@ public class Optional_Chain {
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
-    dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+    dto.recipientPerson = parcel.getDelivery().getAddress()
+        .getContactPerson().getName().toUpperCase();
     return dto;
   }
 }
@@ -27,8 +34,10 @@ class DeliveryDto {
 }
 
 class Parcel {
+  @Nullable
   private Delivery delivery; // NULL until a delivery is scheduled
 
+  @Nullable
   public Delivery getDelivery() {
     return delivery;
   }
@@ -40,14 +49,11 @@ class Parcel {
 
 
 class Delivery {
-  private Address address; // NOT NULL IN DB
+  private final Address address; // NOT NULL IN DB
 
+  @lombok.NonNull
   public Delivery(Address address) {
     this.address = address;
-  }
-
-  public void setAddress(Address address) {
-    this.address = address; // TODO null safe
   }
 
   public Address getAddress() {
@@ -62,6 +68,7 @@ class Address {
     this.contactPerson = contactPerson;
   }
 
+  @Nullable
   public ContactPerson getContactPerson() {
     return contactPerson;
   }

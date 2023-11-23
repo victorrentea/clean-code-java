@@ -22,14 +22,14 @@ public class MicroTypesTuples {
         ));
     }
     //</editor-fold>
-
+//  private  record CustomerOrders(Long id, List<String>a ) {}
     @Test
     void lackOfAbstractions() {
-        Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
+        Map<Long, List<Tuple2<String, Integer>>> customerIdToOrderProductCounts = extremeFP();
         // Joke: try "var" above :)
 
-        for (Long cid : map.keySet()) {
-            String pl = map.get(cid).stream()
+        for (Long cid : customerIdToOrderProductCounts.keySet()) {
+            String pl = customerIdToOrderProductCounts.get(cid).stream()
                     .map(t -> t.v2 + " pcs. of " + t.v1)
                     .collect(joining(", "));
             System.out.println("cid=" + cid + " got " + pl);
