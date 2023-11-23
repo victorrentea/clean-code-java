@@ -1,7 +1,9 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.Maps;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
@@ -20,11 +22,15 @@ public class MicroTypes {
   }
   //</editor-fold>
 
+  record X(Long id, Map<String, Integer> m) {
+
+  }
   @Test
   void lackOfAbstractions() {
     Map<Long, Map<String, Integer>> map = fetchData();
     // Joke: try "var" above 🤪
 
+    
     for (Long cid : map.keySet()) {
       String pl = map.get(cid).entrySet().stream()
               .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
