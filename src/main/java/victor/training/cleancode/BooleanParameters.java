@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 class SomeController {
   private SomeService someService;
@@ -79,23 +80,30 @@ public class BooleanParameters {
     List<Integer> taskIds = new ArrayList<>();
     System.out.println("Logic3");
     int index = 0;
-    for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
-      taskIds.add(task.getId());
-
-      if (cr323) { // TODO task = remove the boolean
-        System.out.println("My Logic: " + task);
-      }
-
-      index++;
-      System.out.println("Audit task #" + index + ": " + task);
+    if (cr323) { // TODO task = remove the boolean
+      f(tasks, taskIds, index, task1 -> System.out.println("My Logic: " + task1));
+    } else {
+      f(tasks, taskIds, index, task1 -> {     });
     }
     int size = tasks.size();
     System.out.println("Logic6 " + size);
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
   }
+
+  private void f(List<Task> tasks, List<Integer> taskIds, int index, Consumer<Task> consumer) {
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+      taskIds.add(task.getId());
+
+      consumer.accept(task);
+
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+  }
+
   public void bossLevelNoFluff(List<Task> tasks) {
     System.out.println("Logic1");
     System.out.println("Logic7 on fluff=false " + tasks);
