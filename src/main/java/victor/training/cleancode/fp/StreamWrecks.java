@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
@@ -25,15 +24,15 @@ public class StreamWrecks {
         .filter(this::isRecent)
         .flatMap(o -> o.getOrderLines().stream())
         .collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
-    Stream<Product> oooooStreamInAVar = countsByProducts.entrySet().stream()
+    List<Product> oooooStreamInAVar = countsByProducts.entrySet().stream()
         .filter(e -> e.getValue() >= 10)
         .map(Entry::getKey)
-        .filter(not(Product::isDeleted));
-    if (oooooStreamInAVar.count() == 0) return List.of();
+        .filter(not(Product::isDeleted)).toList();
+    if (oooooStreamInAVar.isEmpty()) return List.of();
     Set<Long> hiddenProductIds = new HashSet<>(productRepo.getHiddenProductIds());
-    return oooooStreamInAVar
+    return oooooStreamInAVar.stream()
         .filter(p -> !hiddenProductIds.contains(p.getId()))
-        .collect(toList());
+        .toList();
   }
 
   private boolean isRecent(Order o) {
