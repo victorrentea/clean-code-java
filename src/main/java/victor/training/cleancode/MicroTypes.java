@@ -29,7 +29,7 @@ public class MicroTypes {
   void primitiveObsession() {
     Map<Long, Map<String, Integer>> map = fetchData();
 
-    for (var e : map.entrySet()) {
+    for (var e : map.entrySet()) { // iterating map entries 🤢
       String pl = e.getValue().entrySet().stream()
               .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
               .collect(joining(", "));

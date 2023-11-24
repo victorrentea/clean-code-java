@@ -1,4 +1,4 @@
-package victor.training.cleancode.extra.inheritance;
+package victor.training.cleancode.refactoring.inheritance;
 
 class Rectangle {
     private int width;

@@ -1,4 +1,4 @@
-package victor.training.cleancode.refactoring;
+package victor.training.cleancode;
 
 import lombok.Data;
 import lombok.Value;
@@ -6,7 +6,7 @@ import lombok.Value;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuardClauses {
+public class Guards {
 
   public static final int DEAD_PAY_AMOUNT = 1;
 

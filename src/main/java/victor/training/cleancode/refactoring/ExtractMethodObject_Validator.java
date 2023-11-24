@@ -1,4 +1,4 @@
-package victor.training.cleancode.extra;
+package victor.training.cleancode.refactoring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManyParamsOOP {
+public class ExtractMethodObject_Validator {
     @Autowired
     private Validator validator;
 
