@@ -19,20 +19,31 @@ public class StreamWrecks {
   private ProductRepo productRepo;
 
   public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-    Map<Product, Integer> countsByProducts = orders.stream()
+    Map<Product, Integer> countsByProducts = countItemsPerProduct(orders);
+    List<Product> frequentProducts = selectFrequentProducts(countsByProducts);
+    if (frequentProducts.isEmpty()) {
+      return List.of();
+    }
+    Set<Long> hiddenProductIds = new HashSet<>(productRepo.getHiddenProductIds());
+    return frequentProducts.stream()
+        .filter(p -> !hiddenProductIds.contains(p.getId()))
+        .toList();
+  }
+
+  private List<Product> selectFrequentProducts(Map<Product, Integer> countsByProducts) {
+    return countsByProducts.entrySet().stream()
+        .filter(e -> e.getValue() >= 10)
+        .map(Entry::getKey)
+        .filter(not(Product::isDeleted))
+        .toList();
+  }
+
+  private Map<Product, Integer> countItemsPerProduct(List<Order> orders) {
+    return orders.stream()
         .filter(Order::isActive)
         .filter(this::isRecent)
         .flatMap(o -> o.getOrderLines().stream())
         .collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
-    List<Product> oooooStreamInAVar = countsByProducts.entrySet().stream()
-        .filter(e -> e.getValue() >= 10)
-        .map(Entry::getKey)
-        .filter(not(Product::isDeleted)).toList();
-    if (oooooStreamInAVar.isEmpty()) return List.of();
-    Set<Long> hiddenProductIds = new HashSet<>(productRepo.getHiddenProductIds());
-    return oooooStreamInAVar.stream()
-        .filter(p -> !hiddenProductIds.contains(p.getId()))
-        .toList();
   }
 
   private boolean isRecent(Order o) {
