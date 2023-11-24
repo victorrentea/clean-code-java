@@ -51,47 +51,60 @@ public class BooleanParameters {
 
   // Warning⚠️: this method might be called from multiple places in the codebase ...
   public static void bigUglyMethod(int storeId, Task task) {
-    System.out.println("Cow Logic 1 " + task + " and " + storeId);
-    System.out.println(task);
-    System.out.println("Cow Logic 3 " + task);
+    cow(storeId, task);
 
-    // System.out.println("Logic just for CR#323 : " + task);
+    System.out.println("Logic just for CR#323 : " + task);
 
+    donkey(storeId);
+  }
+
+  private static void donkey(int storeId) {
     System.out.println("Donkey Logic 1 " + storeId);
     System.out.println("Donkey Logic 2 " + storeId);
     System.out.println("Donkey Logic 3 " + storeId);
+  }
+
+  private static void cow(int storeId, Task task) {
+    System.out.println("Cow Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Cow Logic 3 " + task);
   }
 
 
   // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 
   // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0;
-    int j = tasks.size();
+  public void bossLevel(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Starting " + task);
-        task.setStarted(true);
+    System.out.println("Logic3");
+    int index = 0;
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+      taskIds.add(task.getId());
 
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO task = remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
+      if (cr323) { // TODO task = remove the boolean
+        System.out.println("My Logic: " + task);
       }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
+
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
     }
+    int size = tasks.size();
+    System.out.println("Logic6 " + size);
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+  public void bossLevelNoFluff(List<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic7 on fluff=false " + tasks);
+    System.out.println("Logic8");
+  }
+
+  private void innocent(List<Task> tasks) {
+    tasks.clear();
+
   }
 
 }
