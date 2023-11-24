@@ -6,10 +6,12 @@ import victor.training.cleancode.fp.support.Product;
 import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
@@ -23,16 +25,15 @@ public class StreamWrecks {
         .filter(this::isRecent)
         .flatMap(o -> o.getOrderLines().stream())
         .collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
-    return countsByProducts.entrySet().stream()
+    Stream<Product> oooooStreamInAVar = countsByProducts.entrySet().stream()
         .filter(e -> e.getValue() >= 10)
         .map(Entry::getKey)
-        .filter(not(Product::isDeleted))
-        .filter(staticMethodReturningAnotherFunction())
+        .filter(not(Product::isDeleted));
+    if (oooooStreamInAVar.count() == 0) return List.of();
+    Set<Long> hiddenProductIds = new HashSet<>(productRepo.getHiddenProductIds());
+    return oooooStreamInAVar
+        .filter(p -> !hiddenProductIds.contains(p.getId()))
         .collect(toList());
-  }
-
-  private Predicate<Product> staticMethodReturningAnotherFunction() {
-    return p -> !productRepo.getHiddenProductIds().contains(p.getId());
   }
 
   private boolean isRecent(Order o) {
