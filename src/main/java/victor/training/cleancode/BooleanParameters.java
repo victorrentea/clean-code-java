@@ -77,7 +77,6 @@ public class BooleanParameters {
   public void bossLevel(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
     System.out.println("Logic3");
-    int index = 0;
     for (Task task : tasks) {
       System.out.println("Starting " + task);
       task.setStarted(true);
@@ -90,10 +89,14 @@ public class BooleanParameters {
         System.out.println("My Logic: " + task);
       }
     }
+int    a =1;
+    int index = 0;
     for (Task task : tasks) {
       index++;
+      a=2;
       System.out.println("Audit task #" + index + ": " + task);
     }
+    System.out.println(a);
     int size = tasks.size();
     System.out.println("Logic6 " + size);
     System.out.println("Task Ids: " + taskIds);
