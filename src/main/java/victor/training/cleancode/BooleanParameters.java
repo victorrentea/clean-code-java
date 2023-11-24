@@ -61,44 +61,6 @@ public class BooleanParameters {
     System.out.println("Donkey Logic 2 " + storeId);
     System.out.println("Donkey Logic 3 " + storeId);
   }
-
-
-  // ============== "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
-
-  // Lord gave us tests! 👌 TODO run the tests
-  public void bossLevel(boolean fluff, List<Task> tasks, boolean cr323) {
-    int index = 0;
-    int j = tasks.size();
-    System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
-    if (fluff) {
-      System.out.println("Logic3");
-      for (Task task : tasks) {
-        System.out.println("Starting " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO task = remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      System.out.println("Logic6 " + j);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
-      System.out.println("Logic7 on fluff=false " + tasks);
-    }
-    System.out.println("Logic8");
-  }
-
 }
 
 
-@Data
-class Task {
-  private final int id;
-  private boolean started;
-}

@@ -22,20 +22,27 @@ public class MicroTypes {
   }
   //</editor-fold>
 
-  record X(Long id, Map<String, Integer> m) {
-
-  }
   @Test
-  void lackOfAbstractions() {
+  void primitiveObsession() {
     Map<Long, Map<String, Integer>> map = fetchData();
-    // Joke: try "var" above 🤪
 
-    
-    for (Long cid : map.keySet()) {
-      String pl = map.get(cid).entrySet().stream()
+    for (var e : map.entrySet()) {
+      String pl = e.getValue().entrySet().stream()
               .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
               .collect(joining(", "));
-      System.out.println("cid=" + cid + " got " + pl);
+      System.out.println("cid=" + e.getKey() + " got " + pl);
     }
   }
+
+//  @Test
+//  void tuples() {
+//    Map<Long, Map<String, Integer>> map = fetchData().;
+//
+//    for (var e : map.entrySet()) {
+//      String pl = e.getValue().entrySet().stream()
+//          .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+//          .collect(joining(", "));
+//      System.out.println("cid=" + e.getKey() + " got " + pl);
+//    }
+//  }
 }

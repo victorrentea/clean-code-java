@@ -1,7 +1,7 @@
 package victor.training.cleancode.extra;
 
 import org.junit.jupiter.api.Test;
-import victor.training.cleancode.extra.ReplaceTempWithQuery;
+import victor.training.cleancode.refactoring.ReplaceTempWithQuery;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -3,7 +3,7 @@ package victor.training.cleancode.extra;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static victor.training.cleancode.SplitVariable.discount;
+import static victor.training.cleancode.refactoring.SplitVariable.discount;
 
 public class SplitVariableTest {
    @Test
