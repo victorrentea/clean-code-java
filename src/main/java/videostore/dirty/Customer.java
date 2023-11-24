@@ -13,7 +13,7 @@ class Customer {
 		rentals.add(arg);
 	}
 
-	public String getName() {
+	private String getName() {
 		return name;
 	}
 

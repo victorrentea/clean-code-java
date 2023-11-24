@@ -14,7 +14,7 @@ import java.util.*;
       rentals.add(arg);
    }
 
-   public String getName() {
+   private String getName() {
       return name;
    }
 

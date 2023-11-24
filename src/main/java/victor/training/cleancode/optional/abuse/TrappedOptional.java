@@ -5,10 +5,10 @@ import lombok.Data;
 import java.util.Optional;
 
 public class TrappedOptional {
-  public void kafkaSend(String personName) {
+  private void kafkaSend(String personName) {
   }
   static class MyDto {
-    public String recipientPerson;
+    protected String recipientPerson;
   }
   @Data
   static class MyEntity {

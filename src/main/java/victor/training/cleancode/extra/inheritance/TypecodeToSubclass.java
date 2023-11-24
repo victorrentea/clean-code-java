@@ -29,7 +29,7 @@ class TheatreEvent {
         return -1;
     }
 
-    public boolean isWeekend() {
+    private boolean isWeekend() {
         return weekDay >= 6;
     }
 

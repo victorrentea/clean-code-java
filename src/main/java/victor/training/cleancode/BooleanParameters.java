@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class SomeController {
-  SomeService someService;
+  private SomeService someService;
 
   @GetMapping("blue/{storeId}")
   public void blueEndpoint(@PathVariable int storeId, @RequestBody Task task) {

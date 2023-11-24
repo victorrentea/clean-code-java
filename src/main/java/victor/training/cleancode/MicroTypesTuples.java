@@ -9,10 +9,10 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 
-public class MicroTypesTuples {
+class MicroTypesTuples {
 
     //<editor-fold desc="Unknown source of data">
-    public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
+    private Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
         Long customerId = 1L;
         Integer product1Count = 2;
         Integer product2Count = 4;

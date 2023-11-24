@@ -15,7 +15,7 @@ import static java.time.LocalDate.parse;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LoanPatternTest {
+class LoanPatternTest {
    @Mock
    private OrderRepo orderRepo;
    @InjectMocks
@@ -23,7 +23,7 @@ public class LoanPatternTest {
 
 
    @Test
-   public void exportOrders() throws IOException {
+   void exportOrders() throws IOException {
       Order order = new Order();
       order.setId(1L);
       order.setCreationDate(parse("2021-01-07"));

@@ -8,10 +8,10 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 
-public class MicroTypes {
+class MicroTypes {
 
   //<editor-fold desc="fetchData()">
-  public Map<Long, Map<String, Integer>> fetchData() {
+  private Map<Long, Map<String, Integer>> fetchData() {
     Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;
@@ -22,7 +22,7 @@ public class MicroTypes {
   }
   //</editor-fold>
 
-  record X(Long id, Map<String, Integer> m) {
+  private record X(Long id, Map<String, Integer> m) {
 
   }
   @Test

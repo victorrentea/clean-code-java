@@ -16,7 +16,7 @@ public class Optional_Intro {
 				new MemberCard("bar", 60))));
 	}
 
-	public static String getDiscountLine(Customer customer) {
+	private static String getDiscountLine(Customer customer) {
 		Discount discount = computeDiscount(customer.getMemberCard());
 		return "You got a discount of %" + discount.getGlobalPercentage();
 	}
@@ -31,7 +31,7 @@ public class Optional_Intro {
 		return null;
 	}
 	@Data
-	public static class Discount {
+  protected static class Discount {
 		private final int globalPercentage;
 		private Map<String, Integer> categoryDiscounts = new HashMap<>();
 	}

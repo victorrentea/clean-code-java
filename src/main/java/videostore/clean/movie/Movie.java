@@ -14,7 +14,7 @@ public abstract class Movie {
 
 	public abstract int getFrequentRenterPoints(int daysRented);
 	
-	public Movie(String title) {
+	protected Movie(String title) {
 		this.title = title;
 	}
 

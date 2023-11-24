@@ -12,7 +12,7 @@ public class SwitchAlternatives {
                 new Movie(Movie.Type.REGULAR, "Inception"));
         System.out.println(computeTotalPrice(movies));
     }
-    public static double computeTotalPrice(List<Movie> movies) {
+    private static double computeTotalPrice(List<Movie> movies) {
         return movies.stream().mapToDouble(m -> m.calculatePrice(3)).sum();
     }
 }

@@ -4,15 +4,15 @@ public class ImmutableTracing {
    static class Data {
       private final int x;
 
-      public Data(int x) {
+      protected Data(int x) {
          this.x = x;
       }
 
-      public int getX() {
+      protected int getX() {
          return x;
       }
 
-      public Data withX(int newX) {
+      protected Data withX(int newX) {
          return new Data(newX);
       }
    }
@@ -21,13 +21,13 @@ public class ImmutableTracing {
       h();
    }
 
-   public static void h() {
+   private static void h() {
       Data data = new Data(1);
       // more code
       g(data);
    }
 
-   public static void g(Data data) {
+   private static void g(Data data) {
       data = data.withX(2);
       // more code
       data = evil(data);
@@ -35,7 +35,7 @@ public class ImmutableTracing {
       f(data);
    }
 
-   public static void f(Data data) {
+   private static void f(Data data) {
       if (data.getX() == 1) {
          System.out.println("Launch missile");
       }

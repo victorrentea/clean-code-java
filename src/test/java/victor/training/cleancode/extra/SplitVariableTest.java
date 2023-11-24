@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static victor.training.cleancode.SplitVariable.discount;
 
-public class SplitVariableTest {
+class SplitVariableTest {
    @Test
-   public void test() {
+   void test() {
       assertEquals(1, discount(1,1));
       assertEquals(50, discount(50,1));
       assertEquals(49, discount(51,1));

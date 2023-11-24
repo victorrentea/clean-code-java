@@ -14,7 +14,7 @@ public class OptionalCollections {
 
   private CustomerRepo customerRepo;
 
-  public Optional<List<Coupon>> findApplicableCoupons(Long customerId, List<Product> products) {
+  private Optional<List<Coupon>> findApplicableCoupons(Long customerId, List<Product> products) {
     System.out.println("Retrieve customer coupons " + customerId);
     Optional<Customer> customerFound = customerRepo.findById(customerId);
     if (customerFound.isEmpty()) {

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Map;
 
 public class SplitPhase {
-    public float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
+    private float calculateOrderPrice(String orderString, Map<String, Integer> priceList) {
         String[] orderData = orderString.split("\\s+");
         Integer productPrice = priceList.get(orderData[0].split("-")[1]);
         return Integer.parseInt(orderData[1]) * productPrice;

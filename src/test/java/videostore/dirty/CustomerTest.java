@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class CustomerTest {
+class CustomerTest {
 
     @Test
-    public void characterizationTest() {
+    void characterizationTest() {
         Customer customer = new Customer("John Doe");
         customer.addRental(new Rental(new Movie("Star Wars", Movie.CATEGORY_NEW_RELEASE), 6));
         customer.addRental(new Rental(new Movie("Sofia", Movie.CATEGORY_CHILDRENS), 7));

@@ -34,7 +34,7 @@ public class SplitLoop {
 
     // ======= hard core =========
 
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     public String computeStatsHard(List<Employee> employees) {
         long totalEmpAge = 0;

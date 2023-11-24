@@ -14,7 +14,7 @@ class Customer {
 		rentals.put(m, d);
 	}
 
-	public String getName() {
+	private String getName() {
 		return name;
 	}
 

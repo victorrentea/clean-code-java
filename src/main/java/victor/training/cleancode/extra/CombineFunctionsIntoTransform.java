@@ -3,12 +3,12 @@ package victor.training.cleancode.extra;
 import lombok.Data;
 
 public class CombineFunctionsIntoTransform {
-    public String generateQRCode(String code) {
+    private String generateQRCode(String code) {
         // Call External Service
         return "QR" + code;
     }
 
-    public String getAddress(long eventId) {
+    private String getAddress(long eventId) {
         // Call Repository
         return "Location Details of event " + eventId;
     }

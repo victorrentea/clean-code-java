@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class SplitLoopTest {
+class SplitLoopTest {
 
    @Test
-   public void characterizationTest() {
+   void characterizationTest() {
       String actual = new SplitLoop().computeStats(asList(
           new Employee(1, 24, 2000, false),
           new Employee(1, 27, 2000, false),
@@ -39,7 +39,7 @@ public class SplitLoopTest {
       Employee employee = new Employee(2, 30, 4000, false);
 
       @Test
-      public void consultantIdNull() {
+      void consultantIdNull() {
          consultant.setId(null);
 
          String actual = splitLoop.computeStatsHard(asList(consultant));
@@ -48,7 +48,7 @@ public class SplitLoopTest {
       }
 
       @Test
-      public void throws_consultantSalaryNull_retrieveNull() {
+      void throws_consultantSalaryNull_retrieveNull() {
          consultant.setSalary(null);
          when(employeeService.retrieveSalary(consultant.getId())).thenReturn(null);
 
@@ -57,7 +57,7 @@ public class SplitLoopTest {
       }
 
       @Test
-      public void consultantSalaryNull_retrieveSalary_set() {
+      void consultantSalaryNull_retrieveSalary_set() {
          consultant.setSalary(null);
          when(employeeService.retrieveSalary(consultant.getId())).thenReturn(3000);
 
@@ -67,7 +67,7 @@ public class SplitLoopTest {
       }
 
       @Test
-      public void consultantSalaryNull_retrieveSalary_avg() {
+      void consultantSalaryNull_retrieveSalary_avg() {
          consultant.setSalary(null);
          when(employeeService.retrieveSalary(consultant.getId())).thenReturn(3000);
          Employee consultant2 = new Employee(15, 56, 5000, true);
@@ -77,7 +77,7 @@ public class SplitLoopTest {
          assertThat(actual).isEqualTo("Average employee age = 0; Average consultant salary = 4000.0");
       }
       @Test
-      public void employeeAgeAverage() {
+      void employeeAgeAverage() {
          Employee employee2 = new Employee(15, 56, 2000, false);
 
          String actual = splitLoop.computeStatsHard(asList(employee, employee2));

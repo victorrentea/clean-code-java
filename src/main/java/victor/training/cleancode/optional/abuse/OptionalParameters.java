@@ -17,7 +17,7 @@ public class OptionalParameters {
   }
 
   // ⬇⬇⬇⬇⬇⬇ utility / library code ⬇⬇⬇⬇⬇⬇
-  public void sendMessage(String recipient, String message, Optional<String> trackingRegistry) {
+  private void sendMessage(String recipient, String message, Optional<String> trackingRegistry) {
     System.out.println("Resolve phone number for " + recipient);
     System.out.println("Send message " + message);
 
