@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 class SomeController {
   private SomeService someService;
@@ -77,31 +76,28 @@ public class BooleanParameters {
   // Lord gave us tests! 👌 TODO run the tests
   public void bossLevel(List<Task> tasks, boolean cr323) {
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     System.out.println("Logic3");
     int index = 0;
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
+
+    List<Integer> taskIds = tasks.stream().map(Task::getId).collect(Collectors.toList());
+
     if (cr323) { // TODO task = remove the boolean
-      f(tasks, taskIds, index, task1 -> System.out.println("My Logic: " + task1));
-    } else {
-      f(tasks, taskIds, index, task1 -> {     });
+      for (Task task : tasks) {
+        System.out.println("My Logic: " + task);
+      }
+    }
+    for (Task task : tasks) {
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
     }
     int size = tasks.size();
     System.out.println("Logic6 " + size);
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
-  }
-
-  private void f(List<Task> tasks, List<Integer> taskIds, int index, Consumer<Task> consumer) {
-    for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
-      taskIds.add(task.getId());
-
-      consumer.accept(task);
-
-      index++;
-      System.out.println("Audit task #" + index + ": " + task);
-    }
   }
 
   public void bossLevelNoFluff(List<Task> tasks) {
