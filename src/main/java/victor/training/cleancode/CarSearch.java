@@ -38,6 +38,8 @@ class Interval {
   private final int end;
 
   public Interval(int start, int end) {
+    // constrageri de biz pe obiecte
+    if (start > end) throw new IllegalArgumentException("start larger than end! esti prost?");
     this.start = start;
     this.end = end;
   }
@@ -118,8 +120,9 @@ class CarModel { // the holy Entity Model
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-   yearInterval= new Interval(startYear, endYear);
+    yearInterval= new Interval(startYear, endYear);
+
+   // cau masina produsa intre from:2022 .. to:2009. nu e  2009 > 2022!!!!
   }
 
   public Interval getYearInterval() {
