@@ -62,6 +62,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.10.13</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.2</version>
+        </dependency>
     </dependencies>
 
 </project>

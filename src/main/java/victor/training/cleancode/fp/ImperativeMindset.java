@@ -7,13 +7,13 @@ import java.util.List;
 
 public class ImperativeMindset {
   public int totalOrderPrice(List<Order> orders) {
-    int sum = 0;
-    orders.stream()
-        .filter(order -> order.isActive())
-        .forEach(order -> {
-          // imperative: let's *add* to the sum
-          // sum += order.getPrice();
-        });
+    // sa nu te prind cu :
+    //     final int[] sum = {0};
+    //     AtomicInteger sum = new AtomicInteger();
+    int sum = orders.stream()
+        .filter(Order::isActive)
+        .mapToInt(Order::getPrice)
+        .sum();
     return sum;
   }
 
