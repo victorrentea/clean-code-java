@@ -6,9 +6,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class CarSearckTest {
+class CarSearchTest {
 
-   CarSearck searchEngine = new CarSearck();
+   CarSearch searchEngine = new CarSearch();
 
    CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
 

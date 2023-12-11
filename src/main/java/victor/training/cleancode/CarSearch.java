@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class CarSearck {
+class CarSearch {
 
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
