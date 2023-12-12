@@ -1,8 +1,8 @@
 package victor.training.cleancode.kata.videostore.horror;
 public class Movie {
 
-	private Category category;
-	private String title;
+	private final Category category;
+	private final String title;
 
 
 	public Movie(String title, Category category) {
@@ -16,5 +16,5 @@ public class Movie {
 
 	public String getTitle() {
 		return title;
-	};
+	}
 }

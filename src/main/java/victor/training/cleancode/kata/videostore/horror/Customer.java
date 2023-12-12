@@ -5,12 +5,12 @@ import java.util.*;
 class Customer {
 
 	// Test Bianca B
-	private String name;
-	private List<Rental> rentals = new ArrayList<>(); // preserves order
+	private final String name;
+	private final List<Rental> rentals = new ArrayList<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Rental rental) {
 		rentals.add(rental);
@@ -20,15 +20,15 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int totalPoints = 0;
-		String result = getStatementHeader();
+		StringBuilder result = new StringBuilder(getStatementHeader());
 		for (Rental rental : rentals) {
 			double thisAmount = rental.getTotalAmount();
 			totalPoints=rental.updateTotalPoints(rental, totalPoints);
-			result += "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n";
+			result.append("\t").append(rental.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
 			totalAmount += thisAmount;
 		}
-		result += getStatementFinal(totalAmount, totalPoints);
-		return result;
+		result.append(getStatementFinal(totalAmount, totalPoints));
+		return result.toString();
 	}
 
 	private String getStatementHeader () {
