@@ -18,12 +18,16 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		Optional<Discount> discount = computeDiscount(customer.getMemberCard());
-    if (discount.isPresent()) {
-      return "You got a discount of %" + discount.get().getGlobalPercentage();
-    } else {
-			return "Earn more fidelity points to benefit from a discount";
-		}
+		return computeDiscount(customer.getMemberCard())
+				.map(value -> "You got a discount of %" + value.getGlobalPercentage())
+				.orElse("Earn more fidelity points to benefit from a discount"); // FP
+//		Optional<Discount> discount = computeDiscount(customer.getMemberCard());
+				//.orElseThrow(() -> new IllegalStateException("N-ai puncte fidelitate"));// #3 exceptie mai faina
+//    if (discount.isPresent()) {
+//      return "You got a discount of %" + discount.get().getGlobalPercentage(); // #2 orElse(new Discount(0)) -> 0% cam naspa UX
+//    } else {
+//			return "Earn more fidelity points to benefit from a discount"; // #1 poezie de biz sa-l conving sa-si ia puncte
+//		}
   }
 
 	private static Optional<Discount> computeDiscount(MemberCard card) {
