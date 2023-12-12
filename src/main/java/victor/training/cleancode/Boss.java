@@ -3,7 +3,7 @@ package victor.training.cleancode;
 import java.util.List;
 
 // "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
-public class Boss {
+public class  Boss {
 
   // Lord gave us tests! 👌 TODO run them
   public void bossLevel(List<Task> tasks) {
