@@ -19,7 +19,9 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		return computeDiscount(customer.getMemberCard())
+		Optional<MemberCard> cardOpt = customer.getMemberCard();
+	 Optional<Discount> discountOpt = cardOpt.flatMap(card -> computeDiscount(card)); // te scapa de Optional<Optional<?>>
+		return discountOpt
 				.map(value -> "You got a discount of %" + value.getGlobalPercentage())
 				.orElse("Earn more fidelity points to benefit from a discount"); // FP
 		// incearca sa eviti if(..isPresent()) {..} else {..} -> fa map in loc!
@@ -31,7 +33,8 @@ public class Optional_Intro {
 //			return "Earn more fidelity points to benefit from a discount"; // #1 poezie de biz sa-l conving sa-si ia puncte
 //		}
   }
-
+	// private static Optional<Discount> computeDiscount(Optional<MemberCard> card) { // nu Optional<> param!!
+	// in loc sa chemi o functie f(empty()) -> mai bine nu o chema de loc!
 	private static Optional<Discount> computeDiscount(MemberCard card) {
 		if (card == null) { // quick fix la 21:00 Vineri
 			return Optional.empty();

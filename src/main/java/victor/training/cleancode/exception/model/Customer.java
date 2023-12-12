@@ -9,14 +9,15 @@ public class Customer {
    private MemberCard memberCard;
 
    public Customer() {
+//      memberCard = empty() // nu ai voie campuri Optional<>
    }
 
    public Customer(MemberCard memberCard) {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   public Optional<MemberCard> getMemberCard() {
+      return Optional.ofNullable(memberCard);
    }
 
    public Customer setMemberCard(MemberCard memberCard) {
