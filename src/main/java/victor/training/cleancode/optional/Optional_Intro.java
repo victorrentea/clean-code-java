@@ -19,11 +19,12 @@ public class Optional_Intro {
 
 	public static String getDiscountLine(Customer customer) {
 		Optional<Discount> discount = computeDiscount(customer.getMemberCard());
-		if (discount.isEmpty()) {
+    if (discount.isPresent()) {
+      return "You got a discount of %" + discount.get().getGlobalPercentage();
+    } else {
 			return "Earn more fidelity points to benefit from a discount";
 		}
-		return "You got a discount of %" + discount.get().getGlobalPercentage();
-	}
+  }
 
 	private static Optional<Discount> computeDiscount(MemberCard card) {
 		if (card.getFidelityPoints() >= 100) {
