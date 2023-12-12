@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
@@ -33,7 +35,8 @@ class MathUtil {
   // veche naspa
 }
 
-class Interval {
+@Embeddable // nu e o entitate, e un grup de campuri care se incapsuleaza in alta entitate
+class Interval { // merge imutabil va merge si cu @Value si cu record java 17, pe vers noi de hibernate
   private final int start; // imutabila
   private final int end;
 
@@ -112,6 +115,7 @@ class CarModel { // the holy Entity Model
   private String model;
 //  private int startYear;
 //  private int endYear;
+  @Embedded // asta adauga la tabela CAR_MODEL coloanele startYear si endYear
   private Interval yearInterval;
 
   protected CarModel() {

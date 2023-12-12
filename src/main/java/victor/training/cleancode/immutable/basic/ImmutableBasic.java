@@ -3,6 +3,7 @@ package victor.training.cleancode.immutable.basic;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import lombok.Value;
+import org.hibernate.collection.internal.PersistentBag;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,8 @@ class Immutable { // acum acest obiect este // "deep immutable"
    Integer x;
    ImmutableList<Integer> numbers; // nu merge pe @Entity Hibernate. merge insa pe @Document mongo, DTO json jackson (Spring/JAVAEE)
    Other other;
+
+//   List<Integer> list = new PersistentBag();
 
    public ImmutableList<Integer> getNumbers() {
 //      return new ArrayList<>(numbers); // #1 clona in getter: 1) misleading pt caller, 2) ineficient cu memoria
