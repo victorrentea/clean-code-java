@@ -21,7 +21,7 @@ public class Rental {
         return noDaysRented;
     }
 
-    static int calculateRenterPoints( Movie each, int noDaysRented) {
+    static int calculateRenterPoints(Movie each, int noDaysRented) {
 
         // add bonus for a two day new release rental
         if (each.getMovieCategory() != null &&
