@@ -21,6 +21,7 @@ public class Optional_Intro {
 		return computeDiscount(customer.getMemberCard())
 				.map(value -> "You got a discount of %" + value.getGlobalPercentage())
 				.orElse("Earn more fidelity points to benefit from a discount"); // FP
+		// incearca sa eviti if(..isPresent()) {..} else {..} -> fa map in loc!
 //		Optional<Discount> discount = computeDiscount(customer.getMemberCard());
 				//.orElseThrow(() -> new IllegalStateException("N-ai puncte fidelitate"));// #3 exceptie mai faina
 //    if (discount.isPresent()) {
