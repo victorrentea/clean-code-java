@@ -2,6 +2,8 @@ package victor.training.cleancode.kata.videostore.horror;
 
 import java.util.*;
 
+import static victor.training.cleancode.kata.videostore.horror.MovieCategory.REGULAR;
+
 class Customer {
 
 	private final String name;
@@ -12,8 +14,8 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie movie, int noMoviesRented) {
-		rentals.put(movie, noMoviesRented);
+	public void addRental(Movie movie, int noRentedDays) {
+		rentals.put(movie, noRentedDays);
 	}
 
 	public String getName() {
@@ -25,30 +27,17 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
 			// determine amounts for every line
-			int NoOfMoviesRented = rentals.get(each);
-			switch (each.getMovieCategory()) {
-				case MovieCategory.REGULAR:
-					thisAmount += 2;
-					if (NoOfMoviesRented > 2)
-						thisAmount += (NoOfMoviesRented - 2) * 1.5;
-					break;
-				case MovieCategory.NEW_RELEASE.priceCode:
-					thisAmount += NoOfMoviesRented * 3;
-					break;
-				case MovieCategory.CHILDREN.priceCode:
-					thisAmount += 1.5;
-					if (NoOfMoviesRented > 3)
-						thisAmount += (NoOfMoviesRented - 3) * 1.5;
-					break;
-			}
+			int noDaysRented = rentals.get(each);
+
+			double thisAmount = calculateAmountOfCurrentMovie(each.getMovieCategory(),noDaysRented);
+
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if (each.getMovieCategory() != null &&
-				 (each.getMovieCategory() == Movie.NEW_RELEASE)
-				 && NoOfMoviesRented > 1)
+				 (each.getMovieCategory() == MovieCategory.NEW_RELEASE)
+				 && noDaysRented > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
@@ -59,6 +48,26 @@ class Customer {
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
+
+	private double calculateAmountOfCurrentMovie(MovieCategory category,int noDaysRented){
+		double thisAmount = 0;
+		switch (category) {
+			case REGULAR -> {
+				thisAmount += 2;
+				if (noDaysRented > 2)
+					thisAmount += (noDaysRented - 2) * 1.5;
+			}
+			case NEW_RELEASE -> thisAmount += noDaysRented * 3;
+			case CHILDREN -> {
+				thisAmount += 1.5;
+				if (noDaysRented > 3)
+					thisAmount += (noDaysRented - 3) * 1.5;
+			}
+		}
+		return thisAmount;
+	}
+
+
 
 	public Map<Movie, Integer> getRentals() {
 		return rentals;

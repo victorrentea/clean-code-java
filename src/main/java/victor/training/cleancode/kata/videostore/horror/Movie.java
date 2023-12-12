@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Movie {
 
 	private final String title;
-	private MovieCategory movieCategory;
+	private final MovieCategory movieCategory;
 
 	public Movie(String title, MovieCategory movieCategory) {
 		this.title = Objects.requireNonNull(title);
