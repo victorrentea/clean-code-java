@@ -1,16 +1,10 @@
 package victor.training.cleancode.immutable.basic;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Data;
+import lombok.Builder;
 import lombok.Value;
-import org.hibernate.collection.internal.PersistentBag;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
@@ -22,26 +16,35 @@ public class ImmutableBasic {
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
-      darkBizRules(immutable);
+//      immutable = darkBizRules(immutable); // gresit sa reatribui variabile
+      Immutable incrementedImmutable = darkBizRules(immutable); // asa DA
 
-      System.out.println(immutable.getNumbers());
-      System.out.println(immutable); // un obiect imutabil iti da siguranta ca nu se schimba pana aici
+      System.out.println(incrementedImmutable.getNumbers());
+      System.out.println(incrementedImmutable); // un obiect imutabil iti da siguranta ca nu se schimba pana aici
    }
 
-   private static void darkBizRules(Immutable immutable) {
+   private static Immutable darkBizRules(Immutable immutable) {
       // hack de 21:00 Vineri
 //      immutable.getOther().setA(-9); // nu compileaza
-      immutable.getNumbers().add(-1);
-      immutable.getNumbers().clear();
+//      immutable.getNumbers().add(-1);
+//      immutable.getNumbers().clear();
+//      immutable.setX(immutable.getX() + 1);
+//      return immutable.withX(immutable.getX() + 1);
+      return immutable.toBuilder().x(immutable.getX() + 1).build();
    }
 }
 
 // The state of an immutable object cannot be changed after it is created.
 @Value //?? = 'private final' fields + getters + equals/hashCode + toString
+@Builder(toBuilder = true)
 class Immutable { // acum acest obiect este // "deep immutable"
    Integer x;
    ImmutableList<Integer> numbers; // nu merge pe @Entity Hibernate. merge insa pe @Document mongo, DTO json jackson (Spring/JAVAEE)
    Other other;
+
+   public Immutable withX(int newX) { // "wither"
+      return new Immutable(newX, getNumbers(), getOther());
+   }
 
 //   List<Integer> list = new PersistentBag();
 
