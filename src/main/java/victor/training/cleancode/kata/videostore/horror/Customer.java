@@ -8,15 +8,17 @@ class Customer {
 
 	private final String name;
 
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private List<Rental>  rentalList = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie movie, int noRentedDays) {
-		rentals.put(movie, noRentedDays);
+	public void addRental(Rental rental) {
+		rentalList.add(rental);
 	}
+
+
 
 	public String getName() {
 		return name;
@@ -26,18 +28,21 @@ class Customer {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		for (Movie each : rentals.keySet()) {
-			// determine amounts for every line
-			int noDaysRented = rentals.get(each);
 
-			double thisAmount = calculateAmountOfCurrentMovie(each.getMovieCategory(),noDaysRented);
+		for (Rental rental : rentalList) {
+			int noDaysRented = rental.getNoDaysRented();
 
-			frequentRenterPoints = calculateRenterPoints(frequentRenterPoints,each, noDaysRented);
+			Movie currentMovie = rental.getMovie();
+
+			double thisAmount = calculateAmountOfCurrentMovie(currentMovie.getMovieCategory(),noDaysRented);
+
+			frequentRenterPoints = calculateRenterPoints(frequentRenterPoints,currentMovie, noDaysRented);
 
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			result += "\t" + currentMovie.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
+
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
@@ -75,10 +80,4 @@ class Customer {
 		return thisAmount;
 	}
 
-
-
-
-	public Map<Movie, Integer> getRentals() {
-		return rentals;
-	}
 }
