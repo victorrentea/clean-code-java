@@ -2,8 +2,6 @@ package victor.training.cleancode.kata.videostore.horror;
 
 import java.util.*;
 
-import static victor.training.cleancode.kata.videostore.horror.MovieCategory.REGULAR;
-
 class Customer {
 
 	private final String name;
@@ -11,22 +9,23 @@ class Customer {
 	private List<Rental>  rentalList = new ArrayList<>();
 
 	public Customer(String name) {
-		this.name = name;
+		this.name = Objects.requireNonNull(name);
 	};
 
 	public void addRental(Rental rental) {
 		rentalList.add(rental);
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
+
+
+	public String calculateBillAndRenterPoints() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
+
 		String result = "Rental Record for " + getName() + "\n";
 
 		for (Rental rental : rentalList) {
@@ -34,9 +33,9 @@ class Customer {
 
 			Movie currentMovie = rental.getMovie();
 
-			double thisAmount = calculateAmountOfCurrentMovie(currentMovie.getMovieCategory(),noDaysRented);
+			double thisAmount = Rental.calculateAmountOfCurrentMovie(currentMovie.getMovieCategory(),noDaysRented);
 
-			frequentRenterPoints = calculateRenterPoints(frequentRenterPoints,currentMovie, noDaysRented);
+			frequentRenterPoints = Rental.calculateRenterPoints(frequentRenterPoints,currentMovie, noDaysRented);
 
 			// show figures line for this rental
 			result += "\t" + currentMovie.getTitle() + "\t" + thisAmount + "\n";
@@ -49,35 +48,8 @@ class Customer {
 		return result;
 	}
 
-	private int calculateRenterPoints(int frequentRenterPoints, Movie each, int noDaysRented) {
 
-		// add frequent renter points
-		  frequentRenterPoints++;
 
-		// add bonus for a two day new release rental
-		if (each.getMovieCategory() != null &&
-			 (each.getMovieCategory() == MovieCategory.NEW_RELEASE)
-			 && noDaysRented > 1)
-			frequentRenterPoints++;
-		return frequentRenterPoints;
-	}
 
-	private double calculateAmountOfCurrentMovie(MovieCategory category,int noDaysRented){
-		double thisAmount = 0;
-		switch (category) {
-			case REGULAR -> {
-				thisAmount += 2;
-				if (noDaysRented > 2)
-					thisAmount += (noDaysRented - 2) * 1.5;
-			}
-			case NEW_RELEASE -> thisAmount += noDaysRented * 3;
-			case CHILDREN -> {
-				thisAmount += 1.5;
-				if (noDaysRented > 3)
-					thisAmount += (noDaysRented - 3) * 1.5;
-			}
-		}
-		return thisAmount;
-	}
 
 }
