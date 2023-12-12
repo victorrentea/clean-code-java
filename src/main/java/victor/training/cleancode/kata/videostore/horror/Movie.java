@@ -5,19 +5,15 @@ import java.util.Objects;
 public class Movie {
 
 	private final String title;
-	private Integer priceCode;
+	private MovieCategory movieCategory;
 
-	public Movie(String title, Integer priceCode) {
+	public Movie(String title, MovieCategory movieCategory) {
 		this.title = Objects.requireNonNull(title);
-		this.priceCode = Objects.requireNonNull(priceCode);
+		this.movieCategory = Objects.requireNonNull(movieCategory);
 	}
 
-	public Integer getPriceCode() {
-		return priceCode;
-	}
-
-	public void setPriceCode(Integer arg) {
-		priceCode = arg;
+	public MovieCategory getMovieCategory() {
+		return movieCategory;
 	}
 
 	public String getTitle() {

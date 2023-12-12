@@ -4,7 +4,7 @@ import java.util.*;
 
 class Customer {
 
-	private String name;
+	private final String name;
 
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
@@ -27,28 +27,28 @@ class Customer {
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case MovieCategory.REGULAR.priceCode:
+			int NoOfMoviesRented = rentals.get(each);
+			switch (each.getMovieCategory()) {
+				case MovieCategory.REGULAR:
 					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					if (NoOfMoviesRented > 2)
+						thisAmount += (NoOfMoviesRented - 2) * 1.5;
 					break;
 				case MovieCategory.NEW_RELEASE.priceCode:
-					thisAmount += dr * 3;
+					thisAmount += NoOfMoviesRented * 3;
 					break;
 				case MovieCategory.CHILDREN.priceCode:
 					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+					if (NoOfMoviesRented > 3)
+						thisAmount += (NoOfMoviesRented - 3) * 1.5;
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
+			if (each.getMovieCategory() != null &&
+				 (each.getMovieCategory() == Movie.NEW_RELEASE)
+				 && NoOfMoviesRented > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
@@ -58,5 +58,9 @@ class Customer {
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	public Map<Movie, Integer> getRentals() {
+		return rentals;
 	}
 }
