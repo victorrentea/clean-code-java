@@ -3,6 +3,7 @@ package victor.training.cleancode.immutable.basic;
 import lombok.Data;
 import lombok.Value;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -20,21 +21,26 @@ public class ImmutableBasic {
       darkBizRules(immutable);
 
       System.out.println(immutable.getNumbers());
-      System.out.println(immutable);
+      System.out.println(immutable); // un obiect imutabil iti da siguranta ca nu se schimba pana aici
    }
 
    private static void darkBizRules(Immutable immutable) {
       // hack de 21:00 Vineri
-      immutable.getOther().setA(-9);
+//      immutable.getOther().setA(-9); // nu compileaza
+      immutable.getNumbers().add(-1);
    }
 }
 
 // The state of an immutable object cannot be changed after it is created.
 @Value //?? = 'private final' fields + getters + equals/hashCode + toString
-class Immutable { // acum acest obiect este doar "shallow immutable"
+class Immutable { // acum acest obiect este // "deep immutable"
    Integer x;
    List<Integer> numbers;
    Other other;
+
+   public List<Integer> getNumbers() {
+      return new ArrayList<>(numbers); // #1 clona in getter: 1) misleading pt caller, 2) ineficient cu memoria
+   }
 
    public String toString() {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
@@ -42,7 +48,7 @@ class Immutable { // acum acest obiect este doar "shallow immutable"
 }
 
 class Other {
-   private int a;
+   private final int a;
 
    public Other(int a) {
       this.a = a;
@@ -52,7 +58,4 @@ class Other {
       return a;
    }
 
-   public void setA(int a) {
-      this.a = a;
-   }
 }
