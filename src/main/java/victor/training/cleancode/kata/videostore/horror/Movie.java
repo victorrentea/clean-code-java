@@ -1,26 +1,26 @@
 package victor.training.cleancode.kata.videostore.horror;
+
+import java.util.Objects;
+
 public class Movie {
 
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	private Integer _priceCode;
+	private final String title;
+	private Integer priceCode;
 
 	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+		this.title = Objects.requireNonNull(title);
+		this.priceCode = Objects.requireNonNull(priceCode);
 	}
 
 	public Integer getPriceCode() {
-		return _priceCode;
+		return priceCode;
 	}
 
 	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
+		priceCode = arg;
 	}
 
 	public String getTitle() {
-		return _title;
+		return title;
 	};
 }

@@ -6,16 +6,14 @@ class Customer {
 
 	private String name;
 
-
-	
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int noMoviesRented) {
+		rentals.put(movie, noMoviesRented);
 	}
 
 	public String getName() {
@@ -31,15 +29,15 @@ class Customer {
 			// determine amounts for every line
 			int dr = rentals.get(each);
 			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
+				case MovieCategory.REGULAR.priceCode:
 					thisAmount += 2;
 					if (dr > 2)
 						thisAmount += (dr - 2) * 1.5;
 					break;
-				case Movie.NEW_RELEASE:
+				case MovieCategory.NEW_RELEASE.priceCode:
 					thisAmount += dr * 3;
 					break;
-				case Movie.CHILDRENS:
+				case MovieCategory.CHILDREN.priceCode:
 					thisAmount += 1.5;
 					if (dr > 3)
 						thisAmount += (dr - 3) * 1.5;
