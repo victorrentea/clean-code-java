@@ -14,7 +14,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <kotlin.version>1.7.10</kotlin.version>
 
     </properties>
     <dependencies>
@@ -72,6 +71,7 @@
             <artifactId>cdi-api</artifactId>
             <version>1.2</version>
         </dependency>
+
     </dependencies>
 
 </project>
