@@ -3,6 +3,8 @@ package victor.training.cleancode.kata.videostore.horror;
 import java.util.*;
 
 class Customer {
+
+	// Test Bianca B
 	private String name;
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
