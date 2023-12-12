@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Value;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -39,7 +40,8 @@ class Immutable { // acum acest obiect este // "deep immutable"
    Other other;
 
    public List<Integer> getNumbers() {
-      return new ArrayList<>(numbers); // #1 clona in getter: 1) misleading pt caller, 2) ineficient cu memoria
+//      return new ArrayList<>(numbers); // #1 clona in getter: 1) misleading pt caller, 2) ineficient cu memoria
+      return Collections.unmodifiableList(numbers); // #2 Decorator™️ Pattern: un wrapper peste lista originala care arunca ex la orice modificare incerci
    }
 
    public String toString() {
