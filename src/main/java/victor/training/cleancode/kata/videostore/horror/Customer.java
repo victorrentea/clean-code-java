@@ -32,13 +32,8 @@ class Customer {
 
 			double thisAmount = calculateAmountOfCurrentMovie(each.getMovieCategory(),noDaysRented);
 
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getMovieCategory() != null &&
-				 (each.getMovieCategory() == MovieCategory.NEW_RELEASE)
-				 && noDaysRented > 1)
-				frequentRenterPoints++;
+			frequentRenterPoints = calculateRenterPoints(frequentRenterPoints,each, noDaysRented);
+
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
@@ -47,6 +42,19 @@ class Customer {
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private int calculateRenterPoints(int frequentRenterPoints, Movie each, int noDaysRented) {
+
+		// add frequent renter points
+		  frequentRenterPoints++;
+
+		// add bonus for a two day new release rental
+		if (each.getMovieCategory() != null &&
+			 (each.getMovieCategory() == MovieCategory.NEW_RELEASE)
+			 && noDaysRented > 1)
+			frequentRenterPoints++;
+		return frequentRenterPoints;
 	}
 
 	private double calculateAmountOfCurrentMovie(MovieCategory category,int noDaysRented){
@@ -66,6 +74,7 @@ class Customer {
 		}
 		return thisAmount;
 	}
+
 
 
 
