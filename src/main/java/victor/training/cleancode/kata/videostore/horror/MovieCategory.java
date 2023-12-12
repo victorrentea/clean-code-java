@@ -4,8 +4,7 @@ public enum MovieCategory {
 
     REGULAR,
     NEW_RELEASE,
-
-    CHILDREN;
+    CHILDREN
 
 
 }

@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class Rental {
 
-   private Movie movie;
+   private final Movie movie;
 
-   private Integer noDaysRented;
+   private final Integer noDaysRented;
 
     public Rental(Movie movie, Integer noDaysRented) {
         this.movie = Objects.requireNonNull(movie);
@@ -17,29 +17,19 @@ public class Rental {
         return movie;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
     public Integer getNoDaysRented() {
         return noDaysRented;
     }
 
-    public void setNoDaysRented(Integer noDaysRented) {
-        this.noDaysRented = noDaysRented;
-    }
-
-    static int calculateRenterPoints(int frequentRenterPoints, Movie each, int noDaysRented) {
-
-        // add frequent renter points
-        frequentRenterPoints++;
+    static int calculateRenterPoints( Movie each, int noDaysRented) {
 
         // add bonus for a two day new release rental
         if (each.getMovieCategory() != null &&
                 (each.getMovieCategory() == MovieCategory.NEW_RELEASE)
                 && noDaysRented > 1)
-            frequentRenterPoints++;
-        return frequentRenterPoints;
+         return 2;
+
+        return 1;
     }
 
      static double calculateAmountOfCurrentMovie(MovieCategory category,int noDaysRented){
