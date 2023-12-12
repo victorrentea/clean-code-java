@@ -19,9 +19,10 @@ public class Optional_Intro {
 	}
 
 	public static String getDiscountLine(Customer customer) {
-		Optional<MemberCard> cardOpt = customer.getMemberCard();
-	 Optional<Discount> discountOpt = cardOpt.flatMap(card -> computeDiscount(card)); // te scapa de Optional<Optional<?>>
-		return discountOpt
+		return customer.getMemberCard()
+				.flatMap(Optional_Intro::computeDiscount) // te scapa de Optional<Optional<?>>
+//				.map(Discount::getGlobalPercentage)
+//				.map(p -> "You got a discount of %" + p)
 				.map(value -> "You got a discount of %" + value.getGlobalPercentage())
 				.orElse("Earn more fidelity points to benefit from a discount"); // FP
 		// incearca sa eviti if(..isPresent()) {..} else {..} -> fa map in loc!
