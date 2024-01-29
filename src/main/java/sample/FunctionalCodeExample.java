@@ -30,9 +30,11 @@ public class FunctionalCodeExample {
 
     public void processAll() {
         fooService.fooStream()
-                .flatMap(t -> streamTryResult(t, throwable ->  logError("Streaming foos failed", throwable)))
+//                .flatMap(t -> streamTryResult(t, throwable ->
+//                    logError("Streaming foos failed", throwable)))
+                .flatMap(t -> logAndIgnoreFailure(t, "Streaming foos failed"))
                 .map(foo -> Try.of(() -> wrap(foo)))
-                .flatMap(t -> streamTryResult(t, ex -> logError("Failed wrapping foo", ex)))
+                .flatMap(t -> logAndIgnoreFailure(t, "Failed wrapping foo"))
                 .map(wrapped -> Tuple.of(wrapped, process(wrapped)))
                 .filter(tuple -> tuple._2().isFailure())
                 .forEach(tuple -> logError("Couldn't process foo that has id %s".formatted(tuple._1.foo().uuid()), tuple._2.getCause()));
@@ -43,6 +45,17 @@ public class FunctionalCodeExample {
             failure.accept(throwable);
             return Stream.empty();
         });
+    }
+    private  <T> Stream<T> logAndIgnoreFailure(Try<T> t, String errorLogMessage) {
+//        return t.map(Stream::of).getOrElseGet(throwable -> {
+//           logError("Streaming foos failed", throwable);
+//            return Stream.empty();
+//        });
+        if (t.isFailure()) {
+            logError(errorLogMessage, t.getCause());
+            return Stream.empty();
+        }
+        return Stream.of(t.get());
     }
 
     private Try<UUID> process(final FooWrapper wrapped) {
