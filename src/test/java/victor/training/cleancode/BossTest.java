@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import victor.training.testing.tools.CaptureSystemOutput;
 import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,7 +18,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)), false);
+      target.bossLevel(true, new ArrayList<>(List.of(new Task(5))), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -31,7 +32,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)), true);
+      target.bossLevel(true, new ArrayList<>(List.of(new Task(5))), true);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -59,7 +60,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevel(false, List.of(new Task(5)), false);
+      target.bossLevel(false, new ArrayList<>(List.of(new Task(5))), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -70,7 +71,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5),new Task(6)), false);
+      target.bossLevel(true, new ArrayList<>(List.of(new Task(5),new Task(6))), false);
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())

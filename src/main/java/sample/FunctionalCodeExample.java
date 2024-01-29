@@ -33,6 +33,7 @@ public class FunctionalCodeExample {
 //                .flatMap(t -> streamTryResult(t, throwable ->
 //                    logError("Streaming foos failed", throwable)))
                 .flatMap(t -> logAndIgnoreFailure(t, "Streaming foos failed"))
+//                .logFailure()
                 .map(foo -> Try.of(() -> wrap(foo)))
                 .flatMap(t -> logAndIgnoreFailure(t, "Failed wrapping foo"))
                 .map(wrapped -> Tuple.of(wrapped, process(wrapped)))
