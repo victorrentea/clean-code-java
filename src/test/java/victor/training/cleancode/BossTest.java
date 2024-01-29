@@ -18,7 +18,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(true, new ArrayList<>(List.of(new Task(5))), false);
+      target.bossLevelScotland(new ArrayList<>(List.of(new Task(5))));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -32,7 +32,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(true, new ArrayList<>(List.of(new Task(5))), true);
+      target.bossLevelScotland323(new ArrayList<>(List.of(new Task(5))));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -48,7 +48,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevel(true, Collections.emptyList(), false);
+      target.bossLevelScotland(Collections.emptyList());
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -60,7 +60,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevel(false, new ArrayList<>(List.of(new Task(5))), false);
+      target.bossLevel(new ArrayList<>(List.of(new Task(5))), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -71,7 +71,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(true, new ArrayList<>(List.of(new Task(5),new Task(6))), false);
+      target.bossLevelScotland(new ArrayList<>(List.of(new Task(5),new Task(6))));
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())
