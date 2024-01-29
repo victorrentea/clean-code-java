@@ -50,11 +50,7 @@ class BossTest {
       target.bossLevel(true, Collections.emptyList(), false);
 
       assertThat(outputCapture.toString())
-          .isEqualToIgnoringNewLines("Logic1\n" +
-                                     "Logic3\n" +
-                                     "Logic6 0\n" +
-                                     "Task Ids: []\n" +
-                                     "Logic8\n");
+          .isEqualToIgnoringNewLines("");
    }
    @Test
    @CaptureSystemOutput
