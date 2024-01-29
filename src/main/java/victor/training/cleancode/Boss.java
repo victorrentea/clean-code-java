@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // "BOSS" LEVEL: Deeply nested functions are a lot harder to break down =================
 public class Boss {
@@ -13,10 +14,14 @@ public class Boss {
       System.out.println("Logic3");
       int index = 0;
       execute(tasks);
-      List<Integer> taskIds = new ArrayList<>(); // accumulator = code smell since Java 8
-      for (Task task : tasks) {
-        taskIds.add(task.getId());
-      }
+
+      // 1) have to iterate twice. So what? performance hit? NEVER in 18 years of exp have I seen this produce a perf inssue
+      // with 1 exception NL stock trading company with response times < 50 microseconds 10^-6 0.00005 seconds
+      //
+
+      List<Integer> taskIds = tasks.stream().map(Task::getId).toList(); // accumulator = code smell since Java 8
+
+//    execute(tasks);
       for (Task task : tasks) {
         System.out.println("Starting " + task);
         task.setStarted(true);
