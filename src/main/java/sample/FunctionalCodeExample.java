@@ -1,6 +1,5 @@
 package sample;
 
-import io.vavr.Tuple;
 import io.vavr.control.Try;
 
 import java.io.InputStream;
@@ -27,17 +26,56 @@ public class FunctionalCodeExample {
     this.executorService = executorService;
   }
 
+//                .logFailure() // life with extension function (kt, scala, ...)
+
+  private record X(int a, int b) {
+  }
 
   public void processAll() {
-    fooService.fooStream()
-        .flatMap(t -> logAndIgnoreFailure(t, "Streaming foos failed"))
-//                .logFailure() // life with extension function (kt, scala, ...)
-        .map(foo -> Try.of(() -> wrap(foo)))
-        .flatMap(t -> logAndIgnoreFailure(t, "Failed wrapping foo"))
-        .map(wrapped -> Tuple.of(wrapped, process(wrapped)))
-        .filter(tuple -> tuple._2().isFailure())
-        .forEach(tuple -> logError("Couldn't process foo that has id %s".formatted(tuple._1.foo().uuid()), tuple._2.getCause()));
+
+    // this code is imperative in that it does SIDE EFFECTS, not com,puting results.
+    // why not List<Try<Foo>>
+    // a) there are millions
+    // b) a few (files) or huge Foo object !! GB!!
+    fooService.fooStream().forEach(this::eat);
+
+//        .flatMap(t -> logAndIgnoreFailure(t, "Streaming foos failed"))
+//        // it calls wrap(foo) and if there's an exception -> return a failed Try<>
+////        .map(foo -> Try.of(() -> wrap(foo)))
+////        .flatMap(t -> logAndIgnoreFailure(t, "Failed wrapping foo"))
+//
+////        .map(this::wrapSimpler)
+////        .flatMap(Optional::stream)
+//
+//        .flatMap(foo -> wrapSimpler(foo).stream())
+//
+//        .map(wrapped -> Tuple.of(wrapped, process(wrapped)))
+//
+//        .filter(tuple -> tuple._2().isFailure())
+//        .forEach(tuple -> logError("Couldn't process foo that has id %s".formatted(tuple._1.foo().uuid()), tuple._2.getCause()));
+//    Tuple3<Long, String,Map<Long,Tuple2<>>> // = lack of abstractions code smell
   }
+
+  // TODO have a top-level error logger&handler and shortcircuit form every failing point up
+  private void eat(Try<Foo> foos) {
+    if (foos.isFailure()) {
+      logError("Streaming foos failed", foos.getCause());
+      return;
+    }
+    Foo foo = foos.get();
+    try {
+      FooWrapper w = wrapSimpler(foo);
+//    } catch (Exception e) {
+//      logError("Failed wrapping foo", e);
+//      return;
+//    }
+//    try {
+      process(w);
+    } catch (Exception e) {
+      logError("Couldn't process foo that has id %s".formatted(foo.uuid()), e.getCause());
+    }
+  }
+
 
   // could be overengineering to pass a function instead of creating 3-4 variants of it
   private <T> Stream<T> streamTryResult(Try<T> t, Consumer<Throwable> failure) {
@@ -59,9 +97,10 @@ public class FunctionalCodeExample {
     return Stream.of(t.get());
   }
 
-  private Try<UUID> process(final FooWrapper wrapped) {
+  private void process(final FooWrapper wrapped) {
     final var foo = wrapped.foo();
-    return Try.of(() -> {
+//    return Try.of(() -> {
+    try {
       fooDao.insert(foo);
       final Set<Result> results = executorService.invokeAll(toCallable(wrapped)).stream()
           .map(tFuture -> Try.of(tFuture::get).onFailure(throwable -> logError("Couldn't get from future", throwable)).toJavaOptional())
@@ -73,8 +112,9 @@ public class FunctionalCodeExample {
       if (results.stream().allMatch(Result::success)) {
         //other code doing stuff like sending an event
       }
-      return foo.uuid();
-    });
+    } catch (Exception e) {
+      logError("Couldn't process foo that has id %s".formatted(foo.uuid()), e.getCause());
+    }
   }
 
   private Set<Callable<Result>> toCallable(final FooWrapper wrapped) {
@@ -82,7 +122,14 @@ public class FunctionalCodeExample {
   }
 
   private FooWrapper wrap(Foo foo) {
+    //code
     return new FooWrapper(foo);
+  }
+
+  private FooWrapper wrapSimpler(Foo foo) {
+    //code
+    return new FooWrapper(foo);
+
   }
 
   private void logError(final String someErrorMessage, final Throwable throwable) {
