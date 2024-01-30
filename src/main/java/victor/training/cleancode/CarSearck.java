@@ -22,12 +22,16 @@ class CarSearck {
 }
 class Alta {
   private void applyCapacityFilter() {
-    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+    System.out.println(new Interval(1500, 1000).intersects(new Interval(1250, 2000)));
   }
 }
 class MathUtil {
 }
+// "Value Object" design pattern: immutable [small], lacking PK, equals/hashCode, toString
 record Interval(int start, int end) {
+  Interval { // fail fast: instantiation will fail if start > end! at the beginning
+    if (start > end) throw new IllegalArgumentException("start larger than end: " + start + " > " + end);
+  }
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
   }
