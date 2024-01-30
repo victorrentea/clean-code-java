@@ -64,13 +64,12 @@ class CarSearchCriteria { // smells like JSON ...
 }
 
 @Entity
-class CarModel { // the holy Entity Model
+class CarModel { // the holy Entity Model (mapped to a DB TABLE)
   @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -79,20 +78,11 @@ class CarModel { // the holy Entity Model
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
     return id;
-  }
-
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
   }
 
   public String getMake() {
@@ -113,7 +103,7 @@ class CarModel { // the holy Entity Model
   }
 
   public Interval years() {
-    return new Interval(getStartYear(), getEndYear());
+    return yearInterval;
   }
 }
 
@@ -123,8 +113,13 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.years().start();
+    dto.endYear = carModel.years().end();
+//    dto.endYear = carModel.years().end();
+    dto.endYear = carModel.years().end();
+    dto.endYear = carModel.years().end();
+    dto.endYear = carModel.years().end();
+    dto.endYear = carModel.years().end();
     return dto;
   }
 
