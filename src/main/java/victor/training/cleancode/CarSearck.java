@@ -10,31 +10,26 @@ class CarSearck {
   // see tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> matchesYears(criteria, carModel))
+        .filter(carModel -> criteria.years().intersects(carModel.years()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean matchesYears(CarSearchCriteria criteria, CarModel carModel) {
-    return new Interval(criteria.getStartYear(), criteria.getEndYear()).intervalsIntersect(new Interval(carModel.getStartYear(), carModel.getEndYear()));
-  }
-
   private void applyCapacityFilter() {
-    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
 class Alta {
   private void applyCapacityFilter() {
-    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
 class MathUtil {
 }
 record Interval(int start, int end) {
-  // dream method:
-  public boolean intervalsIntersect(Interval interval2) {
-    return start() <= interval2.end() && interval2.start() <= end();
+  public boolean intersects(Interval other) {
+    return start <= other.end && other.start <= end;
   }
 }
 
@@ -61,6 +56,10 @@ class CarSearchCriteria { // smells like JSON ...
 
   public String getMake() {
     return make;
+  }
+
+  public Interval years() {
+    return new Interval(getStartYear(), getEndYear());
   }
 }
 
@@ -111,6 +110,10 @@ class CarModel { // the holy Entity Model
            "make='" + make + '\'' +
            ", model='" + model + '\'' +
            '}';
+  }
+
+  public Interval years() {
+    return new Interval(getStartYear(), getEndYear());
   }
 }
 
