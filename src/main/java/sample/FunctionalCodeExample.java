@@ -99,7 +99,6 @@ public class FunctionalCodeExample {
 
   private void process(final FooWrapper wrapped) {
     final var foo = wrapped.foo();
-//    return Try.of(() -> {
     try {
       fooDao.insert(foo);
       final Set<Result> results = executorService.invokeAll(toCallable(wrapped)).stream()
@@ -165,7 +164,7 @@ public class FunctionalCodeExample {
 
   static class Foo {
     public UUID uuid() {
-      return null;
+      return UUID.randomUUID();
     }
   }
 
