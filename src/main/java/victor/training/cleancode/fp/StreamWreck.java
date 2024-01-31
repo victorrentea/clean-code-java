@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
@@ -19,11 +17,7 @@ public class StreamWreck {
 	private ProductRepo productRepo;
 
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		Map<Product, Integer> productToItemCount = orders.stream()
-				.filter(Order::isActive)
-				.filter(Order::isRecent)
-				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
+		Map<Product, Integer> productToItemCount = getProductToItemCount(orders);
 
 		// Iterator, InputStream
 		// challenge in review any Stream<> as method return value or variable type.
@@ -42,6 +36,16 @@ public class StreamWreck {
 				.filter(not(Product::isDeleted))
 				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.toList();
+	}
+
+
+
+	private Map<Product, Integer> getProductToItemCount(List<Order> orders) {
+    return orders.stream()
+				.filter(Order::isActive)
+				.filter(order -> order.isRecent(LocalDate.now()))
+				.flatMap(o -> o.getOrderLines().stream())
+				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
 	}
 
 	private boolean isRecent(Order order) {

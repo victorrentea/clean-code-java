@@ -13,7 +13,7 @@ public class Order {
   private boolean active;
   private int price;
 
-  public boolean isRecent() {
-    return creationDate.isAfter(LocalDate.now().minusYears(1));
+  public boolean isRecent(LocalDate now) {
+    return creationDate.isAfter(now.minusYears(1));
   }
 }
