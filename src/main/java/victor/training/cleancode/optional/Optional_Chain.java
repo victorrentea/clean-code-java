@@ -14,9 +14,19 @@ public class Optional_Chain {
   }
 }
 
+// there are 2 main ways to avoid NPEs:
+//1> Monads: Opt[] Optional (java standard)
+//2> annotations ?/nullability: @Nullable @NotNull (JSR 305)
+//  -checked by IDE:(
+//  -checked by compiler: Kotlin
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
+    if (parcel!=null &&
+        parcel.getDelivery()!=null &&
+        parcel.getDelivery().getAddress()!=null &&
+        parcel.getDelivery().getAddress().getContactPerson()!=null &&
+        parcel.getDelivery().getAddress().getContactPerson().getName()!=null) {
     dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
     return dto;
   }

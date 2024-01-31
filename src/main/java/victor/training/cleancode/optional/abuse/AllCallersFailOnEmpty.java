@@ -17,11 +17,18 @@ public class AllCallersFailOnEmpty {
   private interface BaseRepo<T,PK> extends JpaRepository<T, PK> {
     @SuppressWarnings("unchecked")
     default T findOneById(PK id) {
+//      findById(id).orElse(takeMoney()); // DANGEROUS. will call takeMoney() even if Optional is not empty
+//      findById(id).orElseGet(()->takeMoney());
+//      if (findById(id).isEmpty()) {
+//        takeMoney();
+//      }
       return findById(id).orElseThrow(() -> {
         Class<T> persistentClass = (Class<T>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return new NoSuchElementException(persistentClass.getSimpleName() + " with id " + id + " not found ");
       });
     }
+
+//    T takeMoney();
   }
 
 //  private interface TenantRepo extends BaseRepo<Tenant, Long> {

@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.*;
-import static java.util.stream.Nodes.collect;
 
 public class DataService {
 
@@ -114,10 +113,12 @@ public class DataService {
         .filter(t -> t._2.isPresent())
         .collect(groupingBy(t -> t._2.get(), mapping(t -> t._1, toList()))); // mutable colelctions kept private inside the method for performance
 
+
     return mutable.entrySet().stream()
         .collect(toImmutableMap(
             Map.Entry::getKey,
             entry -> ImmutableList.copyOf(entry.getValue())));
+
   }
 
   private Tuple2<Criterion, Optional<DataRecord>> findFirstValidValue(Tuple2<Criterion, List<Precedence>> t, Map<String, DataRecord> dataSourceMap) {
