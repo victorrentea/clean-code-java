@@ -22,12 +22,13 @@ public class Optional_Chain {
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
-    if (parcel!=null &&
-        parcel.getDelivery()!=null &&
-        parcel.getDelivery().getAddress()!=null &&
-        parcel.getDelivery().getAddress().getContactPerson()!=null &&
-        parcel.getDelivery().getAddress().getContactPerson().getName()!=null) {
-    dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+    if (parcel != null &&
+        parcel.getDelivery() != null &&
+        parcel.getDelivery().getAddress() != null &&
+        parcel.getDelivery().getAddress().getContactPerson() != null &&
+        parcel.getDelivery().getAddress().getContactPerson().getName() != null) {
+      dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+    }
     return dto;
   }
 }
