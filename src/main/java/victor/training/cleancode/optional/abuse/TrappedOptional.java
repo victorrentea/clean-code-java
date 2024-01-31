@@ -17,11 +17,13 @@ public class TrappedOptional {
 
   public void trappedOptional(MyDto dto) {
     MyEntity entity = new MyEntity();
-    Optional.ofNullable(dto.recipientPerson)
-            .map(String::toUpperCase)
-            .ifPresent(name -> {
-              entity.setRecipient(name);
-            });
+//    Optional.ofNullable(dto.recipientPerson)
+//            .map(String::toUpperCase)
+//            .ifPresent(name -> entity.setRecipient(name));
+
+    if (dto.recipientPerson != null) {
+      entity.setRecipient(dto.recipientPerson.toUpperCase());
+    }
   }
 
   public void trappedOptionalWithExternalSideEffect(MyDto dto) {

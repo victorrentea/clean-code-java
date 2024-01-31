@@ -50,7 +50,7 @@ class Marine {
   boolean retired;
   Integer yearsService;
   List<Award> awards = new ArrayList<>();
-
+//Optional<String> awa= null;
 }
 
 @Data
