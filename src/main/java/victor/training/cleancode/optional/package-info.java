@@ -1,2 +1,2 @@
-//@NonNullByDefault
+@NonNullByDefault
 package victor.training.cleancode.optional;

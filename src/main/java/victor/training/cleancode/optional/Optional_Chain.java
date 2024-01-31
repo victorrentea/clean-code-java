@@ -1,6 +1,7 @@
 package victor.training.cleancode.optional;
 
 import javax.annotation.Nullable;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 
 public class Optional_Chain {
@@ -25,6 +26,8 @@ public class Optional_Chain {
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
+//    Validator validator = ValidatorFactory.getValidator();
+//    validator.validate(parcel);
     if (parcel.getDelivery() != null &&
         parcel.getDelivery().getAddress().getContactPerson() != null)
       dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
@@ -51,7 +54,6 @@ class Parcel {
 
 
 class Delivery {
-  @NotNull
   private Address address; // NOT NULL IN DB
 
   public Delivery(Address address) {
@@ -81,7 +83,6 @@ class Address {
 }
 
 class ContactPerson {
-  @NotNull
   private final String name; // NOT NULL
 
   public ContactPerson(String name) {
