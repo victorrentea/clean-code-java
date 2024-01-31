@@ -7,12 +7,14 @@ import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import io.vavr.control.Either;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.security.PublicKey;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Nodes.collect;
 
 public class DataService {
 
@@ -20,20 +22,20 @@ public class DataService {
     Map<Criterion, List<Precedence>> criterionPrecedenceMap = fetchCriterionPrecedenceMap(rules);
     Map<String, DataRecord> recordMap = result.getDataRecords()
         .stream()
-        .collect(Collectors.toMap(d -> d.getDataSource().getId(), Function.identity()));
+        .collect(toMap(d -> d.getDataSource().getId(), identity()));
 
     Map<DataRecord, List<Criterion>> sourceCriteria = fetchSourceCriteriaMap(rules, criterionPrecedenceMap, recordMap);
 
     Set<DataRecord> recordsUsed = sourceCriteria.entrySet()
         .stream()
         .map(entry -> {
-          final var source = entry.getKey().getDataSource();
+          var source = entry.getKey().getDataSource();
           Either<Errors, Data> data = recordMap
               .get(source.getId())
               .getDataSource()
               .getData()
               .map(dataValue -> {
-                final var dataBuilder = Data.builder();
+                var dataBuilder = Data.builder();
                 buildData(dataBuilder, entry.getValue(),
                     recordMap.get(source.getId())
                         .errorsOrData()
@@ -48,7 +50,7 @@ public class DataService {
         })
         .collect(Collectors.toSet());
 
-    final var unmatchedDataSources = recordMap.values().stream()
+    var unmatchedDataSources = recordMap.values().stream()
         .map(e -> e.getDataSource())
         .filter(e -> !containsDataSource(recordsUsed, e))
         .map(e -> DataRecord.builder()
@@ -60,20 +62,25 @@ public class DataService {
     return Sets.union(recordsUsed, unmatchedDataSources);
   }
 
-  private void buildData(final Data.Builder dataBuilder, final List<Criterion> criteria, final Data data) {
+  private void buildData(Data.Builder dataBuilder, List<Criterion> criteria, Data data) {
     // Implementation depending on criteria
   }
 
-  public Map<Criterion, List<Precedence>> fetchCriterionPrecedenceMap(final Set<Rule> rules) {
+  // if the order is CRITICAL, change to TreeSet by the natural order of Precedence implements Comparable
+  // if the order is not critical stick to List
+//  List<Tuple<Criterion, List<Precedence>>>
+  public Map<Criterion, List<Precedence>> fetchCriterionPrecedenceMap(Set<Rule> rules) {
     return rules.stream()
         .map(Rule::getFilter)
         .map(Filter::dataSourcePrecedence)
         .flatMap(source -> source.values().stream()
-            .map(c -> Tuple.of(
-                c.criterion(),
-                new Precedence(source.sourceName(), c.value())
+            .map(field -> Tuple.of(
+                field.criterion(),
+                new Precedence(source.sourceName(), field.value())
             )))
-        .collect(Collectors.toMap(t -> t._1, t -> List.of(t._2), this::mergeAndSortLists));
+//        .collect(Collectors.toMap(t -> t._1, t -> List.of(t._2), this::mergeAndSortLists));
+        .collect(groupingBy(t -> t._1, mapping(t -> t._2, toList())));
+//        .collect(Collectors.groupingBy(t -> t._1, Collectors.mapping(t -> t._2, Collectors.toCollection(TreeSet::new))));
   }
 
   private List<Precedence> mergeAndSortLists(List<Precedence> list1, List<Precedence> list2) {
@@ -81,34 +88,38 @@ public class DataService {
     return null;
   }
 
-  private boolean containsDataSource(final Set<DataRecord> records, final DataSource dataSource) {
+  private boolean containsDataSource(Set<DataRecord> records, DataSource dataSource) {
     return records.stream().anyMatch(r -> r.getDataSource() == dataSource);
   }
 
   private Map<DataRecord, List<Criterion>> fetchSourceCriteriaMap(
-      final Set<Rule> rules,
-      final Map<Criterion, List<Precedence>> criterionSourcePrecedenceMap,
-      final Map<String, DataRecord> dataSourceMap) {
-    final var criteria = rules.stream()
+      Set<Rule> rules,
+      Map<Criterion, List<Precedence>> criterionSourcePrecedenceMap,
+      Map<String, DataRecord> dataSourceMap) {
+    var criteria = rules.stream()
         .flatMap(rule -> rule.getCriteria().stream())
         .collect(Collectors.toSet());
 
+
+    if (!criterionSourcePrecedenceMap.keySet().containsAll(criteria)) {
+      throw new IllegalArgumentException("Not all criteria are present in the precedence map");
+    }
+
     return criteria.stream()
-        .map(criterion -> Tuple.of(
-            criterion,
-            Optional.ofNullable(criterionSourcePrecedenceMap.get(criterion))
-                .orElseThrow(() -> new IllegalArgumentException(
-                    String.format("Unable to find criterion %s in precedence map", criterion)))))
+        .map(criterion -> Tuple.of(criterion, criterionSourcePrecedenceMap.get(criterion)))
         .map(t -> findFirstValidValue(t, dataSourceMap))
         .filter(t -> t._2.isPresent())
-        .collect(ImmutableMap.toImmutableMap(t -> t._2.get(), t -> List.of(t._1),
-            (criterionListA, criterionListB) -> ImmutableList.<Criterion>builder()
-                .addAll(criterionListA)
-                .addAll(criterionListB)
+        .collect(ImmutableMap.toImmutableMap(t -> t._2.get(), t -> List.of(t._1), //(map1, map2)=> map1+map2
+            (map1, map2) -> ImmutableList.<Criterion>builder()
+            // // TODO victorrentea 2024-01-31:  POTENTIAL PEFORMANCE ISSUE!!
+                .addAll(map1)
+                .addAll(map2)
                 .build()));
   }
+//  record WTF(Criterion criterion, List<Precedence> precedenceList) {
+//  }
 
-  private Tuple2<Criterion, Optional<DataRecord>> findFirstValidValue(final Tuple2<Criterion, List<Precedence>> t, final Map<String, DataRecord> dataSourceMap) {
+  private Tuple2<Criterion, Optional<DataRecord>> findFirstValidValue(Tuple2<Criterion, List<Precedence>> t, Map<String, DataRecord> dataSourceMap) {
     return null;
   }
 
@@ -121,9 +132,16 @@ public class DataService {
   private record Filter(DataSourcePrecedence dataSourcePrecedence) {
   }
 
-  public static class Precedence {
-    public Precedence(final String sourceName, final String value) {
+  public static class Precedence implements Comparable<Precedence>{
+    private final String value;
+
+    public Precedence(String sourceName, String value) {
       // Implementation
+      this.value = value;
+    }
+    public int compareTo(Precedence other) {
+      // Implementation
+      return value.compareTo(other.value);
     }
   }
 
@@ -180,11 +198,11 @@ public class DataService {
         return null;
       }
 
-      public Builder dataSource(final DataSource source) {
+      public Builder dataSource(DataSource source) {
         return null;
       }
 
-      public Builder data(final Either<Errors, Data> data) {
+      public Builder data(Either<Errors, Data> data) {
         return null;
       }
     }
