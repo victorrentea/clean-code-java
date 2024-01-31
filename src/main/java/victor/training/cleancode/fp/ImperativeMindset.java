@@ -6,13 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImperativeMindset {
+//  int sumField = 0;// on the heap.
   public int totalOrderPrice(List<Order> orders) {
-    int sum = 0;
-    orders.stream()
-        .filter(order -> order.isActive())
-        .forEach(order -> {
-          // imperative: let's *add* to the sum
-          // sum += order.getPrice();
+    // NEVER DO THIS:
+//    var ref = new Object() { // WTF is this !?!?!
+//      // anonymous class scoped to SINGLE METHOD!!
+//      int sum = 0;
+//    };
+//    final int[] sum = {0};
+//    AtomicInteger sum = new AtomicInteger();
+
+    int sum = 0; // this lives on Stack Frame of this thread running the method
+    orders.stream() // parallelStream would cause multithreadd access on stack frame
+        .filter(Order::isActive)
+        .forEach(e -> {
+          sum += e.getPrice();
         });
     return sum;
   }
