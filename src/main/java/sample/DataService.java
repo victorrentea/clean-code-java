@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.Nodes.collect;
@@ -24,7 +25,7 @@ public class DataService {
         .stream()
         .collect(toMap(d -> d.getDataSource().getId(), identity()));
 
-    Map<DataRecord, List<Criterion>> sourceCriteria = fetchSourceCriteriaMap(rules, criterionPrecedenceMap, recordMap);
+    Map<DataRecord, ImmutableList<Criterion>> sourceCriteria = fetchSourceCriteriaMap(rules, criterionPrecedenceMap, recordMap);
 
     Set<DataRecord> recordsUsed = sourceCriteria.entrySet()
         .stream()
@@ -92,7 +93,9 @@ public class DataService {
     return records.stream().anyMatch(r -> r.getDataSource() == dataSource);
   }
 
-  private Map<DataRecord, List<Criterion>> fetchSourceCriteriaMap(
+  // ImmutableList, ImmutableMap,..Set (guava) ROCK🤘
+  // declare them anywhere you can so that their clients know they should not touch this
+  private ImmutableMap<DataRecord, ImmutableList<Criterion>> fetchSourceCriteriaMap(
       Set<Rule> rules,
       Map<Criterion, List<Precedence>> criterionSourcePrecedenceMap,
       Map<String, DataRecord> dataSourceMap) {
@@ -104,20 +107,18 @@ public class DataService {
     if (!criterionSourcePrecedenceMap.keySet().containsAll(criteria)) {
       throw new IllegalArgumentException("Not all criteria are present in the precedence map");
     }
-
-    return criteria.stream()
+    /// BUT NEVER CLONE REPEATEDLY IMMUTABLE COLLECTIONS
+     Map<DataRecord, List<Criterion>> mutable = criteria.stream()
         .map(criterion -> Tuple.of(criterion, criterionSourcePrecedenceMap.get(criterion)))
         .map(t -> findFirstValidValue(t, dataSourceMap))
         .filter(t -> t._2.isPresent())
-        .collect(ImmutableMap.toImmutableMap(t -> t._2.get(), t -> List.of(t._1), //(map1, map2)=> map1+map2
-            (map1, map2) -> ImmutableList.<Criterion>builder()
-            // // TODO victorrentea 2024-01-31:  POTENTIAL PEFORMANCE ISSUE!!
-                .addAll(map1)
-                .addAll(map2)
-                .build()));
+        .collect(groupingBy(t -> t._2.get(), mapping(t -> t._1, toList()))); // mutable colelctions kept private inside the method for performance
+
+    return mutable.entrySet().stream()
+        .collect(toImmutableMap(
+            Map.Entry::getKey,
+            entry -> ImmutableList.copyOf(entry.getValue())));
   }
-//  record WTF(Criterion criterion, List<Precedence> precedenceList) {
-//  }
 
   private Tuple2<Criterion, Optional<DataRecord>> findFirstValidValue(Tuple2<Criterion, List<Precedence>> t, Map<String, DataRecord> dataSourceMap) {
     return null;
