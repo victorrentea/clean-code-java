@@ -1,13 +1,17 @@
 package sample;
 
 import io.vavr.control.Try;
+import org.jooq.lambda.Unchecked;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -97,12 +101,15 @@ public class FunctionalCodeExample {
     return Stream.of(t.get());
   }
 
-  private void process(final FooWrapper wrapped) {
-    final var foo = wrapped.foo();
+  private void process(FooWrapper wrapped)  {
+//    Future<Integer> f = executorService.submit(() -> 42);
+//    Integer i = f.get();
+    var foo = wrapped.foo();
     try {
+
       fooDao.insert(foo);
-      final Set<Result> results = executorService.invokeAll(toCallable(wrapped)).stream()
-          .map(tFuture -> Try.of(tFuture::get).onFailure(throwable -> logError("Couldn't get from future", throwable)).toJavaOptional())
+      Set<Result> results = executorService.invokeAll(toCallable(wrapped)).stream()
+          .map(Unchecked.function(Future::get))
           .flatMap(Optional::stream)
           .collect(Collectors.toSet());
 
@@ -116,8 +123,16 @@ public class FunctionalCodeExample {
     }
   }
 
-  private Set<Callable<Result>> toCallable(final FooWrapper wrapped) {
-    return null;
+  private Set<Callable<Optional<Result>>> toCallable(FooWrapper wrapped) {
+    return Set.of(()->{
+      try {
+        // stuff can throw
+        return Optional.of(new Result(true, () -> System.out.println("Success"), () -> System.out.println("Failure")));
+      } catch (Exception e) {
+        logError("bla", e);
+        return Optional.empty();
+      }
+    });
   }
 
   private FooWrapper wrap(Foo foo) {
@@ -131,20 +146,34 @@ public class FunctionalCodeExample {
 
   }
 
-  private void logError(final String someErrorMessage, final Throwable throwable) {
+  private void logError(String someErrorMessage, Throwable throwable) {
 
   }
 
 
   static class FooService {
     public Stream<Try<Foo>> fooStream() {
-      return fooNames().get().stream().map(name -> readFoos(name).of(is -> {
-            //do some more stuff here
-            //
-            //
-            return inputStreamToStorage(is).recoverWith(ex -> Try.failure(new RuntimeException("Throw some runtime exception here")));
-          })
-          .flatMap(Function.identity()));
+//      try (FileInputStream fis = new FileInputStream()) {
+//        System.out.println();
+//        fis.read();
+//      }
+      return fooNames().get()
+          .stream()
+//          .map(name -> readFoos(name).of(is -> {
+//            //do some more stuff here
+//            return inputStreamToStorage(is).recoverWith(ex -> Try.failure(new RuntimeException("Throw some runtime exception here")));
+//            // catch(ex) throw new RuntimeException("Throw some runtime exception here")
+//          })
+//          .flatMap(Function.identity()));
+          .map(this::readFoo);
+    }
+
+    private Try<Foo> readFoo(String fileName) {
+      try (InputStream is = new FileInputStream(fileName)) {
+        return inputStreamToStorage(is);
+      } catch (Exception e) {
+        return Try.failure(new RuntimeException("Throw some runtime exception here", e));
+      }
     }
 
     private Try<Foo> inputStreamToStorage(InputStream inputStream) {
@@ -152,7 +181,7 @@ public class FunctionalCodeExample {
       return Try.success(new Foo());
     }
 
-    private Try.WithResources1<InputStream> readFoos(final String name) {
+    private Try.WithResources1<InputStream> readFoos(String name) {
       return null;
     }
 
@@ -173,7 +202,7 @@ public class FunctionalCodeExample {
   }
 
   static class FooDao {
-    public void insert(final Foo foo) {
+    public void insert(Foo foo) {
 
     }
   }

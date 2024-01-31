@@ -43,6 +43,7 @@
         </dependency>
 
         <dependency>
+            <!-- the younger, lighter brother of vavr -->
             <groupId>org.jooq</groupId>
             <artifactId>jool</artifactId>
             <version>0.9.14</version>
