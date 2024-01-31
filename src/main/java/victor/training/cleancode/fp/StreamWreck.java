@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
 
 public class StreamWreck {
@@ -26,19 +27,21 @@ public class StreamWreck {
 
 		// Iterator, InputStream
 		// challenge in review any Stream<> as method return value or variable type.
-		Stream<Product> frequentProducts = productToItemCount.entrySet().stream()
+		List<Product> frequentProducts = productToItemCount.entrySet().stream()
 				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey);
+				.map(Entry::getKey)
+				.toList();
 
 		//risk:consume twice
-		if (frequentProducts.count()>100) {
+		if (frequentProducts.size()>100) {
 			throw new IllegalStateException("Too many products");
 		}
 
-		return frequentProducts
-				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
-				.collect(toList());
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds(); //1 DB hit only !!
+		return frequentProducts.stream()
+				.filter(not(Product::isDeleted))
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
+				.toList();
 	}
 
 	private boolean isRecent(Order order) {
