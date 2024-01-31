@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
@@ -18,23 +20,31 @@ public class StreamWreck {
 	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		Map<Product, Integer> productToItemCount = orders.stream()
 				.filter(Order::isActive)
-				.filter(this::lessThanAYearAgo)
+				.filter(Order::isRecent)
 				.flatMap(o -> o.getOrderLines().stream())
 				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)));
-		return productToItemCount
-				.entrySet()
-				.stream()
+
+		// Iterator, InputStream
+		// challenge in review any Stream<> as method return value or variable type.
+		Stream<Product> frequentProducts = productToItemCount.entrySet().stream()
 				.filter(e -> e.getValue() >= 10)
-				.map(Entry::getKey)
+				.map(Entry::getKey);
+
+		//risk:consume twice
+		if (frequentProducts.count()>100) {
+			throw new IllegalStateException("Too many products");
+		}
+
+		return frequentProducts
 				.filter(p -> !p.isDeleted())
 				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
 				.collect(toList());
 	}
 
-	// better name, shielding my eyes from LDate api
-	private boolean lessThanAYearAgo(Order o) {
-		return o.getCreationDate().isAfter(LocalDate.now().minusYears(1));
+	private boolean isRecent(Order order) {
+		return order.getCreationDate().isAfter(LocalDate.now().minusYears(1));
 	}
+
 }
 
 
