@@ -5,6 +5,7 @@ import org.jooq.lambda.Unchecked;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -192,6 +193,7 @@ public class FunctionalCodeExample {
 
 
   static class Foo {
+    List<String> rows;
     public UUID uuid() {
       return UUID.randomUUID();
     }
