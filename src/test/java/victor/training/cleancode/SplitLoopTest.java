@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +39,7 @@ public class SplitLoopTest {
 
       @Test
       public void consultantIdNull() {
-         consultant.setId(null);
+         consultant = consultant.toBuilder().id(null).build();
 
          String actual = splitLoop.computeStatsHard(asList(consultant));
 
@@ -49,8 +48,8 @@ public class SplitLoopTest {
 
       @Test
       public void throws_consultantSalaryNull_retrieveNull() {
-         consultant.setSalary(null);
-         when(employeeService.retrieveSalary(consultant.getId())).thenReturn(null);
+         consultant = consultant.toBuilder().salary(null).build();
+         when(employeeService.retrieveSalary(consultant.id())).thenReturn(null);
 
          assertThrows(RuntimeException.class, () ->
              splitLoop.computeStatsHard(asList(consultant)));
@@ -58,18 +57,18 @@ public class SplitLoopTest {
 
       @Test
       public void consultantSalaryNull_retrieveSalary_set() {
-         consultant.setSalary(null);
-         when(employeeService.retrieveSalary(consultant.getId())).thenReturn(3000);
+         consultant = consultant.toBuilder().salary(null).build();
+         when(employeeService.retrieveSalary(consultant.id())).thenReturn(3000);
 
          splitLoop.computeStatsHard(asList(consultant));
 
-         assertThat(consultant.getSalary()).isEqualTo(3000);
+         assertThat(consultant.salary()).isEqualTo(3000);
       }
 
       @Test
       public void consultantSalaryNull_retrieveSalary_avg() {
-         consultant.setSalary(null);
-         when(employeeService.retrieveSalary(consultant.getId())).thenReturn(3000);
+         consultant = consultant.toBuilder().salary(null).build();
+         when(employeeService.retrieveSalary(consultant.id())).thenReturn(3000);
          Employee consultant2 = new Employee(15, 56, 5000, true);
 
          String actual = splitLoop.computeStatsHard(asList(consultant, consultant2));

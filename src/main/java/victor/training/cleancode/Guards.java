@@ -1,9 +1,7 @@
 package victor.training.cleancode;
 
-import lombok.Data;
 import lombok.Value;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Guards {
@@ -12,15 +10,15 @@ public class Guards {
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
-    if (marine != null && (bonusPackage.getValue() > 100 || bonusPackage.getValue() < 10)) {
+    if (marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10)) {
       if (!isDead(marine)) {
-        if (!marine.isRetired()) {
-          if (marine.getYearsService() != null) {
-            result = marine.getYearsService() * 100 + bonusPackage.getValue();
-            if (!marine.getAwards().isEmpty()) {
+        if (!marine.retired()) {
+          if (marine.yearsService() != null) {
+            result = marine.yearsService() * 100 + bonusPackage.value();
+            if (!marine.awards().isEmpty()) {
               result += 1000;
             }
-            if (marine.getAwards().size() >= 3) {
+            if (marine.awards().size() >= 3) {
               result += 2000;
             }
             // HEAVY core logic here, business-rules ...
@@ -47,18 +45,10 @@ public class Guards {
 
 }
 
-@Value
-class Marine {
-  boolean dead;
-  boolean retired;
-  Integer yearsService;
-  List<Award> awards = new ArrayList<>();
-
+record Marine(boolean dead, boolean retired, Integer yearsService, List<Award> awards) {
 }
 
-@Data
-class BonusPackage {
-  int value;
+record BonusPackage(int value) {
 }
 
 class Award {

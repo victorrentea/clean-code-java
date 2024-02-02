@@ -1,10 +1,6 @@
 package victor.training.cleancode.fp.support;
 
-import lombok.Data;
-import victor.training.cleancode.fp.support.Product;
+import lombok.Value;
 
-@Data
-public class OrderLine {
-  private Product product;
-  private int itemCount;
+public record OrderLine(Product product, int itemCount) {
 }

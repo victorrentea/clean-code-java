@@ -1,8 +1,7 @@
 package victor.training.cleancode;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Builder;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +17,14 @@ public class SplitLoop {
         double averageSalary = 0;
         List<Integer> consultantIds = new ArrayList<>();
         for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                averageAge += employee.getAge();
+            if (!employee.consultant()) {
+                averageAge += employee.age();
             } else {
-                consultantIds.add(employee.getId());
+                consultantIds.add(employee.id());
             }
-            averageSalary += employee.getSalary();
+            averageSalary += employee.salary();
         }
-        averageAge = averageAge / employees.stream().filter(e -> !e.isConsultant()).count();
+        averageAge = averageAge / employees.stream().filter(e -> !e.consultant()).count();
         averageSalary = averageSalary / employees.size();
         System.out.println("Consultant IDs: " + consultantIds);
         return "Average age = " + averageAge + "; Average salary = " + averageSalary;
@@ -40,27 +39,27 @@ public class SplitLoop {
         long totalEmpAge = 0;
         double totalConsultantSalary = 0;
         for (Employee employee : employees) {
-            if (!employee.isConsultant()) {
-                totalEmpAge += employee.getAge();
+            if (!employee.consultant()) {
+                totalEmpAge += employee.age();
                 continue;
             }
-            if (employee.getId() == null) {
+            if (employee.id() == null) {
                 return "Employee(s) not persisted";
             }
-            if (employee.getSalary() == null) {
-                Integer salary = employeeService.retrieveSalary(employee.getId());
+
+            Integer salary = employee.salary();
+            if (salary == null) {
+                salary = employeeService.retrieveSalary(employee.id());
                 if (salary == null) {
-                    throw new RuntimeException("NO salary found for employee " + employee.getId());
-                } else {
-                    employee.setSalary(salary);
+                    throw new RuntimeException("NO salary found for employee " + employee.id());
                 }
             }
-            totalConsultantSalary += employee.getSalary();
+            totalConsultantSalary += salary;
         }
 
         long averageAge = 0;
         if (totalEmpAge != 0) {
-            averageAge = totalEmpAge / employees.stream().filter(e -> !e.isConsultant()).count();
+            averageAge = totalEmpAge / employees.stream().filter(e -> !e.consultant()).count();
         }
         double averageConsultantSalary = 0;
         if (totalConsultantSalary != 0) {
@@ -76,11 +75,6 @@ interface EmployeeService {
     Integer retrieveSalary(int employeeId);
 }
 
-@Data
-@AllArgsConstructor
-class Employee {
-    private Integer id;
-    private int age;
-    private Integer salary;
-    private boolean consultant;
+@Builder(toBuilder = true)
+record Employee(Integer id, int age, Integer salary, boolean consultant) {
 }

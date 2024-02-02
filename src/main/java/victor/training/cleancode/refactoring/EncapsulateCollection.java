@@ -1,6 +1,6 @@
 package victor.training.cleancode.refactoring;
 
-import lombok.Data;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,25 +29,16 @@ class HotelCharges {
         final double PARKING_HOUR_RATE = 2;
         totalFee = 0;
         for (HotelDayCharge day : days) {
-            totalFee += day.getDayRate();
-            if (day.isBreakfast()) {
+            totalFee += day.dayRate();
+            if (day.breakfast()) {
                 totalFee += BREAKFAST_FEE;
             }
-            totalFee += day.getParkingHours() * PARKING_HOUR_RATE;
+            totalFee += day.parkingHours() * PARKING_HOUR_RATE;
         }
     }
 }
 
-@Data
-class HotelDayCharge {
-    private double dayRate;
-    private boolean breakfast;
-    private int parkingHours;
-    private HotelCharges hotel;
-
-    public HotelDayCharge(double dayRate, boolean breakfast, int parkingHours) {
-        this.dayRate = dayRate;
-        this.breakfast = breakfast;
-        this.parkingHours = parkingHours;
-    }
+record HotelDayCharge(double dayRate,
+                      boolean breakfast,
+                      int parkingHours) {
 }

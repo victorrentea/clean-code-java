@@ -1,17 +1,14 @@
 package victor.training.cleancode.refactoring;
 
-import lombok.Data;
+import lombok.Value;
 
 public class ExtractVariable {
     public double computeTotalPrice(Order order) {
-        return order.getQuantity() * order.getItemPrice() -
-                Math.max(0, order.getQuantity() - 500) * order.getItemPrice() * 0.05 +
-                Math.min(order.getQuantity() * order.getItemPrice() * 0.1, 100);
+        return order.quantity() * order.itemPrice() -
+               Math.max(0, order.quantity() - 500) * order.itemPrice() * 0.05 +
+               Math.min(order.quantity() * order.itemPrice() * 0.1, 100);
     }
 }
 
-@Data
-class Order {
-    private int quantity;
-    private int itemPrice;
+record Order(int quantity, int itemPrice) {
 }

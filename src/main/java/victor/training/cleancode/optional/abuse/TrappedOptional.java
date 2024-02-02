@@ -10,9 +10,16 @@ public class TrappedOptional {
   static class MyDto {
     public String recipientPerson;
   }
-  @Data
   static class MyEntity {
     private String recipient;
+
+    public String getRecipient() {
+      return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+      this.recipient = recipient;
+    }
   }
 
   public void trappedOptional(MyDto dto) {

@@ -19,7 +19,7 @@ public class StreamWreck {
 				.filter(Order::isActive)
 				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
 				.flatMap(o -> o.getOrderLines().stream())
-				.collect(groupingBy(OrderLine::getProduct, summingInt(OrderLine::getItemCount)))
+				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
 				.entrySet()
 				.stream()
 				.filter(e -> e.getValue() >= 10)
