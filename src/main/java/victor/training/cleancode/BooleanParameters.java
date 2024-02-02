@@ -1,9 +1,6 @@
 package victor.training.cleancode;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +8,13 @@ import java.util.List;
 class SomeController {
   SomeService someService;
 
-  @GetMapping("blue/{storeId}")
-  public void blueEndpoint(@PathVariable int storeId, @RequestBody Task task) {
+//  @GetMapping("blue/{storeId}")
+  public void blueEndpoint(int storeId, Task task) {
     someService.blueMethod(storeId, task);
   }
 
-  @GetMapping("red/{storeId}")
-  public void redEndpoint(@PathVariable int storeId, @RequestBody Task task) {
+//  @GetMapping("red/{storeId}")
+  public void redEndpoint( int storeId,  Task task) {
     someService.redMethod(storeId, task);
   }
 }

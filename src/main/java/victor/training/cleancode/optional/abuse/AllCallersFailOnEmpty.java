@@ -1,19 +1,16 @@
 package victor.training.cleancode.optional.abuse;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.lang.reflect.ParameterizedType;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class AllCallersFailOnEmpty {
-  @Entity
-  private static class Tenant {
-    @Id
-    Long id;
+  //@Id
+  // Spring pretend
+  interface JpaRepository<T,PK> {
+    Optional<T> findById(PK id);
   }
-
   private interface BaseRepo<T,PK> extends JpaRepository<T, PK> {
     @SuppressWarnings("unchecked")
     default T findOneById(PK id) {
@@ -24,6 +21,10 @@ public class AllCallersFailOnEmpty {
     }
   }
 
+  //@Entity // pretend
+  private static class Tenant {
+    Long id;
+  }
 //  private interface TenantRepo extends BaseRepo<Tenant, Long> {
   private interface TenantRepo extends JpaRepository<Tenant, Long> {
   }

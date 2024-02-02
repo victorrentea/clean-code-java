@@ -1,7 +1,5 @@
 package victor.training.cleancode.kata.po;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,8 +7,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ValidatePurchaseOrderKata {
-  private static final Logger log = LoggerFactory.getLogger(ValidatePurchaseOrderKata.class);
-
   private Collection<Validator> getPurchaseOrderItemValidators() {
     throw new RuntimeException("Method not implemented");
   }
@@ -24,10 +20,9 @@ public class ValidatePurchaseOrderKata {
             .forEach(v -> {
               if (!v.validate(purchaseOrderItem)) {
                 result.set(Boolean.FALSE);
-                log.warn(
-                        "Purchase order item validation failed. id: {}. Validation: {}",
-                        purchaseOrderItem.getId(),
-                        v.getClass().getName()
+                System.err.println(
+                        "Purchase order item validation failed. id: "+purchaseOrderItem.getId()
+                        +". Validation: " + v.getClass().getName()
                 );
                 var message = new PurchaseOrderItemMessage();
                 message.setMessageClass(v.getClass().getSimpleName());

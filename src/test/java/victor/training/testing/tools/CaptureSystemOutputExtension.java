@@ -16,14 +16,10 @@
 
 package victor.training.testing.tools;
 
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 
 
 /**
@@ -47,16 +43,6 @@ class CaptureSystemOutputExtension implements BeforeEachCallback, AfterEachCallb
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        OutputCapture outputCapture = getOutputCapture(context);
-        try {
-            if (!outputCapture.matchers.isEmpty()) {
-                String output = outputCapture.toString();
-                assertThat(output, allOf(outputCapture.matchers));
-            }
-        }
-        finally {
-            outputCapture.releaseOutput();
-        }
     }
 
     @Override

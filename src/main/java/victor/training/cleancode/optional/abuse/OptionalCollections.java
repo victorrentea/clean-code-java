@@ -1,6 +1,5 @@
 package victor.training.cleancode.optional.abuse;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,9 @@ public class OptionalCollections {
   private static class Product {}
   private static class Coupon {}
   private static class Customer {}
-  private interface CustomerRepo extends JpaRepository<Customer, Long>{}
+  private interface CustomerRepo {
+    Optional<Customer> findById(Long id);
+  }
 
   private CustomerRepo customerRepo;
 

@@ -16,7 +16,6 @@
 
 package victor.training.testing.tools;
 
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.ByteArrayOutputStream;
@@ -28,6 +27,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -79,8 +79,6 @@ public @interface   CaptureSystemOutput {
      * {@code OutputCapture} in a JUnit Jupiter {@code @Test}, {@code @BeforeEach},
      * or {@code @AfterEach} method.
      *
-     * <p>{@linkplain #expect Expectations} are supported via Hamcrest matchers.
-     *
      * <p>To obtain all output to {@code System.out} and {@code System.err}, simply
      * invoke {@link #toString()}.
      *
@@ -89,8 +87,6 @@ public @interface   CaptureSystemOutput {
      * @author Sam Brannen
      */
     class OutputCapture {
-
-        final List<Matcher<? super String>> matchers = new ArrayList<>();
 
         private CaptureOutputStream captureOut;
 
@@ -120,17 +116,6 @@ public @interface   CaptureSystemOutput {
             catch (IOException ex) {
                 // ignore
             }
-        }
-
-        /**
-         * Verify that the captured output is matched by the supplied {@code matcher}.
-         *
-         * <p>Verification is performed after the test method has executed.
-         *
-         * @param matcher the matcher
-         */
-        public void expect(Matcher<? super String> matcher) {
-            this.matchers.add(matcher);
         }
 
         /**

@@ -1,16 +1,17 @@
 package victor.training.cleancode.refactoring;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExtractMethodObject_Validator {
-    @Autowired
-    private Validator validator;
+    private final Validator validator;
 
-    public void bizLogic() {
+  public ExtractMethodObject_Validator(Validator validator) {
+    this.validator = validator;
+  }
+
+  public void bizLogic() {
         List<String> errors = new ArrayList<>();
         validator.m1("a",1, errors);
         validator.m2("b",1, errors);
@@ -22,9 +23,9 @@ public class ExtractMethodObject_Validator {
         }
     }
 }
-@Service
+//@Service
 class Validator {
-    @Autowired
+//    @Autowired
 	private OtherDependency dep;
 
     public void m1(String a, int b, List<String> errors) {
@@ -50,7 +51,7 @@ class Validator {
     }
 }
 
-@Service
+//@Service
 class OtherDependency {
 
 }

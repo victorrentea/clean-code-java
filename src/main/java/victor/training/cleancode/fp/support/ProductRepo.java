@@ -1,10 +1,9 @@
 package victor.training.cleancode.fp.support;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProductRepo extends JpaRepository<Product, Long> {
+public interface ProductRepo  {
   List<Long> getHiddenProductIds();
-
+  List<Product> findAllById(List<Long> productIds);
 }
