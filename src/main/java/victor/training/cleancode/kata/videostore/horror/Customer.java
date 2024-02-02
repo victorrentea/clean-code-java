@@ -42,7 +42,8 @@ class Customer {
 					break;
 			}
 			// add frequent renter points
-			frequentRenterPoints++;
+			if (each.getPriceCode() != Movie.CHILDRENS)
+				frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if (each.getPriceCode() != null &&
 				 (each.getPriceCode() == Movie.NEW_RELEASE)
