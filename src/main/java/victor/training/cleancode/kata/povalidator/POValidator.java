@@ -22,7 +22,7 @@ public class POValidator {
             result.set(Boolean.FALSE);
             System.err.println("PO id=" + poItem.getId() + " failed " + v.getClass().getName());
             var message = new POItemMessage();
-            message.setType(SAPMessageType.ERROR); // Hint: the following 3 lines repeat somewhere else in code
+            message.setType(SAPMessageType.ERROR);
             message.setMessageClass(v.getClass().getSimpleName());
             message.setText(v.message(poItem));
             poItem.addMessage(message);
@@ -36,11 +36,11 @@ public class POValidator {
 // ========= SUPPORT CODE =======
 
 class POItem {
-  enum Status {SUCCESS, ERROR}
+  enum Status {SUCCESS, ERROR, NEW}
 
   private Long id;
-  private Status status;
-  private List<POItemMessage> messages = new ArrayList<>();
+  private Status status = Status.NEW;
+  private final List<POItemMessage> messages = new ArrayList<>();
 
   public Long getId() {
     return id;
