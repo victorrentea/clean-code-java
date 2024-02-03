@@ -1,4 +1,4 @@
-package victor.training.cleancode.kata.videostore.horror;
+package victor.training.cleancode.kata.videostore;
 public class Movie {
 	public static final int CHILDRENS = 2;
 	public static final int REGULAR = 0;
