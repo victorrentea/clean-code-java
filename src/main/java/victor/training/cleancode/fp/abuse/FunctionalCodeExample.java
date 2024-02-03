@@ -25,7 +25,7 @@
 //    this.executorService = executorService;
 //  }
 //
-//  public void processAll() {
+//  public void processAllFiles() {
 //    dataFileService.downloadDataFile()
 //        .flatMap(t -> streamTryResult(t, throwable -> logError("Download failed", throwable)))
 //        .map(dataFile -> Try.of(() -> wrap(dataFile)))
