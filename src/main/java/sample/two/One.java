@@ -1,10 +1,21 @@
 package sample.two;
 
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 // ivr = interactive voice response ("voce robot")
 public class One {
-  @Override
+  private final RecordingDecisionManager recordingDecisionManager;
+  private static final Logger logger = LoggerFactory.getLogger(One.class);
+
+  public One(RecordingDecisionManager recordingDecisionManager) {
+    this.recordingDecisionManager = recordingDecisionManager;
+  }
+
+//  @Override
   public void stopSegment(DataSegment dataSegment) {
     boolean ivrStopSegment = dataSegment.getChannelType() == ChannelType.PHONE_CALL_IVR;
     logger.info(ivrStopSegment ? "Stop IVR segment" : "Stop segment");
@@ -31,9 +42,6 @@ public class One {
     processStartDecisions(recordingDecisions);
   }
 
-  public void stopSegment(DataSegment dataSegment) {
-    // Your existing code
-  }
 
   private boolean isAllParticipantsAreNonOrganizationParticipants(DataSegment dataSegment) {
     // TODO: implement this method
@@ -71,5 +79,4 @@ public class One {
   private void handleParallelScreen(List<Decision> recordingDecisions, Runnable actionProvider) {
     // TODO: implement this method
   }
-}
 }
