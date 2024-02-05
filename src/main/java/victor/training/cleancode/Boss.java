@@ -9,13 +9,13 @@ import java.util.List;
 public class Boss {
 
   // 👌 TODO run tests
-  public void bossLevel(boolean b, List<Task> tasks, boolean cr323) {
+  public void bossLevel(boolean forEU, List<Task> tasks, boolean cr323) {
     int index = 0;
     int taskSize = tasks.size();
     if (tasks.size() == 0) return;
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
-    if (b) {
+    if (forEU) {
       System.out.println("Logic3");
       check(tasks);
       for (Task task : tasks) {
