@@ -29,7 +29,7 @@ class Pure {
       if (price == null) {
         price = thirdPartyPricesApi.fetchPrice(product.getId());
       }
-      for (Coupon coupon : customer.getCoupons()) {
+      for (Coupon coupon : customer.coupons()) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {
           price = coupon.apply(product, price);
           usedCoupons.add(coupon);

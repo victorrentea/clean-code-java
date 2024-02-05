@@ -1,6 +1,5 @@
 package victor.training.cleancode.exception;
 
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +11,7 @@ import java.util.Date;
 import java.util.Properties;
 
 
-@Component
+//@Component
 public class Config {
 
    public Date getLastPromoDate() {

@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
 @SuppressWarnings("unused")
-@Service
 @RequiredArgsConstructor
 public class Exercise {
    private final ProjectServicesService projectServicesService;

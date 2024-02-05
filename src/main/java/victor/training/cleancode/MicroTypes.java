@@ -3,7 +3,6 @@ package victor.training.cleancode;
 import com.google.common.collect.Maps;
 import org.jooq.lambda.tuple.Tuple;
 import org.jooq.lambda.tuple.Tuple2;
-import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +24,6 @@ public class MicroTypes {
   }
   //</editor-fold>
 
-  @Test
   void primitiveObsession() {
     Map<Long, Map<String, Integer>> map = fetchData();
 
@@ -54,7 +52,6 @@ public class MicroTypes {
   }
   //</editor-fold>
 
-  @Test
   void lackOfAbstractions() {
     Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
     // Joke: try "var" above :)

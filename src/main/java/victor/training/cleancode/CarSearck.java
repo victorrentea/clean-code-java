@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,9 +62,9 @@ class CarSearchCriteria { // smells like JSON ...
     }
 }
 
-@Entity
+// @Entity
 class CarModel { // the holy Entity Model
-    @Id
+    // @Id
     private Long id;
     private String make;
     private String model;

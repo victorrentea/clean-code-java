@@ -16,20 +16,16 @@ public class CombineFunctionsIntoTransform {
 
     // TODO go through preserve Whole Object
     public String generateTicket(Ticket ticket) {
-        String invoice = "Invoice for " + ticket.getCustomerName() + "\n";
-        invoice += "QR Code: " + generateQRCode(ticket.getCode()) + "\n";
-        invoice += "Address: " + getAddress(ticket.getEventId()) + "\n";
+        String invoice = "Invoice for " + ticket.customerName() + "\n";
+        invoice += "QR Code: " + generateQRCode(ticket.code()) + "\n";
+        invoice += "Address: " + getAddress(ticket.eventId()) + "\n";
         invoice += "Please arrive 20 minutes before the start of the event\n";
         invoice += "In case of emergency, call 0899898989\n";
         return invoice;
     }
 }
 
-
-// ----- SUPPORTING, DUMMY CODE ------
-@Data
-class Ticket {
-    private final String customerName;
-    private final String code;
-    private final long eventId;
+record Ticket(String customerName,
+              String code,
+              long eventId) {
 }

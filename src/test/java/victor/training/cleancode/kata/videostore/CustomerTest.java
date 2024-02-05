@@ -1,4 +1,4 @@
-package victor.training.cleancode.kata.videostore.horror;
+package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
 
