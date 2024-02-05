@@ -14,7 +14,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(new Task(5)), false);
+      target.bossLevel(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -28,7 +28,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(new Task(5)), true);
+      target.bossLevel323(ImmutableList.of(new Task(5)));
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -44,7 +44,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(), false);
+      target.bossLevel(ImmutableList.of());
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("");
@@ -63,7 +63,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(ImmutableList.of(new Task(5),new Task(6)), false);
+      target.bossLevel(ImmutableList.of(new Task(5),new Task(6)));
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())
