@@ -14,18 +14,25 @@ public class Boss {
     System.out.println("Logic1");
     System.out.println("Logic3");
     check(tasks);
+    // we learned that fors COST TIME : O(N), O(N^2), if nested on on a  large collection
+    // > performance hit? only if your response time < 1 ms (eg 50 microsec), 1 DB hit = 5-10ms
+    // > bugs because actions happen in the wrong order
     List<Integer> taskIds = new ArrayList<>();
     int index = 0;
     for (Task task : tasks) {
       System.out.println("Starting " + task);
       task.setStarted(true);
-
+    }
+    for (Task task : tasks) {
       taskIds.add(task.getId());
-
+    }
+    for (Task task : tasks) {
       if (cr323) { // TODO remove the boolean
         System.out.println("My Logic: " + task);
       }
-
+    }
+    for (Task task : tasks) {
+      // audit task
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
