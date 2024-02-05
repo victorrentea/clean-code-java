@@ -18,33 +18,39 @@ class CarSearch {
         int end1 = criteria.getEndYear();
         int start2 = carModel.getStartYear();
         int end2 = carModel.getEndYear();
-        return MathUtil.intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+        return new Interval(start1, end1).intersects(new Interval(start2, end2));
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+
+
+//        new Interval(1, 3).intersects(new Interval(2, 4));
+        // new causes performance?
+
     }
 
 }
-
 class MathUtil {
-    public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-        return interval1.end() >= interval2.start() && interval1.start() <= interval2.end();
-    }
+    // destroying this static method forces the caller to use my Interval
+    // or, unaware of Interval, will write their own (buggy) implementation of intersects
 }
 
 // Value Object: grouping of data, immutable small
 record Interval(int start, int end) {
+    public boolean intersects(Interval other) {
+        return end >= other.start && start <= other.end;
+    }
 }
 
 
