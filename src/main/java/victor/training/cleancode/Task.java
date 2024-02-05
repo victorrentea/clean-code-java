@@ -22,4 +22,11 @@ public class Task {
   public boolean isStarted() {
     return started;
   }
+  @Override
+  public String toString() {
+    return "Task(" +
+           "id=" + id +
+           ", started=" + started +
+           ')';
+  }
 }
