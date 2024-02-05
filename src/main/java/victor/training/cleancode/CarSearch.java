@@ -14,11 +14,10 @@ class CarSearch {
     }
 
     private boolean matchesYears(CarSearchCriteria criteria, CarModel carModel) {
-        int start1 = criteria.getStartYear();
-        int end1 = criteria.getEndYear();
-        int start2 = carModel.getStartYear();
-        int end2 = carModel.getEndYear();
-        return new Interval(start1, end1).intersects(new Interval(start2, end2));
+        // what if criteria gave me an interval ??
+      return new Interval(criteria.startYear(), criteria.endYear())
+//        criteria.yearInterval()
+          .intersects(new Interval(carModel.startYear(), carModel.endYear()));
     }
 
     private void applyCapacityFilter() {
@@ -66,11 +65,11 @@ class CarSearchCriteria { // smells like JSON ...
         this.endYear = endYear;
     }
 
-    public int getStartYear() {
+    public int startYear() {
         return startYear;
     }
 
-    public int getEndYear() {
+    public int endYear() {
         return endYear;
     }
 
@@ -103,11 +102,11 @@ class CarModel { // the holy Entity Model
         return id;
     }
 
-    public int getEndYear() {
+    public int endYear() {
         return endYear;
     }
 
-    public int getStartYear() {
+    public int startYear() {
         return startYear;
     }
 
@@ -135,8 +134,8 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.startYear();
+        dto.endYear = carModel.endYear();
         return dto;
     }
 
