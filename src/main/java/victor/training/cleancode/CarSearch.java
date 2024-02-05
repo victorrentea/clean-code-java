@@ -38,11 +38,9 @@ class Alta {
 }
 
 class MathUtil {
-    // dream:
     public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
         return interval1.end() >= interval2.start() && interval1.start() <= interval2.end();
     }
-    // present:
 }
 
 // Value Object: grouping of data, immutable small
