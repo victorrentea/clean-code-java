@@ -40,6 +40,9 @@ class MathUtil {
 
 // Value Object: grouping of data, immutable small
 record Interval(int start, int end) {
+    public Interval {
+        if (start > end) throw new IllegalArgumentException("start larger than end");// fail fast(ER)
+    }
     public boolean intersects(Interval other) {
         return end >= other.start && start <= other.end;
     }
@@ -86,11 +89,10 @@ class CarModel { // the holy Entity Model
     private final Interval interval;
 
 
-    public CarModel(String make, String model, int startYear, int endYear) {
+    public CarModel(String make, String model, Interval interval) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.interval = new Interval(startYear, endYear);
+        this.interval = interval;
     }
 
     public Interval yearInterval() {
@@ -135,7 +137,7 @@ class CarModelMapper {
     }
 
     public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+        return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
     }
 }
 
