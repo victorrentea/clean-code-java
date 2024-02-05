@@ -7,17 +7,10 @@ class CarSearch {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
         List<CarModel> results = carModels.stream()
-                .filter(carModel -> matchesYears(criteria, carModel))
+                .filter(carModel -> criteria.yearInterval().intersects(carModel.yearInterval()))
                 .toList(); // hope the caller doesn't do .add .remove
         System.out.println("More filtering logic ...");
         return results;
-    }
-
-    private boolean matchesYears(CarSearchCriteria criteria, CarModel carModel) {
-        // what if criteria gave me an interval ??
-      return new Interval(criteria.startYear(), criteria.endYear())
-//        criteria.yearInterval()
-          .intersects(new Interval(carModel.startYear(), carModel.endYear()));
     }
 
     private void applyCapacityFilter() {
@@ -53,9 +46,11 @@ record Interval(int start, int end) {
 }
 
 
+// ⚠️⚠️⚠️ Don't break the API contract
 class CarSearchCriteria { // smells like JSON ...
     private final int startYear;
     private final int endYear;
+//    private final Interval years;
     private final String make;
 
     public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -63,6 +58,10 @@ class CarSearchCriteria { // smells like JSON ...
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
+    }
+
+    public Interval yearInterval() {
+        return new Interval(startYear, endYear);
     }
 
     public int startYear() {
@@ -82,32 +81,24 @@ class CarSearchCriteria { // smells like JSON ...
 class CarModel { // the holy Entity Model
     // @Id
     private Long id;
-    private String make;
-    private String model;
-    private int startYear;
-    private int endYear;
+    private final String make;
+    private final String model;
+    private final Interval interval;
 
-    protected CarModel() {
-    } // for Hibernate
 
     public CarModel(String make, String model, int startYear, int endYear) {
         this.make = make;
         this.model = model;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        this.interval = new Interval(startYear, endYear);
+    }
+
+    public Interval yearInterval() {
+        return interval;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int endYear() {
-        return endYear;
-    }
-
-    public int startYear() {
-        return startYear;
     }
 
     public String getMake() {
@@ -134,8 +125,12 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.startYear();
-        dto.endYear = carModel.endYear();
+        dto.startYear = carModel.yearInterval().start();
+        dto.endYear = carModel.yearInterval().end();
+        dto.endYear = carModel.yearInterval().end();
+        dto.endYear = carModel.yearInterval().end();
+        dto.endYear = carModel.yearInterval().end();
+        dto.endYear = carModel.yearInterval().end();
         return dto;
     }
 
