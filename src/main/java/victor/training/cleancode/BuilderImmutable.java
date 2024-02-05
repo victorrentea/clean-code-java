@@ -5,7 +5,7 @@ import lombok.Value;
 
 public class BuilderImmutable {
   public static void main(String[] args) {
-    new BigImmutable(1, 2, 3, 4, 5, 6);
+    new BigImmutable(new AB(1,2), 3, 4, 5, 6);
     // Builder in java fixes a language problem, the lack of "named parameters".
 
     BigImmutable bigImmutable = BigImmutable.builder()
