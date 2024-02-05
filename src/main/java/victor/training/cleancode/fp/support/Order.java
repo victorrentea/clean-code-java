@@ -55,4 +55,7 @@ public class Order {
     return this;
   }
 
+  public boolean isRecent(LocalDate now) {
+    return getCreationDate().isAfter(now.minusYears(1));
+  }
 }
