@@ -8,6 +8,7 @@ public class Guards {
 
   public static final int DEAD_PAY_AMOUNT = 1;
 
+
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
     if (marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10)) {
