@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.Value;
-
 import java.util.List;
 
 public class Guards {
@@ -10,30 +8,33 @@ public class Guards {
 
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
-    int result;
-    if (marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10)) {
-      if (!isDead(marine)) {
-        if (!marine.retired()) {
-          if (marine.yearsService() != null) {
-            result = marine.yearsService() * 100 + bonusPackage.value();
-            if (!marine.awards().isEmpty()) {
-              result += 1000;
-            }
-            if (marine.awards().size() >= 3) {
-              result += 2000;
-            }
-            // HEAVY core logic here, business-rules ...
-          } else {
-            throw new IllegalArgumentException("Any marine should have the years of service set");
-          }
-        } else result = retiredAmount();
-      } else {
-        result = DEAD_PAY_AMOUNT;
-      }
-    } else{
-      throw new IllegalArgumentException("Not applicable!");
+    if (marine == null || (bonusPackage.value() <= 100 && bonusPackage.value() >= 10)) {
+      throw new IllegalArgumentException("Not applicable!"); // fail fast
     }
-    return result; // TODO ALT-ENTER move return closer
+    if (isDead(marine)) {
+      return DEAD_PAY_AMOUNT;
+    }
+    if (marine.retired()) {// guard condition
+      return retiredAmount(); // early return
+    }
+    if (marine.yearsService() == null) {
+      throw new IllegalArgumentException("Any marine should have the years of service set");
+    }
+    int result = marine.yearsService() * 100 + bonusPackage.value();
+    if (!marine.awards().isEmpty()) {
+      result += 1000;
+    }
+    if (marine.awards().size() >= 3) {
+      result += 2000;
+    }
+    // HEAVY core logic here, business-rules ...
+    return result;
+  }
+
+  // too explicit name; spelling out the body> names should tell WHAT not HOW
+//  private boolean marineNotNullAndBonusIsRight(Marine marine, BonusPackage bonusPackage) {
+  private boolean isEligibleForBonus(Marine marine, BonusPackage bonusPackage) {// not enough
+    return marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10);
   }
 
   private boolean isDead(Marine marine) {
