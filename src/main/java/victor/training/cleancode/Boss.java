@@ -11,7 +11,7 @@ public class Boss {
   // 👌 TODO run tests
   public void bossLevel(boolean forEU, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int taskCount = tasks.size();
+    int taskSize = tasks.size();
     if (tasks.size() == 0) return;
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
@@ -31,7 +31,7 @@ public class Boss {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
-      System.out.println("Logic6 " + taskCount);
+      System.out.println("Logic6 " + taskSize);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
