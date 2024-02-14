@@ -31,7 +31,7 @@ public class Guards {
     return result;
   }
 
-  // too explicit name; spelling out the body> names should tell WHAT not HOW
+  // too explicit productName; spelling out the body> names should tell WHAT not HOW
 //  private boolean marineNotNullAndBonusIsRight(Marine marine, BonusPackage bonusPackage) {
   private boolean isEligibleForBonus(Marine marine, BonusPackage bonusPackage) {// not enough
     return marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10);
