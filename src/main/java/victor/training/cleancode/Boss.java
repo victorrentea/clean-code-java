@@ -12,7 +12,8 @@ public class Boss {
   public void bossLevel(boolean bulgaria, List<Task> tasks, boolean cr323) {
     int index = 0;
     int taskCount = tasks.size();
-    if (tasks.size() == 0) return;
+//    if (tasks.size() == 0) return;
+    if (tasks.isEmpty()) return;
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (bulgaria) {
