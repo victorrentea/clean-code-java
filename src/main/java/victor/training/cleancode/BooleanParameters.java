@@ -40,7 +40,7 @@ class SomeService {
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO The shared called method must execute logic specific for my use-case #323
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethodAdelin(id, task);
   }
 }
 
@@ -53,6 +53,17 @@ public class BooleanParameters {
     System.out.println("Donkey Logic 3 " + task);
 
     // System.out.println("Logic just for CR#323 : " + task);
+
+    System.out.println("Sheep Logic 1 " + storeId);
+    System.out.println("Sheep Logic 2 " + storeId);
+    System.out.println("Sheep Logic 3 " + storeId);
+  }
+  public static void bigUglyMethodAdelin(int storeId, Task task) {
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+
+     System.out.println("Logic just for CR#323 : " + task);
 
     System.out.println("Sheep Logic 1 " + storeId);
     System.out.println("Sheep Logic 2 " + storeId);
