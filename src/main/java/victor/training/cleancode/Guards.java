@@ -17,6 +17,7 @@ public class Guards {
             result = marine.yearsService() * 100 + bonusPackage.value();
             if (!marine.awards().isEmpty()) {
               result += 1000;
+
             }
             if (marine.awards().size() >= 3) {
               result += 2000;
