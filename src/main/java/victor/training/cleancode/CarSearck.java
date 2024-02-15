@@ -11,13 +11,7 @@ class CarSearck {
   // see tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> {
-          int start1 = criteria.getStartYear();
-          int end1 = criteria.getEndYear();
-          int start2 = carModel.yearInterval().start();
-          int end2 = carModel.yearInterval().end();
-          return new Interval(start1, end1).intersects(new Interval(start2, end2));
-        })
+        .filter(carModel -> criteria.yearInterval().intersects(carModel.yearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
@@ -72,6 +66,10 @@ class CarSearchCriteria { // smells like JSON ... = API in general eviti sa-l st
 
   public String getMake() {
     return make;
+  }
+
+  public Interval yearInterval() {
+    return new Interval(getStartYear(), getEndYear());
   }
 }
 
