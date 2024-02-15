@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
+import lombok.With;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -12,39 +14,21 @@ public class ImmutableAdvanced {
       Immutable immutable = new Immutable(1, numbers, new Other(15));
       System.out.println("Before: " + immutable);
 
-      wilderness(immutable);
+      Immutable changed = wilderness(immutable);
 
       System.out.println("After:  " + immutable);
    }
 
-   private static void wilderness(Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // dark, deep logic
+      return immutable.withX(2);
    }
 }
 
-class Immutable {
-   private final Integer x;
-   private final List<Integer> numbers;
-   private final Other other;
-
-   Immutable(Integer x, List<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public List<Integer> getNumbers() {
-      return numbers;
-   }
-   public Integer getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
-   }
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+record Immutable( Integer x, List<Integer> numbers, Other other) {
+    public Immutable withX(Integer x) {
+        return new Immutable(x, numbers, other);
+    }
 }
 
 class Other {
