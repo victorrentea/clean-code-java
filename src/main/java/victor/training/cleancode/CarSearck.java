@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,8 +14,8 @@ class CarSearck {
         .filter(carModel -> {
           int start1 = criteria.getStartYear();
           int end1 = criteria.getEndYear();
-          int start2 = carModel.getStartYear();
-          int end2 = carModel.getEndYear();
+          int start2 = carModel.yearInterval().start();
+          int end2 = carModel.yearInterval().end();
           return new Interval(start1, end1).intersects(new Interval(start2, end2));
         })
         .collect(Collectors.toList());
@@ -36,13 +39,18 @@ class Alta {
 class MathUtil {
 
 }
+
+@Embeddable
 record Interval (int start, int end) {
+  public Interval {
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
   public boolean intersects(Interval other) {
      return start <= other.end && other.start <= end;
   }
 }
 
-class CarSearchCriteria { // smells like JSON ...
+class CarSearchCriteria { // smells like JSON ... = API in general eviti sa-l strici
   private final int startYear;
   private final int endYear;
   private final String make;
@@ -68,35 +76,31 @@ class CarSearchCriteria { // smells like JSON ...
 }
 
 // @Entity
-class CarModel { // the holy Entity Model
+class CarModel { // the holy Entity Model mapat cu Spring pe Tabele
   // @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+//  private int startYear;
+//  private int endYear;
+  @Embedded
+  private Interval yearInterval; // DB schema nu se modifica
 
   protected CarModel() {
   } // for Hibernate
 
-  public CarModel(String make, String model, int startYear, int endYear) {
+  public CarModel(String make, String model, Interval yearInterval) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = yearInterval;
   }
 
   public Long getId() {
     return id;
   }
 
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
+  public Interval yearInterval() {
+    return yearInterval;
   }
 
   public String getMake() {
@@ -123,13 +127,13 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.yearInterval().start();
+    dto.endYear = carModel.yearInterval().end();
     return dto;
   }
 
   public CarModel fromDto(CarModelDto dto) {
-    return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+    return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
   }
 }
 
