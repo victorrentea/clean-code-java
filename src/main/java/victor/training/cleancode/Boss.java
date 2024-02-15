@@ -1,8 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.Data;
-
-import java.util.ArrayList;
 import java.util.List;
 
 // Deep nested functions are harder to break down
@@ -10,33 +7,42 @@ public class Boss {
 
   // 👌 TODO run tests
   public void bossLevel(boolean bulgaria, List<Task> tasks, boolean cr323) {
-    int index = 0;
     int taskCount = tasks.size();
     if (tasks.isEmpty()) return;
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     if (bulgaria) {
       System.out.println("Logic3");
       check(tasks);
-      for (Task task : tasks) {
-        System.out.println("Starting " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO remove the boolean
+      startTasks(tasks);
+      if (cr323) { // TODO remove the boolean
+        for (Task task : tasks) {
           System.out.println("My Logic: " + task);
         }
-
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
       }
+      auditTasks(tasks);
+      List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
       System.out.println("Logic6 " + taskCount);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
     }
     System.out.println("Logic8");
+  }
+
+  private void auditTasks(List<Task> tasks) {
+    int index = 0;
+    for (Task task : tasks) {
+      // audit
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+  }
+
+  private void startTasks(List<Task> tasks) {
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
   }
 
   private void check(List<Task> tasks) {
