@@ -13,25 +13,28 @@ import static java.util.stream.Collectors.joining;
 public class MicroTypes {
 
   //<editor-fold desc="fetchData()">
-  public Map<Long, Map<String, Integer>> fetchData() {
-    Long customerId = 1L;
+  public Map<CustomerId, List<ProductCount>> fetchData() {
+    CustomerId customerId = new CustomerId(1L);
     Integer product1Count = 2;
     Integer product2Count = 4;
-    return Map.of(customerId, Map.of(
-            "Table", product1Count,
-            "Chair", product2Count
+    return Map.of(customerId, List.of(
+            new ProductCount("Table", product1Count),
+            new ProductCount("Chair", product2Count)
     ));
   }
   //</editor-fold>
 
+  record CustomerId(Long id) {}
+  private record ProductCount(String name, Integer count) {}
+
   void primitiveObsession() {
-    Map<Long, Map<String, Integer>> map = fetchData();
+    Map<CustomerId, List<ProductCount>> map = fetchData();
 
     for (var e : map.entrySet()) { // iterating map entries 🤢
-      String pl = e.getValue().entrySet().stream()
-              .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+      String pl = e.getValue().stream()
+              .map(productCount -> productCount.count() + " pcs. of " + productCount.name)
               .collect(joining(", "));
-      System.out.println("cid=" + e.getKey() + " got " + pl);
+      System.out.println("cid=" + e.getKey().id() + " got " + pl);
     }
   }
 
