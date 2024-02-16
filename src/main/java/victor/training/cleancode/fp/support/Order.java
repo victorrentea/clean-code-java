@@ -2,11 +2,13 @@ package victor.training.cleancode.fp.support;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class Order {
   private Long id;
   private List<OrderLine> orderLines;
   private LocalDate creationDate;
+  private LocalDate shipDate;
   private boolean active;
   private int price;
 
@@ -20,6 +22,10 @@ public class Order {
 
   public LocalDate getCreationDate() {
     return creationDate;
+  }
+
+  public Optional<LocalDate> shipDate() {
+    return Optional.ofNullable(shipDate);
   }
 
   public boolean isActive() {
@@ -42,6 +48,11 @@ public class Order {
 
   public Order setCreationDate(LocalDate creationDate) {
     this.creationDate = creationDate;
+    return this;
+  }
+
+  public Order setShipDate(LocalDate shipDate) {
+    this.shipDate = shipDate;
     return this;
   }
 

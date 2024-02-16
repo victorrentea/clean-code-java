@@ -2,6 +2,7 @@ package victor.training.cleancode.fp;
 
 import victor.training.cleancode.fp.support.Order;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,13 @@ public class ImperativeMindset {
   }
 
 
-  public List<Integer> getOrderPrices(List<Order> orders) {
-    List<Integer> prices = new ArrayList<>();
+  public List<LocalDate> getShipDates(List<Order> orders) {
+    List<LocalDate> shipDates = new ArrayList<>();
     orders.stream()
         .filter(order -> order.isActive())
         .forEach(order -> {
-          prices.add(order.getPrice());
+          order.shipDate().ifPresent(date -> shipDates.add(date));
         });
-    return prices;
+    return shipDates;
   }
 }
