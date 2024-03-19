@@ -9,10 +9,10 @@ import java.util.List;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ImperativeMindsetTest {
+class MutantPipelineTest {
   @Test
   void totalOrderPrice() {
-    int total = new ImperativeMindset().totalOrderPrice(List.of(
+    int total = new MutantPipeline().totalOrderPrice(List.of(
         new Order().setPrice(10).setActive(true),
         new Order().setPrice(5).setActive(true),
         new Order().setPrice(3).setActive(false)
@@ -23,7 +23,7 @@ class ImperativeMindsetTest {
 
   @Test
   void getShipDates() {
-    List<LocalDate> total = new ImperativeMindset().getShipDates(List.of(
+    List<LocalDate> total = new MutantPipeline().getShipDates(List.of(
         new Order().setShipDate(now()).setActive(true),
         new Order().setShipDate(null).setActive(true),
         new Order().setShipDate(now()).setActive(false)
