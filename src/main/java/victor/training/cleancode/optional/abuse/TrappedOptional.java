@@ -26,16 +26,13 @@ public class TrappedOptional {
     MyEntity entity = new MyEntity();
     Optional.ofNullable(dto.recipientPerson)
             .map(String::toUpperCase)
-            .ifPresent(name -> {
-              entity.setRecipient(name);
-            });
+            .ifPresent(name -> entity.setRecipient(name));
+
   }
 
   public void trappedOptionalWithExternalSideEffect(MyDto dto) {
     Optional.ofNullable(dto.recipientPerson)
             .map(String::toUpperCase)
-            .ifPresent(name -> {
-              kafkaSend(name);
-            });
+            .ifPresent(name -> kafkaSend(name));
   }
 }
