@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.Value;
-
 import java.util.List;
 
 public class Guards {
@@ -10,6 +8,7 @@ public class Guards {
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
+
     if (marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10)) {
       if (!isDead(marine)) {
         if (!marine.retired()) {
@@ -30,7 +29,7 @@ public class Guards {
       } else {
         result = DEAD_PAY_AMOUNT;
       }
-    } else{
+    } else {
       throw new IllegalArgumentException("Not applicable!");
     }
     return result; // TODO ALT-ENTER move return closer
