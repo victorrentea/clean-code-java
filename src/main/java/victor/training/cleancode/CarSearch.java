@@ -8,33 +8,37 @@ class CarSearch {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
         List<CarModel> results = carModels.stream()
-                .filter(carModel -> MathUtil.intervalsIntersect(
-                        criteria.getStartYear(), criteria.getEndYear(),
-                        carModel.getStartYear(), carModel.getEndYear()))
+                .filter(carModel -> yearsIntersect(criteria, carModel))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic ...");
         return results;
     }
 
+    private boolean yearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
+        return MathUtil.intersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(carModel.getStartYear(), carModel.getEndYear()));
+    }
+
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(MathUtil.intersect(new Interval(1000, 1600), new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+        System.out.println(MathUtil.intersect(new Interval(1000, 1600), new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
 
-    public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-        return start1 <= end2 && start2 <= end1;
+    public static boolean intersect(Interval interval1, Interval interval2) {
+        return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
     }
 }
+//I was missing a concept in my code
+record Interval(int start, int end) {}
 
 
 class CarSearchCriteria { // smells like JSON ...
