@@ -19,12 +19,16 @@ public class Boss {
     for (Task task : tasks) { // PR rejected: how DARE you use a for!!
       System.out.println("Starting " + task);
       task.setStarted(true);
-
+    }
+    for (Task task : tasks) { // PR rejected: how DARE you use a for!!
       taskIds.add(task.getId());
-
+    }
+    for (Task task : tasks) { // PR rejected: how DARE you use a for!!
       if (cr323) { // TODO remove the boolean
         System.out.println("My Logic: " + task);
       }
+    }
+    for (Task task : tasks) { // PR rejected: how DARE you use a for!!
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
