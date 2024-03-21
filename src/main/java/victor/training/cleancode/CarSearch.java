@@ -89,13 +89,8 @@ class CarModel { // the holy Entity Model
         return id;
     }
 
-    public int getEndYear() {
-        return yearInterval.end();
-    }
-
-    public int getStartYear() {
-        return yearInterval.start();
-    }
+    // 'Middle Man' code smell: shit, boilerplate code, monkey code that even an AI can generate.
+    // indirection without abstraction
 
     public Interval yearInterval() {
         return yearInterval;
@@ -125,8 +120,12 @@ class CarModelMapper {
         CarModelDto dto = new CarModelDto();
         dto.make = carModel.getMake();
         dto.model = carModel.getModel();
-        dto.startYear = carModel.getStartYear();
-        dto.endYear = carModel.getEndYear();
+        dto.startYear = carModel.yearInterval().start();
+        dto.startYear = carModel.yearInterval().start();
+        dto.startYear = carModel.yearInterval().start();
+        dto.startYear = carModel.yearInterval().start();
+        dto.startYear = carModel.yearInterval().start();
+        dto.endYear = carModel.yearInterval().end();
         return dto;
     }
 
