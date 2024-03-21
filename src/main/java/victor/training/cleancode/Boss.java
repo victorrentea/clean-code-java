@@ -16,7 +16,7 @@ public class Boss {
     System.out.println("Logic3");
     check(tasks); // when a method does not return you anything, that method must change stuff (or throw)
     int index = 0;
-    for (Task task : tasks) {
+    for (Task task : tasks) { // PR rejected: how DARE you use a for!!
       System.out.println("Starting " + task);
       task.setStarted(true);
 
