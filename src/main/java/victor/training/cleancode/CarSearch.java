@@ -8,14 +8,10 @@ class CarSearch {
     // see tests
     public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
         List<CarModel> results = carModels.stream()
-                .filter(carModel -> yearsIntersect(criteria, carModel))
+                .filter(carModel -> criteria.yearInterval().intersects(carModel.yearInterval()))
                 .collect(Collectors.toList());
         System.out.println("More filtering logic ...");
         return results;
-    }
-
-    private boolean yearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-        return new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(new Interval(carModel.getStartYear(), carModel.getEndYear()));
     }
 
     private void applyCapacityFilter() {
@@ -44,7 +40,9 @@ record Interval(int start, int end) {
 
 class CarSearchCriteria { // smells like JSON ...
     private final int startYear;
+//    @Schema(description = "The end year")
     private final int endYear;
+//    private final Interval yearInterval; // breaks contract. DON;T
     private final String make;
 
     public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -54,27 +52,28 @@ class CarSearchCriteria { // smells like JSON ...
         this.endYear = endYear;
     }
 
-    public int getStartYear() {
-        return startYear;
-    }
-
-    public int getEndYear() {
-        return endYear;
-    }
-
     public String getMake() {
         return make;
     }
+
+    // my app logic uses this method
+//    @JsonIgnore
+    Interval yearInterval() {
+        return new Interval(startYear, endYear);
+    }
 }
 
-// @Entity
+// @Entity @Document
+// Holy Domain Model - the team has full exclusive control on it
 class CarModel { // the holy Entity Model
     // @Id
     private Long id;
     private String make;
     private String model;
-    private int startYear;
-    private int endYear;
+//    private int startYear;
+//    private int endYear;
+    // @Embedded // stored in the same CAR_MODEL table > no schema change thanks to ORM
+    private Interval yearInterval;
 
     protected CarModel() {
     } // for Hibernate
@@ -83,8 +82,7 @@ class CarModel { // the holy Entity Model
         this.make = make;
         this.model = model;
         if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.startYear = startYear;
-        this.endYear = endYear;
+        this.yearInterval = new Interval(startYear, endYear);
     }
 
     public Long getId() {
@@ -92,11 +90,15 @@ class CarModel { // the holy Entity Model
     }
 
     public int getEndYear() {
-        return endYear;
+        return yearInterval.end();
     }
 
     public int getStartYear() {
-        return startYear;
+        return yearInterval.start();
+    }
+
+    public Interval yearInterval() {
+        return yearInterval;
     }
 
     public String getMake() {
