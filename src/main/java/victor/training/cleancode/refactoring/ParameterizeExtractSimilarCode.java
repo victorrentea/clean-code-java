@@ -2,7 +2,31 @@ package victor.training.cleancode.refactoring;
 
 class ParameterizeExtractSimilarCode {
 
-    public void f(int n) {
+    public void placeOrder(int n) {
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
         System.out.println("Logic F");
         for (int i = 0; i < 4; i++) {
             if (n + i < 0) {
@@ -11,10 +35,21 @@ class ParameterizeExtractSimilarCode {
                 throw new IllegalArgumentException();
             }
         }
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
+        System.out.println("Logic F");
     }
-}
-class SomeOtherClass {
-    public void g(int n) {
+    public void cancelOrder(int n) {
         System.out.println("Logic G");
         try {
             for (int j = 0; j < 4; j++) {

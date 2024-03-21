@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
+import lombok.With;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -13,7 +15,7 @@ public class ImmutableAdvanced {
       System.out.println("Before: " + immutable);
 
       wilderness(immutable);
-
+//immutable.wi
       System.out.println("After:  " + immutable);
    }
 
@@ -23,6 +25,7 @@ public class ImmutableAdvanced {
 }
 
 class Immutable {
+   @With
    private final Integer x;
    private final List<Integer> numbers;
    private final Other other;
