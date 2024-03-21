@@ -15,30 +15,31 @@ class CarSearch {
     }
 
     private boolean yearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-        return MathUtil.intersect(new Interval(criteria.getStartYear(), criteria.getEndYear()), new Interval(carModel.getStartYear(), carModel.getEndYear()));
+        return new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(new Interval(carModel.getStartYear(), carModel.getEndYear()));
     }
 
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class Alta {
     private void applyCapacityFilter() {
-        System.out.println(MathUtil.intersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+        System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
     }
 
 }
 
 class MathUtil {
 
-    public static boolean intersect(Interval interval1, Interval interval2) {
-        return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
-    }
 }
 //I was missing a concept in my code
-record Interval(int start, int end) {}
+record Interval(int start, int end) {
+    public boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+}
 
 
 class CarSearchCriteria { // smells like JSON ...
