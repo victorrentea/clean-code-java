@@ -32,6 +32,10 @@ class MathUtil {
 }
 //I was missing a concept in my code
 record Interval(int start, int end) {
+    Interval {
+        // self-validating model
+        if (start > end) throw new IllegalArgumentException("start larger than end");
+    }
     public boolean intersects(Interval other) {
         return start <= other.end && other.start <= end;
     }
@@ -47,7 +51,6 @@ class CarSearchCriteria { // smells like JSON ...
 
     public CarSearchCriteria(int startYear, int endYear, String make) {
         this.make = make;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
         this.startYear = startYear;
         this.endYear = endYear;
     }
@@ -78,11 +81,10 @@ class CarModel { // the holy Entity Model
     protected CarModel() {
     } // for Hibernate
 
-    public CarModel(String make, String model, int startYear, int endYear) {
+    public CarModel(String make, String model, Interval yearInterval) {
         this.make = make;
         this.model = model;
-        if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-        this.yearInterval = new Interval(startYear, endYear);
+        this.yearInterval = yearInterval;
     }
 
     public Long getId() {
@@ -130,7 +132,7 @@ class CarModelMapper {
     }
 
     public CarModel fromDto(CarModelDto dto) {
-        return new CarModel(dto.make, dto.model, dto.startYear, dto.endYear);
+        return new CarModel(dto.make, dto.model, new Interval(dto.startYear, dto.endYear));
     }
 }
 
