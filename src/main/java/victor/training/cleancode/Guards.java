@@ -47,8 +47,8 @@ public class Guards {
 }
 
 record Marine(boolean dead, boolean retired, Integer yearsService, List<Award> awards) {
-}
 
+}
 record BonusPackage(int value) {
 }
 
