@@ -56,7 +56,7 @@ public class BooleanParameters {
     System.out.println("Donkey Logic 3 " + task);
 
 //    System.out.println("Logic just for CR#323 : " + task);
-    omg.accept(task);
+    omg.accept(task); // over engineering, but fun !
 
     System.out.println("Sheep Logic 1 " + storeId);
     System.out.println("Sheep Logic 2 " + storeId);
