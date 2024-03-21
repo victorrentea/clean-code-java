@@ -1,7 +1,6 @@
 package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jooq.lambda.Unchecked;
 import victor.training.cleancode.fp.support.OrderRepo;
 
@@ -11,7 +10,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 @RequiredArgsConstructor
-public class FileExportService_Loan {
+class FileExportService {
    private final OrderRepo orderRepo;
 
    public void exportOrders() throws IOException {
@@ -37,3 +36,16 @@ public class FileExportService_Loan {
    }
 }
 
+
+@RequiredArgsConstructor
+public class LoanPattern {
+  private final FileExportService fileExporterService;
+
+  public void exportOrders() throws IOException {
+    fileExporterService.exportOrders();
+  }
+
+  public void exportUsers() {
+    // TODO implement the export of users using *the same workflow* as for orders
+  }
+}

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class Order {
   private Long id;
-  private List<OrderLine> orderLines;
+  private List<OrderLine> orderLines = List.of();
   private LocalDate creationDate;
   private LocalDate shipDate;
   private boolean active;

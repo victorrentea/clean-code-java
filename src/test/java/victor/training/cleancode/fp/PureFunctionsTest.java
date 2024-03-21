@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PureTest {
+class PureFunctionsTest {
   @Mock
   CustomerRepo customerRepo;
   @Mock
@@ -28,7 +28,7 @@ class PureTest {
   @Mock
   ProductRepo productRepo;
   @InjectMocks
-  Pure priceService;
+  PureFunction priceService;
   @Captor
   ArgumentCaptor<List<Coupon>> couponCaptor;
 

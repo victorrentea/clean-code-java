@@ -19,7 +19,7 @@ public class LoanPatternTest {
    @Mock
    private OrderRepo orderRepo;
    @InjectMocks
-   private FileExportService_Loan exporter;
+   private FileExportService exporter;
 
 
    @Test
@@ -29,7 +29,7 @@ public class LoanPatternTest {
       order.setCreationDate(parse("2021-01-07"));
       when(orderRepo.findByActiveTrue()).thenReturn(Stream.of(order));
 
-      new FileExportService(exporter).exportOrders();
+      new LoanPattern(exporter).exportOrders();
 
       // NOW read the file from the disk ... Yuck!
 

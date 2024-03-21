@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-class Pure {
+class PureFunction {
   private final CustomerRepo customerRepo;
   private final ThirdPartyPricesApi thirdPartyPricesApi;
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
-  // TODO extract a pure function with as much logic possible
+  // TODO extract complexity into a pure function
   public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds);

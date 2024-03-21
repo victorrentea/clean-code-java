@@ -6,59 +6,69 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
-   public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3).collect(toList()); // ArrayList
+  public static void main(String[] args) {
+    List<Integer> numbers = Stream.of(1, 2, 3).collect(toList()); // ArrayList
 
-      Immutable immutable = new Immutable(1, numbers, new Other(15));
-      System.out.println("Before: " + immutable);
+    Immutable immutable = new Immutable(1, 2, numbers, new Other(15));
+    System.out.println("Before: " + immutable);
 
-      wilderness(immutable);
+    wilderness(immutable);
 
-      System.out.println("After:  " + immutable);
-   }
+    System.out.println("After:  " + immutable);
+  }
 
-   private static void wilderness(Immutable immutable) {
-      // dark, deep logic
-   }
+  private static void wilderness(Immutable immutable) {
+    // dark, deep logic not expected to change the immutable object x,y
+  }
 }
 
 class Immutable {
-   private final Integer x;
-   private final List<Integer> numbers;
-   private final Other other;
+  private final Integer x;
+  private final Integer y;
+  private final List<Integer> numbers;
+  private final Other other;
 
-   Immutable(Integer x, List<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public List<Integer> getNumbers() {
-      return numbers;
-   }
-   public Integer getX() {
-      return x;
-   }
-   public Other getOther() {
-      return other;
-   }
+  Immutable(Integer x, Integer y, List<Integer> numbers, Other other) {
+    this.x = x;
+    this.y = y;
+    this.numbers = numbers;
+    this.other = other;
+  }
 
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+  public List<Integer> getNumbers() {
+    return numbers;
+  }
+
+  public Integer getX() {
+    return x;
+  }
+
+  public Integer getY() {
+    return y;
+  }
+
+  public Other getOther() {
+    return other;
+  }
+
+  @Override
+  public String toString() {
+    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, numbers, other);
+  }
 }
 
 class Other {
-   private int a;
+  private int a;
 
-   public Other(int a) {
-      this.a = a;
-   }
+  public Other(int a) {
+    this.a = a;
+  }
 
-   public int getA() {
-      return a;
-   }
+  public int getA() {
+    return a;
+  }
 
-   public void setA(int a) {
-      this.a = a;
-   }
+  public void setA(int a) {
+    this.a = a;
+  }
 }

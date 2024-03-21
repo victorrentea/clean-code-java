@@ -2,7 +2,7 @@ package victor.training.cleancode.fp;
 
 import io.vavr.control.Try;
 
-public class ReturnException {
+public class DoubleEdgeReturn {
   // FP kung-fu
   public Try<Long> trying(Data data) {
     return process(data)
@@ -25,6 +25,7 @@ public class ReturnException {
     return idTry;
   }
 
+  // the author decided to return a Try<String> instead of a String + exception
   private Try<String> process(Data data) {
     String input = data.input();
     if (input == null || input.isBlank()) {

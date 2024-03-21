@@ -40,7 +40,8 @@ class Product {
     return premium;
   }
 
-  public void setPremium(boolean premium) {
+  public Product setPremium(boolean premium) {
     this.premium = premium;
+    return this;
   }
 }

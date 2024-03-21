@@ -1,4 +1,4 @@
-package victor.training.cleancode.refactoring;
+package victor.training.cleancode;
 
 class ParameterizeExtractSimilarCode {
 
@@ -13,6 +13,8 @@ class ParameterizeExtractSimilarCode {
         }
     }
 }
+// ========= separate class =========
+
 class SomeOtherClass {
     public void g(int n) {
         System.out.println("Logic G");
