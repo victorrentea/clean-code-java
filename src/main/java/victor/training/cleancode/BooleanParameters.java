@@ -22,7 +22,7 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, t->{});
   }
 
   public void greenMethod(int id, Task task) {
