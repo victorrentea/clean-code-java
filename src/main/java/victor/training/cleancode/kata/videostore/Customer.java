@@ -21,16 +21,11 @@ class Customer {
 
 	public String statement() {
 		double totalPrice = 0;
-		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// iterate each rental
+		int frequentRenterPoints = rentals.stream().mapToInt(Customer::calculateFrequentRentalPoints).sum();
 		for (Rental rental : rentals) {
 			double price = rental.calculateCosts();
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (rental.movie().category() == NEW_RELEASE && rental.rentalDays() > 1)
-				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + rental.movie().title() + "\t" + price + "\n";
 			totalPrice += price;
@@ -39,6 +34,14 @@ class Customer {
 		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private static int calculateFrequentRentalPoints(Rental rental) {
+		int frequentRenterPoints = 1;
+		// add bonus for a two day new release rental
+		if (rental.movie().category() == NEW_RELEASE && rental.rentalDays() > 1)
+			frequentRenterPoints++;
+		return frequentRenterPoints;
 	}
 
 }
