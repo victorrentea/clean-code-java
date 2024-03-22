@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 
@@ -21,31 +22,21 @@ class Customer {
 
     public String statement() {
 
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
-        // iterate each rental
-        // copilot give me iteration over map rentals
+        double totalAmount = rentals.stream()
+                .mapToDouble(this::calculateAmount)
+                .sum();
+        int frequentRenterPoints = rentals.stream()
+                .mapToInt(this::calculateFrequentRenterPoints)
+                .sum();
 
-        for (Rental rental : rentals) {
-            double amount = calculateAmount(rental);
+        String result = rentals.stream()
+                .map(rental -> "\t" + rental.movie().getTitle() + "\t" + calculateAmount(rental) + "\n")
+                .collect(Collectors.joining());
 
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            final Movie movie = rental.movie();
-            if (movie.getPriceCode() != null && (movie.getPriceCode() == Category.NEW_RELEASE) && rental.daysRented() > 1) {
-                frequentRenterPoints++;
-            }
-            // show figures line for this rental
-            result.append("\t").append(movie.getTitle()).append("\t").append(amount).append("\n");
-            totalAmount += amount;
-        }
-        // add footer lines
-        result.append("Amount owed is ").append(totalAmount).append("\n");
-        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+        result += "Amount owed is " + totalAmount + "\n";
+        result += "You earned " + frequentRenterPoints + " frequent renter points";
 
-        return result.toString();
+        return "Rental Record for " + getName() + "\n" + result;
 
     }
 
@@ -70,5 +61,13 @@ class Customer {
             break;
         }
         return amount;
+    }
+
+    private int calculateFrequentRenterPoints(Rental rental) {
+        int points = 1;
+        if (rental.movie().getPriceCode() == Category.NEW_RELEASE && rental.daysRented() > 1) {
+            points++;
+        }
+        return points;
     }
 }
