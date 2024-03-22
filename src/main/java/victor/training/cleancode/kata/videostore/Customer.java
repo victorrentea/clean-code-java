@@ -20,7 +20,7 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for %s \n".formatted(getName());
+		String result = "Rental Record for %s\n".formatted(getName());
 		// iterate each rental
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
