@@ -4,11 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Getter
-@RequiredArgsConstructor
-@Accessors(fluent = true)
-public class Movie {
+public record Movie(String title, PriceCode priceCode) {
 
-	private final String title;
-	private final PriceCode priceCode;
 }
