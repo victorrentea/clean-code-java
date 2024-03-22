@@ -23,14 +23,14 @@ class Customer {
     public String statement() {
 
         double totalAmount = rentals.stream()
-                .mapToDouble(this::calculateAmount)
+                .mapToDouble(Rental::calculateAmount)
                 .sum();
         int frequentRenterPoints = rentals.stream()
                 .mapToInt(this::calculateFrequentRenterPoints)
                 .sum();
 
         String result = rentals.stream()
-                .map(rental -> "\t" + rental.movie().getTitle() + "\t" + calculateAmount(rental) + "\n")
+                .map(rental -> "\t" + rental.movie().title() + "\t" + rental.calculateAmount() + "\n")
                 .collect(Collectors.joining());
 
         result += "Amount owed is " + totalAmount + "\n";
@@ -40,32 +40,9 @@ class Customer {
 
     }
 
-    private double calculateAmount(final Rental rental) {
-        double amount = 0;
-        final int daysRented = rental.daysRented();
-        switch (rental.movie().category) {
-        case REGULAR:
-            amount = 2;
-            if (daysRented > 2) {
-                amount += (daysRented - 2) * 1.5;
-            }
-            break;
-        case NEW_RELEASE:
-            amount = daysRented * 3;
-            break;
-        case CHILDREN:
-            amount = 1.5;
-            if (daysRented > 3) {
-                amount += (daysRented - 3) * 1.5;
-            }
-            break;
-        }
-        return amount;
-    }
-
     private int calculateFrequentRenterPoints(Rental rental) {
         int points = 1;
-        if (rental.movie().getPriceCode() == Category.NEW_RELEASE && rental.daysRented() > 1) {
+        if (rental.movie().category() == Category.NEW_RELEASE && rental.daysRented() > 1) {
             points++;
         }
         return points;
