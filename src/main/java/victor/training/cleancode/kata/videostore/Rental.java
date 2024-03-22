@@ -3,7 +3,6 @@ package victor.training.cleancode.kata.videostore;
 public record Rental (Movie movie, Integer days){
 
     double getPrice() {
-        movie.priceCode().calculatePrice(days);
         return switch (movie.priceCode()) {
             case REGULAR -> {
                 double price = 2;
