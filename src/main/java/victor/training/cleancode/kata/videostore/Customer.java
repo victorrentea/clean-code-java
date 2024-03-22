@@ -31,14 +31,11 @@ class Customer {
             double amount = calculateAmount(rental);
 
             // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            final Movie movie = rental.movie();
-            if (movie.getPriceCode() != null && (movie.getPriceCode() == Category.NEW_RELEASE) && rental.daysRented() > 1) {
-                frequentRenterPoints++;
-            }
+            frequentRenterPoints += getFrequentRenterPoints(rental);
+
             // show figures line for this rental
-            result += "\t" + movie.getTitle() + "\t" + amount + "\n";
+            result += "\t" + rental.movie()
+                .getTitle() + "\t" + amount + "\n";
             totalAmount += amount;
         }
         // add footer lines
@@ -47,6 +44,15 @@ class Customer {
 
         return result;
 
+    }
+
+    private static int getFrequentRenterPoints(final Rental rental) {
+        int frequentRenterPoints = 1;
+        // add bonus for a two day new release rental
+        if (rental.movie().getPriceCode() != null && (rental.movie().getPriceCode() == Category.NEW_RELEASE) && rental.daysRented() > 1) {
+            frequentRenterPoints++;
+        }
+        return frequentRenterPoints;
     }
 
     private double calculateAmount(final Rental rental) {
