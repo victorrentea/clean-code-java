@@ -66,4 +66,11 @@ public class Order {
     return this;
   }
 
+  public boolean hasPremiumProducts() {
+    return getOrderLines().stream().anyMatch(line -> line.product().isPremium());
+  }
+
+  public boolean isRecent() {
+    return getCreationDate().isAfter(LocalDate.now().minusYears(1));
+  }
 }
