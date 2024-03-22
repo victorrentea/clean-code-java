@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class CustomerTest {
-//test push
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
