@@ -7,32 +7,36 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class Customer {
-    @Getter
-    private final String name;
-    private final List<Rental> rentals = new LinkedList<>();
+  @Getter
+  private final String name;
+  private final List<Rental> rentals = new LinkedList<>();
 
-    public Customer(String name) {
-        this.name = name;
-    }
+  public Customer(String name) {
+    this.name = name;
+  }
 
-    public void addRental(Movie movie, int days) {
-        rentals.add(new Rental(movie, days));
-    }
+  public void addRental(Movie movie, int days) {
+    rentals.add(new Rental(movie, days));
+  }
 
-    public String statement() {
-        double totalAmount = rentals.stream().mapToDouble(Rental::getPrice).sum();
-        int frequentRenterPoints = rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+  public String statement() {
+    double totalAmount = rentals.stream().mapToDouble(Rental::getPrice).sum();
+    int frequentRenterPoints = rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
 
-        return """
+    return """
         Rental Record for %s
         %s
         Amount owed is %s
         You earned %d frequent renter points""".formatted(
-                getName(),
-                rentals.stream().map(Rental::toString).collect(Collectors.joining("\n")),
-                totalAmount,
-                frequentRenterPoints
-        );
-    }
+        this.name,
+        formatBody(),
+        totalAmount,
+        frequentRenterPoints
+    );
+  }
+
+  private String formatBody() {
+    return rentals.stream().map(Rental::toString).collect(Collectors.joining("\n"));
+  }
 
 }
