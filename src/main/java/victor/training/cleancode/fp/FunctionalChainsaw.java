@@ -11,10 +11,14 @@ import java.util.Map.Entry;
 
 import static java.util.stream.Collectors.*;
 
-public class StreamWreck {
-	private ProductRepo productRepo;
+public class FunctionalChainsaw { // ... Massacre
+	private final ProductRepo productRepo;
 
-	public List<Product> getFrequentOrderedProducts(List<Order> orders) {
+  public FunctionalChainsaw(ProductRepo productRepo) {
+    this.productRepo = productRepo;
+  }
+
+  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		return orders.stream()
 				.filter(Order::isActive)
 				.filter(o -> o.getCreationDate().isAfter(LocalDate.now().minusYears(1)))
@@ -29,7 +33,3 @@ public class StreamWreck {
 				.collect(toList());
 	}
 }
-
-
-//VVVVVVVVV ==== supporting (dummy) code ==== VVVVVVVVV
-
