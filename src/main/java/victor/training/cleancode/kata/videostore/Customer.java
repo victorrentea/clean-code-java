@@ -23,7 +23,7 @@ class Customer {
 
         double totalAmount = 0;
         int frequentRenterPoints = 0;
-        String result = "Rental Record for " + getName() + "\n";
+        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
         // iterate each rental
         // copilot give me iteration over map rentals
 
@@ -31,33 +31,27 @@ class Customer {
             double amount = calculateAmount(rental);
 
             // add frequent renter points
-            frequentRenterPoints += getFrequentRenterPoints(rental);
-
+            frequentRenterPoints++;
+            // add bonus for a two day new release rental
+            final Movie movie = rental.movie();
+            if (movie.getPriceCode() != null && (movie.getPriceCode() == Category.NEW_RELEASE) && rental.daysRented() > 1) {
+                frequentRenterPoints++;
+            }
             // show figures line for this rental
-            result += "\t" + rental.movie()
-                .getTitle() + "\t" + amount + "\n";
+            result.append("\t").append(movie.getTitle()).append("\t").append(amount).append("\n");
             totalAmount += amount;
         }
         // add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + frequentRenterPoints + " frequent renter points";
+        result.append("Amount owed is ").append(totalAmount).append("\n");
+        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
 
-        return result;
+        return result.toString();
 
-    }
-
-    private static int getFrequentRenterPoints(final Rental rental) {
-        int frequentRenterPoints = 1;
-        // add bonus for a two day new release rental
-        if (rental.movie().getPriceCode() != null && (rental.movie().getPriceCode() == Category.NEW_RELEASE) && rental.daysRented() > 1) {
-            frequentRenterPoints++;
-        }
-        return frequentRenterPoints;
     }
 
     private double calculateAmount(final Rental rental) {
         double amount = 0;
-        final Integer daysRented = rental.daysRented();
+        final int daysRented = rental.daysRented();
         switch (rental.movie().category) {
         case REGULAR:
             amount = 2;
