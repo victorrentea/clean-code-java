@@ -10,8 +10,8 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Rental rental) {
+		rentals.put(rental.movie(), rental.rentalDays());
 	}
 
 	public String getName() {
@@ -26,20 +26,20 @@ class Customer {
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
+			int rentalDays = rentals.get(each);
 			switch (each.priceCode()) {
-				case MovieCategory.REGULAR:
+				case REGULAR:
 					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					if (rentalDays > 2)
+						thisAmount += (rentalDays - 2) * 1.5;
 					break;
-				case MovieCategory.NEW_RELEASE:
-					thisAmount += dr * 3;
+				case NEW_RELEASE:
+					thisAmount += rentalDays * 3;
 					break;
-				case MovieCategory.CHILDRENS:
+				case CHILDRENS:
 					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+					if (rentalDays > 3)
+						thisAmount += (rentalDays - 3) * 1.5;
 					break;
 			}
 			// add frequent renter points
@@ -47,7 +47,7 @@ class Customer {
 			// add bonus for a two day new release rental
 			if (each.priceCode() != null &&
 				 (each.priceCode() == MovieCategory.NEW_RELEASE)
-				 && dr > 1)
+				 && rentalDays > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + each.title() + "\t" + thisAmount + "\n";
