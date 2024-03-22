@@ -5,8 +5,6 @@ import static victor.training.cleancode.kata.videostore.MovieCategory.NEW_RELEAS
 import java.util.*;
 import java.util.stream.Collectors;
 
-import lombok.Getter;
-
 class Customer {
 	public static final int STANDARD_RENTAL_POINTS = 1;
 	public static final int NEW_RELEASE_RENTAL_POINTS = 2;
@@ -21,20 +19,27 @@ class Customer {
 		rentals.add(rental);
 	}
 
-	public String statement() {
-        String result = "Rental Record for " + name + "\n";
+	public String printStatement() {
+        return header() + body() + footer();
+	}
 
+	private String header() {
+		return "Rental Record for " + name + "\n";
+	}
+
+	private String footer() {
 		int frequentRenterPoints = rentals.stream().mapToInt(Customer::calculateFrequentRentalPoints).sum();
 		double totalPrice = rentals.stream().mapToDouble(Rental::calculateCosts).sum();
+		// add footer lines
+		String footer = "Amount owed is " + totalPrice + "\n";
+		footer += "You earned " + frequentRenterPoints + " frequent renter points";
+		return footer;
+	}
 
-		result += rentals.stream()
+	private String body() {
+		return rentals.stream()
 				.map(rental -> "\t" + rental.movie().title() + "\t" + rental.calculateCosts() + "\n")
 				.collect(Collectors.joining());
-
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
 	}
 
 	private static int calculateFrequentRentalPoints(Rental rental) {
