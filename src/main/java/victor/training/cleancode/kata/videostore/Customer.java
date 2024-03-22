@@ -20,24 +20,18 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// iterate each rental
-		for (Movie each : rentals.keySet()) {
+		for (Movie movie : rentals.keySet()) {
 			double price = 0;
 			// determine amounts for every line
-			int rentalValue = rentals.get(each);
-			switch (each.getPriceType()) {
-				case REGULAR -> price = getRegularPrice(rentalValue);
-				case NEW_RELEASE -> price += rentalValue * 3;
-				case CHILDRENS -> price = getChildrenPrice(rentalValue);
-			}
+			int rentalValue = rentals.get(movie);
+			price = getPrice(movie, rentalValue);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceType() != null &&
-				 (each.getPriceType() == PriceType.NEW_RELEASE)
-				 && rentalValue > 1)
+			if (movie.getPriceType() == PriceType.NEW_RELEASE && rentalValue > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + price + "\n";
+			result += "\t" + movie.getTitle() + "\t" + price + "\n";
 			totalAmount += price;
 		}
 		// add footer lines
@@ -45,6 +39,14 @@ class Customer {
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
+
+	private static double getPrice(Movie movie, int rentalValue) {
+		return switch (movie.getPriceType()) {
+			case REGULAR -> getRegularPrice(rentalValue);
+			case NEW_RELEASE -> rentalValue * 3;
+			case CHILDRENS -> getChildrenPrice(rentalValue);
+		};
+    }
 
 	private static double getChildrenPrice(int rentalValue) {
 		return (rentalValue > 3) ? (1.5d + (rentalValue - 3) * 1.5) : 1.5d;
