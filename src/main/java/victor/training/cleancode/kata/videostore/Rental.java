@@ -2,7 +2,6 @@ package victor.training.cleancode.kata.videostore;
 
 public record Rental (Movie movie, Integer days){
 
-
     double getPrice() {
         double thisAmount = 0;
         switch (movie.priceCode()) {
@@ -27,5 +26,9 @@ public record Rental (Movie movie, Integer days){
             frequentRenterPoints++;
         }
         return frequentRenterPoints;
+    }
+
+    public String toString() {
+        return "\t%s\t%s".formatted(movie.title(), getPrice());
     }
 }

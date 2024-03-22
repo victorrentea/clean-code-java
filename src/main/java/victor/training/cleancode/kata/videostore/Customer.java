@@ -21,18 +21,18 @@ class Customer {
 
     public String statement() {
         double totalAmount = rentals.stream().mapToDouble(Rental::getPrice).sum();
-
-        String result = "Rental Record for %s\n".formatted(getName());
-
-        result += (rentals.stream().map(rental -> "\t%s\t%s\n".formatted(rental.movie().title(), rental.getPrice())).collect(Collectors.joining()));
-
         int frequentRenterPoints = rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
 
-        // add footer lines
-
-        result += "Amount owed is %s\n".formatted(totalAmount);
-        result += "You earned %d frequent renter points".formatted(frequentRenterPoints);
-        return result;
+        return """
+        Rental Record for %s
+        %s
+        Amount owed is %s
+        You earned %d frequent renter points""".formatted(
+                getName(),
+                rentals.stream().map(Rental::toString).collect(Collectors.joining("\n")),
+                totalAmount,
+                frequentRenterPoints
+        );
     }
 
 }
