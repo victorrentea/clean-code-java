@@ -28,7 +28,7 @@ class PureTest {
   @Mock
   ProductRepo productRepo;
   @InjectMocks
-  Pure priceService;
+  PureFunction priceService;
   @Captor
   ArgumentCaptor<List<Coupon>> couponCaptor;
 
