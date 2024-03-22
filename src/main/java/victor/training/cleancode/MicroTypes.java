@@ -41,26 +41,35 @@ public class MicroTypes {
 
 
   //<editor-fold desc="Tuple source of data">
-  public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
+  public Map<CustomerId, List<ProductCount>> extremeFP() {
     Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;
-    return Map.of(customerId, List.of(
-        org.jooq.lambda.tuple.Tuple.tuple("Table", product1Count),
-        Tuple.tuple("Chair", product2Count)
+    return Map.of(new CustomerId(customerId), List.of(
+        new ProductCount("Table", product1Count),
+        new ProductCount("Chair", product2Count)
     ));
   }
   //</editor-fold>
 
+  record CustomerId(Long id) {}
+  // other examples:
+  // OK: IBAN(String), SatelliteId(Long), ProductCode(String), OrderId(Long), etc.
+  // NOK: TransactionId(String), 20GB/day of XML 1M VISA transactions today
+  // PERFORMANCE HIT: memory waste until Project Valhalla (Java ????)
+  // Kotlin: inline class
+  record ProductCount(String product, Integer count) {}
+
   void lackOfAbstractions() {
-    Map<Long, List<Tuple2<String, Integer>>> map = extremeFP();
+//    var map = extremeFP();// BAD!!
+    Map<CustomerId, List<ProductCount>> customerIdToProductCounts = extremeFP();
     // Joke: try "var" above :)
 
-    for (Long cid : map.keySet()) {
-      String pl = map.get(cid).stream()
-          .map(t -> t.v2 + " pcs. of " + t.v1)
+    for (CustomerId cid : customerIdToProductCounts.keySet()) {
+      String pl = customerIdToProductCounts.get(cid).stream()
+          .map(productCount -> productCount.count() + " pcs. of " + productCount.product())
           .collect(joining(", "));
-      System.out.println("cid=" + cid + " got " + pl);
+      System.out.println("cid=" + cid.id() + " got " + pl);
     }
   }
 }
