@@ -3,11 +3,13 @@ package victor.training.cleancode.kata.videostore;
 import static victor.training.cleancode.kata.videostore.MovieCategory.NEW_RELEASE;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 
 class Customer {
-	@Getter
+	public static final int STANDARD_RENTAL_POINTS = 1;
+	public static final int NEW_RELEASE_RENTAL_POINTS = 2;
 	private String name;
 	private List<Rental> rentals = new ArrayList<>(); // preserves order
 
@@ -20,16 +22,15 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalPrice = 0;
-		String result = "Rental Record for " + getName() + "\n";
-		// iterate each rental
+        String result = "Rental Record for " + name + "\n";
+
 		int frequentRenterPoints = rentals.stream().mapToInt(Customer::calculateFrequentRentalPoints).sum();
-		for (Rental rental : rentals) {
-			double price = rental.calculateCosts();
-			// show figures line for this rental
-			result += "\t" + rental.movie().title() + "\t" + price + "\n";
-			totalPrice += price;
-		}
+		double totalPrice = rentals.stream().mapToDouble(Rental::calculateCosts).sum();
+
+		result += rentals.stream()
+				.map(rental -> "\t" + rental.movie().title() + "\t" + rental.calculateCosts() + "\n")
+				.collect(Collectors.joining());
+
 		// add footer lines
 		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
@@ -37,11 +38,9 @@ class Customer {
 	}
 
 	private static int calculateFrequentRentalPoints(Rental rental) {
-		int frequentRenterPoints = 1;
-		// add bonus for a two day new release rental
-		if (rental.movie().category() == NEW_RELEASE && rental.rentalDays() > 1)
-			frequentRenterPoints++;
-		return frequentRenterPoints;
+		if (rental.movie().category() == NEW_RELEASE && rental.rentalDays() > 1) {
+			return NEW_RELEASE_RENTAL_POINTS;
+		}
+		return STANDARD_RENTAL_POINTS;
 	}
-
 }
