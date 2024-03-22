@@ -12,7 +12,7 @@ public record Rental (Movie movie, Integer days){
                     thisAmount += (days - 2) * 1.5;
             }
             case NEW_RELEASE -> thisAmount += days * 3;
-            case CHILDRENS -> {
+            case CHILDREN -> {
                 thisAmount += 1.5;
                 if (days > 3)
                     thisAmount += (days - 3) * 1.5;
