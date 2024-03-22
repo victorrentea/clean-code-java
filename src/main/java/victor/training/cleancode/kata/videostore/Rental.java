@@ -9,7 +9,6 @@ public record Rental(Movie movie, int rentalDays) {
     }
 
     double calculatePrice() {
-        // determine amounts for every line
         return switch (movie.category()) {
             case REGULAR -> regularPrice();
             case NEW_RELEASE -> rentalDays * 3;
