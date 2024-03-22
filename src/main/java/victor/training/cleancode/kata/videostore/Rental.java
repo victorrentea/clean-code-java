@@ -4,21 +4,24 @@ public record Rental (Movie movie, Integer days){
 
 
     double getPrice() {
-        double thisAmount = 0;
-        switch (movie.priceCode()) {
+        movie.priceCode().calculatePrice(days);
+        return switch (movie.priceCode()) {
             case REGULAR -> {
-                thisAmount += 2;
-                if (days > 2)
-                    thisAmount += (days - 2) * 1.5;
+                double price = 2;
+                if (days > 2) {
+                    price += (days - 2) * 1.5;
+                }
+                yield price;
             }
-            case NEW_RELEASE -> thisAmount += days * 3;
+            case NEW_RELEASE -> days * 3;
             case CHILDREN -> {
-                thisAmount += 1.5;
-                if (days > 3)
-                    thisAmount += (days - 3) * 1.5;
+                double price = 1.5;
+                if (days > 3) {
+                    price += (days - 3) * 1.5;
+                }
+                yield price;
             }
-        }
-        return thisAmount;
+        };
     }
     int getFrequentRenterPoints() {
         int frequentRenterPoints = 1;
