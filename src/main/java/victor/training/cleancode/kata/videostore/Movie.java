@@ -2,10 +2,11 @@ package victor.training.cleancode.kata.videostore;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-@RequiredArgsConstructor
-@Data
+//@RequiredArgsConstructor
+@Value // =  @Data + private final fields
 public class Movie {
-	private final String title;
-	private final PriceType priceType;
+	String title;
+	PriceType priceType;
 }
