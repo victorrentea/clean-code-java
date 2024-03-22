@@ -24,19 +24,19 @@ class Customer {
 			// determine amounts for every line
 			int rentalValue = rentals.get(movie);
 			double price = getPrice(movie, rentalValue);
-			frequentRenterPoints = getFrequentRenterPoints(frequentRenterPoints, movie, rentalValue);
+			frequentRenterPoints += getUpdatedFrequentRenterPoints(movie, rentalValue);
 			// show figures line for this rental
-			result.append("\t" + movie.getTitle() + "\t" + price + "\n");
+			result.append("\t").append(movie.getTitle()).append("\t").append(price).append("\n");
 			totalAmount += price;
 		}
 		// add footer lines
-		return result.append("Amount owed is " + totalAmount + "\n").append("You earned " + frequentRenterPoints + " frequent renter points").toString();
+		return result.append("Amount owed is ").append(totalAmount).append("\n").append("You earned ").append(frequentRenterPoints).append(" frequent renter points").toString();
 	}
 
-	private static int getFrequentRenterPoints(int frequentRenterPoints, Movie movie, int rentalValue) {
+	private static int getUpdatedFrequentRenterPoints(Movie movie, int rentalValue) {
 		// add frequent renter points
 		// add bonus for a two day new release rental
-		return (movie.getPriceType() == PriceType.NEW_RELEASE && rentalValue > 1) ? (frequentRenterPoints + 2) : (frequentRenterPoints + 1);
+		return (movie.getPriceType() == PriceType.NEW_RELEASE && rentalValue > 1) ? 2 : 1;
 	}
 
 	private static double getPrice(Movie movie, int rentalValue) {
