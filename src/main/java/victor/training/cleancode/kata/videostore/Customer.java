@@ -3,59 +3,48 @@ package victor.training.cleancode.kata.videostore;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
-	@Getter
-	private final String name;
-	private final List<Rental> rentals = new LinkedList<>();
+    @Getter
+    private final String name;
+    private final List<Rental> rentals = new LinkedList<>();
 
-	public Customer(String name) {
-		this.name = name;
-	};
+    public Customer(String name) {
+        this.name = name;
+    }
 
-	public void addRental(Movie movie, int days) {
-		rentals.add(new Rental(movie, days));
-	}
+    public void addRental(Movie movie, int days) {
+        rentals.add(new Rental(movie, days));
+    }
 
-	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		StringBuilder result = new StringBuilder("Rental Record for %s\n".formatted(getName()));
-		// iterate each rental
-		for(Rental rental : rentals) {
-			// determine amounts for every line
-			double price = getPrice(rental);
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two-day new release rental
-			if (rental.movie().priceCode() == PriceCode.NEW_RELEASE && rental.days() > 1) {
-				frequentRenterPoints++;
-			}
-			// show figures line for this rental
-			result.append("\t").append(rental.movie().title()).append("\t").append(price).append("\n");
-			totalAmount += price;
-		}
-		// add footer lines
-		result.append("Amount owed is ").append(totalAmount).append("\n");
-		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-		return result.toString();
-	}
+    public String statement() {
+        var totalAmount = rentals.stream().mapToDouble(Rental::getPrice).sum();
 
-	private static double getPrice(Rental rental) {
-		double thisAmount = 0;
-		switch (rental.movie().priceCode()) {
-			case REGULAR -> {
-				thisAmount += 2;
-				if (rental.days() > 2)
-					thisAmount += (rental.days() - 2) * 1.5;
-			}
-			case NEW_RELEASE -> thisAmount += rental.days() * 3;
-			case CHILDRENS -> {
-				thisAmount += 1.5;
-				if (rental.days() > 3)
-					thisAmount += (rental.days() - 3) * 1.5;
-			}
-		}
-		return thisAmount;
-	}
+        int frequentRenterPoints = 0;
+
+        StringBuilder result = new StringBuilder("Rental Record for %s\n".formatted(getName()));
+
+        result.append(rentals.stream().map(rental -> "\t%s\t%s\n".formatted(rental.movie().title(), rental.getPrice())).collect(Collectors.joining()));
+
+        for (Rental rental : rentals) {
+            // add frequent renter points
+            frequentRenterPoints = getFrequentRenterPoints(rental, frequentRenterPoints);
+            // show figures line for this rental
+        }
+        // add footer lines
+        result.append("Amount owed is ").append(totalAmount).append("\n");
+        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+        return result.toString();
+    }
+
+    private static int getFrequentRenterPoints(Rental rental, int frequentRenterPoints) {
+        frequentRenterPoints++;
+        // add bonus for a two-day new release rental
+        if (rental.movie().priceCode() == PriceCode.NEW_RELEASE && rental.days() > 1) {
+            frequentRenterPoints++;
+        }
+        return frequentRenterPoints;
+    }
+
 }
