@@ -7,6 +7,5 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class Movie {
 	private final String title;
-	private final Integer priceCode;
-	private final MovieCategory category;
+	private final PriceType priceType;
 }

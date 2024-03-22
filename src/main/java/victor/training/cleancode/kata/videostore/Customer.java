@@ -27,16 +27,16 @@ class Customer {
 			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case MovieCategory.REGULAR:
+			switch (each.getPriceType()) {
+				case REGULAR:
 					thisAmount += 2;
 					if (dr > 2)
 						thisAmount += (dr - 2) * 1.5;
 					break;
-				case MovieCategory.NEW_RELEASE:
+				case NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
-				case MovieCategory.CHILDRENS:
+				case CHILDRENS:
 					thisAmount += 1.5;
 					if (dr > 3)
 						thisAmount += (dr - 3) * 1.5;
@@ -46,7 +46,7 @@ class Customer {
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == MovieCategory.NEW_RELEASE)
+				 (each.getPriceCode() == PriceType.NEW_RELEASE)
 				 && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
