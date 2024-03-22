@@ -7,7 +7,7 @@ import lombok.Getter;
 class Customer {
     @Getter
     private String name;
-    private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+    private final List<Rental> rentals = new ArrayList<>(); // preserves order
 
     public Customer(String name) {
         this.name = name;
@@ -16,7 +16,7 @@ class Customer {
 
 
     public void addRental(Movie movie, Integer daysRented) {
-        rentals.put(movie, daysRented);
+        rentals.add(new Rental(movie, daysRented));
     }
 
     public String statement() {
@@ -27,14 +27,16 @@ class Customer {
         // iterate each rental
         // copilot give me iteration over map rentals
 
-        for (Movie movie : rentals.keySet()) {
-            double amount = calculateAmount(movie);
+        for (Rental rental : rentals) {
+            double amount = calculateAmount(rental);
 
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
-            if (movie.getPriceCode() != null && (movie.getPriceCode() == Category.NEW_RELEASE) && rentals.get(movie) > 1)
+            final Movie movie = rental.movie();
+            if (movie.getPriceCode() != null && (movie.getPriceCode() == Category.NEW_RELEASE) && rental.daysRented() > 1) {
                 frequentRenterPoints++;
+            }
             // show figures line for this rental
             result += "\t" + movie.getTitle() + "\t" + amount + "\n";
             totalAmount += amount;
@@ -47,10 +49,10 @@ class Customer {
 
     }
 
-    private double calculateAmount(final Movie movie) {
+    private double calculateAmount(final Rental rental) {
         double amount = 0;
-        final Integer daysRented = rentals.get(movie);
-        switch (movie.category) {
+        final Integer daysRented = rental.daysRented();
+        switch (rental.movie().category) {
         case REGULAR:
             amount = 2;
             if (daysRented > 2) {
