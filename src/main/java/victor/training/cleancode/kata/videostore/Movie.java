@@ -6,6 +6,7 @@ public class Movie {
 	private String _title;
 	private Integer _priceCode;
 
+
 	public Movie(String title, Integer priceCode) {
 		_title = title;
 		_priceCode = priceCode;
