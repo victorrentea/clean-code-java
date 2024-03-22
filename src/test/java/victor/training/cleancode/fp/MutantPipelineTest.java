@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MutantPipelineTest {
   @Test
   void totalOrderPrice() {
-    int total = new MutantPipeline().totalOrderPrice(List.of(
+    int total = new MutantPipeline().totalActiveOrderPrice(List.of(
         new Order().setPrice(10).setActive(true),
         new Order().setPrice(5).setActive(true),
         new Order().setPrice(3).setActive(false)

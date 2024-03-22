@@ -12,15 +12,15 @@ public class Order {
   private boolean active;
   private int price;
 
-  public Long getId() {
+  public Long id() {
     return id;
   }
 
-  public List<OrderLine> getOrderLines() {
+  public List<OrderLine> orderLines() {
     return orderLines;
   }
 
-  public LocalDate getCreationDate() {
+  public LocalDate creationDate() {
     return creationDate;
   }
 
@@ -32,7 +32,7 @@ public class Order {
     return active;
   }
 
-  public int getPrice() {
+  public int price() {
     return price;
   }
 
@@ -66,11 +66,4 @@ public class Order {
     return this;
   }
 
-  public boolean hasPremiumProducts() {
-    return getOrderLines().stream().anyMatch(line -> line.product().isPremium());
-  }
-
-  public boolean isRecent() {
-    return getCreationDate().isAfter(LocalDate.now().minusYears(1));
-  }
 }

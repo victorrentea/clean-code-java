@@ -2,7 +2,7 @@ package victor.training.cleancode.fp;
 
 import io.vavr.control.Try;
 
-public class DoubleEdgeReturn {
+public class DoubleEdgedReturn {
   // FP kung-fu
   public Try<Long> trying(Data data) {
     return process(data)

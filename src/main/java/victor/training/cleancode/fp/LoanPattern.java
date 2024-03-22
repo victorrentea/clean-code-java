@@ -21,7 +21,7 @@ class FileExportService {
 
          writer.write("order_id;date\n");
          orderRepo.findByActiveTrue()
-             .map(o -> o.getId() + ";" + o.getCreationDate() + "\n")
+             .map(o -> o.id() + ";" + o.creationDate() + "\n")
              .forEach(Unchecked.consumer(writer::write));
 
          System.out.println("Export DONE");
