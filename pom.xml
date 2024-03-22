@@ -11,12 +11,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <!-- JPA/Hibernate: @Entity -->
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
             <!-- @NotNull -->
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
@@ -27,18 +21,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
-        </dependency>
-        <dependency>
-            <!-- Unchecked.* -->
-            <groupId>org.jooq</groupId>
-            <artifactId>jool</artifactId>
-            <version>0.9.15</version>
-        </dependency>
-        <dependency>
-            <!-- FP library: Either, Try, Tuple7, Function6 -->
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-            <version>0.10.4</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
