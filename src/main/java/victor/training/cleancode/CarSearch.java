@@ -35,9 +35,6 @@ class SomeOtherClientCode {
 
 class MathUtil {
 
-  // REA, VECHE:
-
-  // BUNA:
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
     return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
   }
