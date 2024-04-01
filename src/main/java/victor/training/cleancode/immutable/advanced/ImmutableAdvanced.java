@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -37,7 +38,7 @@ class Immutable {
   }
 
   public List<Integer> getNumbers() {
-    return numbers;
+    return Collections.unmodifiableList(numbers);
   }
 
   public Integer getX() {
