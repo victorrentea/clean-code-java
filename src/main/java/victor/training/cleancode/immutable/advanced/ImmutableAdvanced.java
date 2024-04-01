@@ -22,6 +22,7 @@ public class ImmutableAdvanced {
   }
 }
 
+//este shallow immutable, nu deep immutable
 class Immutable {
   private final Integer x;
   private final Integer y;
