@@ -43,6 +43,9 @@ public class BooleanParameters {
 
   // Warning⚠️: this method might be called from multiple places in the codebase ...
   public static void bigUglyMethod(int storeId, Task task, boolean cr323) {
+    // param boulean incalca SRP. E mai bine sa avem 2 metode
+    // Broken Windows Theory cand gasesti o fucntie care deja ia 2 param boolean , ce mai conteaza inca unu
+    //    https://en.wikipedia.org/wiki/Broken_windows_theory
     System.out.println("Donkey Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Donkey Logic 3 " + task);
