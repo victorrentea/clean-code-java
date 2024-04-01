@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,18 +9,15 @@ import java.util.List;
 public class Boss {
 
   // 👌 TODO run tests
-  public void bossLevel(boolean bg, List<Task> tasks, boolean cr323) {
-    int index = 0;
+  public void bossLevel(boolean bg, ImmutableList<Task> tasks, boolean cr323) {
     int taskCount = tasks.size();
-//    if (tasks.size() == 0) return;
-
     if (tasks.isEmpty()) return;
-
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (bg) {
       System.out.println("Logic3");
       check(tasks);
+      int i = 0;
       for (Task task : tasks) {
         System.out.println("Starting " + task);
         task.setStarted(true);
@@ -29,9 +28,10 @@ public class Boss {
           System.out.println("My Logic: " + task);
         }
 
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
+        i++;
+        System.out.println("Audit task #" + i + ": " + task);
       }
+//      int taskCount = tasks.size();
       System.out.println("Logic6 " + taskCount);
       System.out.println("Task Ids: " + taskIds);
     } else {
@@ -40,7 +40,10 @@ public class Boss {
     System.out.println("Logic8");
   }
 
-  private void check(List<Task> tasks) {
-//    tasks.remove(0); // surprise
+  // ImmutableList,-Set,-Map nu sunt compatibile cu ORM (JPA, Hibernate)
+  private void check(ImmutableList<Task> tasks) {
+//    List.of(1,2,3);
+//    tasks.remove(0); // runtime error, dar cum datorita ImmutableList(guava) ai si deprecation warning
+    // unde mutezi lista
   }
 }

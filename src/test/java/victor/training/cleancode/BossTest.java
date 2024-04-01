@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 import victor.training.testing.tools.CaptureSystemOutput;
 import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
@@ -16,7 +17,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)), false);
+      target.bossLevel(true, ImmutableList.of(new Task(5)), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -30,7 +31,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_c323(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5)), true);
+      target.bossLevel(true, ImmutableList.of(new Task(5)), true);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -46,7 +47,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevel(true, Collections.emptyList(), false);
+      target.bossLevel(true, ImmutableList.of(), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("");
@@ -54,7 +55,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFalse(OutputCapture outputCapture) {
-      target.bossLevel(false, List.of(new Task(5)), false);
+      target.bossLevel(false, ImmutableList.of(new Task(5)), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("Logic1\n" +
@@ -65,7 +66,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void stuffForEachElement_inWateverOrder(OutputCapture outputCapture) {
-      target.bossLevel(true, List.of(new Task(5),new Task(6)), false);
+      target.bossLevel(true, ImmutableList.of(new Task(5),new Task(6)), false);
 
       // we don't care in what order we validate or audit tasks
       assertThat(outputCapture.toString())
