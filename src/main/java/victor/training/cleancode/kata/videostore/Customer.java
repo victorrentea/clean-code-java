@@ -28,19 +28,17 @@ class Customer {
 			// determine amounts for every line
 			int dr = rentals.get(each);
 			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
+				case Movie.REGULAR -> {
 					thisAmount += 2;
 					if (dr > 2)
 						thisAmount += (dr - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case Movie.CHILDRENS:
+				}
+				case Movie.NEW_RELEASE -> thisAmount += dr * 3;
+				case Movie.CHILDRENS -> {
 					thisAmount += 1.5;
 					if (dr > 3)
 						thisAmount += (dr - 3) * 1.5;
-					break;
+				}
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
