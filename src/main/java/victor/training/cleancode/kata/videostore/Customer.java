@@ -4,6 +4,7 @@ import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Value
 class Customer {
@@ -15,26 +16,26 @@ class Customer {
     }
 
     public String statement() {
-        double totalAmount;
-        String result = "Rental Record for " + getName() + "\n";
-        totalAmount = rentals.stream().mapToDouble(Rental::computePrice).sum();
+        double totalPrice = getTotalPrice();
+        int frequentRenterPoints = getFrequentRenterPoints();
+        String individualMovieStatement = getIndividualMovieStatement();
 
-        for (Rental rental : rentals) {
-            double thisAmount;
+        return "Rental Record for " + getName() + "\n" + individualMovieStatement +
+                // footer
+                "\n" + "Amount owed is " + totalPrice + "\n" + "You earned " + frequentRenterPoints + " frequent renter points";
+    }
 
-            // determine amounts for every line
-            thisAmount = rental.computePrice();
-            result += "\t" + rental.movie().title() + "\t" + thisAmount + "\n";
-        }
+    private String getIndividualMovieStatement() {
+        return rentals.stream()
+                .map(Rental::toString)
+                .collect(Collectors.joining("\n"));
+    }
 
-        int frequentRenterPoints;
-        frequentRenterPoints = rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+    private int getFrequentRenterPoints() {
+        return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+    }
 
-        // add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + frequentRenterPoints + " frequent renter points";
-
-        return result;
-
+    private double getTotalPrice() {
+        return rentals.stream().mapToDouble(Rental::computePrice).sum();
     }
 }
