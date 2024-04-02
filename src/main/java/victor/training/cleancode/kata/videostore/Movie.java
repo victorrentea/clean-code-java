@@ -22,4 +22,5 @@ public class Movie {
 	public String getTitle() {
 		return _title;
 	};
+
 }
