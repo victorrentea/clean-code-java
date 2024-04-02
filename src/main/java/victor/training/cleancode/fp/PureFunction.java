@@ -40,6 +40,7 @@ class PureFunction {
   }
   // pure function
   @VisibleForTesting // only tests should call this. Sonar+IntelliJ warns if another prod class uses this
+  // sau mut-o singura intr-o clasa noua CouponApplier si fa-o publica
   static DiscountedPrice applyCoupons(List<Product> products,
                                        Map<Long, Double> extractedPrices,
                                        List<Coupon> coupons) {
