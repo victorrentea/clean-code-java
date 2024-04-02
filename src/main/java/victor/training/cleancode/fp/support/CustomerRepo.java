@@ -1,7 +1,9 @@
 package victor.training.cleancode.fp.support;
 
+import java.util.Optional;
+
 public interface CustomerRepo {
-   Customer findById(long customerId);
+   Optional<Customer> findById(long customerId);
    int countByEmail(String email);
 
    Long save(Customer customer);

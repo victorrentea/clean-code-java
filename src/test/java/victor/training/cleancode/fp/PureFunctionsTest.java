@@ -11,6 +11,7 @@ import victor.training.cleancode.fp.support.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -37,7 +38,7 @@ class PureFunctionsTest {
     Coupon coupon1 = new Coupon(ProductCategory.HOME, 2);
     Coupon coupon2 = new Coupon(ProductCategory.ELECTRONICS, 4);
     Customer customer = new Customer(List.of(coupon1, coupon2));
-    when(customerRepo.findById(13L)).thenReturn(customer);
+    when(customerRepo.findById(13L)).thenReturn(Optional.of(customer));
     Product p1 = new Product().setId(1L).setCategory(ProductCategory.HOME);
     Product p2 = new Product().setId(2L).setCategory(ProductCategory.KIDS);
     when(productRepo.findAllById(List.of(1L, 2L))).thenReturn(List.of(p1, p2));
