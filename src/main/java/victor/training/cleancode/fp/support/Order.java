@@ -36,34 +36,37 @@ public class Order {
     return price;
   }
 
-  public Order setId(Long id) {
+  public Order setId(final Long id) {
     this.id = id;
     return this;
   }
 
-  public Order setOrderLines(List<OrderLine> orderLines) {
+  public Order setOrderLines(final List<OrderLine> orderLines) {
     this.orderLines = orderLines;
     return this;
   }
 
-  public Order setCreationDate(LocalDate creationDate) {
+  public Order setCreationDate(final LocalDate creationDate) {
     this.creationDate = creationDate;
     return this;
   }
 
-  public Order setShipDate(LocalDate shipDate) {
+  public Order setShipDate(final LocalDate shipDate) {
     this.shipDate = shipDate;
     return this;
   }
 
-  public Order setActive(boolean active) {
+  public Order setActive(final boolean active) {
     this.active = active;
     return this;
   }
 
-  public Order setPrice(int price) {
+  public Order setPrice(final int price) {
     this.price = price;
     return this;
   }
 
+  public boolean isRecent() {
+    return creationDate().isAfter(LocalDate.now().minusYears(1));
+  }
 }

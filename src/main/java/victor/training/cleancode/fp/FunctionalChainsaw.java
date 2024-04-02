@@ -5,8 +5,8 @@ import victor.training.cleancode.fp.support.OrderLine;
 import victor.training.cleancode.fp.support.Product;
 import victor.training.cleancode.fp.support.ProductRepo;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import static java.util.stream.Collectors.*;
@@ -14,22 +14,36 @@ import static java.util.stream.Collectors.*;
 public class FunctionalChainsaw { // ... Massacre
 	private final ProductRepo productRepo;
 
-  public FunctionalChainsaw(ProductRepo productRepo) {
+  public FunctionalChainsaw(final ProductRepo productRepo) {
     this.productRepo = productRepo;
   }
 
-  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
+  public List<Product> getFrequentOrderedProducts(final List<Order> orders) {
+//		CompletableFuture.failedFuture(new RuntimeException());
+//		CompletableFuture.completedFuture("aaa");
+
+//		Mono.failed(new RuntimeException());
+		// Mono.just("aaa");
+
+
+		final List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
+		final Map<Product, Integer> boughtProducts = orders.stream()
 				.filter(Order::isActive)
-				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusYears(1)))
-				.flatMap(o -> o.orderLines().stream())
-				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
-				.entrySet()
+				.filter(Order::isRecent)
+				.flatMap(order -> order.orderLines().stream())
+				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
+		final List<Product> frequentProducts = boughtProducts.entrySet()
 				.stream()
 				.filter(e -> e.getValue() >= 10)
 				.map(Entry::getKey)
+				.toList();
+		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+//				.filter(not(Product::isDeleted))
+//				.filter(Product::isNotDeleted)
+//				.filter(Product::isActive)
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
 	}
+
 }
