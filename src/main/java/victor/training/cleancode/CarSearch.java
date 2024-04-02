@@ -8,20 +8,18 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> doi(criteria, carModel))
+        .filter(carModel -> criteria.yearInterval().intersectsWith(carModel.yearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean doi(CarSearchCriteria criteria, CarModel carModel) {
-    int start1 = criteria.getStartYear();
-    int end1 = criteria.getEndYear();
-    int start2 = carModel.getStartYear();
-    int end2 = carModel.getEndYear();
-    return new Interval(start1, end1).intersectsWith(new Interval(start2, end2));
-  }
 }
+
+// ACUM
+// A) FP
+// B) refactor codu vostru real
+
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
@@ -36,7 +34,11 @@ class SomeOtherClientCode {
 class MathUtil {
 
 }
-record Interval(int start, int end) {
+//@Embbedable
+record Interval(/*@Min(0)*/ int start, int end) {
+  Interval {
+    if (start>end) throw new IllegalArgumentException();
+  }
   public boolean intersectsWith(Interval interval) {
     return start <= interval.end && interval.start <= end;
   }
@@ -68,6 +70,10 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  Interval yearInterval() {
+    return new Interval(getStartYear(), getEndYear());
+  }
 }
 
 // @Entity
@@ -76,8 +82,10 @@ class CarModel { // the Entity Model👑
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+//  private int startYear;
+//  private int endYear;
+  // @Embedded // nu se modifica schema de baza de date
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -86,8 +94,9 @@ class CarModel { // the Entity Model👑
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+    yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
@@ -95,11 +104,11 @@ class CarModel { // the Entity Model👑
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearInterval.start();
   }
 
   public String getMake() {
@@ -108,6 +117,10 @@ class CarModel { // the Entity Model👑
 
   public String getModel() {
     return model;
+  }
+
+  public Interval yearInterval() {
+    return new Interval(getStartYear(), getEndYear());
   }
 }
 

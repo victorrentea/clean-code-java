@@ -1,5 +1,8 @@
 package victor.training.cleancode.immutable.advanced;
 
+import com.google.common.collect.ImmutableList;
+import lombok.Value;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -8,7 +11,7 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
-    List<Integer> numbers = Stream.of(1, 2, 3).collect(toList()); // ArrayList
+    var numbers = Stream.of(1, 2, 3).collect(ImmutableList.toImmutableList()); // ArrayList
 
     Immutable immutable = new Immutable(1, 2, numbers, new Other(15));
     System.out.println("Before: " + immutable);
@@ -19,48 +22,23 @@ public class ImmutableAdvanced {
   }
 
   private static void wilderness(Immutable immutable) {
+//    immutable.getNumbers().add(4); // throws UnsupportedOperationException
+
     // dark, deep logic not expected to change the immutable object x,y
   }
 }
 
 //este shallow immutable, nu deep immutable
+@Value // = final fields + getters + equals + hashCode + toString = @Data cu campurile private finale
 class Immutable {
-  private final Integer x;
-  private final Integer y;
-  private final List<Integer> numbers;
-  private final Other other;
-
-  Immutable(Integer x, Integer y, List<Integer> numbers, Other other) {
-    this.x = x;
-    this.y = y;
-    this.numbers = numbers;
-    this.other = other;
-  }
-
-  public List<Integer> getNumbers() {
-    return Collections.unmodifiableList(numbers);
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, numbers, other);
-  }
+  Integer x;
+  Integer y;
+  ImmutableList<Integer> numbers;
+  Other other;
 }
 
 class Other {
-  private int a;
+  private final int a;
 
   public Other(int a) {
     this.a = a;
@@ -70,7 +48,4 @@ class Other {
     return a;
   }
 
-  public void setA(int a) {
-    this.a = a;
-  }
 }
