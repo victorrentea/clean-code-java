@@ -3,6 +3,7 @@ package victor.training.cleancode.immutable.advanced;
 import com.google.common.collect.ImmutableList;
 import lombok.Builder;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 public class ImmutableAdvanced {
@@ -44,6 +45,11 @@ record Immutable(Integer x,
                  Integer y,
                  ImmutableList<Integer> numbers,
                  Other other) {
+
+  // multe d'astea!!!
+  public List<Integer> oddNumbers() {
+    return numbers.stream().filter(n -> n % 2 == 1).toList();
+  }
 
   public Immutable move(int dx, int dy) { // semantic-rich wither
     return new Immutable(x + dx, y + dy, numbers, other);
