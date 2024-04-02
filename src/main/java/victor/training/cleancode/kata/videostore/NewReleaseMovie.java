@@ -7,13 +7,15 @@ public class NewReleaseMovie extends Movie {
 
     @Override
     public double computePrice(int daysRented) {
-        double amount = 0;
-        amount += daysRented * 3;
-        return amount;
+        return daysRented * 3;
     }
 
     @Override
-    public int getFrequentRenterPoints() {
-        return super.getFrequentRenterPoints();
+    public int getFrequentRenterPoints(int daysRented) {
+        if (daysRented > 1) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 }

@@ -22,35 +22,22 @@ class Customer {
     }
 
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
         // iterate each rental
-        for (Movie each : rentals.keySet()) {
+        double totalAmount = 0;
+        for (Movie movie : rentals.keySet()) {
             // determine amounts for every line
-            int daysRented = rentals.get(each);
-            double rentOwnedAmount = each.computePrice(daysRented);
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if (each instanceof NewReleaseMovie && daysRented > 1) {
-                frequentRenterPoints++;
-            }
+            int daysRented = rentals.get(movie);
+            double rentOwnedAmount = movie.computePrice(daysRented);
             // show figures line for this rental
-//			result += "\t" + each.title() + "\t" + rentOwnedAmount + "\n";
+			result += "\t" + movie.getTitle() + "\t" + rentOwnedAmount + "\n";
             totalAmount += rentOwnedAmount;
         }
-        for (Movie each : rentals.keySet()) {
-            // determine amounts for every line
-            int daysRented = rentals.get(each);
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if (each instanceof NewReleaseMovie && daysRented > 1) {
-                frequentRenterPoints++;
-            }
-            // show figures line for this rental
-        }
+
+        int frequentRenterPoints = rentals.keySet().stream()
+                .mapToInt(movie -> movie.getFrequentRenterPoints(rentals.get(movie)))
+                .sum();
+
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
