@@ -20,4 +20,15 @@ public record Rental(Movie movie, Integer rentDays) {
         }
         return thisAmount;
     }
+
+    public int getFrequentRenterPoints() {
+        int frequentRenterPoints=0;
+        frequentRenterPoints++;
+
+        // add bonus for a two day new release rental
+        if (movie().movieType() == MovieType.NEW_RELEASE && rentDays() > 1)
+            frequentRenterPoints++;
+        return frequentRenterPoints;
+
+    }
 }

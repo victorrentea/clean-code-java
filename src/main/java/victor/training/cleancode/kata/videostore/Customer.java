@@ -15,31 +15,26 @@ class Customer {
     }
 
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
+        double totalAmount;
         String result = "Rental Record for " + getName() + "\n";
-        // iterate each rental
-//        totalAmount = rentals.stream().mapToDouble(Rental::computePrice).sum();
-          for (Rental rental : rentals) {
-            double thisAmount = 0;
+        totalAmount = rentals.stream().mapToDouble(Rental::computePrice).sum();
+
+        for (Rental rental : rentals) {
+            double thisAmount;
+
             // determine amounts for every line
             thisAmount = rental.computePrice();
             result += "\t" + rental.movie().title() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
         }
-        for (Rental rental : rentals) {
-            // add frequent renter points
-//            result += "\t" + rental.movie().title() + "\t" + thisAmount + "\n";
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if (rental.movie().movieType() == MovieType.NEW_RELEASE && rental.rentDays() > 1)
-                frequentRenterPoints++;
-            // show figures line for this rental
 
-        }
+        int frequentRenterPoints;
+        frequentRenterPoints = rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
+
         return result;
+
     }
 }
