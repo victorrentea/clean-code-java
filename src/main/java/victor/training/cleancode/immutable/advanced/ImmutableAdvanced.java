@@ -11,15 +11,14 @@ public class ImmutableAdvanced {
     Immutable immutable = new Immutable(1, 2, numbers, new Other(15));
     System.out.println("Before: " + immutable);
 
-    wilderness(immutable);
+    Immutable immutableMutat = wilderness(immutable);
 
-    System.out.println("After:  " + immutable);
+    System.out.println("After:  " + immutableMutat);
   }
 
-  private static void wilderness(Immutable immutable) {
-//    immutable.getNumbers().add(4); // throws UnsupportedOperationException
-
-    // dark, deep logic not expected to change the immutable object x,y
+  private static Immutable wilderness(Immutable immutable) {
+    // TODO vreau sa setez x si y la o valoare mai mare cu +1 fata de ce era
+    return new Immutable(immutable.x() + 1, immutable.y() + 1, immutable.numbers(), immutable.other());
   }
 }
 
