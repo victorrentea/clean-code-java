@@ -3,42 +3,40 @@ package victor.training.cleancode.kata.videostore;
 import lombok.Getter;
 import lombok.Value;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 @Value
 class Customer {
     @Getter
     String name;
-    Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+    List<Rental> rentals = new LinkedList<>(); // preserves order
 
     public Customer(String name) {
         this.name = name;
     }
 
-
-    public void addRental(Movie m, int d) {
-        rentals.put(m, d);
+    public void addRental(Rental rental) {
+        rentals.add(rental);
     }
 
     public String statement() {
         String result = "Rental Record for " + getName() + "\n";
-        // iterate each rental
-        double totalAmount = 0;
-        for (Movie movie : rentals.keySet()) {
-            // determine amounts for every line
-            int daysRented = rentals.get(movie);
-            double rentOwnedAmount = movie.computePrice(daysRented);
-            // show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + rentOwnedAmount + "\n";
-            totalAmount += rentOwnedAmount;
-        }
 
-        int frequentRenterPoints = rentals.keySet().stream()
-                .mapToInt(movie -> movie.getFrequentRenterPoints(rentals.get(movie)))
+        double totalAmount = rentals.stream()
+                .mapToDouble(rental -> rental.movie().computePrice(rental.dayRented()))
                 .sum();
 
-        // add footer lines
+        //pentru fiecare Rental sa extragem Movie, sa afisam titlu, sa afisam si rentOwnedAmount
+
+        int frequentRenterPoints = rentals.stream()
+                .mapToInt(rental -> rental.movie().getFrequentRenterPoints(rental.dayRented()))
+                .sum();
+
+        int rentOwnedAmount = 0;
+
+        //result += "\t" + movie.getTitle() + "\t" + rentOwnedAmount + "\n";
+
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
