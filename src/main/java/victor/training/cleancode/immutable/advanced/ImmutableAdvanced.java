@@ -3,11 +3,7 @@ package victor.training.cleancode.immutable.advanced;
 import com.google.common.collect.ImmutableList;
 import lombok.Value;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
@@ -29,12 +25,8 @@ public class ImmutableAdvanced {
 }
 
 //este shallow immutable, nu deep immutable
-@Value // = final fields + getters + equals + hashCode + toString = @Data cu campurile private finale
-class Immutable {
-  Integer x;
-  Integer y;
-  ImmutableList<Integer> numbers;
-  Other other;
+//@Value // = final fields + getters + equals + hashCode + toString = @Data cu campurile private finale
+record Immutable(Integer x, Integer y, ImmutableList<Integer> numbers, Other other) {
 }
 
 class Other {
