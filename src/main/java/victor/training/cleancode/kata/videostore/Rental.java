@@ -1,36 +1,46 @@
 package victor.training.cleancode.kata.videostore;
 
 public record Rental(Movie movie, int rentalDays) {
-
     public double computePrice() {
         return switch (movie.movieType()) {
-            case REGULAR -> computeAmount(2, 2);
+            case REGULAR -> regularPrice();
             case NEW_RELEASE -> rentalDays * 3;
-            case CHILDREN -> computeAmount(1.5, 3);
+            case CHILDREN -> childrenPrice();
         };
     }
 
-    private double computeAmount(double amount, final int minDaysOfRentalForExtraCharge) {
-        if (rentalDays > 2)
-            amount += (rentalDays - minDaysOfRentalForExtraCharge) * 1.5;
+    private double childrenPrice() {
+        double amount = 1.5;
+        if (rentalDays > 2) {
+            amount += (rentalDays - 3) * 1.5;
+        }
         return amount;
     }
 
+    private double regularPrice() {
+        double amount = 2;
+        if (rentalDays > 2) {
+            amount += (rentalDays - 2) * 1.5;
+        }
+        return amount;
+    }
+
+    // accidental coupling pt ca am extras cod ce semana doar, ca a zis motosapa (IntelliJ)
+
     public int getFrequentRenterPoints() {
-        int frequentRenterPoints = 1;
-
-        if (isEligibleForExtraPoints())
-            frequentRenterPoints++;
-
-        return frequentRenterPoints;
+        int result = 1;
+        if (isEligibleForExtraPoints()) {
+            result++;
+        }
+        return result;
     }
 
     private boolean isEligibleForExtraPoints() {
-        return movie().movieType() == MovieType.NEW_RELEASE && rentalDays() > 1;
+        return movie().movieType() == MovieType.NEW_RELEASE && rentalDays() >= 2;
     }
 
-    @Override
-    public String toString() {
+    public String toBodyLine() {
+        // M VC
         return "\t" + movie().title() + "\t" + computePrice();
     }
 }

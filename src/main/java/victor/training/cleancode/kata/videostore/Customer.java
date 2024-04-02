@@ -4,15 +4,16 @@ import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 @Value
 class Customer {
     String name;
-    List<Rental> rentals = new ArrayList<>(); // preserves order
+    List<Rental> rentals = new ArrayList<>();
 
-    public void addRental(Movie movie, int price) {
-        rentals.add(new Rental(movie, price));
+    public void addRental(final Rental rental) {
+        rentals.add(rental);
     }
 
     public String statement() {
@@ -20,7 +21,7 @@ class Customer {
     }
 
     private String getHeader() {
-        return "Rental Record for " + getName() + "\n";
+        return "Rental Record for " + name + "\n";
     }
 
     private String getFooter() {
@@ -31,8 +32,8 @@ class Customer {
 
     private String getBody() {
         return rentals.stream()
-                .map(Rental::toString)
-                .collect(Collectors.joining("\n"));
+            .map(Rental::toBodyLine)
+            .collect(joining("\n"));
     }
 
     private int getFrequentRenterPoints() {
