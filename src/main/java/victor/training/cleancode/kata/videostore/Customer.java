@@ -16,16 +16,20 @@ class Customer {
     }
 
     public String statement() {
-        double totalPrice = getTotalPrice();
-        int frequentRenterPoints = getFrequentRenterPoints();
-        String individualMovieStatement = getIndividualMovieStatement();
-
-        return "Rental Record for " + getName() + "\n" + individualMovieStatement +
-                // footer
-                "\n" + "Amount owed is " + totalPrice + "\n" + "You earned " + frequentRenterPoints + " frequent renter points";
+        return getHeader() + getBody() + getFooter();
     }
 
-    private String getIndividualMovieStatement() {
+    private String getHeader() {
+        return "Rental Record for " + getName() + "\n";
+    }
+
+    private String getFooter() {
+        return "\nAmount owed is " + getTotalPrice() +
+                "\nYou earned " + getFrequentRenterPoints() +
+                " frequent renter points";
+    }
+
+    private String getBody() {
         return rentals.stream()
                 .map(Rental::toString)
                 .collect(Collectors.joining("\n"));

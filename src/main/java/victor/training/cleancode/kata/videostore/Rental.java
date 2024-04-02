@@ -5,20 +5,17 @@ public record Rental(Movie movie, int rentalDays) {
     public double computePrice() {
         double thisAmount = 0;
         switch (movie.movieType()) {
-
-            case REGULAR -> {
-                thisAmount += 2;
-                if (rentalDays > 2)
-                    thisAmount += (rentalDays - 2) * 1.5;
-            }
+            case REGULAR -> thisAmount += computeAmount(2, 2);
             case NEW_RELEASE -> thisAmount += rentalDays * 3;
-            case CHILDREN -> {
-                thisAmount += 1.5;
-                if (rentalDays > 3)
-                    thisAmount += (rentalDays - 3) * 1.5;
-            }
+            case CHILDREN -> thisAmount += computeAmount(1.5, 3);
         }
         return thisAmount;
+    }
+
+    private double computeAmount(double amount, int x) {
+        if (rentalDays > 2)
+            amount += (rentalDays - x) * 1.5;
+        return amount;
     }
 
     public int getFrequentRenterPoints() {
