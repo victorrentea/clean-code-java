@@ -14,6 +14,7 @@ public class MicroTypes {
   public Map<CustomerId, List<ProductCount>> fetchData() {
     Long customerId = 1L;
     Integer product1Count = 2;
+
     Integer product2Count = 4;
     return Map.of(new CustomerId(customerId), List.of(
         new ProductCount("Table", product1Count),
