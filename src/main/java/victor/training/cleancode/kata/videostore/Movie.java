@@ -1,3 +1,11 @@
 package victor.training.cleancode.kata.videostore;
 
-public record Movie(String title, MovieTicketType ticketType) {}
+
+public abstract class Movie{
+    public Movie(String title) {
+        this.title = title;
+    }
+
+    private String title;
+    public abstract double computePrice(int daysRented);
+}
