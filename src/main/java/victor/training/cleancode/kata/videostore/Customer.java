@@ -27,20 +27,29 @@ class Customer {
         String result = "Rental Record for " + getName() + "\n";
         // iterate each rental
         for (Movie each : rentals.keySet()) {
-            double rentOwnedAmount = 0;
             // determine amounts for every line
             int daysRented = rentals.get(each);
-            rentOwnedAmount += each.computePrice(daysRented);
+            double rentOwnedAmount = each.computePrice(daysRented);
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
-            //TODO: fix
-//			if (each.ticketType() == NEW_RELEASE && daysRented > 1)
-//				frequentRenterPoints++;
+            if (each instanceof NewReleaseMovie && daysRented > 1) {
+                frequentRenterPoints++;
+            }
             // show figures line for this rental
-            //TODO: fix
 //			result += "\t" + each.title() + "\t" + rentOwnedAmount + "\n";
             totalAmount += rentOwnedAmount;
+        }
+        for (Movie each : rentals.keySet()) {
+            // determine amounts for every line
+            int daysRented = rentals.get(each);
+            // add frequent renter points
+            frequentRenterPoints++;
+            // add bonus for a two day new release rental
+            if (each instanceof NewReleaseMovie && daysRented > 1) {
+                frequentRenterPoints++;
+            }
+            // show figures line for this rental
         }
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";

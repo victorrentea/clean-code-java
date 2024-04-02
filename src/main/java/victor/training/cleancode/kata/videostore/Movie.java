@@ -8,4 +8,8 @@ public abstract class Movie{
 
     private String title;
     public abstract double computePrice(int daysRented);
+
+    public int getFrequentRenterPoints(){
+        return 1;
+    }
 }
