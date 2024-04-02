@@ -3,18 +3,16 @@ package victor.training.cleancode.kata.videostore;
 public record Rental(Movie movie, int rentalDays) {
 
     public double computePrice() {
-        double thisAmount = 0;
-        switch (movie.movieType()) {
-            case REGULAR -> thisAmount += computeAmount(2, 2);
-            case NEW_RELEASE -> thisAmount += rentalDays * 3;
-            case CHILDREN -> thisAmount += computeAmount(1.5, 3);
-        }
-        return thisAmount;
+        return switch (movie.movieType()) {
+            case REGULAR -> computeAmount(2, 2);
+            case NEW_RELEASE -> rentalDays * 3;
+            case CHILDREN -> computeAmount(1.5, 3);
+        };
     }
 
-    private double computeAmount(double amount, int x) {
+    private double computeAmount(double amount, final int minDaysOfRentalForExtraCharge) {
         if (rentalDays > 2)
-            amount += (rentalDays - x) * 1.5;
+            amount += (rentalDays - minDaysOfRentalForExtraCharge) * 1.5;
         return amount;
     }
 
@@ -33,6 +31,6 @@ public record Rental(Movie movie, int rentalDays) {
 
     @Override
     public String toString() {
-        return "\t" + this.movie().title() + "\t" + this.computePrice();
+        return "\t" + movie().title() + "\t" + computePrice();
     }
 }
