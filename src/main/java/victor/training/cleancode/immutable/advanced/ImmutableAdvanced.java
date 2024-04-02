@@ -33,6 +33,13 @@ public class ImmutableAdvanced {
       // kotlin: return immutable.copy(x = immutable.x + 1, y = immutable.y + 1);
 
     return immutable.move(1,1);
+
+    // visez: immutable.withPosition(immutable.position().move(1,1));
+  }
+}
+record Point(int x, int y) {
+  public Point move(int dx, int dy) {
+    return new Point(x + dx, y + dy);
   }
 }
 
