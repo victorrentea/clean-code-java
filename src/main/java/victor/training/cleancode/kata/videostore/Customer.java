@@ -10,6 +10,7 @@ class Customer {
 		this.name = name;
 	};
 
+
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
 	}
