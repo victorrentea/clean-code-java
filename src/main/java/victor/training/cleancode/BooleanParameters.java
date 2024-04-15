@@ -42,17 +42,28 @@ class MyService {
 public class BooleanParameters {
 
   public static void bigUglyMethod(int storeId, Task task, boolean cr323) {
-    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
-    System.out.println(task);
-    System.out.println("Donkey Logic 3 " + task);
+    donkey(storeId, task);
 
     if (cr323) {
       System.out.println("Logic just for CR#323 : " + task);
     }
 
+    sheep(storeId);
+  }
+
+  private static void sheep(int storeId) {
     System.out.println("Sheep Logic 1 " + storeId);
     System.out.println("Sheep Logic 2 " + storeId);
     System.out.println("Sheep Logic 3 " + storeId);
+  }
+
+  private static void donkey(int storeId, Task task) {
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 3 " + task);
   }
 }
 
