@@ -16,19 +16,19 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethod(id, task, false);
   }
 }
 
@@ -40,10 +40,6 @@ class MyService {
 }
 
 public class BooleanParameters {
-
-  public static void bigUglyMethod(int storeId, Task task) {
-    bigUglyMethod(storeId, task, false);
-  }
 
   public static void bigUglyMethod(int storeId, Task task, boolean cr323) {
     System.out.println("Donkey Logic 1 " + task + " and " + storeId);
