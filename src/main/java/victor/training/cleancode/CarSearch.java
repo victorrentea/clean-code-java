@@ -8,17 +8,12 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> {
-          int start1 = criteria.getStartYear();
-          int end1 = criteria.getEndYear();
-          int start2 = carModel.getStartYear();
-          int end2 = carModel.getEndYear();
-          return new Interval(start1, end1).intersects(new Interval(start2, end2));
-        })
+        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
+
 }
 
 class SomeOtherClientCode {
@@ -27,10 +22,7 @@ class SomeOtherClientCode {
   }
 
   private void applyCapacityFilter() { // pretend
-    System.out.println(
-        new Interval(1000, 1600)
-            .intersects(
-            new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
 
   }
 }
@@ -64,6 +56,10 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
+  }
 }
 
 // @Entity
@@ -72,8 +68,9 @@ class CarModel { // the Entity Model👑
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  //  private int startYear;
+//  private int endYear;
+  private Interval yearInterval; // less fields !!! Yee!!
 
   protected CarModel() {
   } // for Hibernate
@@ -81,23 +78,16 @@ class CarModel { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) {
-      throw new IllegalArgumentException("start larger than end");
-    }
-    this.startYear = startYear;
-    this.endYear = endYear;
+
+    this.yearInterval = new Interval(startYear, endYear);
+  }
+
+  public Interval getYearInterval() {
+    return yearInterval;
   }
 
   public Long getId() {
     return id;
-  }
-
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
   }
 
   public String getMake() {
@@ -114,8 +104,12 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.startYear = carModel.getYearInterval().getStart();
+    dto.endYear = carModel.getYearInterval().getEnd();
     return dto;
   }
 

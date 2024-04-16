@@ -5,6 +5,9 @@ public class Interval {
   private final int end;
 
   Interval(int start, int end) {
+    if (start > end) { // constrained objects which are always valid
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.start = start;
     this.end = end;
   }
