@@ -13,7 +13,7 @@ class CarSearch {
           int end1 = criteria.getEndYear();
           int start2 = carModel.getStartYear();
           int end2 = carModel.getEndYear();
-          return MathUtil.intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+          return new Interval(start1, end1).intervalsIntersect(new Interval(start2, end2));
         })
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
@@ -23,41 +23,18 @@ class CarSearch {
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
   }
 
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(
-        new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(
+        new Interval(1000, 1600).intervalsIntersect(
+            new Interval(1250, 2000)));
+
   }
 }
 
 class MathUtil {
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    if (interval1 == null || interval2 == null) {
-      throw new IllegalArgumentException("Null interval");
-    }
-    return interval1.getStart() <= interval2.getEnd()
-           && interval2.getStart() <= interval1.getEnd();
-  }
-}
-
-class Interval {
-  private final int start;
-  private final int end;
-
-  Interval(int start, int end) {
-    this.start = start;
-    this.end = end;
-  }
-
-  public int getEnd() {
-    return end;
-  }
-
-  public int getStart() {
-    return start;
-  }
 }
 
 
