@@ -10,15 +10,15 @@ public class Boss {
 
   // 👌 TODO run tests
   public void bossLevel(boolean b, ImmutableList<Task> tasks, boolean cr323) {
-    int index = 0;
+//    int index = 0;
     if (tasks.isEmpty()) {
       return;
     }
     System.out.println("Logic1");
-    List<Integer> taskIds = new ArrayList<>();
     if (b) {
       System.out.println("Logic3");
       check(tasks);
+      List<Integer> taskIds = new ArrayList<>();
       for (Task task : tasks) {
         System.out.println("Starting " + task);
         task.setStarted(true);
@@ -28,7 +28,7 @@ public class Boss {
         if (cr323) { // TODO remove the boolean
           System.out.println("My Logic: " + task);
         }
-
+        int index = 0;
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
