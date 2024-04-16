@@ -3,16 +3,18 @@ package victor.training.cleancode;
 public class ParameterObjects {
   public static void main(String[] args) {
     new ParameterObjects().placeOrder(
-        new FullName("John", "Doe"), "St. Albergue", "Paris", 99);
+        new FullName("John", "Doe"), new Address("St. Albergue", "Paris", 99));
 
     new AnotherClass().otherMethod(new FullName("John", "Doe"), 17);
   }
 
-  public void placeOrder(FullName fullName, String city, String streetName, Integer streetNumber) {
-    if (fullName.firstName() == null || fullName.lastName() == null) throw new IllegalArgumentException();
+  public void placeOrder(FullName fullName, Address address) {
+    if (fullName.firstName() == null || fullName.lastName() == null) {
+      throw new IllegalArgumentException();
+    }
 
     System.out.println("Some Logic");
-    System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
+    System.out.println("Shipping to " + address.city() + " on St. " + address.streetName() + " " + address.streetNumber());
 
 
   }
@@ -20,7 +22,9 @@ public class ParameterObjects {
 
 class AnotherClass {
   public void otherMethod(FullName fullName, int x) {
-    if (fullName.firstName() == null || fullName.lastName() == null) throw new IllegalArgumentException();
+    if (fullName.firstName() == null || fullName.lastName() == null) {
+      throw new IllegalArgumentException();
+    }
 
     System.out.println("Another distant Logic " + x);
     System.out.println("Person: " + fullName.lastName());
@@ -30,12 +34,14 @@ class AnotherClass {
 // Domain Entity
 class Person {
   private Long id;
-  private String firstName;
+  private final String firstName;
   private String lastName;
   private String phone;
 
   public Person(String firstName, String lastName) {
-    if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    if (firstName == null || lastName == null) {
+      throw new IllegalArgumentException();
+    }
     this.firstName = firstName;
     this.lastName = lastName;
   }
