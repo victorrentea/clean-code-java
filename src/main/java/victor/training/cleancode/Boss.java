@@ -21,17 +21,17 @@ public class Boss {
     }
     System.out.println("Logic3");
     check(tasks);
-    List<Integer> taskIds = new ArrayList<>();
     int index = 0;
-    for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
-    }
+    start(tasks);
+
+    // Code Smell: Accumulator Loop: avoid using for to build a 'result' (collection/number)
+    List<Integer> taskIds = new ArrayList<>();
     for (Task task : tasks) {
       taskIds.add(task.getId());
     }
-    for (Task task : tasks) {
-      if (cr323) { // TODO remove the boolean
+
+    if (cr323) { // TODO remove the boolean
+      for (Task task : tasks) {
         System.out.println("My Logic: " + task);
       }
     }
@@ -43,6 +43,13 @@ public class Boss {
     System.out.println("Logic6 " + taskSize);
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  private void start(ImmutableList<Task> tasks) {
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
   }
 
   private void check(List<Task> tasks) {
