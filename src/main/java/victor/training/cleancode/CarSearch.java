@@ -29,9 +29,40 @@ class SomeOtherClientCode {
 
 class MathUtil {
 
-  // higher coupling = bad
-  public static boolean intervalsIntersect(CarModel carModel, CarSearchCriteria criteria) {
+  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
+  }
+
+
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    // a)
+    if (interval1 == null || interval2 == null) {
+      throw new IllegalArgumentException("Null interval");
+    }
+    return intervalsIntersect(
+        interval1.getStart(), interval1.getEnd(),
+        interval2.getStart(), interval2.getEnd());
+    // b)
+//    return interval1.getStart() <= interval2.getEnd()
+//           && interval2.getStart() <= interval1.getEnd();
+  }
+}
+
+class Interval {
+  private final int start;
+  private final int end;
+
+  Interval(int start, int end) {
+    this.start = start;
+    this.end = end;
+  }
+
+  public int getEnd() {
+    return end;
+  }
+
+  public int getStart() {
+    return start;
   }
 }
 
