@@ -28,12 +28,14 @@ class SomeOtherClientCode {
 }
 
 class MathUtil {
-
+  // OLD, BAD
+  @Deprecated // JDD / Hope-Driven Development
+  /** @deprecated use {@link #intervalsIntersect(Interval, Interval)} */
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
   }
 
-
+  // NEW, GOOD
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
     // a)
     if (interval1 == null || interval2 == null) {
