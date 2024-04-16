@@ -9,12 +9,12 @@ import java.util.List;
 public class Boss {
 
   // 👌 TODO run tests
-  public void bossLevel(boolean b, ImmutableList<Task> tasks, boolean cr323) {
+  public void bossLevel(boolean gdpr, ImmutableList<Task> tasks, boolean cr323) {
     if (tasks.isEmpty()) {
       return;
     }
     System.out.println("Logic1");
-    if (b) {
+    if (gdpr) {
       System.out.println("Logic3");
       check(tasks);
       List<Integer> taskIds = new ArrayList<>();
