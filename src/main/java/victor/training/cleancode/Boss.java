@@ -14,29 +14,30 @@ public class Boss {
       return;
     }
     System.out.println("Logic1");
-    if (gdpr) {
-      System.out.println("Logic3");
-      check(tasks);
-      List<Integer> taskIds = new ArrayList<>();
-      int index = 0;
-      for (Task task : tasks) {
-        System.out.println("Starting " + task);
-        task.setStarted(true);
-
-        taskIds.add(task.getId());
-
-        if (cr323) { // TODO remove the boolean
-          System.out.println("My Logic: " + task);
-        }
-        index++;
-        System.out.println("Audit task #" + index + ": " + task);
-      }
-      int taskSize = tasks.size();
-      System.out.println("Logic6 " + taskSize);
-      System.out.println("Task Ids: " + taskIds);
-    } else {
+    if (!gdpr) {
       System.out.println("Logic7 on fluff=false " + tasks);
+      System.out.println("Logic8");
+      return;
     }
+    System.out.println("Logic3");
+    check(tasks);
+    List<Integer> taskIds = new ArrayList<>();
+    int index = 0;
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+
+      taskIds.add(task.getId());
+
+      if (cr323) { // TODO remove the boolean
+        System.out.println("My Logic: " + task);
+      }
+      index++;
+      System.out.println("Audit task #" + index + ": " + task);
+    }
+    int taskSize = tasks.size();
+    System.out.println("Logic6 " + taskSize);
+    System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
   }
 
