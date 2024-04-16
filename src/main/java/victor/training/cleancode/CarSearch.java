@@ -32,21 +32,16 @@ class MathUtil {
   @Deprecated // JDD / Hope-Driven Development
   /** @deprecated use {@link #intervalsIntersect(Interval, Interval)} */
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+    return intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
   }
 
   // NEW, GOOD
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    // a)
     if (interval1 == null || interval2 == null) {
       throw new IllegalArgumentException("Null interval");
     }
-    return intervalsIntersect(
-        interval1.getStart(), interval1.getEnd(),
-        interval2.getStart(), interval2.getEnd());
-    // b)
-//    return interval1.getStart() <= interval2.getEnd()
-//           && interval2.getStart() <= interval1.getEnd();
+    return interval1.getStart() <= interval2.getEnd()
+           && interval2.getStart() <= interval1.getEnd();
   }
 }
 
