@@ -14,7 +14,6 @@ public class Boss {
     if (tasks.isEmpty()) {
       return;
     }
-    int taskSize = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (b) {
@@ -33,6 +32,7 @@ public class Boss {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
+      int taskSize = tasks.size();
       System.out.println("Logic6 " + taskSize);
       System.out.println("Task Ids: " + taskIds);
     } else {
