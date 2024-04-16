@@ -2,7 +2,6 @@ package victor.training.cleancode;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Deep nested functions are harder to break down
@@ -25,10 +24,7 @@ public class Boss {
     start(tasks);
 
     // Code Smell: Accumulator Loop: avoid using for to build a 'result' (collection/number)
-    List<Integer> taskIds = new ArrayList<>();
-    for (Task task : tasks) {
-      taskIds.add(task.getId());
-    }
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList(); // easier to read
 
     if (cr323) { // TODO remove the boolean
       for (Task task : tasks) {
