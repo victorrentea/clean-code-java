@@ -1,0 +1,214 @@
+Here is the detailed agenda. I will roughly stick to the order of the items in each day. The items marked with * will come last during the day.
+Plan (for 4 days x 5 hours each)
+
+Day 1:
+====
+- Quiz Clean Code 101
+- Fundamental Principles: SRP, DRY, KISS, Separation by Layers of Abstraction
+====
+- Refactoring Opportunities (debate): Boy Scout, Preparatory, Comprehension, Planned + micro commits
+====
+- Refactoring Exercise: baby-steps safe changes; practice: extract/Inline of Method, Quick-fix (Ctrl-1/Alt-Enter).
+    - Guard Conditions
+    - Comparing IntelliJ with Eclipse
+====
+- Code Review of 2 assignments (trivia-kata)*
+
+Day 2: Object-Oriented Programming practices
+====
+- Hands-on refactoring of a sample from LoanIQ (ISO Exercise)
+    - see lessons learned in the "ISO Exercise take-aways" section
+====
+- Refactoring exercise: Boss.java
+    - ImmutableList (Guava) over List
+    - Mutation testing = tests should fail for bugs in tested code
+    - Split Loop refactor
+    - Replace for with stream (FP)
+==== lunch
+- Encapsulation, Behavior next to state; Interval example
+- Refactoring (all hands): Move method, Extract Value Object (Interval)
+====
+- MicroTypes vs Primitive Obsession
+- Refactoring: Introduce Parameter Object
+- Structural Replace in IntelliJ
+
+
+
+Day 3: Functional Programming practices
+- Immutable Objects: builder (anti)pattern, withers, performance
+- Pure Functions, Functional Core/Imperative Shell architecture
+- Mastering Streams - Exercises
+- Optional (ab)use
+- Exceptions best practices
+- Recap, Tradeoffs & Debates *
+
+Day 4: 
+- Code Smells (as of 2024)
+- Java Language Weaknesses
+- Larger refactoring exercise 2h
+- Using AI in Code
+- Grand Recap & Next Steps *
+
+
+Coach 2h Thu follow-up
+- Why Eclipse ?
+- Should we put behavior in data structures? pros/cons/risks
+TODO leftover : 
+- Inheritance (use and abuse) --> Design Patterns
+
+
+
+======= Coach Learning Journey =======
+* Prep-meeting
+- Duration: 1 hour
+- Timeframe: April 8, 13:00-14:00 RO time, 1 week before the workshop
+- Mandatory: yes
+- Goals:
+    - Introduce themselves, their experience, and their expectations
+    - Discuss the main pain points they saw in the codebase.
+    - Introduce Victor to 1-2 code samples manifesting issues (that we could refactor during the workshop)
+
+* Workshop
+- Duration: 4 days x 5 effective hours
+- Date: April 15-18, 2024
+- Mandatory? Attending all the 20 hours is highly recommended for everyone (including coaches), as it's expected for many debates to happen on the spot, when we touch on a topic. However, if your schedule is under heavy stress, please join at least the hour, during which we'll recap the main takeaways of the day and debate tradeoffs.
+- Agenda/Goals: communicated to everyone
+
+* Follow-up meeting with Coaches
+- Duration: 2 hours
+- Date: April 18, 16:00-18:00 RO time, after the last training section.
+- Mandatory: yes
+- Goal: Open questions, teamwork, code review, pair programming, role of a senior, next steps.
+
+* Grooming an Internal Community
+- After the workshop, answer questions from the participants in a dedicated Slack channel. Try to keep the conversation going for as long as possible, to help them apply the principles learned during the workshop.
+
+* Ensamble Programming (without Victor)
+- Duration: 2 hours
+- Date: TBD internally, within 2-4 weeks after the workshop
+- Goal: practice remote mob programming with the team, to see how they apply the principles learned during the workshop. Iteration #1: on some pre-made exercise. Iteration #2: on a real-life code snippet from the codebase.
+
+
+
+
+
+
+
+Susil - Sr. dev manager, 13y Java, code review
+Sandip - invididual contributor + review, Loan IQ, 17y
+Shruti - Leading a team in Loan IQ, 8.5y,  design patterns
+Guy - .NET/Node/JS/Angular - UI
+Yashaswini - UI migrating from Dojo->Angular, Monolith BE->Cloud
+Pratik (Payments to go): C++ backend, Java since 4 years 💖
+Avi Sulimanoff: (P2G) 15 years -> now architect
+Maulik - P2G on UI (and a bit of BE) - components 
+Kalpana - FCCT
+
+
+
+A PR can be:
+- bugfix
+- feature
+- refactoring (Prep)
+
+- When you raise a PR, you put inside many tiny commits, to explain your train of thoughts to the reviewer. 
+- Ideally, use commit prefixes (conventionalcommits.org) to fine-grain explain what you did in that commits. 
+[bugfix] 
+[refactor] broke the class in 3 .. 
+[feature] added a button...
+- Ideally commit tiny diffs (every 30 min/50 lines, 10/day)
+
+
+if (A) {
+    if (B) return 1;
+    else return 2;
+} else {
+    return 3;
+}
+
+/// first:
+if (A & B) return 1;
+if (A && !B) return 2;
+if (!A) return 3;
+
+/// better:
+if (!A) return 3;
+if (B) return 1;
+return 2;
+
+
+
+
+---------------
+Covered:
+- SRP + overdo
+- DRY + overdo
+- KISS (briefly)
+- SLAb (briefly)
+CC:
+- Microcommits / Conventional commits.
+
+
+
+
+
+---- ISO Exercise take-aways ----
+- methods should return as narrow types possible
+- use generics! at least <StObject>
+- write(generate w/ Copilot) tests for the code you want to refactor + prove those tests Are correct by tentatively breaking tested code => the tests should fail (mutation testing) . try pitest https://pitest.org/
+- declutter main logic
+    - enrich the utility classes with more helpful methods (+ ...varargs)
+    - push more cast in 'Class' files extends StClass
+    - use Java 5 for (:)
+    - public static <T> T to avoid a cast
+- avoid unnecessary utility functions (eg CollectionUtils.iterator(list), concat(s1,s2))
+- for -> .stream
+
+
+Tests the tests
+You usually use a lot of refactoring/Ctrl-1/Alt-Enter to do safe refactoring with IDE.
+Until you need to do a more risky change. (manually, ctrl-x, typing code). 
+Imagine you write some code that you see it's buggy (obviously).
+Run your unit tests!!!!!
+a) GOOD: tests fail, proving they catch that mistake = "test the tests"
+b) BAD: Tests keep on green / I don't have tests
+THEN: STOP!!!!!! and write the missing tests to prove the bug you did.
+c) stop/undo the manual refactoring. only use IDE refactoring tools
+
+
+
+
+Split the for loops to do ONE tiny thing at a time.
+- Performance? NO HIT unless the response time is < 50 microseconds (10^-6 seconds)
+If I iterate over 1M elements, the overhead of Stream() could hurt.
+Q: where did that 1M lines come from?
+a) DB/Redis (usual) => the overhead of Stream() is negligible compared to bringing 1M elements over network
+b) In-memory data structure (access time=0)
+
+- Will this pass the tests: usually yes
+    BUT if the order of the operations per element matters (WHY?!! does it matter), then breaking the for might produce a bug
+
+- is this better reading code?
+    a) split small intentful functions
+    b) go for stream() instead of for to compute a result. Better?
+        Most java developers would say YES.
+        More declarative, more high-level
+        (once you're confortable with streams)
+        Practice here: https://github.com/victorrentea/kata-streams-java
+
+- do I want to COMMIT element by element inependently to DB? > stick with for (e:elems) process(e);    
+    process(e) {asdasdasdas; commit()}
+
+
+Upgrade all code everywhere in small increments with  
+Edit>Find>"Replace Structurally" with IntelliJ 
+   Tutorial: https://www.youtube.com/watch?time_continue=95&v=fIPr_ANBpFk&embeds_referring_euri=https%3A%2F%2Fwww.google.com%2F&source_ve_path=Mjg2NjY&feature=emb_logo
+
+Search Template:
+StringUtility.bindWith(iso.Messages.liqNlsExternalizedMessage($Message$),$Parameter$)
+
+Replace Template: 
+iso.StringUtility.bindNlsWith($Message$, $Parameter$)
+
+
+
