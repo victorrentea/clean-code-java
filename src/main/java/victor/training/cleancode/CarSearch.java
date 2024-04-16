@@ -21,6 +21,7 @@ class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
     System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
   }
+
   private void applyCapacityFilter() { // pretend
     System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
   }
@@ -28,7 +29,8 @@ class SomeOtherClientCode {
 
 class MathUtil {
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
+  // higher coupling = bad
+  public static boolean intervalsIntersect(CarModel carModel, CarSearchCriteria criteria) {
     return start1 <= end2 && start2 <= end1;
   }
 }
@@ -41,7 +43,9 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
     this.make = make;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }
@@ -74,7 +78,9 @@ class CarModel { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }
