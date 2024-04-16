@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,12 @@ import java.util.List;
 public class Boss {
 
   // 👌 TODO run tests
-  public void bossLevel(boolean b, List<Task> tasks, boolean cr323) {
+  public void bossLevel(boolean b, ImmutableList<Task> tasks, boolean cr323) {
     int index = 0;
-    int taskSize = tasks.size();
     if (tasks.isEmpty()) {
       return;
     }
+    int taskSize = tasks.size();
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (b) {
