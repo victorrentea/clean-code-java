@@ -20,7 +20,6 @@ public class Boss {
     }
     System.out.println("Logic3");
     check(tasks);
-    int index = 0;
     start(tasks);
 
     // Code Smell: Accumulator Loop: avoid using for to build a 'result' (collection/number)
@@ -31,14 +30,18 @@ public class Boss {
         System.out.println("My Logic: " + task);
       }
     }
+    audit(tasks);
+    System.out.println("Logic6 " + tasks.size());
+    System.out.println("Task Ids: " + taskIds);
+    System.out.println("Logic8");
+  }
+
+  private void audit(ImmutableList<Task> tasks) {
+    int index = 0;
     for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
     }
-    int taskSize = tasks.size();
-    System.out.println("Logic6 " + taskSize);
-    System.out.println("Task Ids: " + taskIds);
-    System.out.println("Logic8");
   }
 
   private void start(ImmutableList<Task> tasks) {
