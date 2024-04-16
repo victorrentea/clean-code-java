@@ -27,7 +27,8 @@ class SomeOtherClientCode {
   }
 
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(MathUtil.intervalsIntersect(
+        new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 }
 
