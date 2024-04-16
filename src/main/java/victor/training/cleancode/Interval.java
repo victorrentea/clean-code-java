@@ -9,12 +9,11 @@ public class Interval {
     this.end = end;
   }
 
-  public boolean intervalsIntersect(Interval interval2) {
-    if (this == null || interval2 == null) {
+  public boolean intersects(Interval other) {
+    if (other == null) {
       throw new IllegalArgumentException("Null interval");
     }
-    return start <= interval2.end
-           && interval2.start <= end;
+    return start <= other.end && other.start <= end;
   }
 
   public int getEnd() {
