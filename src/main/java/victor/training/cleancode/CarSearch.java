@@ -23,19 +23,15 @@ class CarSearch {
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(
-        new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(
-        new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 }
 
 class MathUtil {
-
-  // NEW, GOOD
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
     if (interval1 == null || interval2 == null) {
       throw new IllegalArgumentException("Null interval");
