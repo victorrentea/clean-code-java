@@ -10,10 +10,13 @@ public class Boss {
   public void bossLevel(boolean b, List<Task> tasks, boolean cr323) {
     int index = 0;
     int j = tasks.size();
-    if (tasks.size() == 0) return;
+    if (tasks.size() == 0) {
+      return;
+    }
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (b) {
+      // for GDPR
       System.out.println("Logic3");
       check(tasks);
       for (Task task : tasks) {
