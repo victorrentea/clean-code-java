@@ -22,6 +22,7 @@ public class ImmutableAdvanced {
   }
 }
 
+// This is a ONLY SHALLOW immutable object. NOT DEEP!
 class Immutable {
   private final Integer x;
   private final Integer y;

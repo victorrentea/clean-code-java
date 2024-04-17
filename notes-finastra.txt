@@ -52,10 +52,10 @@ Day 4:
 
 Coach 2h Thu follow-up
 - Why Eclipse ?
-- Should we put behavior in data structures? pros/cons/risks
+- Should we put behavior in data structures? pros/cons  /risks
 TODO leftover : 
 - Inheritance (use and abuse) --> Design Patterns
-
+- P2G ~ GPP 
 
 
 ======= Coach Learning Journey =======
@@ -90,53 +90,28 @@ TODO leftover :
 
 
 
+=== Coaches: 
+Sandeep💖 - LIQ - invididual contributor + review, Loan IQ, 17y
+Shruti - LIQ - Leading a team in Loan IQ, 8.5y,  design patterns
+Yashaswini ?: UI migrating from Dojo->Angular, Monolith BE->Cloud
+
+Dikla💖 P2G Architect
+Pratik💖 P2G: C++ backend, Java since 4 years, 💬
+Susil - P2G - Sr. dev manager, 13y Java, code review
+Guy - P2G - .NET/Node/JS/Angular - UI
+Avi Sulimanoff P2G 15 years -> now architect
+Maulik P2G on UI (+Components) and a bit of BE
+Kalpana FCC ~ lending
+
+P2P = saas ~ GPP (global pay plus)
 
 
-
-
-Susil - Sr. dev manager, 13y Java, code review
-Sandip - invididual contributor + review, Loan IQ, 17y
-Shruti - Leading a team in Loan IQ, 8.5y,  design patterns
-Guy - .NET/Node/JS/Angular - UI
-Yashaswini - UI migrating from Dojo->Angular, Monolith BE->Cloud
-Pratik (Payments to go): C++ backend, Java since 4 years 💖
-Avi Sulimanoff: (P2G) 15 years -> now architect
-Maulik - P2G on UI (and a bit of BE) - components 
-Kalpana - FCCT
-
-
-
-A PR can be:
-- bugfix
-- feature
-- refactoring (Prep)
-
-- When you raise a PR, you put inside many tiny commits, to explain your train of thoughts to the reviewer. 
+- When you raise a PR, put inside many tiny commits, to explain your train of thoughts to the reviewer. 
 - Ideally, use commit prefixes (conventionalcommits.org) to fine-grain explain what you did in that commits. 
 [bugfix] 
 [refactor] broke the class in 3 .. 
 [feature] added a button...
 - Ideally commit tiny diffs (every 30 min/50 lines, 10/day)
-
-
-if (A) {
-    if (B) return 1;
-    else return 2;
-} else {
-    return 3;
-}
-
-/// first:
-if (A & B) return 1;
-if (A && !B) return 2;
-if (!A) return 3;
-
-/// better:
-if (!A) return 3;
-if (B) return 1;
-return 2;
-
-
 
 
 ---------------
@@ -152,7 +127,7 @@ CC:
 
 
 
----- ISO Exercise take-aways ----
+---- ISO Exercise take-aways (LoanIQ) ----
 - methods should return as narrow types possible
 - use generics! at least <StObject>
 - write(generate w/ Copilot) tests for the code you want to refactor + prove those tests Are correct by tentatively breaking tested code => the tests should fail (mutation testing) . try pitest https://pitest.org/
