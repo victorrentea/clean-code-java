@@ -5,9 +5,9 @@ public class Optional_Chain {
 
   public static void main(String[] args) {
     Parcel parcel = new Parcel();
-    parcel.setDelivery(new Delivery(new Address(new ContactPerson("John"))));
-    //    parcel.setDelivery(new Delivery(new Address(null)));
-    //    parcel.setDelivery(null);
+//    parcel.setDelivery(new Delivery(new Address(new ContactPerson("John"))));
+//    parcel.setDelivery(new Delivery(new Address(null)));
+    parcel.setDelivery(null);
 
     DeliveryDto dto = mapper.convert(parcel);
     System.out.println(dto);
@@ -17,7 +17,17 @@ public class Optional_Chain {
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
-    dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+
+    // defensive programming ™️
+    if (
+        parcel != null &&
+        parcel.getDelivery() != null &&
+        parcel.getDelivery().getAddress() != null &&
+        parcel.getDelivery().getAddress().getContactPerson() != null &&
+        parcel.getDelivery().getAddress().getContactPerson().getName() != null
+    ) {
+      dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+    }
     return dto;
   }
 }
@@ -46,12 +56,12 @@ class Delivery {
     this.address = address;
   }
 
-  public void setAddress(Address address) {
-    this.address = address; // TODO null safe
-  }
-
   public Address getAddress() {
     return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address; // TODO null safe
   }
 }
 

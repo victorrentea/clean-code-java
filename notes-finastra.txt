@@ -216,3 +216,8 @@ Immutable Objects = cannot change state after instantiation
 "Functional Programming" is a programming paradigm 
 - in which functions are treated as first-class citizens.
 - we promote the use of pure functions, immutability, and declarative programming.
+
+
+Yossi: if all our fields can NOW be null, should we make them all Optional?
+NO!
+Optionals are BEST used to enfoce a NULL-SAFE codebase.
