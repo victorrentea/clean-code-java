@@ -37,7 +37,6 @@ Day 2: Object-Oriented Programming practices
 Day 3: Functional Programming practices
 - Immutable Objects: builder (anti)pattern, withers, performance
 - Pure Functions, Functional Core/Imperative Shell architecture
-- Mastering Streams - Exercises
 - Optional (ab)use
 - Exceptions best practices
 - Recap, Tradeoffs & Debates *
@@ -49,6 +48,7 @@ Day 4:
 - Using AI in Code
 - Grand Recap & Next Steps *
 
+- Mastering Streams - Exercises > POSTPONE for Java lang features
 
 Coach 2h Thu follow-up
 - Why Eclipse ?
@@ -187,3 +187,32 @@ iso.StringUtility.bindNlsWith($Message$, $Parameter$)
 
 
 
+
+====
+For loop -> Stream
+- more compact, descriptive not low-level, but unknown to many devs
+- Action: give it a try
+- https://github.com/victorrentea/kata-streams-java
+- https://www.youtube.com/watch?v=yTuwi--LFsM
+
+Pure Functions = no side effects + deterministic
+= no network, no changes to data, no time/random
+- Good because: easy to maintain/refactor, clear input, easy to test, thread safe,
+- Risk: a pure function today become inpure tomorrow .
+    Examples that work: "any function whose name does not contain a verb is a pure function"
+    customer.gold()
+    customer.lastOrder()
+    bank.nonDefaultOffices()
+
+Immutable Objects = cannot change state after instantiation
+- Shallow vs Deep immutable objects
+- Good because: prevent "accidental" changes in complex logic
+- Cons: cumbersome to keep re-creating & returning new objects (withers: obj.withPoint(newPoint))
+- Cons: repeated cloning of immutables collections can lead to performance issues (allocating too much memory)
+- Best if kept small!!! 
+- group data in immutable objects EXCEPT the root top-level domain entites
+
+
+"Functional Programming" is a programming paradigm 
+- in which functions are treated as first-class citizens.
+- we promote the use of pure functions, immutability, and declarative programming.

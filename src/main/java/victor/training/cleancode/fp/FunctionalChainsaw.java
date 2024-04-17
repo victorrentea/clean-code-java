@@ -20,7 +20,13 @@ public class FunctionalChainsaw { // ... Massacre
 
   public List<Product> getFrequentOrderedProducts(List<Order> orders) {
 		return orders.stream()
-				.filter(Order::isActive)
+				.filter(order -> order.isActive())
+//				.filter(new Predicate<Order>() {
+//          @Override
+//          public boolean test(Order order) {
+//            return order.isActive();
+//          }
+//        })
 				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusYears(1)))
 				.flatMap(o -> o.orderLines().stream())
 				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))

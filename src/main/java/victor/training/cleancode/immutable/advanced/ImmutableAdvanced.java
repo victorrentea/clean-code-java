@@ -13,9 +13,9 @@ public class ImmutableAdvanced {
     Immutable blue = new Immutable(new Point(1, 2), numbers, new Other(15));
     System.out.println("Before: " + blue);
 
-    Point movedPoint = wilderness(blue); // Confused Variable code smell
+    // Confused Variable code smell
     // this practice, of reassigning the variable can lead to temporal coupling and confusion in the reader
-    Immutable moved = blue.withPoint(movedPoint); // wither returns a changed clone
+    Immutable moved = blue.withPoint(wilderness(blue)); // wither returns a changed clone
 
     System.out.println("Moved object:  " + moved);
   }
