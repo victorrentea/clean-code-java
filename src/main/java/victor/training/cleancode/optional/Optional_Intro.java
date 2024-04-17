@@ -7,6 +7,7 @@ import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
 public class Optional_Intro {
+
   public static void main(String[] args) {
     // test: 60, 10, no MemberCard
     System.out.println(getDiscountLine(new Customer(new MemberCard("bar", 60))));
@@ -15,7 +16,6 @@ public class Optional_Intro {
 
   public static String getDiscountLine(Customer customer) {
     Discount discount = computeDiscount(customer.getMemberCard());
-
     return "You got a discount of %" + discount.globalPercentage();
   }
 
@@ -26,11 +26,12 @@ public class Optional_Intro {
     if (card.getFidelityPoints() >= 50) {
       return new Discount(3, Map.of());
     }
-    return new Discount(0, Map.of()); // null object pattern= a non-null value that MEANS nothing
+    return Discount.NO_DISCOUNT; // null object pattern= a non-null value that MEANS nothing
     // REQUIRES THE CALLER TO BE AWARE OF THIS CONVENTION
   }
 
   public record Discount(int globalPercentage, Map<String, Integer> categoryDiscounts) {
+    public static final Discount NO_DISCOUNT = new Discount(0, Map.of());
   }
 }
 
