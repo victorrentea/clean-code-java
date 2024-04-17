@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import victor.training.testing.tools.CaptureSystemOutput;
 import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +45,7 @@ class BossTest {
    @Test
    @CaptureSystemOutput
    void bossLevelFluff_emptyList(OutputCapture outputCapture) {
-      target.bossLevel(true, Collections.emptyList(), false);
+      target.bossLevel(true, List.of(), false);
 
       assertThat(outputCapture.toString())
           .isEqualToIgnoringNewLines("");
