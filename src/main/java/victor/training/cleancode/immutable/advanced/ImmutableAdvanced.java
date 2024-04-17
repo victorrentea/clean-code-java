@@ -13,10 +13,10 @@ public class ImmutableAdvanced {
     Immutable blue = new Immutable(1, 2, numbers, new Other(15));
     System.out.println("Before: " + blue);
 
-    blue = wilderness(blue); // Confused Variable code smell
+    Immutable moved = wilderness(blue); // Confused Variable code smell
     // this practice, of reassigning the variable can lead to temporal coupling and confusion in the reader
 
-    System.out.println("Moved object:  " + blue);
+    System.out.println("Moved object:  " + moved);
   }
 
   private static Immutable wilderness(Immutable immutable) {
