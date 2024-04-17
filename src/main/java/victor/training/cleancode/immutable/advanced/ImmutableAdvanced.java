@@ -18,7 +18,12 @@ public class ImmutableAdvanced {
   }
 
   private static void wilderness(Immutable immutable) {
+    // imagine 1500 lines of code working with immutable object
+
     // dark, deep logic not expected to change the immutable object x,y
+
+    // quickfix BUG-123124  Fri evening hack
+    immutable.getNumbers().clear();
   }
 }
 
