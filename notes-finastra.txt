@@ -35,19 +35,25 @@ Day 2: Object-Oriented Programming practices
 
 
 Day 3: Functional Programming practices
+- Exercise on P2G: move to stream, pure functions, immutability
+===
+- Pure Functions, Functional Core/Imperative Shell 
 - Immutable Objects: builder (anti)pattern, withers, performance
-- Pure Functions, Functional Core/Imperative Shell architecture
+===
+- Immutable+Pure recap
 - Optional (ab)use
-- Exceptions best practices
-- Recap, Tradeoffs & Debates *
+===
+- Code Smells - part 1
 
 Day 4: 
-- Code Smells (as of 2024)
+- Code Smells - part 2
 - Java Language Weaknesses
 - Larger refactoring exercise 2h
 - Using AI in Code
 - Grand Recap & Next Steps *
 
+
+- Exceptions best practices??
 - Mastering Streams - Exercises > POSTPONE for Java lang features
 
 Coach 2h Thu follow-up
@@ -221,3 +227,13 @@ Immutable Objects = cannot change state after instantiation
 Yossi: if all our fields can NOW be null, should we make them all Optional?
 NO!
 Optionals are BEST used to enfoce a NULL-SAFE codebase.
+
+
+
+
+SLAB = Single Level of Abstraction Principle
+Do not mix in a method high-level logic with low-level details (push details in  private helper methods next to you)
+
+
+
+- 
