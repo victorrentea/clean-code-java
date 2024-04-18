@@ -1,33 +1,42 @@
 package victor.training.cleancode.kata.videostore;
 
+import static victor.training.cleancode.kata.videostore.PriceCode.NEW_RELEASE;
+
 public record Rental(
     Movie movie,
     int daysRented) {
-    private static double calculatePrice(Rental rental) {
-        int daysRented = rental.daysRented();
-        return switch (rental.movie().priceCode()) {
-            case REGULAR -> calculateRegularPrice(daysRented);
-            case NEW_RELEASE -> daysRented * 3;
-            case CHILDREN -> calculateChildrenPrice(daysRented);
-            //case BLOCKBUSTER -> 0.0;
-        };
-    }
 
-    private static double calculateChildrenPrice(int daysRented) {
-        final int MIN_DAYS_FOR_EXTRA_PRICE = 3;
-        double thisAmount = 1.5;
-        if (daysRented > MIN_DAYS_FOR_EXTRA_PRICE) {
-            thisAmount += (daysRented - MIN_DAYS_FOR_EXTRA_PRICE) * 1.5;
-        }
-        return thisAmount;
-    }
+  public double calculatePrice() {
+    return switch (movie.priceCode()) {
+      case REGULAR -> calculateRegularPrice();
+      case NEW_RELEASE -> daysRented * 3;
+      case CHILDREN -> calculateChildrenPrice();
+    };
+  }
 
-    private static double calculateRegularPrice(int daysRented) {
-        final int MIN_DAYS_FOR_EXTRA_PRICE = 2;
-        double thisAmount = 2;
-        if (daysRented > MIN_DAYS_FOR_EXTRA_PRICE) {
-            thisAmount += (daysRented - MIN_DAYS_FOR_EXTRA_PRICE) * 1.5;
-        }
-        return thisAmount;
+  private double calculateChildrenPrice() {
+    final int MIN_DAYS_FOR_EXTRA_PRICE = 3;
+    double price = 1.5;
+    if (daysRented > MIN_DAYS_FOR_EXTRA_PRICE) {
+      price += (daysRented - MIN_DAYS_FOR_EXTRA_PRICE) * 1.5;
     }
+    return price;
+  }
+
+  private double calculateRegularPrice() {
+    final int MIN_DAYS_FOR_EXTRA_PRICE = 2;
+    double price = 2;
+    if (daysRented > MIN_DAYS_FOR_EXTRA_PRICE) {
+      price += (daysRented - MIN_DAYS_FOR_EXTRA_PRICE) * 1.5;
+    }
+    return price;
+  }
+
+  public int calculateFrequentRenterPoints() {
+    int frequentRenterPoints = 1;
+    if (movie().priceCode() == NEW_RELEASE && daysRented() >= 2) {
+      frequentRenterPoints++; // one MORE point
+    }
+    return frequentRenterPoints;
+  }
 }
