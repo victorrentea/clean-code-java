@@ -1,7 +1,10 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Builder;
+import lombok.SneakyThrows;
 
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -20,6 +23,7 @@ public class ImmutableAdvanced {
     System.out.println("Moved object:  " + moved);
   }
 
+  @SneakyThrows
   private static Point wilderness(Immutable immutable) {
     // imagine 1500 lines of code working with immutable object
 
@@ -36,55 +40,45 @@ public class ImmutableAdvanced {
 //    return new Immutable(immutable.getPoint().moveBy(1,1),
 //        immutable.getNumbers(),
 //        immutable.getOther());
-    return immutable.getPoint().moveBy(1, 1);
+
+    //code smell: "toBuilder"
+//    immutable.toBuilder().point(immutable.getPoint().moveBy(1, 1)).numbers().build();
+
+    Method neverDoThat = immutable.point().getClass().getDeclaredMethod("foo");
+    neverDoThat.setAccessible(true);
+    neverDoThat.invoke(immutable.point());
+
+    return immutable.point().moveBy(1, 1);
   }
+
 }
 
 record Point(int x, int y) {
   public Point moveBy(int dx, int dy) {
+    foo2();
     return new Point(x + dx, y + dy);
+  }
+
+  //  @NeverToRename // at the app startup reflectively scan all classes for such annoted method and cross check the list
+  // you collect vs a stored 'reflective-methods.txt' you have in your source code
+  // foo
+  // bar
+  private void foo2() {
+    System.out.println("Hello private");
   }
 }
 
+/**
+ * @param point   private final Integer x;  private final Integer y; */
+@Builder(toBuilder = true)
 // DEEP immutable now: all its object graph is unchangeable after instantiation
-class Immutable {
-  //  private final Integer x;
-//  private final Integer y;
-  private final Point point;
-  private final ImmutableList<Integer> numbers;
-  private final Other other;
+record Immutable(
+    Point point,
+    ImmutableList<Integer> numbers,
+    Other other) {
 
-  Immutable(Point point, ImmutableList<Integer> numbers, Other other) {
-    this.point = point;
-    this.numbers = numbers;
-    this.other = other;
-  }
-
-  // WITH-er
   public Immutable withPoint(Point movedPoint) {
     return new Immutable(movedPoint, numbers, other);
-  }
-
-  public Point getPoint() {
-    return point;
-  }
-
-  public ImmutableList<Integer> getNumbers() {
-//    return Collections.unmodifiableList(numbers); // decorating the original list to block mutations
-    return numbers;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{" +
-           "point=" + point +
-           ", numbers=" + numbers +
-           ", other=" + other +
-           '}';
   }
 }
 
