@@ -21,25 +21,27 @@ class Customer {
   }
 
   public String statement() {
-    
-	double totalPrice = rentals.stream().mapToDouble(Rental::calculatePrice).sum();
-    
-    int frequentRenterPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
-    
-    String result = "Rental Record for " + name + "\n";
-    
-    result += rentals.stream().map(this::statementLine).collect(Collectors.joining());
-    
-    //  IT IS OK TO REPEAT A PURE FUNCTION (no side effects, same result, usually insanely fast)
-    // add footer lines
-    result += "Amount owed is " + totalPrice + "\n";
-    result += "You earned " + frequentRenterPoints + " frequent renter points";
-    return result;
+    return generateHeader() + generateBody() + generateFooter();
   }
 
-	private String statementLine(Rental rental) {
-		return "\t" + rental.movie().title() + "\t" + rental.calculatePrice() + "\n";
-	}
+  private String generateBody() {
+    return rentals.stream().map(this::statementLine).collect(Collectors.joining());
+  }
+
+  private String generateHeader() {
+    return "Rental Record for " + name + "\n";
+  }
+
+  private String generateFooter() {
+    double totalPrice = rentals.stream().mapToDouble(Rental::calculatePrice).sum();
+    int frequentRenterPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
+    return "Amount owed is " + totalPrice + "\n" +
+           "You earned " + frequentRenterPoints + " frequent renter points";
+  }
+
+  private String statementLine(Rental rental) {
+    return "\t" + rental.movie().title() + "\t" + rental.calculatePrice() + "\n";
+  }
 
 
 }
