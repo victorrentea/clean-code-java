@@ -24,11 +24,11 @@ class Customer {
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + name + "\n";
         // iterate each rental
-        for (Movie each : rentals.keySet()) {
+        for (Movie movie : rentals.keySet()) {
             double thisAmount = 0;
             // determine amounts for every line
-            int dr = rentals.get(each);
-            switch (each.priceCode()) {
+            int dr = rentals.get(movie);
+            switch (movie.priceCode()) {
                 case REGULAR:
                     thisAmount += 2;
                     if (dr > 2) {
@@ -48,12 +48,12 @@ class Customer {
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
-            if ((each.priceCode() == MovieType.NEW_RELEASE)
+            if ((movie.priceCode() == PriceCode.NEW_RELEASE)
                     && dr > 1) {
                 frequentRenterPoints++;
             }
             // show figures line for this rental
-            result += "\t" + each.title() + "\t" + thisAmount + "\n";
+            result += "\t" + movie.title() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
         }
         // add footer lines
