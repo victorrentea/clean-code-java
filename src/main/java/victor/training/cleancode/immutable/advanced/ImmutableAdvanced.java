@@ -76,6 +76,7 @@ record Immutable(
     Point point,
     ImmutableList<Integer> numbers,
     Other other) {
+
   public Immutable withPoint(Point movedPoint) {
     return new Immutable(movedPoint, numbers, other);
   }
