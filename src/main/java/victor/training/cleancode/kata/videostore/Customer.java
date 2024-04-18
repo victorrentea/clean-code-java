@@ -25,10 +25,11 @@ class Customer {
         String result = "Rental Record for " + name + "\n";
         // iterate each rental
         for (Movie movie : rentals.keySet()) {
-            double thisAmount = 0;
+            
             // determine amounts for every line
             int daysRented = rentals.get(movie);
-            thisAmount = calculatePrice(movie, thisAmount, daysRented);
+            
+            double rentalPrice = calculatePrice(movie, daysRented);
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
@@ -37,8 +38,8 @@ class Customer {
                 frequentRenterPoints++;
             }
             // show figures line for this rental
-            result += "\t" + movie.title() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
+            result += "\t" + movie.title() + "\t" + rentalPrice + "\n";
+            totalAmount += rentalPrice;
         }
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
@@ -46,31 +47,32 @@ class Customer {
         return result;
     }
 
-    private static double calculatePrice(Movie movie, double thisAmount, int daysRented) {
+    private static double calculatePrice(Movie movie, int daysRented) {
         switch (movie.priceCode()) {
             case REGULAR:
-                thisAmount = calculateRegularPrice(thisAmount, daysRented);
-                break;
+                return calculateRegularPrice(daysRented);
+                
             case NEW_RELEASE:
-                thisAmount += daysRented * 3;
-                break;
+                return daysRented * 3;
+                
             case CHILDREN:
-                thisAmount = calculateChildrenPrice(thisAmount, daysRented);
-                break;
+                return calculateChildrenPrice(daysRented);
+                
+            default:
+            	throw new IllegalArgumentException("Incorrect Price Code!!");
         }
-        return thisAmount;
     }
 
-    private static double calculateChildrenPrice(double thisAmount, int daysRented) {
-        thisAmount += 1.5;
+    private static double calculateChildrenPrice(int daysRented) {
+        double thisAmount = 1.5;
         if (daysRented > 3) {
             thisAmount += (daysRented - 3) * 1.5;
         }
         return thisAmount;
     }
 
-    private static double calculateRegularPrice(double thisAmount, int daysRented) {
-        thisAmount += 2;
+    private static double calculateRegularPrice(int daysRented) {
+        double thisAmount = 2;
         if (daysRented > 2) {
             thisAmount += (daysRented - 2) * 1.5;
         }
