@@ -12,8 +12,8 @@ class Customer {
     this.name = name;
   }
 
-  public void addRental(Movie rental, int daysRented) {
-    rentals.add(new Rental(rental, daysRented));
+  public void addRental(Rental rental) {
+    rentals.add(rental);
   }
 
   public String getName() {
@@ -33,10 +33,18 @@ class Customer {
   }
 
   private String generateFooter() {
-    double totalPrice = rentals.stream().mapToDouble(Rental::calculatePrice).sum();
     int frequentRenterPoints = rentals.stream().mapToInt(Rental::calculateFrequentRenterPoints).sum();
-    return "Amount owed is " + totalPrice + "\n" +
+    return "Amount owed is " + calculateTotalPrice() + "\n" +
            "You earned " + frequentRenterPoints + " frequent renter points";
+  }
+
+  private double calculateTotalPrice() {
+    double totalPrice = 0.0;
+    for (Rental rental : rentals) {
+      double calculatePrice = rental.calculatePrice();
+      totalPrice += calculatePrice;
+    }
+    return totalPrice;
   }
 
   private String statementLine(Rental rental) {
