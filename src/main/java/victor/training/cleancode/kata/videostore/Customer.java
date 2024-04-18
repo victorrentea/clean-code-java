@@ -48,19 +48,12 @@ class Customer {
     }
 
     private static double calculatePrice(Movie movie, int daysRented) {
-        switch (movie.priceCode()) {
-            case REGULAR:
-                return calculateRegularPrice(daysRented);
-                
-            case NEW_RELEASE:
-                return daysRented * 3;
-                
-            case CHILDREN:
-                return calculateChildrenPrice(daysRented);
-                
-            default:
-            	throw new IllegalArgumentException("Incorrect Price Code!!");
-        }
+        return switch (movie.priceCode()) {
+            case REGULAR -> calculateRegularPrice(daysRented);
+            case NEW_RELEASE -> daysRented * 3;
+            case CHILDREN -> calculateChildrenPrice(daysRented);
+            //case BLOCKBUSTER -> 0.0;
+        };
     }
 
     private static double calculateChildrenPrice(int daysRented) {
