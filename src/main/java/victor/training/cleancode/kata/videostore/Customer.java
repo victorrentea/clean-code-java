@@ -1,16 +1,19 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.*;
+import victor.training.cleancode.kata.videostore.Movie.MovieType;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
+  public void addRental(Movie m, int d) {
 		rentals.put(m, d);
 	}
 
@@ -21,33 +24,36 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		String result = "Rental Record for " + name + "\n";
 		// iterate each rental
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
 			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
+				case REGULAR:
 					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					if (dr > 2) {
+            thisAmount += (dr - 2) * 1.5;
+          }
 					break;
-				case Movie.NEW_RELEASE:
+				case NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
-				case Movie.CHILDREN:
+				case CHILDREN:
 					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+					if (dr > 3) {
+            thisAmount += (dr - 3) * 1.5;
+          }
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if ( (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
+			if ((each.getPriceCode() == MovieType.NEW_RELEASE)
+				 && dr > 1) {
+        frequentRenterPoints++;
+      }
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
