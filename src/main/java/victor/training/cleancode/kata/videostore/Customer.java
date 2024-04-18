@@ -1,18 +1,20 @@
 package victor.training.cleancode.kata.videostore;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 class Customer {
     private final String name;
-    private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+    private final List<Rental> rentals = new ArrayList<>();
 
     public Customer(String name) {
         this.name = name;
     }
 
-    public void addRental(Movie m, int d) {
-        rentals.put(m, d);
+    public void addRental(Movie rental, int daysRented) {
+        rentals.add(new Rental(rental, daysRented));
     }
 
     public String getName() {
@@ -23,12 +25,10 @@ class Customer {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + name + "\n";
-        // iterate each rental
-        for (Movie movie : rentals.keySet()) {
-            
-            // determine amounts for every line
-            int daysRented = rentals.get(movie);
-            
+        for (Rental rental : rentals) {
+            Movie movie = rental.movie();
+            int daysRented = rental.daysRented();
+
             double rentalPrice = calculatePrice(movie, daysRented);
             // add frequent renter points
             frequentRenterPoints++;
