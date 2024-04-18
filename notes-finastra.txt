@@ -56,9 +56,7 @@ Day 4:
 - Exceptions best practices??
 - Mastering Streams - Exercises > POSTPONE for Java lang features
 
-Coach 2h Thu follow-up
-- Why Eclipse ?
-- Should we put behavior in data structures? pros/cons  /risks
+
 TODO leftover : 
 - Inheritance (use and abuse) --> Design Patterns
 - P2G ~ GPP 
@@ -97,20 +95,95 @@ TODO leftover :
 
 
 === Coaches: 
-Sandeep💖 - LIQ - invididual contributor + review, Loan IQ, 17y
-Shruti - LIQ - Leading a team in Loan IQ, 8.5y,  design patterns
+Sandeep💖 LIQ: Code + review, Loan IQ, 17y
+Shruti💖💬 LIQ: Leading a team in Loan IQ, 8.5y, design patterns, FP
 Yashaswini ?: UI migrating from Dojo->Angular, Monolith BE->Cloud
+Sadasivarao ?:
+Ashish
+Abhjit
 
-Dikla💖 P2G Architect
-Pratik💖 P2G: C++ backend, Java since 4 years, 💬
-Susil - P2G - Sr. dev manager, 13y Java, code review
-Guy - P2G - .NET/Node/JS/Angular - UI
-Avi Sulimanoff P2G 15 years -> now architect
-Maulik P2G on UI (+Components) and a bit of BE
+Pratik💖💬 P2G: C++ backend, Java since 4 years
+Maulik P2G: on UI (+Components) and a bit of BE
+Avi Sulimanoff P2G: 15 years, architect
+Dikla💖 P2G: Architect
+Susil P2G: Sr. dev manager, 13y Java, code review
+Guy P2G: .NET/Node/JS/Angular - UI
+Yossi💬 (pairing)
+
 Kalpana FCC ~ lending
 
 P2P = saas ~ GPP (global pay plus)
 
+Coach Follow-up 2 hours after Clean Code
+- Migrate from Eclipse to IntelliJ needs time (after a release)
+    - re-setup the IDE (2-3 days min)
+    - power of habbit (1-2 months to be 100% up to speed)
+    - Eclipse hot-swapps the changed bytecode in the WebLogic(Eclipse)
+        while IntelliJ -> JBoss not as perfect
+        Tomcat(WAR) automatically
+        Things to try:
+        a) https://www.jrebel.com/products/jrebel
+        b) start the app server in debug mode and IJ/EC hot-swaps the bytecode in your running app.
+        if you can't fix this, stick to Eclipse and use IntelliJ for refactoring only.
+- Ask & CHECK your team members read:
+    - Chapter 1-11+17 from https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882
+    - Chapter 2+3 + other on demand from https://www.amazon.com/Refactoring-Improving-Existing-Addison-Wesley-Signature/dp/0134757599
+- Practice with them on artifical fun refactoring exercises to practice skills https://kata-log.rocks/refactoring  you do yourself alone before , and then with a 3-7 people group/team.
+    - Maulik extracted refactoring samples and wrote tests to prove the refactoring is correct. And will play together on those samples.
+        Pair Programming constantly.
+    - get together and let people work independently in pair on some simpel code refactorign kata.
+    The breakthough of reducing 50 -> 5 lines of code is huge!!
+    Get the passion back;
+
+- Learning Hours: https://sammancoaching.org/learning_hours/legacy.html
+- Bus Factor = the amount of people in a team that have to be ran over by a bus for the project to be in trouble
+
+What to do to improve our codebase:
+- practice
+- gain control of your code: reflection, customer scripts
+- upgrade the utility classes/framewokr underneath you: eg BOBase
+    - synctactic tiny refactorings 1/ sprint
+        - f(g(a),p1,p2...) ==> f2(a,p1,p2...)
+        - or at least, regex
+    - 
+- Managers always rush us, Tech leads always care for the codebase quality, and to protect the less experience aganst the stress from above, to grant the less expereinced time to learn and grow. do the job so that they can do the job.
+- help them grow, even if it seems counter productive
+- always ask them: "Can you do better?"
+- checklist for code review + writing
+
+What stopped you from cleaning more? = TIME-PRESSURE
+- people to understand that cleaning code is very important.
+    Other teams / manager wait for me.
+    We rush to meet the deadline. "We'll do it later"
+    Eventually we forget to clean after.
+    eg: JUnit in the plan. then everyone forgot about it.
+        > the first thing you review are the tests -> if missing: reject by default.
+
+- Don't know where to start? 
+    - Cost/ROI/benefit analysis
+    - don't start with the worst code according to sonar/smell
+    - start with the code that produces most pain: bugs,delays,headaches,frustration: git heatmap = in what clases did we have the most bugs/commits in the last 6 months
+    - start small (boy-scout): safe
+    - do an analysis: exploratory refactoring sessions: 4h-5days
+    2-3 "tigers" play with code to setup some milestones/phases
+
+same task
+1) no unit tests: 1h spec, 8h impelement + 3h late mails / calls
+2) with unit tests: 3-5 tests+spec + 0-8h refactoring legacy to squeeze tests, 1h mails + implements 3-4h
+
+        
+- Should we put behavior in data structures? pros/cons  /risks
+- Stream<>
+- Platform of P2G
+
+
+- Refactoring on FCC code - 1 hour 
+
+
+
+
+
+=========== Clean Code Notes ===========
 
 - When you raise a PR, put inside many tiny commits, to explain your train of thoughts to the reviewer. 
 - Ideally, use commit prefixes (conventionalcommits.org) to fine-grain explain what you did in that commits. 
@@ -240,3 +313,23 @@ https://www.youtube.com/watch?v=iw0tOx7Zbjc&list=PLggcOULvfLL_MfFS_O0MKQ5W_6oWWb
 
 
 
+
+
+
+
+
+
+
+- Refactoring is NOT an option, it should become habbit.
+- do small incremental changes (Boy-Scout style) wherever you go
+- make extensive use of IntelliJ refactoring tools instead of typing/ctrl-x
+    !! Explore them, hit ALT-ENTER (IntelliJ) / Ctrl-1 (Eclipse) 
+    it's like muscle memory; Eg:  rename, extract, inline
+- make sure non-automated changes are covered by unit tests (write them first)
+    ⚠️⚠️⚠️ HAVE THOSE TESTS BEHIND YOU WHEN YOU DO MANUAL CHANGES ⚠️⚠️⚠️
+- DO NOT change any behavior (even if you think it's a bug) when refactoring
+    refactor=change structure, not behavior to make it easier to understand
+- Beware of LLM (GitHub Copilot)
+- practice, practice, practice
+- Clean code from day 1 (at least before you submit the PR)
+- Read/Watch Clean Code by Uncle Bob
