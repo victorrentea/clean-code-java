@@ -44,11 +44,11 @@ public class ImmutableAdvanced {
     //code smell: "toBuilder"
 //    immutable.toBuilder().point(immutable.getPoint().moveBy(1, 1)).numbers().build();
 
-    Method neverDoThat = immutable.getPoint().getClass().getDeclaredMethod("foo");
+    Method neverDoThat = immutable.point().getClass().getDeclaredMethod("foo");
     neverDoThat.setAccessible(true);
-    neverDoThat.invoke(immutable.getPoint());
+    neverDoThat.invoke(immutable.point());
 
-    return immutable.getPoint().moveBy(1, 1);
+    return immutable.point().moveBy(1, 1);
   }
 
 }
@@ -68,46 +68,16 @@ record Point(int x, int y) {
   }
 }
 
+/**
+ * @param point   private final Integer x;  private final Integer y; */
 @Builder(toBuilder = true)
 // DEEP immutable now: all its object graph is unchangeable after instantiation
-class Immutable {
-  //  private final Integer x;
-//  private final Integer y;
-  private final Point point;
-  private final ImmutableList<Integer> numbers;
-  private final Other other;
-
-  Immutable(Point point, ImmutableList<Integer> numbers, Other other) {
-    this.point = point;
-    this.numbers = numbers;
-    this.other = other;
-  }
-
-  // WITH-er
+record Immutable(
+    Point point,
+    ImmutableList<Integer> numbers,
+    Other other) {
   public Immutable withPoint(Point movedPoint) {
     return new Immutable(movedPoint, numbers, other);
-  }
-
-  public Point getPoint() {
-    return point;
-  }
-
-  public ImmutableList<Integer> getNumbers() {
-//    return Collections.unmodifiableList(numbers); // decorating the original list to block mutations
-    return numbers;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{" +
-           "point=" + point +
-           ", numbers=" + numbers +
-           ", other=" + other +
-           '}';
   }
 }
 
