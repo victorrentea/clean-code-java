@@ -1,7 +1,10 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Builder;
+import lombok.SneakyThrows;
 
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -20,6 +23,7 @@ public class ImmutableAdvanced {
     System.out.println("Moved object:  " + moved);
   }
 
+  @SneakyThrows
   private static Point wilderness(Immutable immutable) {
     // imagine 1500 lines of code working with immutable object
 
@@ -36,16 +40,35 @@ public class ImmutableAdvanced {
 //    return new Immutable(immutable.getPoint().moveBy(1,1),
 //        immutable.getNumbers(),
 //        immutable.getOther());
+
+    //code smell: "toBuilder"
+//    immutable.toBuilder().point(immutable.getPoint().moveBy(1, 1)).numbers().build();
+
+    Method neverDoThat = immutable.getPoint().getClass().getDeclaredMethod("foo");
+    neverDoThat.setAccessible(true);
+    neverDoThat.invoke(immutable.getPoint());
+
     return immutable.getPoint().moveBy(1, 1);
   }
+
 }
 
 record Point(int x, int y) {
   public Point moveBy(int dx, int dy) {
+    foo2();
     return new Point(x + dx, y + dy);
+  }
+
+  //  @NeverToRename // at the app startup reflectively scan all classes for such annoted method and cross check the list
+  // you collect vs a stored 'reflective-methods.txt' you have in your source code
+  // foo
+  // bar
+  private void foo2() {
+    System.out.println("Hello private");
   }
 }
 
+@Builder(toBuilder = true)
 // DEEP immutable now: all its object graph is unchangeable after instantiation
 class Immutable {
   //  private final Integer x;

@@ -235,5 +235,8 @@ SLAB = Single Level of Abstraction Principle
 Do not mix in a method high-level logic with low-level details (push details in  private helper methods next to you)
 
 
+JPA Tricks
+https://www.youtube.com/watch?v=iw0tOx7Zbjc&list=PLggcOULvfLL_MfFS_O0MKQ5W_6oWWbIw5&index=42&t=3108s 
 
-- 
+
+
