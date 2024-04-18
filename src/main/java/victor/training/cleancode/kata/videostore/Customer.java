@@ -27,29 +27,13 @@ class Customer {
         for (Movie movie : rentals.keySet()) {
             double thisAmount = 0;
             // determine amounts for every line
-            int dr = rentals.get(movie);
-            switch (movie.priceCode()) {
-                case REGULAR:
-                    thisAmount += 2;
-                    if (dr > 2) {
-                        thisAmount += (dr - 2) * 1.5;
-                    }
-                    break;
-                case NEW_RELEASE:
-                    thisAmount += dr * 3;
-                    break;
-                case CHILDREN:
-                    thisAmount += 1.5;
-                    if (dr > 3) {
-                        thisAmount += (dr - 3) * 1.5;
-                    }
-                    break;
-            }
+            int daysRented = rentals.get(movie);
+            thisAmount = calculatePrice(movie, thisAmount, daysRented);
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
             if ((movie.priceCode() == PriceCode.NEW_RELEASE)
-                    && dr > 1) {
+                    && daysRented > 1) {
                 frequentRenterPoints++;
             }
             // show figures line for this rental
@@ -60,5 +44,36 @@ class Customer {
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
+    }
+
+    private static double calculatePrice(Movie movie, double thisAmount, int daysRented) {
+        switch (movie.priceCode()) {
+            case REGULAR:
+                thisAmount = calculateRegularPrice(thisAmount, daysRented);
+                break;
+            case NEW_RELEASE:
+                thisAmount += daysRented * 3;
+                break;
+            case CHILDREN:
+                thisAmount = calculateChildrenPrice(thisAmount, daysRented);
+                break;
+        }
+        return thisAmount;
+    }
+
+    private static double calculateChildrenPrice(double thisAmount, int daysRented) {
+        thisAmount += 1.5;
+        if (daysRented > 3) {
+            thisAmount += (daysRented - 3) * 1.5;
+        }
+        return thisAmount;
+    }
+
+    private static double calculateRegularPrice(double thisAmount, int daysRented) {
+        thisAmount += 2;
+        if (daysRented > 2) {
+            thisAmount += (daysRented - 2) * 1.5;
+        }
+        return thisAmount;
     }
 }
