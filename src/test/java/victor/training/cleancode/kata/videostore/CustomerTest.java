@@ -10,8 +10,9 @@ public class CustomerTest {
 	
     @Test
     public void characterizationTest() {
+        String fromDB = "NEW_RELEASE";// scrambled eggs";
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", PriceCode.NEW_RELEASE), 6);
+        customer.addRental(new Movie("Star Wars", PriceCode.valueOf(fromDB)), 6);
         customer.addRental(new Movie("Sofia", PriceCode.CHILDREN), 7);
         customer.addRental(new Movie("Inception", PriceCode.REGULAR), 5);
         

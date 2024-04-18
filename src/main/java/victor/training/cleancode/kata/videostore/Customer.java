@@ -48,26 +48,28 @@ class Customer {
     }
 
     private static double calculatePrice(Movie movie, int daysRented) {
-        return switch (movie.priceCode()) {
-            case REGULAR -> calculateRegularPrice(daysRented);
-            case NEW_RELEASE -> daysRented * 3;
-            case CHILDREN -> calculateChildrenPrice(daysRented);
-            //case BLOCKBUSTER -> 0.0;
-        };
+      return switch (movie.priceCode()) {
+        case REGULAR -> calculateRegularPrice(daysRented);
+        case NEW_RELEASE -> daysRented * 3;
+        case CHILDREN -> calculateChildrenPrice(daysRented);
+        //case BLOCKBUSTER -> 0.0;
+      };
     }
 
     private static double calculateChildrenPrice(int daysRented) {
+        final int MIN_DAYS_FOR_EXTRA_PRICE = 3;
         double thisAmount = 1.5;
-        if (daysRented > 3) {
-            thisAmount += (daysRented - 3) * 1.5;
+        if (daysRented > MIN_DAYS_FOR_EXTRA_PRICE) {
+            thisAmount += (daysRented - MIN_DAYS_FOR_EXTRA_PRICE) * 1.5;
         }
         return thisAmount;
     }
 
     private static double calculateRegularPrice(int daysRented) {
+        final int MIN_DAYS_FOR_EXTRA_PRICE = 2;
         double thisAmount = 2;
-        if (daysRented > 2) {
-            thisAmount += (daysRented - 2) * 1.5;
+        if (daysRented > MIN_DAYS_FOR_EXTRA_PRICE) {
+            thisAmount += (daysRented - MIN_DAYS_FOR_EXTRA_PRICE) * 1.5;
         }
         return thisAmount;
     }
