@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,19 @@ class CarSearch {
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
     System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+    h();
+  }
+
+  private void h() {
+    g();
+  }
+
+  private void g() {
+    f();
+  }
+
+  public void f() {
+
   }
   private void applyCapacityFilter() { // pretend
     System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
@@ -27,6 +42,7 @@ class SomeOtherClientCode {
 
 class MathUtil {
 }
+@Embeddable
 record Interval(int start, int end) {
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
@@ -63,14 +79,20 @@ class CarSearchCriteria { // a DTO received from JSON
   }
 }
 
-// @Entity
+ @Entity
 class CarModel { // the Entity Model👑
-  // @Id
+   @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+//  private int startYear; // CAR_MODEL.START_YEAR
+//  private int endYear;
+   @Embedded // nu se modifica TABELA din DB + @AttributeOverrides
+   @AttributeOverrides({
+        @AttributeOverride(name = "start", column = @Column(name = "start_year")),
+        @AttributeOverride(name = "end", column = @Column(name = "end_year"))
+   })
+   private Interval yearInterval; // -1 camp = dev happy ++
 
   protected CarModel() {
   } // for Hibernate
@@ -79,20 +101,23 @@ class CarModel { // the Entity Model👑
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
     return id;
   }
 
+   public Interval getYearInterval() {
+     return yearInterval;
+   }
+
   public int getEndYear() {
-    return endYear;
+    return yearInterval.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return  yearInterval.start();
   }
 
   public String getMake() {
@@ -101,10 +126,6 @@ class CarModel { // the Entity Model👑
 
   public String getModel() {
     return model;
-  }
-
-  public Interval getYearInterval() {
-    return new Interval(getStartYear(), getEndYear());
   }
 }
 
