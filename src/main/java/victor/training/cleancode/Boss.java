@@ -2,7 +2,6 @@ package victor.training.cleancode;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Deep nested functions are harder to break down
@@ -22,23 +21,23 @@ public class Boss {
     if (tasks.isEmpty()) {
       return;
     }
-    System.out.println("Logic1");
-    System.out.println("Logic3");
-    check(tasks); // nu-mi da nimic inapoi = COMMAND method care arunca exceptie sau  face side-effects (modifica parametrii, INSERT, SEND, POST)
-    int index = 0;
-    List<Integer> taskIds = new ArrayList<>();
-    for (Task task : tasks) {
-      System.out.println("Starting " + task);
-      task.setStarted(true);
-    }
-    for (Task task : tasks) {
-      taskIds.add(task.getId());
-    }
-    for (Task task : tasks) {
-      if (cr323) { // TODO remove the boolean
+    start(tasks);
+
+//    List<Integer> taskIds = tasks.stream().map(task -> task.getId()).collect(Collectors.toList());
+//    List<Integer> taskIds = tasks.stream().map(task -> task.getId()).toList(); //java17 💖 lista intoarsa e readonly
+//    List<Integer> taskIds = tasks.stream().map(Task::getId).toList(); // Etapa: dragoste de ::
+
+    if (cr323) { // TODO remove the boolean
+      for (Task task : tasks) {
         System.out.println("My Logic: " + task);
       }
     }
+    end(tasks);
+  }
+
+  private void end(ImmutableList<Task> tasks) {
+    List<Integer> taskIds = tasks.stream().map(Task::getId).toList();
+    int index = 0;
     for (Task task : tasks) {
       index++;
       System.out.println("Audit task #" + index + ": " + task);
@@ -46,6 +45,20 @@ public class Boss {
     System.out.println("Logic6 " + tasks.size());
     System.out.println("Task Ids: " + taskIds);
     System.out.println("Logic8");
+  }
+
+  private void start(ImmutableList<Task> tasks) {
+    System.out.println("Logic1");
+    System.out.println("Logic3");
+    check(tasks); // nu-mi da nimic inapoi = COMMAND method care arunca exceptie sau  face side-effects (modifica parametrii, INSERT, SEND, POST)
+    startTasks(tasks);
+  }
+
+  private void startTasks(ImmutableList<Task> tasks) {
+    for (Task task : tasks) {
+      System.out.println("Starting " + task);
+      task.setStarted(true);
+    }
   }
 
   private void check(List<Task> tasks) {
