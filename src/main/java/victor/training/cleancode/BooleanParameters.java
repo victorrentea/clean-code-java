@@ -45,14 +45,13 @@ class MyService {
 }
 
 public class BooleanParameters {
-
   // Warning⚠️: this method might be called from multiple places in the codebase ...
-  public static void bigUglyMethod(int storeId, Task task) {
+  public static void bigUglyMethod(int storeId, Task task) { // 60 de linii
     System.out.println("Donkey Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Donkey Logic 3 " + task);
 
-    // System.out.println("Logic just for CR#323 : " + task);
+    System.out.println("Logic just for CR#323 : " + task);
 
     System.out.println("Sheep Logic 1 " + storeId);
     System.out.println("Sheep Logic 2 " + storeId);
