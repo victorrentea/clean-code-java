@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,18 +9,16 @@ import java.util.List;
 public class Boss {
 
   // 👌 TODO run tests
-  public void bossLevel(boolean forBulgaria, List<Task> tasks, boolean cr323) {
-    int index = 0;
-    int numberOfTasks = tasks.size();
+  public void bossLevel(boolean forBulgaria, final ImmutableList<Task> tasks, boolean cr323) {
     if (tasks.isEmpty()) {
       return;
     }
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (forBulgaria) {
-      // for GDPR
       System.out.println("Logic3");
-      check(tasks);
+      check(tasks); // nu-mi da nimic inapoi = COMMAND method care arunca exceptie sau  face side-effects (modifica parametrii, INSERT, SEND, POST)
+      int index = 0;
       for (Task task : tasks) {
         System.out.println("Starting " + task);
         task.setStarted(true);
@@ -28,11 +28,11 @@ public class Boss {
         if (cr323) { // TODO remove the boolean
           System.out.println("My Logic: " + task);
         }
-
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
-      System.out.println("Logic6 " + numberOfTasks);
+      int count = tasks.size();
+      System.out.println("Logic6 " + count);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
