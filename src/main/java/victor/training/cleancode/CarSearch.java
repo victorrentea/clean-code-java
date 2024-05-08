@@ -120,14 +120,6 @@ class CarModel { // the Entity Model👑
      return yearInterval;
    }
 
-  public int getEndYear() {
-    return yearInterval.end();
-  }
-
-  public int getStartYear() {
-    return  yearInterval.start();
-  }
-
   public String getMake() {
     return make;
   }
@@ -135,15 +127,21 @@ class CarModel { // the Entity Model👑
   public String getModel() {
     return model;
   }
-}
+
+ }
 
 class CarModelMapper {
   public CarModelDto toDto(CarModel carModel) {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.endYear = carModel.getYearInterval().end();
     return dto;
   }
 
