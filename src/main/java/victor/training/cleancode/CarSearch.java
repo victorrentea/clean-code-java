@@ -53,6 +53,7 @@ record Interval(int start, int end) {
 class CarSearchCriteria { // a DTO received from JSON
   private final int startYear;
   private final int endYear;
+//  private final Interval yearInterval;// stric API modelul
   private final String make;
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -75,7 +76,7 @@ class CarSearchCriteria { // a DTO received from JSON
   }
 
   public Interval getYearInterval() {
-    return new Interval(getStartYear(), getEndYear());
+    return new Interval(startYear, endYear);
   }
 }
 
