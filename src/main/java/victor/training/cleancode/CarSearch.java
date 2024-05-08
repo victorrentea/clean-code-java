@@ -2,7 +2,9 @@ package victor.training.cleancode;
 
 import jakarta.persistence.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 class CarSearch {
@@ -44,6 +46,10 @@ class MathUtil {
 }
 @Embeddable
 record Interval(int start, int end) {
+  Interval {
+    // ajuta mult daca ai logica in app foarte complicata
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
   }
@@ -84,6 +90,7 @@ class CarSearchCriteria { // a DTO received from JSON
 class CarModel { // the Entity Model👑
    @Id
   private Long id;
+   @NotNull
   private String make;
   private String model;
 //  private int startYear; // CAR_MODEL.START_YEAR
@@ -99,7 +106,7 @@ class CarModel { // the Entity Model👑
   } // for Hibernate
 
   public CarModel(String make, String model, int startYear, int endYear) {
-    this.make = make;
+    this.make = Objects.requireNonNull(make);
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.yearInterval = new Interval(startYear, endYear);
