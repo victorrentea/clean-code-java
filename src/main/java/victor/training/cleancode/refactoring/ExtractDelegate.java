@@ -32,12 +32,12 @@ class BigOne {
 }
 
 class A {
-    void f(){System.out.println("A.f");}
+    void f(){System.out.println("A.f_uc323");}
 }
 class B {
-    void f(){System.out.println("B.f");}
+    void f(){System.out.println("B.f_uc323");}
 }
 class C {
-    void f(){System.out.println("C.f");}
+    void f(){System.out.println("C.f_uc323");}
 }
 
