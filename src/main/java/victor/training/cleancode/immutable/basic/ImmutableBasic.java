@@ -1,7 +1,6 @@
 package victor.training.cleancode.immutable.basic;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Value;
 
 import java.util.stream.Stream;
 
@@ -14,21 +13,39 @@ public class ImmutableBasic {
 
       System.out.println(immutable);
 
-      wilderness(immutable);
+      // nu reatribui variabile (Confused variable code smell).
+      // ==> faci altele noi!
+      Immutable immutable6 = wilderness(immutable);
+     for (int i = 0; i < 10_000; i++) {
+        immutable6 = wilderness(immutable6);
+     }
 
-      System.out.println(immutable);
+      System.out.println(immutable6);
    }
 
-   private static void wilderness(Immutable immutable) {
+   private static Immutable wilderness(Immutable immutable) {
       // LOTS OF BUSINESS LOGIC HERE
-//      immutable.getNumbers().clear(); // deprecation warning
+
+     return immutable.withAnExtraNumber(6);
    }
+
 }
 
 record Immutable(
     Integer x,
     ImmutableList<Integer> numbers,
     Other other) {
+
+  // incapsulat "modificare" - clonarea de fapt
+  public Immutable withAnExtraNumber(int element) { // "with"-eri ~ setteri/getteri
+    ImmutableList<Integer> newList = new ImmutableList.Builder<Integer>()
+         .addAll(numbers)  // Add all elements from the original list
+         .add(element)      // Add new element(s)
+         .build();
+
+    return new Immutable(x, newList, other);
+  }
+
 }
 //class Immutable {
 //   private final Integer x;
@@ -54,15 +71,3 @@ record Immutable(
 //   }
 //}
 
-class Other {
-   private final int a;
-
-   public Other(int a) {
-      this.a = a;
-   }
-
-   public int getA() {
-      return a;
-   }
-
-}
