@@ -3,12 +3,9 @@ package victor.training.cleancode.immutable.basic;
 import com.google.common.collect.ImmutableList;
 import lombok.Value;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
@@ -28,11 +25,10 @@ public class ImmutableBasic {
    }
 }
 
-@Value // = final private fields + getters + equals + hashCode + toString + constructor + final
-class Immutable {
-   Integer x;
-   ImmutableList<Integer> numbers; // ..Set, ..Map. ATENTIE: JPA/Hibernate nu poate pt ca vrea sa-si puna PersistentBag implements List, PersistentSet implemenets Set
-   Other other;
+record Immutable(
+    Integer x,
+    ImmutableList<Integer> numbers,
+    Other other) {
 }
 //class Immutable {
 //   private final Integer x;
