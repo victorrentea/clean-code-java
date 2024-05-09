@@ -27,6 +27,7 @@ class Customer {
 			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
+
 			switch (each.getPriceCode()) {
 				case Movie.REGULAR:
 					thisAmount += 2;
