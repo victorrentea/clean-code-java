@@ -3,8 +3,8 @@ package victor.training.cleancode.kata.videostore;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
@@ -29,17 +29,13 @@ class Customer {
 			int dr = rentals.get(each);
 			switch (each.getPriceCode()) {
 				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					thisAmount = getRegularAmount(thisAmount, dr, 2, 2);
 					break;
 				case Movie.NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
 				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+					thisAmount = getRegularAmount(thisAmount, dr, 1.5, 3);
 					break;
 			}
 			// add frequent renter points
@@ -57,5 +53,12 @@ class Customer {
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private double getRegularAmount(double thisAmount, int dr, double i, int i2) {
+		thisAmount += i;
+		if (dr > i2)
+			thisAmount += (dr - i2) * 1.5;
+		return thisAmount;
 	}
 }
