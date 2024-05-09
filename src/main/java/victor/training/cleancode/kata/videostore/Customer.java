@@ -6,14 +6,14 @@ import static victor.training.cleancode.kata.videostore.enums.MovieType.*;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private final List<Rental> rentals = new ArrayList<>(); // preserves order
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.add(new Rental(movie, daysRented));
 	}
 
 	public String getName() {
@@ -25,9 +25,10 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		//  iterate each rental
-		for (Movie each : rentals.keySet()) {
+		for (Rental rental : rentals) {
+			final Movie each = rental.movie();
 			// determine amounts for every line
-			int daysRented = rentals.get(each);
+			int daysRented = rental.daysRented();
 			double thisAmount = each.computeAmount(daysRented);
 			// add frequent renter points
 			frequentRenterPoints++;
