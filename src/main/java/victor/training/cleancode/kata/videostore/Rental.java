@@ -28,4 +28,9 @@ public record Rental(Movie movie, Integer daysToRent) {
         }
         return thisAmount;
     }
+
+    public String getText() {
+        double amountForCurrentRental = this.calculateAmount();
+        return "\t" + (this.movie().title()) + "\t" + amountForCurrentRental + "\n";
+    }
 }

@@ -27,15 +27,10 @@ class Customer {
     }
 
     private String getRentalDetails(int frequentRenterPoints, double totalAmount) {
-        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
-
-        for (Rental rental : rentals) {
-            double amountForCurrentRental = rental.calculateAmount();
-            result.append("\t").append(rental.movie().title()).append("\t").append(amountForCurrentRental).append("\n");
-        }
-        result.append("Amount owed is ").append(totalAmount).append("\n");
-        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-        return result.toString();
+        String prefix = "Rental Record for " + getName() + "\n";
+        String suffix = "Amount owed is " + totalAmount + "\n" + "You earned "
+                + frequentRenterPoints + " frequent renter points";
+        return rentals.stream().map(Rental::getText).collect(Collectors.joining("", prefix, suffix));
     }
 
 }
