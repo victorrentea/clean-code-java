@@ -4,7 +4,7 @@ import java.util.*;
 
 class Customer {
 	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order!
 
 	public Customer(String name) {
 		this.name = name;
