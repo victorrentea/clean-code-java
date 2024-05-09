@@ -4,11 +4,12 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
     @Getter
     private final String name;
-    private final List<Rental> rentals = new ArrayList<>(); // preserves order!
+    private final List<Rental> rentals = new ArrayList<>();
 
     public Customer(String name) {
         this.name = name;
@@ -19,23 +20,16 @@ class Customer {
     }
 
     public String statement() {
-        double price = 0;
-        int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
-        // iterate each rental
-        for (Rental rental : rentals) {
-            // determine amounts for every line
-            double owedAmount = rental.getOwedAmount();
-            frequentRenterPoints += rental.getFrequentRenterPoints();
-            // show figures line for this rental
-            result += "\t" + rental.movie().title() + "\t" + owedAmount + "\n";
-            price += owedAmount;
-        }
-        // add footer lines
+
+        result += rentals.stream()
+                .map(r -> "\t" + r.movie().title() + "\t" + r.getOwedAmount() + "\n")
+                .collect(Collectors.joining(""));
+
+        int frequentRenterPoints = rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
+        double price = rentals.stream().mapToDouble(Rental::getOwedAmount).sum();
         result += "Amount owed is " + price + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
     }
-
-
 }
