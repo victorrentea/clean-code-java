@@ -1,24 +1,23 @@
 package victor.training.cleancode.kata.videostore;
 
+import lombok.Getter;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static victor.training.cleancode.kata.videostore.MovieEnum.NEW_RELEASE;
+import static victor.training.cleancode.kata.videostore.PriceCode.NEW_RELEASE;
 
 class Customer {
+    @Getter
     private String name;
-    private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order!
+    private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order!
 
     public Customer(String name) {
         this.name = name;
     }
 
-    public void addRental(Movie m, int d) {
-        rentals.put(m, d);
-    }
-
-    public String getName() {
-        return name;
+    public void addRental(Movie movie, int rentalDays) {
+        rentals.put(movie, rentalDays);
     }
 
     public String statement() {
@@ -27,19 +26,19 @@ class Customer {
         String result = "Rental Record for " + getName() + "\n";
         // iterate each rental
         for (Movie movie : rentals.keySet()) {
-            double thisAmount = 0;
             // determine amounts for every line
-            int dailyRentalPrice = rentals.get(movie);
-            thisAmount = getThisAmount(movie, thisAmount, dailyRentalPrice);
+            int rentalDays = rentals.get(movie);
+            double thisAmount = getThisAmount(movie, rentalDays);
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
-            if (movie.getPriceCode() != null &&
-                    (movie.getPriceCode() == NEW_RELEASE)
-                    && dailyRentalPrice > 1)
+            if (movie.priceCode() != null &&
+                    movie.priceCode() == NEW_RELEASE &&
+                    rentalDays >= 2) {
                 frequentRenterPoints++;
+            }
             // show figures line for this rental
-            result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
+            result += "\t" + movie.title() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
         }
         // add footer lines
@@ -48,21 +47,19 @@ class Customer {
         return result;
     }
 
-    private static double getThisAmount(Movie each, double thisAmount, int dailyRentalPrice) {
-        switch (each.getPriceCode()) {
-            case REGULAR:
+    private static double getThisAmount(Movie movie, int dailyRentalPrice) {
+        double thisAmount = 0;
+        switch (movie.priceCode()) {
+            case REGULAR -> {
                 thisAmount += 2;
-                if (dailyRentalPrice > 2)
-                    thisAmount += (dailyRentalPrice - 2) * 1.5;
-                break;
-            case NEW_RELEASE:
-                thisAmount += dailyRentalPrice * 3;
-                break;
-            case CHILDRENS:
+                if (dailyRentalPrice > 2) thisAmount += (dailyRentalPrice - 2) * 1.5;
+            }
+            case NEW_RELEASE -> thisAmount += dailyRentalPrice * 3;
+            case CHILDRENS -> {
                 thisAmount += 1.5;
-                if (dailyRentalPrice > 3)
-                    thisAmount += (dailyRentalPrice - 3) * 1.5;
-                break;
+                if (dailyRentalPrice > 3) thisAmount += (dailyRentalPrice - 3) * 1.5;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + movie.priceCode());
         }
         return thisAmount;
     }
