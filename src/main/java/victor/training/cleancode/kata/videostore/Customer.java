@@ -47,22 +47,33 @@ class Customer {
 
     private double getOwedAmount(Movie movie) {
         int daysRented = rentals.get(movie);
-        double thisAmount = 0;
+        double thisAmount =
         switch (movie.priceCode()) {
-            case REGULAR -> {
-                thisAmount += 2;
-                if (daysRented > 2) {
-                    thisAmount += (daysRented - 2) * 1.5;
-                }
-            }
-            case NEW_RELEASE -> thisAmount += daysRented * 3;
-            case CHILDRENS -> {
-                thisAmount += 1.5;
-                if (daysRented > 3) {
-                    thisAmount += (daysRented - 3) * 1.5;
-                }
-            }
+            case REGULAR -> getRegularAmount(daysRented, 0);
+
+            case NEW_RELEASE -> getNewReleaseAmount(daysRented);
+            case CHILDRENS -> getChildrensAmount(daysRented, 0);
             default -> throw new IllegalStateException("Unexpected value: " + movie.priceCode());
+        };
+        return thisAmount;
+    }
+
+    private static double getChildrensAmount(int daysRented, double thisAmount) {
+        thisAmount += 1.5;
+        if (daysRented > 3) {
+            thisAmount += (daysRented - 3) * 1.5;
+        }
+        return thisAmount;
+    }
+
+    private static int getNewReleaseAmount(int daysRented) {
+        return daysRented * 3;
+    }
+
+    private static double getRegularAmount(int daysRented, double thisAmount) {
+        thisAmount += 2;
+        if (daysRented > 2) {
+            thisAmount += (daysRented - 2) * 1.5;
         }
         return thisAmount;
     }
