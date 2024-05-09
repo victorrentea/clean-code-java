@@ -12,7 +12,7 @@ public class MutantPipeline {
     //    final int[] sum = {0};
     //    AtomicInteger sum = new AtomicInteger();
     int sum = orders.stream()
-        .filter(Order::isActive)yo
+        .filter(Order::isActive)
         .mapToInt(Order::price)
 //        .sum();// Mantra FP: return, don't change!
 
