@@ -2,6 +2,8 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
 
+import static victor.training.cleancode.kata.videostore.enums.MovieType.*;
+
 class Customer {
 	private final String name;
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
@@ -27,22 +29,22 @@ class Customer {
 			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
+			switch (each.getMovieType()) {
+				case REGULAR:
 					thisAmount = getRegularAmount(thisAmount, dr, 2, 2);
 					break;
-				case Movie.NEW_RELEASE:
+				case NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
-				case Movie.CHILDRENS:
+				case CHILDREN:
 					thisAmount = getRegularAmount(thisAmount, dr, 1.5, 3);
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
+			if (each.getMovieType() != null &&
+				 (each.getMovieType() == NEW_RELEASE)
 				 && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
