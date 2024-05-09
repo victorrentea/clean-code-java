@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutable.basic;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,29 +28,35 @@ public class ImmutableBasic {
    }
 }
 
+@Value // = final private fields + getters + equals + hashCode + toString + constructor + final
 class Immutable {
-   private final Integer x;
-   private final ImmutableList<Integer> numbers; // ..Set, ..Map. ATENTIE: JPA/Hibernate nu poate pt ca vrea sa-si puna PersistentBag implements List, PersistentSet implemenets Set
-   private final Other other;
-   public Immutable(Integer x, ImmutableList<Integer> numbers, Other other) {
-      this.x = x;
-      this.numbers = numbers;
-      this.other = other;
-   }
-   public Integer getX() {
-      return x;
-   }
-   public ImmutableList<Integer> getNumbers() {
-//      return Collections.unmodifiableList(numbers); // #1 istoric prima solutie sa repare colectiile mutabile din Java
-      return numbers; // #1 istoric prima solutie sa repare colectiile mutabile din Java
-   }
-   public Other getOther() {
-      return other;
-   }
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+   Integer x;
+   ImmutableList<Integer> numbers; // ..Set, ..Map. ATENTIE: JPA/Hibernate nu poate pt ca vrea sa-si puna PersistentBag implements List, PersistentSet implemenets Set
+   Other other;
 }
+//class Immutable {
+//   private final Integer x;
+//   private final ImmutableList<Integer> numbers; // ..Set, ..Map. ATENTIE: JPA/Hibernate nu poate pt ca vrea sa-si puna PersistentBag implements List, PersistentSet implemenets Set
+//   private final Other other;
+//   public Immutable(Integer x, ImmutableList<Integer> numbers, Other other) {
+//      this.x = x;
+//      this.numbers = numbers;
+//      this.other = other;
+//   }
+//   public Integer getX() {
+//      return x;
+//   }
+//   public ImmutableList<Integer> getNumbers() {
+////      return Collections.unmodifiableList(numbers); // #1 istoric prima solutie sa repare colectiile mutabile din Java
+//      return numbers; // #1 istoric prima solutie sa repare colectiile mutabile din Java
+//   }
+//   public Other getOther() {
+//      return other;
+//   }
+//   public String toString() {
+//      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+//   }
+//}
 
 class Other {
    private final int a;
