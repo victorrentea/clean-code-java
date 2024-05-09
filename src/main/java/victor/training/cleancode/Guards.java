@@ -37,7 +37,7 @@ public class Guards {
   }
 
   private boolean isDead(Marine marine) {
-    return false;
+    return Math.random()<.2;
   }
 
   private int retiredAmount() {
