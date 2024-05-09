@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.jooq.lambda.Agg.sum;
 import static victor.training.cleancode.kata.videostore.enums.MovieType.*;
@@ -26,17 +27,8 @@ class Customer {
 		int frequentRenterPointsTotal;
 		String result = "Rental Record for " + getName() + "\n";
 		//  iterate each rental
-		for (Rental rental : rentals) {
-			final Movie each = rental.movie();
-			// determine amounts for every line
-			double thisAmount = rental.computeAmount();
-			// add frequent renter points
-			//frequentRenterPointsTotal += rental.getFrequentRenterPoints();
-			// show figures line for this rental
-			result += moviePrice(each, thisAmount);
-			//totalAmount += thisAmount;
-		}
 
+		result += rentals.stream().map(rental -> moviePrice(rental.movie(), rental.computeAmount())).collect(Collectors.joining());
 
 		totalAmount =
 				rentals.stream().mapToDouble(Rental::computeAmount).sum();
