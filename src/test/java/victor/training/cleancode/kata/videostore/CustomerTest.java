@@ -3,7 +3,7 @@ package victor.training.cleancode.kata.videostore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static victor.training.cleancode.kata.videostore.enums.MovieType.*;
+import static victor.training.cleancode.kata.videostore.MovieType.*;
 
 
 public class CustomerTest {

@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.jooq.lambda.Agg.sum;
-import static victor.training.cleancode.kata.videostore.enums.MovieType.*;
 
 class Customer {
 	private final String name;
@@ -23,17 +22,15 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPointsTotal;
+    int frequentRenterPointsTotal;
 		String result = "Rental Record for " + getName() + "\n";
 		//  iterate each rental
 
 		result += rentals.stream().map(rental -> moviePrice(rental.movie(), rental.computeAmount())).collect(Collectors.joining());
 
-		totalAmount =
-				rentals.stream().mapToDouble(Rental::computeAmount).sum();
+    double totalAmount = rentals.stream().mapToDouble(Rental::computeAmount).sum();
 
-		frequentRenterPointsTotal =
+    frequentRenterPointsTotal =
 				rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
 
 		// add footer lines
