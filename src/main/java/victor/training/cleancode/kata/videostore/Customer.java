@@ -22,7 +22,7 @@ class Customer {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		// iterate each rental
+		//  iterate each rental
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
