@@ -21,7 +21,7 @@ class Customer {
     }
 
     public String statement() {
-        double totalAmount = 0;
+        double price = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
         // iterate each rental
@@ -37,44 +37,40 @@ class Customer {
             }
             // show figures line for this rental
             result += "\t" + movie.title() + "\t" + owedAmount + "\n";
-            totalAmount += owedAmount;
+            price += owedAmount;
         }
         // add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
+        result += "Amount owed is " + price + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
     }
 
     private double getOwedAmount(Movie movie) {
         int daysRented = rentals.get(movie);
-        double thisAmount =
-        switch (movie.priceCode()) {
-            case REGULAR -> getRegularAmount(daysRented, 0);
-
-            case NEW_RELEASE -> getNewReleaseAmount(daysRented);
-            case CHILDRENS -> getChildrensAmount(daysRented, 0);
-            default -> throw new IllegalStateException("Unexpected value: " + movie.priceCode());
+        return switch (movie.priceCode()) {
+            case REGULAR -> getRegularPrice(daysRented);
+            case NEW_RELEASE -> getNewReleasePrice(daysRented);
+            case CHILDRENS -> getChildrenPrice(daysRented);
         };
-        return thisAmount;
     }
 
-    private static double getChildrensAmount(int daysRented, double thisAmount) {
-        thisAmount += 1.5;
+    private static double getChildrenPrice(int daysRented) {
+       double price = 1.5;
         if (daysRented > 3) {
-            thisAmount += (daysRented - 3) * 1.5;
+            price += (daysRented - 3) * 1.5;
         }
-        return thisAmount;
+        return price;
     }
 
-    private static int getNewReleaseAmount(int daysRented) {
+    private static int getNewReleasePrice(int daysRented) {
         return daysRented * 3;
     }
 
-    private static double getRegularAmount(int daysRented, double thisAmount) {
-        thisAmount += 2;
+    private static double getRegularPrice(int daysRented) {
+        double price = 2;
         if (daysRented > 2) {
-            thisAmount += (daysRented - 2) * 1.5;
+            price += (daysRented - 2) * 1.5;
         }
-        return thisAmount;
+        return price;
     }
 }
