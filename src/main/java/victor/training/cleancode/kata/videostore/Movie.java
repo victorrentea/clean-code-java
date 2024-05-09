@@ -1,4 +1,5 @@
 package victor.training.cleancode.kata.videostore;
+//dummy comment
 public class Movie {
 	public static final int CHILDRENS = 2;
 	public static final int REGULAR = 0;
