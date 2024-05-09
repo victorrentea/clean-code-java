@@ -5,8 +5,7 @@ import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
 public record Rental(Movie movie, Integer daysToRent) {
 
     public boolean eligibleForBonus() {
-        return movie().type() == NEW_RELEASE &&
-                daysToRent() >= 2;
+        return movie().type() == NEW_RELEASE && daysToRent() >= 2;
     }
 
     public double calculateAmount() {
@@ -30,7 +29,6 @@ public record Rental(Movie movie, Integer daysToRent) {
     }
 
     public String getText() {
-        double amountForCurrentRental = this.calculateAmount();
-        return "\t" + (this.movie().title()) + "\t" + amountForCurrentRental + "\n";
+      return "\t%s\t%.2g\n".formatted(movie().title(), calculateAmount());
     }
 }

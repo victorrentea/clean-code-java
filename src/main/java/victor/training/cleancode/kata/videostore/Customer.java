@@ -21,12 +21,18 @@ class Customer {
     }
 
     public String statement() {
-        int frequentRenterPoints = rentals.stream().filter(Rental::eligibleForBonus).toList().size() + rentals.size();
-        double totalAmount = rentals.stream().mapToDouble(Rental::calculateAmount).sum();
-        return header() + getBody() + footer(frequentRenterPoints, totalAmount);
+      return header() + body() + footer();
     }
 
-    private String getBody() {
+    private double totalPrice() {
+        return rentals.stream().mapToDouble(Rental::calculateAmount).sum();
+    }
+
+    private int totalPoints() {
+        return rentals.stream().filter(Rental::eligibleForBonus).toList().size() + rentals.size();
+    }
+
+    private String body() {
         return rentals.stream()
             .map(Rental::getText)
             .collect(Collectors.joining(""));
@@ -36,9 +42,9 @@ class Customer {
         return "Rental Record for " + getName() + "\n";
     }
 
-    private String footer(int frequentRenterPoints, double totalAmount) {
-        return "Amount owed is " + totalAmount + "\n" + "You earned "
-               + frequentRenterPoints + " frequent renter points";
+    private String footer() {
+        return "Amount owed is " + totalPrice() + "\n" + "You earned "
+               + totalPoints() + " frequent renter points";
     }
 
 }
