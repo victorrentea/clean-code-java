@@ -27,14 +27,8 @@ class Customer {
         // iterate each rental
         for (Rental rental : rentals) {
             // determine amounts for every line
-            int daysRented = rental.daysRented();
             double owedAmount = getOwedAmount(rental);
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two days new release rental
-            if (rental.movie().priceCode() == NEW_RELEASE && daysRented >= 2) {
-                frequentRenterPoints++;
-            }
+            frequentRenterPoints += getFrequentRenterPoints(rental);
             // show figures line for this rental
             result += "\t" + rental.movie().title() + "\t" + owedAmount + "\n";
             price += owedAmount;
@@ -43,6 +37,16 @@ class Customer {
         result += "Amount owed is " + price + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
+    }
+
+    private static int getFrequentRenterPoints(Rental rental) {
+        // add frequent renter points
+        int frequentRenterPoints = 1;
+        // add bonus for a two days new release rental
+        if (rental.movie().priceCode() == NEW_RELEASE && rental.daysRented() >= 2) {
+            frequentRenterPoints++;
+        }
+        return frequentRenterPoints;
     }
 
     private double getOwedAmount(Rental rental) {
