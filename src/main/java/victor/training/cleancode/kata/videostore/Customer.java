@@ -16,8 +16,8 @@ class Customer {
         this.name = name;
     }
 
-    public void addRental(Movie movie, int rentalDays) {
-        rentals.put(movie, rentalDays);
+    public void addRental(Movie movie, int daysRented) {
+        rentals.put(movie, daysRented);
     }
 
     public String statement() {
@@ -27,19 +27,17 @@ class Customer {
         // iterate each rental
         for (Movie movie : rentals.keySet()) {
             // determine amounts for every line
-            int rentalDays = rentals.get(movie);
-            double thisAmount = getThisAmount(movie, rentalDays);
+            int daysRented = rentals.get(movie);
+            double owedAmount = getOwedAmount(movie);
             // add frequent renter points
             frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if (movie.priceCode() != null &&
-                    movie.priceCode() == NEW_RELEASE &&
-                    rentalDays >= 2) {
+            // add bonus for a two days new release rental
+            if (movie.priceCode() == NEW_RELEASE && daysRented >= 2) {
                 frequentRenterPoints++;
             }
             // show figures line for this rental
-            result += "\t" + movie.title() + "\t" + thisAmount + "\n";
-            totalAmount += thisAmount;
+            result += "\t" + movie.title() + "\t" + owedAmount + "\n";
+            totalAmount += owedAmount;
         }
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
@@ -47,17 +45,22 @@ class Customer {
         return result;
     }
 
-    private static double getThisAmount(Movie movie, int dailyRentalPrice) {
+    private double getOwedAmount(Movie movie) {
+        int daysRented = rentals.get(movie);
         double thisAmount = 0;
         switch (movie.priceCode()) {
             case REGULAR -> {
                 thisAmount += 2;
-                if (dailyRentalPrice > 2) thisAmount += (dailyRentalPrice - 2) * 1.5;
+                if (daysRented > 2) {
+                    thisAmount += (daysRented - 2) * 1.5;
+                }
             }
-            case NEW_RELEASE -> thisAmount += dailyRentalPrice * 3;
+            case NEW_RELEASE -> thisAmount += daysRented * 3;
             case CHILDRENS -> {
                 thisAmount += 1.5;
-                if (dailyRentalPrice > 3) thisAmount += (dailyRentalPrice - 3) * 1.5;
+                if (daysRented > 3) {
+                    thisAmount += (daysRented - 3) * 1.5;
+                }
             }
             default -> throw new IllegalStateException("Unexpected value: " + movie.priceCode());
         }
