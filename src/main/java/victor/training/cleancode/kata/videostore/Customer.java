@@ -5,8 +5,6 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static victor.training.cleancode.kata.videostore.PriceCode.NEW_RELEASE;
-
 class Customer {
     @Getter
     private String name;
@@ -28,7 +26,7 @@ class Customer {
         for (Rental rental : rentals) {
             // determine amounts for every line
             double owedAmount = getOwedAmount(rental);
-            frequentRenterPoints += getFrequentRenterPoints(rental);
+            frequentRenterPoints += rental.getFrequentRenterPoints();
             // show figures line for this rental
             result += "\t" + rental.movie().title() + "\t" + owedAmount + "\n";
             price += owedAmount;
@@ -37,16 +35,6 @@ class Customer {
         result += "Amount owed is " + price + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return result;
-    }
-
-    private static int getFrequentRenterPoints(Rental rental) {
-        // add frequent renter points
-        int frequentRenterPoints = 1;
-        // add bonus for a two days new release rental
-        if (rental.movie().priceCode() == NEW_RELEASE && rental.daysRented() >= 2) {
-            frequentRenterPoints++;
-        }
-        return frequentRenterPoints;
     }
 
     private double getOwedAmount(Rental rental) {
