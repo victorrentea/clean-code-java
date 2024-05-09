@@ -7,7 +7,7 @@ import java.util.List;
 
 class Customer {
     @Getter
-    private String name;
+    private final String name;
     private final List<Rental> rentals = new ArrayList<>(); // preserves order!
 
     public Customer(String name) {
@@ -25,7 +25,7 @@ class Customer {
         // iterate each rental
         for (Rental rental : rentals) {
             // determine amounts for every line
-            double owedAmount = getOwedAmount(rental);
+            double owedAmount = rental.getOwedAmount();
             frequentRenterPoints += rental.getFrequentRenterPoints();
             // show figures line for this rental
             result += "\t" + rental.movie().title() + "\t" + owedAmount + "\n";
@@ -37,32 +37,5 @@ class Customer {
         return result;
     }
 
-    private double getOwedAmount(Rental rental) {
-        int daysRented = rental.daysRented();
-        return switch (rental.movie().priceCode()) {
-            case REGULAR -> getRegularPrice(daysRented);
-            case NEW_RELEASE -> getNewReleasePrice(daysRented);
-            case CHILDRENS -> getChildrenPrice(daysRented);
-        };
-    }
 
-    private static double getChildrenPrice(int daysRented) {
-        double price = 1.5;
-        if (daysRented > 3) {
-            price += (daysRented - 3) * 1.5;
-        }
-        return price;
-    }
-
-    private static int getNewReleasePrice(int daysRented) {
-        return daysRented * 3;
-    }
-
-    private static double getRegularPrice(int daysRented) {
-        double price = 2;
-        if (daysRented > 2) {
-            price += (daysRented - 2) * 1.5;
-        }
-        return price;
-    }
 }
