@@ -10,7 +10,7 @@ class Customer {
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
@@ -26,29 +26,18 @@ class Customer {
 		String result = "Rental Record for " + getName() + "\n";
 		//  iterate each rental
 		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getMovieType()) {
-				case REGULAR:
-					thisAmount = getRegularAmount(thisAmount, dr, 2, 2);
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDREN:
-					thisAmount = getRegularAmount(thisAmount, dr, 1.5, 3);
-					break;
-			}
+			int daysRented = rentals.get(each);
+			double thisAmount = each.computeAmount(daysRented);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getMovieType() != null &&
-				 (each.getMovieType() == NEW_RELEASE)
-				 && dr > 1)
+			if (each.movieType() != null &&
+				 (each.movieType() == NEW_RELEASE)
+				 && daysRented > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			result += "\t" + each.title() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
 		// add footer lines
@@ -57,10 +46,5 @@ class Customer {
 		return result;
 	}
 
-	private double getRegularAmount(double thisAmount, int dr, double i, int i2) {
-		thisAmount += i;
-		if (dr > i2)
-			thisAmount += (dr - i2) * 1.5;
-		return thisAmount;
-	}
+
 }

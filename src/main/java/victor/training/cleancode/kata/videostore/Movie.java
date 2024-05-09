@@ -2,20 +2,29 @@ package victor.training.cleancode.kata.videostore;
 
 import victor.training.cleancode.kata.videostore.enums.MovieType;
 
-public class Movie {
-	private final String title;
-	private final MovieType movieType;
+public record Movie(String title, MovieType movieType) {
 
-	public Movie(String title, MovieType movieType) {
-		this.title = title;
-		this.movieType = movieType;
+	public double computeAmount( int daysRented) {
+		double thisAmount=0;
+
+		switch (movieType()) {
+			case REGULAR:
+				thisAmount = getRegularAmount(thisAmount, daysRented, 2, 2);
+				break;
+			case NEW_RELEASE:
+				thisAmount += daysRented * 3;
+				break;
+			case CHILDREN:
+				thisAmount = getRegularAmount(thisAmount, daysRented, 1.5, 3);
+				break;
+		}
+		return thisAmount;
 	}
 
-	public MovieType getMovieType() {
-		return movieType;
+	private double getRegularAmount(double thisAmount, int dr, double i, int i2) {
+		thisAmount += i;
+		if (dr > i2)
+			thisAmount += (dr - i2) * 1.5;
+		return thisAmount;
 	}
-
-	public String getTitle() {
-		return title;
-	};
 }
