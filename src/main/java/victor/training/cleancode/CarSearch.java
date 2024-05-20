@@ -1,19 +1,24 @@
 package victor.training.cleancode;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 class CarSearch {
 
   // run tests
-  public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
-    List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
-        .collect(Collectors.toList());
-    System.out.println("More filtering logic ...");
+  public List<CarModel> filterCarModels(CarSearchCriteria criteria,
+                                        List<CarModel> carModels) { // SELECT * FROM CAR_MODEL; gresit daca aduce > 100-1000 randuri
+    List<CarModel> results = carModels.stream() // variabila temporara
+        .filter(carModel -> yearsIntersect(criteria, carModel)) // prea multi parametri
+//        .collect(Collectors.toList()); // mutabil, nu e ok
+        .toList();// imutabil
+         // mutabil, nu e ok
     return results;
+  }
+
+  private boolean yearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
+    return MathUtil.intervalsIntersect( // lambda prea lung
+        criteria.getStartYear(), criteria.getEndYear(),
+        carModel.getStartYear(), carModel.getEndYear());
   }
 }
 
