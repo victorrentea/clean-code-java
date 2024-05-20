@@ -33,6 +33,15 @@ class SomeOtherClientCode {
 
 class MathUtil {
 
+  // maine vreau asta (BUN)
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
+  }
+  @Deprecated
+  /**
+   * @deprecated Use {@link #intervalsIntersect(Interval, Interval)} instead
+   */
+  //acum am asta (RAU):
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
   }
