@@ -8,18 +8,18 @@ class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria,
                                         List<CarModel> carModels) { // SELECT * FROM CAR_MODEL; gresit daca aduce > 100-1000 randuri
     List<CarModel> results = carModels.stream() // variabila temporara
-        .filter(carModel -> yearsIntersect(criteria, carModel)) // prea multi parametri
+        .filter(carModel -> MathUtil.intervalsIntersect( // lambda prea lung
+            criteria.getStartYear(), criteria.getEndYear(),
+            carModel.getStartYear(), carModel.getEndYear())) // prea multi parametri
 //        .collect(Collectors.toList()); // mutabil, nu e ok
         .toList();// imutabil
          // mutabil, nu e ok
+//    log.trace("Found cars {}", results); // sa pui log in loc de breakpoint permite si
+    // sarmanului suflet (poate tot tu) care vine dupa sa repeare si el pe a-ci ceva.
+    // NU VA mai trebui sa intre in breakpoint ci doar pune log.level=trace
     return results;
   }
 
-  private boolean yearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-    return MathUtil.intervalsIntersect( // lambda prea lung
-        criteria.getStartYear(), criteria.getEndYear(),
-        carModel.getStartYear(), carModel.getEndYear());
-  }
 }
 
 class SomeOtherClientCode {
@@ -37,6 +37,8 @@ class MathUtil {
     return start1 <= end2 && start2 <= end1;
   }
 }
+record Interval(int start, int end) {}
+
 
 
 class CarSearchCriteria { // a DTO received from JSON
