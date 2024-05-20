@@ -29,7 +29,7 @@ class Movie {
 
 public class Switch {
 
-    // @see tests
+    // run tests
     public int computePrice(Movie movie, int days) {// query method
         switch (movie.getCategory()) {
             case REGULAR:
@@ -42,7 +42,7 @@ public class Switch {
         return 0; // ?!.. Free!! Deducted from your salary!
     }
 
-    // @see tests
+    // run tests
     public void processMovie(Movie movie) {
         System.out.println("Some repo calls");
         System.out.println("Some shared initial stuff");

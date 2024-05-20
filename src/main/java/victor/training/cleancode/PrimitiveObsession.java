@@ -9,7 +9,6 @@ public class PrimitiveObsession {
   public static void main(String[] args) {
     new PrimitiveObsession().primitiveObsession("CARD");
   }
-  //</editor-fold>
 
   //<editor-fold desc="fetchData()">
   public Map<Long, Map<String, Integer>> fetchData(String paymentMethod) {
@@ -21,6 +20,7 @@ public class PrimitiveObsession {
         "Chair", product2Count
     ));
   }
+  //</editor-fold>
 
   public void primitiveObsession(String paymentMethod) {
     if (!"CARD".equals(paymentMethod) && !"CASH".equals(paymentMethod)) {
