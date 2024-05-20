@@ -8,12 +8,10 @@ class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria,
                                         List<CarModel> carModels) { // SELECT * FROM CAR_MODEL; gresit daca aduce > 100-1000 randuri
     List<CarModel> results = carModels.stream() // variabila temporara
-        .filter(carModel -> {// lambda prea lung
-          int start1 = criteria.getStartYear();
-          int end1 = criteria.getEndYear();
-          int start2 = carModel.getStartYear();
-          int end2 = carModel.getEndYear();
-          return MathUtil.intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+        .filter(carModel -> {
+          return MathUtil.intervalsIntersect(
+              new Interval(criteria.getStartYear(), criteria.getEndYear()),
+              new Interval(carModel.getStartYear(), carModel.getEndYear()));
         }) // prea multi parametri
 //        .collect(Collectors.toList()); // mutabil, nu e ok
         .toList();// imutabil
