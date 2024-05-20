@@ -31,6 +31,11 @@ class SomeOtherClientCode {
 class MathUtil {
 }
 record Interval(int start, int end) {
+  Interval {
+    if (start > end) {
+      throw new IllegalArgumentException("start larger than end");
+    }
+  }
   // maine vreau asta (BUN)
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
@@ -62,8 +67,9 @@ class CarSearchCriteria { // a DTO received from JSON
     return make;
   }
 
+//  @JsonIgnore
   public Interval getYearInterval() {
-    return new Interval(getStartYear(), getEndYear());
+    return new Interval(startYear, endYear);
   }
 }
 
@@ -73,8 +79,10 @@ class CarModel { // the Entity Model👑
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+//  private int startYear;
+//  private int endYear;
+//  @Embedded
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -82,21 +90,11 @@ class CarModel { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
     return id;
-  }
-
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
   }
 
   public String getMake() {
@@ -108,7 +106,7 @@ class CarModel { // the Entity Model👑
   }
 
   public Interval getYearInterval() {
-    return new Interval(getStartYear(), getEndYear());
+    return yearInterval;
   }
 }
 
@@ -117,8 +115,11 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.endYear = carModel.getYearInterval().end();
     return dto;
   }
 
