@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 class CarSearch {
 
@@ -27,6 +28,7 @@ class SomeOtherClientCode {
     System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
+// mailto: victorrentea@gmail.com
 
 class MathUtil {
 }
