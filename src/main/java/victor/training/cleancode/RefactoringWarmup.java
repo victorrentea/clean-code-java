@@ -1,6 +1,8 @@
 package victor.training.cleancode;
 
 
+import lombok.Value;
+
 class PlayGround {
   public static void main(String[] args) {
     System.out.println(new One(new Two()).f());
@@ -23,9 +25,16 @@ class PlayGround {
 //    - Change Signature 'g': add 1 param with default as 1st arg
 //    - Extract Interface 'Two'->ITwo; - Inline to Anonymous Class to destroy interface
 //    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
-//    - Move Method 'g' into R
+//    - Move Method 'g' into Record
 
-record R(int x) {}
+// getteri, constructor, param->campurile finale
+record Record(int x) {
+  public int g() {
+    int b = 2;
+    System.out.println("b=" + b);
+    return 1 + b + x;
+  }
+}
 
 class One {
   private final Two two;
@@ -35,18 +44,14 @@ class One {
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    final Record r = new Record(3);
+    return 2 * r.g();
   }
 }
 
 class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
-  }
 
   public void unknown() {
-    System.out.println("b=" + 987);
+    System.out.println("a=" + 987);
   }
 }
