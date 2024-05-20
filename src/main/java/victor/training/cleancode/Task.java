@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.Data;
 
 public class Task {
   private final int id;
@@ -14,9 +13,8 @@ public class Task {
     return id;
   }
 
-  public Task setStarted(boolean started) {
+  public void setStarted(boolean started) {
     this.started = started;
-    return this;
   }
 
   public boolean isStarted() {
@@ -24,9 +22,6 @@ public class Task {
   }
   @Override
   public String toString() {
-    return "Task(" +
-           "id=" + id +
-           ", started=" + started +
-           ')';
+    return "Task(" + "id=" + id + ", started=" + started + ')';
   }
 }
