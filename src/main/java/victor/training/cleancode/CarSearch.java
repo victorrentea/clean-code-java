@@ -8,9 +8,13 @@ class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria,
                                         List<CarModel> carModels) { // SELECT * FROM CAR_MODEL; gresit daca aduce > 100-1000 randuri
     List<CarModel> results = carModels.stream() // variabila temporara
-        .filter(carModel -> MathUtil.intervalsIntersect( // lambda prea lung
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear())) // prea multi parametri
+        .filter(carModel -> {// lambda prea lung
+          int start1 = criteria.getStartYear();
+          int end1 = criteria.getEndYear();
+          int start2 = carModel.getStartYear();
+          int end2 = carModel.getEndYear();
+          return MathUtil.intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+        }) // prea multi parametri
 //        .collect(Collectors.toList()); // mutabil, nu e ok
         .toList();// imutabil
          // mutabil, nu e ok
@@ -24,26 +28,17 @@ class CarSearch {
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 }
 
 class MathUtil {
-
   // maine vreau asta (BUN)
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
     return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
-  }
-  @Deprecated
-  /**
-   * @deprecated Use {@link #intervalsIntersect(Interval, Interval)} instead
-   */
-  //acum am asta (RAU):
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
   }
 }
 record Interval(int start, int end) {}
