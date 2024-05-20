@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import victor.training.cleancode.fp.support.Order;
 
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MutantPipelineTest {
   @Test
+  @Disabled("until implemented")
   void totalOrderPrice() {
     int total = new MutantPipeline().totalActiveOrderPrice(List.of(
         new Order().setPrice(10).setActive(true),

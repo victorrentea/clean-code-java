@@ -10,8 +10,8 @@ public class Guards {
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
-    if (marine != null && (bonusPackage.value() > 100 || bonusPackage.value() < 10)) {
-      if (!isDead(marine)) {
+    if (marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
+      if (!marine.dead()) {
         if (!marine.retired()) {
           if (marine.yearsService() != null) {
             result = marine.yearsService() * 100 + bonusPackage.value();
@@ -34,10 +34,6 @@ public class Guards {
       throw new IllegalArgumentException("Not applicable!");
     }
     return result; // TODO ALT-ENTER move return closer
-  }
-
-  private boolean isDead(Marine marine) {
-    return Math.random()<.2;
   }
 
   private int retiredAmount() {

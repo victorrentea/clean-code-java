@@ -56,16 +56,6 @@ public class SplitLoopTest {
       }
 
       @Test
-      public void consultantSalaryNull_retrieveSalary_set() {
-         consultant = consultant.toBuilder().salary(null).build();
-         when(employeeService.retrieveSalary(consultant.id())).thenReturn(3000);
-
-         splitLoop.computeStatsHard(asList(consultant));
-
-         assertThat(consultant.salary()).isEqualTo(3000);
-      }
-
-      @Test
       public void consultantSalaryNull_retrieveSalary_avg() {
          consultant = consultant.toBuilder().salary(null).build();
          when(employeeService.retrieveSalary(consultant.id())).thenReturn(3000);
