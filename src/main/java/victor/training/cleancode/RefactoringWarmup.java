@@ -7,18 +7,19 @@ class PlayGround {
   }
 }
 
-// TODO: Practice Refactor
+// TODO: Practice Refactoring
 //  * How?
 //    - Select text > Hover
 //    - Right-click > Refactor
 //    - Ctrl-Alt-Shift-T/^T to
+//    - Keys: [Ctrl-Alt / Opt-Cmd] + [V]ariable/[M]ethod/[P]arameter/i[N]line
 //  * What? /undo after every action to start-over
-//    - Inline Variable 'b'
-//    - Extract Variable '1', '3 * two.g()'
-//    - Extract Method 'System.out..'
-//    - Inline Method 'g'
-//    - Extract Parameter '1'
-//    - Inline Parameter 'c'
+//    - Inline[N] Variable 'b'
+//    - Extract [V]ariable '1', '3 * two.g()'
+//    - Extract [M]ethod 'System.out..'
+//    - Inline[N] Method 'g'
+//    - Extract [P]arameter '1'
+//    - Inline[N] Parameter 'c'
 //    - Change Signature 'g': add 1 param with default as 1st arg
 //    - Extract Interface 'Two'->ITwo; - Inline to Anonymous Class to destroy interface
 //    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
