@@ -7,18 +7,14 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria,
                                         List<CarModel> carModels) { // SELECT * FROM CAR_MODEL; gresit daca aduce > 100-1000 randuri
-    List<CarModel> results = carModels.stream() // variabila temporara
-        .filter(carModel -> {
-          return new Interval(criteria.getStartYear(), criteria.getEndYear()).intersects(
-              new Interval(carModel.getStartYear(), carModel.getEndYear()));
-        }) // prea multi parametri
-//        .collect(Collectors.toList()); // mutabil, nu e ok
-        .toList();// imutabil
-         // mutabil, nu e ok
+    // mutabil, nu e ok
 //    log.trace("Found cars {}", results); // sa pui log in loc de breakpoint permite si
     // sarmanului suflet (poate tot tu) care vine dupa sa repeare si el pe a-ci ceva.
     // NU VA mai trebui sa intre in breakpoint ci doar pune log.level=trace
-    return results;
+    return carModels.stream() // variabila temporara
+        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval())) // prea multi parametri
+//        .collect(Collectors.toList()); // mutabil, nu e ok
+        .toList();
   }
 
 }
@@ -65,6 +61,10 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  public Interval getYearInterval() {
+    return new Interval(getStartYear(), getEndYear());
+  }
 }
 
 // @Entity
@@ -105,6 +105,10 @@ class CarModel { // the Entity Model👑
 
   public String getModel() {
     return model;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(getStartYear(), getEndYear());
   }
 }
 
