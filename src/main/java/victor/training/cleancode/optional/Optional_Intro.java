@@ -15,6 +15,7 @@ public class Optional_Intro {
         new MemberCard("bar", 60))));
     System.out.println(getDiscountLine(new Customer(
         new MemberCard("bar", 2))));
+    System.out.println(getDiscountLine(new Customer(null)));
   }
 
   public static String getDiscountLine(Customer customer) {
@@ -24,6 +25,9 @@ public class Optional_Intro {
   }
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
+    if (card == null) {
+      return Optional.empty();
+    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5, Map.of()));
     }
