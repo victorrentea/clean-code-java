@@ -4,7 +4,7 @@ import java.util.*;
 
 class Customer {
 	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order
+	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
 
 	public Customer(String name) {
 		this.name = name;
@@ -22,7 +22,7 @@ class Customer {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
-		// iterate each rental
+		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
