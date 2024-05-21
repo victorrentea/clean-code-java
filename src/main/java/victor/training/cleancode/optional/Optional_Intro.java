@@ -12,6 +12,8 @@ public class Optional_Intro {
     // test: 60, 10, no MemberCard
     System.out.println(getDiscountLine(new Customer(
         new MemberCard("bar", 60))));
+    System.out.println(getDiscountLine(new Customer(
+        new MemberCard("bar", 2))));
   }
 
   public static String getDiscountLine(Customer customer) {
@@ -26,7 +28,7 @@ public class Optional_Intro {
     if (card.getFidelityPoints() >= 50) {
       return new Discount(3, Map.of());
     }
-    return null;
+    return new Discount(0, Map.of());
   }
 
   public record Discount(int globalPercentage, Map<String, Integer> categoryDiscounts) {
