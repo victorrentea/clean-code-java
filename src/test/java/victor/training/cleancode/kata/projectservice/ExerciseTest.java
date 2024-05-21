@@ -75,7 +75,7 @@ void sendsMessageOnCreateForNonAdmin() {
     User user = new User();
 
     when(serviceService.findAll()).thenReturn(Arrays.asList(service));
-    when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(projectServices);
+    when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(Optional.of(projectServices));
     when(userService.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
@@ -114,7 +114,7 @@ void sendsMessageOnCreateForContributorWithSubscribedService() {
     User user = new User();
 
     when(serviceService.findAll()).thenReturn(Arrays.asList(service));
-    when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(projectServices);
+    when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(Optional.of(projectServices));
     when(userService.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
