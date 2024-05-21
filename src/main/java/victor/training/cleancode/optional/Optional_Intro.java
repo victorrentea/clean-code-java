@@ -19,7 +19,8 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    return computeDiscount(customer.getMemberCard())
+    return customer.getMemberCard()
+        .flatMap(Optional_Intro::computeDiscount)
         .map(d -> "You got a discount of %" + d.globalPercentage())
         .orElse("Earn more points to get a discount!");
   }

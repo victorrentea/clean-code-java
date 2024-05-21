@@ -15,8 +15,8 @@ public class Customer {
       this.memberCard = memberCard;
    }
 
-   public MemberCard getMemberCard() {
-      return memberCard;
+   public Optional<MemberCard> getMemberCard() {
+      return Optional.ofNullable(memberCard); // ca nu esti NOT NULL IN DB
    }
 
    public Customer setMemberCard(MemberCard memberCard) {
