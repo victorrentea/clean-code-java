@@ -31,7 +31,7 @@ public class ExpenseReport {
 
             // meal over expenses
             String m = expense.type.equals("DINNER") && expense.amount > 5000 || expense.type.equals("BREAKFAST") && expense.amount > 1000 ? "X" : " ";
-            mealOver |= m.equals("X");
+            mealOver = mealOver || m.equals("X");
 
             System.out.println(en + "\t" + expense.amount + "\t" + m);
 
