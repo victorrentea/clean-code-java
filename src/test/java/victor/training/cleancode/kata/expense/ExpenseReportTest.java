@@ -18,6 +18,7 @@ class ExpenseReportTest {
   void decent(OutputCapture outputCapture) {
     report.printReport(List.of(
         new Expense("DINNER", 100),
+        new Expense("DINNER", 100),
         new Expense("BREAKFAST", 50),
         new Expense("CAR_RENTAL", 200)
     ));
@@ -26,10 +27,11 @@ class ExpenseReportTest {
     """
         Expenses Report
         Dinner	100	\s
+        Dinner	100	\s
         Breakfast	50	\s
         Car Rental	200	\s
-        Meal expenses: 150
-        Total expenses: 350
+        Meal expenses: 250
+        Total expenses: 450
         """);
   }
   @Test
