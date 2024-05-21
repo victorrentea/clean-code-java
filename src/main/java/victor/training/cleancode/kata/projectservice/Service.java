@@ -7,7 +7,8 @@ public class Service {
       return name;
    }
 
-   public void setName(String name) {
+   public Service setName(String name) {
       this.name = name;
+      return this;
    }
 }

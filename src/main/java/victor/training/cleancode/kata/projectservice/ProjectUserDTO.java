@@ -18,4 +18,19 @@ public class ProjectUserDTO {
    public List<String> getServices() {
       return services;
    }
+
+   public ProjectUserDTO setRole(ProjectUserRoleType role) {
+      this.role = role;
+      return this;
+   }
+
+   public ProjectUserDTO setServices(List<String> services) {
+      this.services = services;
+      return this;
+   }
+
+   public ProjectUserDTO setUuid(String uuid) {
+      this.uuid = uuid;
+      return this;
+   }
 }
