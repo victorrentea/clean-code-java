@@ -7,9 +7,9 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
-    List<Integer> numbers = Stream.of(1, 2, 3).collect(toList()); // ArrayList
+    List<Integer> list = Stream.of(1, 2, 3).collect(toList()); // ArrayList
 
-    Immutable immutable = new Immutable(1, 2, numbers, new Other(15));
+    Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
 
     wilderness(immutable);
@@ -25,18 +25,18 @@ public class ImmutableAdvanced {
 class Immutable {
   private final Integer x;
   private final Integer y;
-  private final List<Integer> numbers;
+  private final List<Integer> list;
   private final Other other;
 
-  Immutable(Integer x, Integer y, List<Integer> numbers, Other other) {
+  Immutable(Integer x, Integer y, List<Integer> list, Other other) {
     this.x = x;
     this.y = y;
-    this.numbers = numbers;
+    this.list = list;
     this.other = other;
   }
 
-  public List<Integer> getNumbers() {
-    return numbers;
+  public List<Integer> getList() {
+    return list;
   }
 
   public Integer getX() {
@@ -53,7 +53,7 @@ class Immutable {
 
   @Override
   public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, numbers, other);
+    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
   }
 }
 

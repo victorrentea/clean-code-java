@@ -7,30 +7,30 @@ import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      List<Integer> list = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
       Immutable immutable = new Immutable();
 
       immutable.x = 2;
-      immutable.numbers = numbers;
+      immutable.list = list;
       immutable.other = new Other(13);
 
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
 
-      System.out.println(immutable.numbers);
+      System.out.println(immutable.list);
       System.out.println(immutable);
    }
 }
 
 class Immutable {
    public Integer x;
-   public List<Integer> numbers;
+   public List<Integer> list;
    public Other other;
 
    public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
+      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, list, other);
    }
 }
 
