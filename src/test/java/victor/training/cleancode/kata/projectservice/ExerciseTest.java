@@ -2,6 +2,7 @@ package victor.training.cleancode.kata.projectservice;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -9,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
@@ -33,7 +35,7 @@ void sendsMessageOnCreateForAdminWithSubscribedService() {
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.CREATED);
+    projectServices.setStatus(ProjectServiceStatus.CREATED);
     projectServices.setService(service);
     User user = new User();
 
@@ -49,7 +51,7 @@ void sendsMessageOnCreateForAdminWithSubscribedService() {
     projectUser.setRole(ProjectUserRoleType.ADMIN);
     Project project = new Project();
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServiceStatus.SUBSCRIBED);
     User user = new User();
 
     when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(Arrays.asList(projectServices));
@@ -57,7 +59,7 @@ void sendsMessageOnCreateForAdminWithSubscribedService() {
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
-    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(any(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser), eq(ProjectUserRoleType.ADMIN.name()));
+    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(any(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser));
   }
 
 
@@ -69,7 +71,7 @@ void sendsMessageOnCreateForNonAdmin() {
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServiceStatus.SUBSCRIBED);
     User user = new User();
 
     when(serviceService.findAll()).thenReturn(Arrays.asList(service));
@@ -78,7 +80,7 @@ void sendsMessageOnCreateForNonAdmin() {
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
-    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(any(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser), eq(ProjectUserRoleType.VIEW.name()));
+    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(any(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser));
   }
 
   @Test
@@ -89,7 +91,7 @@ void doesNotSendMessageOnCreateForNonAdminWhenNoMatchingService() {
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServiceStatus.SUBSCRIBED);
     User user = new User();
 
     when(serviceService.findAll()).thenReturn(Arrays.asList(service));
@@ -107,7 +109,7 @@ void sendsMessageOnCreateForContributorWithSubscribedService() {
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServiceStatus.SUBSCRIBED);
     projectServices.setService(service);
     User user = new User();
 
@@ -117,6 +119,27 @@ void sendsMessageOnCreateForContributorWithSubscribedService() {
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
-    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(any(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser), eq(ProjectUserRoleType.CONTRIBUTOR.name()));
+    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(any(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser));
+}
+
+@Test
+void setsServiceOnProjectServicesDTOForAdminWithSubscribedService() {
+    ProjectUserDTO projectUser = new ProjectUserDTO();
+    projectUser.setRole(ProjectUserRoleType.ADMIN);
+    Project project = new Project();
+    Service service = new Service().setName("service");
+    ProjectServices projectServices = new ProjectServices();
+    projectServices.setStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setService(service);
+    User user = new User();
+
+    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(Arrays.asList(projectServices));
+    when(userService.findByUuid(any())).thenReturn(Optional.of(user));
+
+    exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
+
+    ArgumentCaptor<ProjectServicesDTO> captor = ArgumentCaptor.forClass(ProjectServicesDTO.class);
+    verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(captor.capture(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser));
+    assertEquals(service, captor.getValue().service());
 }
 }
