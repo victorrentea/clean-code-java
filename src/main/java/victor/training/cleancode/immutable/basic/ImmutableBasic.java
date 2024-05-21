@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutable.basic;
 
+import lombok.Value;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -9,29 +11,29 @@ public class ImmutableBasic {
    public static void main(String[] args) {
       List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
-      Immutable immutable = new Immutable();
+      Immutable immutable = new Immutable(2, numbers, new Other(13));
 
-      immutable.x = 2;
-      immutable.numbers = numbers;
-      immutable.other = new Other(13);
 
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
+      horror(immutable);
 
-      System.out.println(immutable.numbers);
+      System.out.println(immutable.getNumbers());
       System.out.println(immutable);
+   }
+   private static void horror(Immutable immutable) {
+
    }
 }
 
+@Value // = @Getter + @ToString + @EqualsAndHashCode + @AllArgsConstructor
+// + all fields are final private
+// "shallow" immutable nu "DEEP"
 class Immutable {
-   public Integer x;
-   public List<Integer> numbers;
-   public Other other;
-
-   public String toString() {
-      return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, numbers, other);
-   }
+   Integer x;
+   List<Integer> numbers;
+   Other other;
 }
 
 class Other {

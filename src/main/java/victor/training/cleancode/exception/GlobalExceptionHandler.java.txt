@@ -16,7 +16,8 @@ public class GlobalExceptionHandler {
 
    private final MessageSource messageSource;
 
-   @ExceptionHandler(Exception.class)
+   @ExceptionHandler(Exception.class) // orice subtip de Exception scapa din vreun @RestController
+   // e tratat de acest handler
    @ResponseStatus
    public String handleAnyException(Exception e, HttpServletRequest request) {
       String userMessage = messageSource.getMessage("GENERAL", null, request.getLocale());
