@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutable.basic;
 
+import com.google.common.collect.ImmutableList;
 import lombok.Value;
 
 import java.util.ArrayList;
@@ -7,11 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
    public static void main(String[] args) {
-      List<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toList());
+      ImmutableList<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toImmutableList());
 
       Immutable immutable = new Immutable(2, numbers, new Other(13));
 
@@ -33,13 +35,13 @@ public class ImmutableBasic {
 // "shallow" immutable nu "DEEP"
 class Immutable {
    Integer x;
-   List<Integer> numbers;
+   ImmutableList<Integer> numbers; // daca nu ai ORM/JPA e da best!
    Other other;
 
-   public List<Integer> getNumbers() {
-      // pt @Entity; Decorator Pattern™️ care blocheaza scrierile pe lista "imbracata"
-      return Collections.unmodifiableList(numbers);
-   }
+//   public List<Integer> getNumbers() {
+//      // pt @Entity; Decorator Pattern™️ care blocheaza scrierile pe lista "imbracata"
+//      return Collections.unmodifiableList(numbers);
+//   }
 
    //   public List<Integer> getNumbers() {
 //      return new ArrayList<>(numbers);
