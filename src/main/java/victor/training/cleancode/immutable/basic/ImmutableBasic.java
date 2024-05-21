@@ -3,47 +3,71 @@ package victor.training.cleancode.immutable.basic;
 import com.google.common.collect.ImmutableList;
 import lombok.Value;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableBasic {
-   public static void main(String[] args) {
-      ImmutableList<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toImmutableList());
+  public static void main(String[] args) {
+    ImmutableList<Integer> numbers = Stream.of(1, 2, 3, 4, 5).collect(toImmutableList());
 
-      Immutable immutable = new Immutable(2, numbers, new Other(13));
+    Immutable immutable = new Immutable(2, 3, numbers, new Other(13));
 
+    System.out.println(immutable);
 
-      System.out.println(immutable);
+    Immutable immutableMutat =  patru(immutable);
 
-      // LOTS OF BUSINESS LOGIC HERE
-      horror(immutable);
+    System.out.println(immutableMutat.getNumbers());
+    System.out.println(immutableMutat);
+  }
 
-      System.out.println(immutable.getNumbers());
-      System.out.println(immutable);
-   }
-   private static void horror(Immutable immutable) {
-      immutable.getNumbers().clear(); // o greseala istorica a lui Java (1995) care a pus .add/.clear pe colectii
-   }
+  private static Immutable patru(Immutable immutable) {
+    return trei(immutable);
+  }
+
+  private static Immutable trei(Immutable immutable) {
+    return doi(immutable);
+  }
+
+  private static Immutable doi(Immutable immutable) {
+    return horror(immutable);
+  }
+
+  private static Immutable horror(Immutable immutable) {
+    // sa mute curieru pe harta (x,y)
+    var newX = immutable.getX() + 1;
+    var newY = immutable.getY() + 1;
+
+//    return immutable.withX(newX).withY(newY); // ne-semantic. nu are "SENS"
+    return immutable.withPosition(newX, newY);// mai destep, are 'motivatie'
+//    return immutable.withPosition(new Position(newX, newY));// am descoperit un nou concept (Value Object)
+//    return immutable.moveTo(new Position(newX, newY));// nume mai bune
+  }
+
 }
+
 @Value // = @Getter + @ToString + @EqualsAndHashCode + @AllArgsConstructor
 // + all fields are final private
 // "shallow" immutable nu "DEEP"
 class Immutable {
-   Integer x;
-   ImmutableList<Integer> numbers; // daca nu ai ORM/JPA e da best!
-   Other other;
+  Integer x;
+  Integer y;
+  ImmutableList<Integer> numbers; // daca nu ai ORM/JPA e da best!
+  Other other;
+
+  // Witheri
+  public Immutable withPosition(int newX, int newY) {
+    return new Immutable(newX, newY,
+        numbers,
+        other);
+  }
 
 //   public List<Integer> getNumbers() {
 //      // pt @Entity; Decorator Pattern™️ care blocheaza scrierile pe lista "imbracata"
 //      return Collections.unmodifiableList(numbers);
 //   }
 
-   //   public List<Integer> getNumbers() {
+  //   public List<Integer> getNumbers() {
 //      return new ArrayList<>(numbers);
 //      // - malloc mult
 //      // - clientul chiar poate sa creada ca a sters din lista (fraeru)
@@ -52,13 +76,13 @@ class Immutable {
 }
 
 class Other {
-   private final int a;
+  private final int a;
 
-   public Other(int a) {
-      this.a = a;
-   }
+  public Other(int a) {
+    this.a = a;
+  }
 
-   public int getA() {
-      return a;
-   }
+  public int getA() {
+    return a;
+  }
 }

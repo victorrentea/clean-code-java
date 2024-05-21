@@ -66,4 +66,7 @@ public class Order {
     return this;
   }
 
+  public boolean isRecent() {
+    return creationDate().isAfter(LocalDate.now().minusYears(1));
+  }
 }
