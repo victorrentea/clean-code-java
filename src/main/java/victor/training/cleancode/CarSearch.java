@@ -20,28 +20,26 @@ class CarSearch {
     int end1 = criteria.getEndYear();
     int start2 = carModel.getStartYear();
     int end2 = carModel.getEndYear();
-    return MathUtil.intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+    return new Interval(start1, end1).intersects(new Interval(start2, end2));
   }
 
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
-
+class CollectionUtils{} // pt ca Java nu are extension Functions
 class MathUtil {
-  public static boolean intervalsIntersect(
-      Interval interval1, Interval interval2) {
-    return interval1.start() <= interval2.end()
-           && interval2.start() <= interval1.end();
-  }
 }
 record Interval(int start, int end) {
+  public boolean intersects(Interval other) {
+    return start <= other.end && other.start <= end;
+  }
 }
 
 class CarSearchCriteria { // a DTO received from JSON
