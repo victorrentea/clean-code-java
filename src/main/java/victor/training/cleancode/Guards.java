@@ -9,7 +9,7 @@ public class Guards {
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
-    if (marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
+    if (marine != null && bonusPackage.value() >= 10 && bonusPackage.value() <= 100) {
       if (!marine.dead()) {
         if (!marine.retired()) {
           if (marine.yearsService() != null) {
