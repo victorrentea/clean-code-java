@@ -16,7 +16,6 @@ class CarSearch {
     System.out.println("More filtering logic ...");
     return results;
   }
-
 }
 
 class SomeOtherClientCode {
@@ -71,7 +70,7 @@ class CarSearchCriteria { // a DTO received from JSON
   }
 
   public Interval yearInterval() {
-    return new Interval(getStartYear(), getEndYear());
+    return new Interval(startYear, endYear);
   }
 }
 
