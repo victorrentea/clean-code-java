@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class CarSearch {
@@ -8,12 +9,21 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(getCarModelPredicate(criteria))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
+  }
+
+  private Predicate<CarModel> getCarModelPredicate(CarSearchCriteria criteria) {
+    // oare ruleaza vreodata?
+    // de cate ori ruleaza?
+    // in ce thread ruleaza?
+    // pe ce masina ruleaza
+    // in ce tx ruleaza?
+    return carModel -> MathUtil.intervalsIntersect(
+        criteria.getStartYear(), criteria.getEndYear(),
+        carModel.getStartYear(), carModel.getEndYear());
   }
 }
 
