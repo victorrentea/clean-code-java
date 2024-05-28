@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.Embedded;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,18 +11,10 @@ class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
 
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> intersectsYears(criteria, carModel))
+        .filter(carModel -> criteria.yearInterval().intersects(carModel.yearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
-  }
-
-  private boolean intersectsYears(CarSearchCriteria criteria, CarModel carModel) {
-    int start1 = criteria.getStartYear();
-    int end1 = criteria.getEndYear();
-    int start2 = carModel.getStartYear();
-    int end2 = carModel.getEndYear();
-    return new Interval(start1, end1).intersects(new Interval(start2, end2));
   }
 
 }
@@ -29,14 +23,24 @@ class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
     System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
+
   private void applyCapacityFilter() { // pretend
     System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
-class CollectionUtils{} // pt ca Java nu are extension Functions
+
+class CollectionUtils {
+} // pt ca Java nu are extension Functions
+
 class MathUtil {
 }
+
 record Interval(int start, int end) {
+  Interval {
+    if (start > end) // 2008 .... 2002
+      throw new IllegalArgumentException("start larger than end");
+  }
+
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
   }
@@ -65,6 +69,10 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  public Interval yearInterval() {
+    return new Interval(getStartYear(), getEndYear());
+  }
 }
 
 // @Entity
@@ -73,8 +81,8 @@ class CarModel { // the Entity Model👑
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  @Embedded // NU ATINGI TABELA (SCHEMA)
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -82,21 +90,13 @@ class CarModel { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    if (startYear > endYear) // 2008 .... 2002
+//      throw new IllegalArgumentException("start larger than end");
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
     return id;
-  }
-
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
   }
 
   public String getMake() {
@@ -106,6 +106,10 @@ class CarModel { // the Entity Model👑
   public String getModel() {
     return model;
   }
+
+  Interval yearInterval() {
+    return yearInterval;
+  }
 }
 
 class CarModelMapper {
@@ -113,8 +117,8 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.yearInterval().start();
+    dto.endYear = carModel.yearInterval().end();
     return dto;
   }
 

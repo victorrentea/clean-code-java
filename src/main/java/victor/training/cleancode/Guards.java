@@ -5,7 +5,6 @@ import lombok.Value;
 import java.util.List;
 
 public class Guards {
-
   public static final int DEAD_PAY_AMOUNT = 1;
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
@@ -26,14 +25,14 @@ public class Guards {
           } else {
             throw new IllegalArgumentException("Any marine should have the years of service set");
           }
-        } else result = retiredAmount();
+        } else return retiredAmount();
       } else {
-        result = DEAD_PAY_AMOUNT;
+        return DEAD_PAY_AMOUNT;
       }
     } else{
       throw new IllegalArgumentException("Not applicable!");
     }
-    return result; // TODO ALT-ENTER move return closer
+    return result;
   }
 
   private int retiredAmount() {
