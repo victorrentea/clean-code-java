@@ -10,12 +10,12 @@ import java.util.List;
  * Break the loops and refactor to use .stream to compute stuff.
  */
 public class SplitLoop {
-
     // see tests
     public String computeStats(List<Employee> employees) {
         long averageAge = 0;
         double averageSalary = 0;
         List<Integer> consultantIds = new ArrayList<>();
+
         for (Employee employee : employees) {
             if (!employee.consultant()) {
                 averageAge += employee.age();
