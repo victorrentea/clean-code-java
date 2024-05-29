@@ -53,7 +53,7 @@ class Customer {
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
-		// add footer lines
+		// add ftooer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
