@@ -67,8 +67,7 @@ class CarModel { // the Entity Model👑
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  private Range yearRange; // -1 field => dev = 😊
 
   protected CarModel() {
   } // for Hibernate
@@ -77,20 +76,17 @@ class CarModel { // the Entity Model👑
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+    this.yearRange = new Range(startYear, endYear);
   }
 
   public Long getId() {
     return id;
   }
 
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
+  public Range getYearRange() {
+    return yearRange;
   }
 
   public String getMake() {
@@ -100,10 +96,6 @@ class CarModel { // the Entity Model👑
   public String getModel() {
     return model;
   }
-
-  public Range getYearRange() {
-    return new Range(getStartYear(), getEndYear());
-  }
 }
 
 class CarModelMapper {
@@ -111,8 +103,16 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+    dto.startYear = carModel.getYearRange().start();
+//    dto.endYear = carModel.getEndYear();
+    dto.endYear = carModel.getYearRange().end();
     return dto;
   }
 
