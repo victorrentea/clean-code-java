@@ -8,7 +8,7 @@ class PlayGround {
 }
 
 // TODO: Practice Refactoring
-//  * How?
+//  * How to?
 //    - Select text > Hover
 //    - Right-click > Refactor
 //    - Ctrl-Alt-Shift-T/^T to
@@ -25,6 +25,9 @@ class PlayGround {
 //    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
 //    - Move Method 'g' into R
 //    - Preview method/class: Ctrl-Shift-I
+//    - Change inspection severity & highlighting
+//       * Download "aggressive_refactoring.xml" from https://victorrentea.ro
+//       and import it in Settings>Editor>Inspections
 
 record R(int x) {}
 

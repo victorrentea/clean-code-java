@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 
-public class PrimitiveObsession_Tuples {
+public class PrimitiveObsessionVsTuples {
 
   //<editor-fold desc="Tuple source of data">
   public Map<Long, List<Tuple2<String, Integer>>> extremeFP() {
