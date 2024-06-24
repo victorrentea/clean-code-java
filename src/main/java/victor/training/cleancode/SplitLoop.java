@@ -17,13 +17,16 @@ public class SplitLoop {
         double averageSalary = 0;
         List<Integer> consultantIds = new ArrayList<>();
         for (Employee employee : employees) {
-            if (!employee.consultant()) {
-                averageAge += employee.age();
-            } else {
-                consultantIds.add(employee.id());
-            }
-            averageSalary += employee.salary();
+          if (employee.consultant()) {
+              consultantIds.add(employee.id());
+          } else {
+              averageAge += employee.age();
+          }
+          averageSalary += employee.salary();
         }
+
+
+
         averageAge = averageAge / employees.stream().filter(e -> !e.consultant()).count();
         averageSalary = averageSalary / employees.size();
         System.out.println("Consultant IDs: " + consultantIds);
