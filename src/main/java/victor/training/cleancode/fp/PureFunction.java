@@ -21,7 +21,6 @@ class PureFunction {
   public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds);
-
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
@@ -37,7 +36,6 @@ class PureFunction {
       }
       finalPrices.put(product.getId(), price);
     }
-
     couponRepo.markUsedCoupons(customerId, usedCoupons);
     return finalPrices;
   }

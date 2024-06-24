@@ -26,7 +26,9 @@ public class Guards {
           } else {
             throw new IllegalArgumentException("Any marine should have the years of service set");
           }
-        } else result = retiredAmount();
+        } else {
+          result = retiredAmount();
+        }
       } else {
         result = DEAD_PAY_AMOUNT;
       }
