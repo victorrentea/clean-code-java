@@ -18,11 +18,9 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    Optional<Discount> discount = computeDiscount(customer.getMemberCard());
-    if(discount.isPresent())
-      return "You got a discount of %" + discount.get().globalPercentage();
-    else
-      return "Earn more points to get a discount!";
+    return computeDiscount(customer.getMemberCard())
+        .map(discount -> "You got a discount of %" + discount.globalPercentage())
+        .orElse("Earn more points to get a discount!");
   }
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
