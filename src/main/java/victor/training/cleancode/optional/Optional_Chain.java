@@ -1,5 +1,7 @@
 package victor.training.cleancode.optional;
 
+import javax.validation.constraints.NotNull;
+
 public class Optional_Chain {
   private static final MyMapper mapper = new MyMapper();
 
@@ -24,6 +26,8 @@ class MyMapper {
 
 class DeliveryDto {
   public String recipientPerson;
+//  @NotNull
+//  private PaymentMethod method;
 }
 
 class Parcel {
