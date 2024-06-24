@@ -2,9 +2,7 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -13,24 +11,31 @@ public class SplitLoop {
 
   // see tests
   public String computeStats(List<Employee> employees) {
-    double averageSalary = employees.stream().
-        mapToDouble(Employee::salary)
-        .sum();
+    System.out.println("Consultant IDs: " + getConsultantIds(employees));
+    return "Average age = " + getAverageInternalAge(employees) +
+           "; Average salary = " + getAverageSalary(employees);
+  }
 
-    long averageAge = employees.stream()
+  private double getAverageInternalAge(List<Employee> employees) {
+    return employees.stream()
         .filter(employee -> !employee.consultant())
         .mapToLong(Employee::age)
-        .sum();
+        .average()
+        .orElse(0);
+  }
 
-    List<Integer> consultantIds = employees.stream()
+  private List<Integer> getConsultantIds(List<Employee> employees) {
+    return employees.stream()
         .filter(Employee::consultant)
         .map(Employee::id)
-        .toList(); // instead of .collect(Collectors.toList());
+        .toList();
+  }
 
-    averageAge = averageAge / employees.stream().filter(e -> !e.consultant()).count();
-    averageSalary = averageSalary / employees.size();
-    System.out.println("Consultant IDs: " + consultantIds);
-    return "Average age = " + averageAge + "; Average salary = " + averageSalary;
+  private double getAverageSalary(List<Employee> employees) {
+    return employees.stream()
+        .mapToDouble(Employee::salary)
+        .average()
+        .orElse(0);
   }
 
 
