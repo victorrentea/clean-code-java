@@ -3,17 +3,18 @@ package victor.training.cleancode.exception.model;
 import victor.training.cleancode.optional.Optional_Intro.Discount;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MemberCard {
-   private String barcode;
+   private final String barcode;
    private int fidelityPoints = 1;
 
    public MemberCard(String barcode) {
-      this.barcode = barcode;
+     this.barcode = Objects.requireNonNull(barcode);
    }
    public MemberCard(String barcode, int fidelityPoints) {
-      this.barcode = barcode;
+     this.barcode = Objects.requireNonNull(barcode);
       this.fidelityPoints = fidelityPoints;
    }
 
