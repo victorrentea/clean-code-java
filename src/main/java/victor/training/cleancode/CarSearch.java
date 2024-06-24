@@ -6,32 +6,37 @@ import java.util.stream.Collectors;
 class CarSearch {
 
   // run tests
-  public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
+  public List<CarModel> filterCarModels(CarSearchCriteria criteria,
+                                        List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> matchesYears(criteria, carModel))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
+  }
+
+  private boolean matchesYears(CarSearchCriteria criteria, CarModel carModel) {
+    return MathUtil.intervalsIntersect(
+        new Range(criteria.getStartYear(), criteria.getEndYear()), new Range(carModel.getStartYear(), carModel.getEndYear()));
   }
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Range(1000, 1600), new Range(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Range(1000, 1600), new Range(1250, 2000)));
   }
 }
 
 class MathUtil {
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+  public static boolean intervalsIntersect(Range range, Range range1) {
+    return range.start() <= range1.end() && range1.start() <= range.end();
   }
 }
+//    Range (guava) or my own?
 
 
 class CarSearchCriteria { // a DTO received from JSON
