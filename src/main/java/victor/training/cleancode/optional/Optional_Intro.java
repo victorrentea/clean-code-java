@@ -17,15 +17,15 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
+    if (customer.getMemberCard() == null) {
+      return "Get a card to unlock amazing discounts!";
+    }
     return computeDiscount(customer.getMemberCard())
         .map(discount -> "You got a discount of %" + discount.globalPercentage())
         .orElse("Earn more points to get a discount!");
   }
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
-    if (card == null) {
-      return Optional.empty();
-    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5, Map.of()));
     }
