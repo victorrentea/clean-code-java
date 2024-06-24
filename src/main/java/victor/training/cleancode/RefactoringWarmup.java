@@ -24,6 +24,7 @@ class PlayGround {
 //    - Extract Interface 'Two'->ITwo; - Inline to Anonymous Class to destroy interface
 //    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
 //    - Move Method 'g' into R
+//    - Preview method/class: Ctrl-Shift-I
 
 record R(int x) {}
 
