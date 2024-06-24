@@ -2,6 +2,8 @@ package victor.training.cleancode.exception.model;
 
 import victor.training.cleancode.optional.Optional_Intro.Discount;
 
+import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +34,11 @@ public class MemberCard {
     return Optional.empty();
   }
 
+//  {
+//    MemberCard m = new MemberCard("123");
+//    m.getBarcode().toUpperCase();
+//  }
+//  @Nullable
   public String getBarcode() {
       return barcode;
    }
