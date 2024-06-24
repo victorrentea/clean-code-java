@@ -30,7 +30,9 @@ public class SplitLoop {
 }
 
 @Builder(toBuilder = true)
-record Employee(Integer id,
-                int age,
-                Integer salary, boolean consultant) {
+record Employee(
+    Integer id,
+    int age,
+    Integer salary,
+    boolean consultant) {
 }
