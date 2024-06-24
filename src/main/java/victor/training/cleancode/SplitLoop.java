@@ -1,7 +1,6 @@
 package victor.training.cleancode;
 
 import lombok.Builder;
-import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +10,24 @@ import java.util.List;
  */
 public class SplitLoop {
 
-    // see tests
-    public String computeStats(List<Employee> employees) {
-        long averageAge = 0;
-        double averageSalary = 0;
-        List<Integer> consultantIds = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (!employee.consultant()) {
-                averageAge += employee.age();
-            } else {
-                consultantIds.add(employee.id());
-            }
-            averageSalary += employee.salary();
-        }
-        averageAge = averageAge / employees.stream().filter(e -> !e.consultant()).count();
-        averageSalary = averageSalary / employees.size();
-        System.out.println("Consultant IDs: " + consultantIds);
-        return "Average age = " + averageAge + "; Average salary = " + averageSalary;
+  // see tests
+  public String computeStats(List<Employee> employees) {
+    long averageAge = 0;
+    double averageSalary = 0;
+    List<Integer> consultantIds = new ArrayList<>();
+    for (Employee employee : employees) {
+      if (!employee.consultant()) {
+        averageAge += employee.age();
+      } else {
+        consultantIds.add(employee.id());
+      }
+      averageSalary += employee.salary();
     }
+    averageAge = averageAge / employees.stream().filter(e -> !e.consultant()).count();
+    averageSalary = averageSalary / employees.size();
+    System.out.println("Consultant IDs: " + consultantIds);
+    return "Average age = " + averageAge + "; Average salary = " + averageSalary;
+  }
 }
 
 @Builder(toBuilder = true)
