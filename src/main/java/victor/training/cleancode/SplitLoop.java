@@ -16,8 +16,10 @@ public class SplitLoop {
         long averageAge = 0;
         double averageSalary = 0;
         List<Integer> consultantIds = new ArrayList<>();
+//        employees = api.call(employee.id()); // makes split-for/stream overhead negligible
         for (Employee employee : employees) {
-          averageSalary += employee.salary();
+            averageSalary += employee.salary();
+            // employees = api.call(employee.id()); // makes split-for/stream overhead negligible
         }
         for (Employee employee : employees) {
           if (employee.consultant()) {
