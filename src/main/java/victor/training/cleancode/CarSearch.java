@@ -9,16 +9,12 @@ class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria,
                                         List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> matchesYears(criteria, carModel))
+        .filter(carModel -> criteria.getYearRange().intersects(carModel.getYearRange()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean matchesYears(CarSearchCriteria criteria, CarModel carModel) {
-    return new Range(criteria.getStartYear(), criteria.getEndYear()).intersects(
-        new Range(carModel.getStartYear(), carModel.getEndYear()));
-  }
 }
 
 class SomeOtherClientCode {
@@ -58,6 +54,10 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public String getMake() {
     return make;
+  }
+
+  Range getYearRange() {
+    return new Range(getStartYear(), getEndYear());
   }
 }
 
@@ -99,6 +99,10 @@ class CarModel { // the Entity Model👑
 
   public String getModel() {
     return model;
+  }
+
+  public Range getYearRange() {
+    return new Range(getStartYear(), getEndYear());
   }
 }
 
