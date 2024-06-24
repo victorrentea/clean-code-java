@@ -16,25 +16,22 @@ class CarSearch {
   }
 
   private boolean matchesYears(CarSearchCriteria criteria, CarModel carModel) {
-    return MathUtil.intervalsIntersect(
-        new Range(criteria.getStartYear(), criteria.getEndYear()), new Range(carModel.getStartYear(), carModel.getEndYear()));
+    return new Range(criteria.getStartYear(), criteria.getEndYear()).intersects(
+        new Range(carModel.getStartYear(), carModel.getEndYear()));
   }
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Range(1000, 1600), new Range(1250, 2000)));
+    System.out.println(new Range(1000, 1600).intersects(new Range(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Range(1000, 1600), new Range(1250, 2000)));
+    System.out.println(new Range(1000, 1600).intersects(new Range(1250, 2000)));
   }
 }
 
 class MathUtil {
 
-  public static boolean intervalsIntersect(Range range, Range range1) {
-    return range.start() <= range1.end() && range1.start() <= range.end();
-  }
 }
 //    Range (guava) or my own?
 
