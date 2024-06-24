@@ -9,8 +9,7 @@ import java.util.List;
  * Break the loops and refactor to use .stream to compute stuff.
  */
 public class SplitLoop {
-
-  // see tests
+  // run tests
   public String computeStats(List<Employee> employees) {
     long averageAge = 0;
     double averageSalary = 0;
