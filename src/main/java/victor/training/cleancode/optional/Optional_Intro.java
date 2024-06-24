@@ -9,7 +9,7 @@ import java.util.Map;
 @SuppressWarnings("ConstantConditions")
 public class Optional_Intro {
   public static void main(String[] args) {
-    // test: 60, 10, no MemberCard
+    // test with 10 points or no MemberCard
     System.out.println(getDiscountLine(new Customer(
         new MemberCard("bar", 60))));
   }

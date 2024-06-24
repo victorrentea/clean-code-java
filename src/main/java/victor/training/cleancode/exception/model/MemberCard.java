@@ -1,11 +1,11 @@
 package victor.training.cleancode.exception.model;
 
 public class MemberCard {
-   private String barcode;
-   private int fidelityPoints = 1;
+   private final String barcode;
+   private final int fidelityPoints;
 
    public MemberCard(String barcode) {
-      this.barcode = barcode;
+      this(barcode, 1);
    }
    public MemberCard(String barcode, int fidelityPoints) {
       this.barcode = barcode;
@@ -20,7 +20,4 @@ public class MemberCard {
       return fidelityPoints;
    }
 
-   public void setFidelityPoints(int fidelityPoints) {
-      this.fidelityPoints = fidelityPoints;
-   }
 }
