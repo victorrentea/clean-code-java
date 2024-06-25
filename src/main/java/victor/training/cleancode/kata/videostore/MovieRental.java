@@ -16,6 +16,9 @@ record MovieRental(Movie movie, int numDays) {
       case REGULAR -> getRegularPrice();
       case NEW_RELEASE -> getNewReleasePrice();
       case CHILDREN -> getChildrenPrice();
+      case ELDERS -> -1;
+      // ANTI_PATTERN TO ADD DEFAULT
+//      default -> throw new IllegalArgumentException("Unknown price code: " + movie.priceCode());
     };
   }
 

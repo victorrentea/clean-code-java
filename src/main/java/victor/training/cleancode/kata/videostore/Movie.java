@@ -8,6 +8,7 @@ public record Movie(String title, @NonNull PriceCode priceCode) {
     public enum PriceCode {
         CHILDREN,
         REGULAR,
-        NEW_RELEASE
+        NEW_RELEASE,
+        ELDERS
     }
 }
