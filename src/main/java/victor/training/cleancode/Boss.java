@@ -41,6 +41,6 @@ public class Boss {
   }
 
   private void check(List<Task> tasks) {
-//    tasks.remove(0); // surprise
+    tasks.remove(0); // surprise
   }
 }
