@@ -3,9 +3,9 @@ package victor.training.cleancode.kata.videostore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static victor.training.cleancode.kata.videostore.MovieType.CHILDREN;
-import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
-import static victor.training.cleancode.kata.videostore.MovieType.REGULAR;
+import static victor.training.cleancode.kata.videostore.PriceCode.CHILDREN;
+import static victor.training.cleancode.kata.videostore.PriceCode.NEW_RELEASE;
+import static victor.training.cleancode.kata.videostore.PriceCode.REGULAR;
 
 
 public class CustomerTest {
