@@ -24,11 +24,7 @@ class Customer {
 			int daysRented = rental.getValue();
 			double price = calculateNewPrice(movie, daysRented);
 			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (shouldGetBonus(movie, daysRented)) {
-				frequentRenterPoints++;
-			}
+			frequentRenterPoints = calcFrequentRenterPoints(frequentRenterPoints, movie, daysRented);
 			// show figures line for this rental
 			result.append("\t").append(movie.title()).append("\t").append(price).append("\n");
 			totalPrice += price;
@@ -39,6 +35,15 @@ class Customer {
 		return result.toString();
 	}
 
+	private static int calcFrequentRenterPoints(int frequentRenterPoints, Movie movie, int daysRented) {
+		frequentRenterPoints++;
+		// add bonus for a two day new release rental
+		if (shouldGetBonus(movie, daysRented)) {
+			frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
+	}
+
 	private static boolean shouldGetBonus(Movie movie, int daysRented) {
 		Integer priceCode = movie.priceCode();
 		return priceCode != null &&
@@ -47,24 +52,29 @@ class Customer {
 	}
 
 	private static double calculateNewPrice(Movie movie, int daysRented) {
-		double price = 0;
 		switch (movie.priceCode()) {
-			case Movie.REGULAR -> price = calculateRegularMoviePrice(price, daysRented);
-			case Movie.NEW_RELEASE -> price += daysRented * 3;
-			case Movie.CHILDREN -> price = calculateChildrenMoviePrice(price, daysRented);
-		}
-		return price;
+			case Movie.REGULAR -> {
+				return calculateRegularMoviePrice(daysRented);
+			}
+			case Movie.NEW_RELEASE -> {
+				return daysRented * 3;
+			}
+			case Movie.CHILDREN -> {
+				return calculateChildrenMoviePrice(daysRented);
+			}
+        }
+		return 0;
 	}
 
-	private static double calculateChildrenMoviePrice(double price, int daysRented) {
-		price += 1.5;
+	private static double calculateChildrenMoviePrice(int daysRented) {
+		double price = 1.5;
 		if (daysRented > 3)
 			price += (daysRented - 3) * 1.5;
 		return price;
 	}
 
-	private static double calculateRegularMoviePrice(double price, int daysRented) {
-		price += 2;
+	private static double calculateRegularMoviePrice(int daysRented) {
+		double price = 2;
 		if (daysRented > 2)
 			price += (daysRented - 2) * 1.5;
 		return price;
