@@ -14,32 +14,21 @@ class Customer {
 	public Customer(String name) {
 		this.name = name;
 	}
-
 	public void addRental(Movie movie, int numDays) {
 		rentals.add(new MovieRental(movie, numDays));
 	}
+
 	public String statement() {
-		double totalAmount = 0;
-		String result = "Rental Record for " + getName() + "\n";
-		// loop over each movie rental
-
-		result += rentals.stream()
-				.map(movieRental -> "\t" + movieRental.movie().title() + "\t" + movieRental.getRentalPrice() + "\n")
-				.collect(Collectors.joining());
-
-		totalAmount += rentals.stream().mapToDouble(MovieRental::getRentalPrice).sum();
-		int frequentRenterPoints = rentals.stream().mapToInt(Customer::getFrequentRenterPoints).sum();
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		return "Rental Record for " + getName() + "\n"
+				+ getStatementLines()
+				+ "Amount owed is " + rentals.stream().mapToDouble(MovieRental::getRentalPrice).sum() + "\n"
+				+ "You earned " + rentals.stream().mapToInt(MovieRental::getFrequentRenterPoints).sum() + " frequent renter points";
 	}
 
-	private static int getFrequentRenterPoints(MovieRental movieRental) {
-        if (movieRental.movie().priceCode() == Movie.PriceCode.NEW_RELEASE && movieRental.numDays() > 1) {
-			return 2;
-		}
-		return 1;
+	private String getStatementLines() {
+		return rentals.stream()
+				.map(movieRental -> "\t" + movieRental.movie().title() + "\t" + movieRental.getRentalPrice() + "\n")
+				.collect(Collectors.joining());
 	}
 
 }

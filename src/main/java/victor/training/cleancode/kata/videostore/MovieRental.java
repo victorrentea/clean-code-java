@@ -2,6 +2,13 @@ package victor.training.cleancode.kata.videostore;
 
 record MovieRental(Movie movie, int numDays) {
 
+    int getFrequentRenterPoints() {
+        if (movie().priceCode() == Movie.PriceCode.NEW_RELEASE && numDays() > 1) {
+            return 2;
+        }
+        return 1;
+    }
+
     double getRentalPrice() {
         return switch (movie.priceCode()) {
             case REGULAR -> getRegularPrice();
