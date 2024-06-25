@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
 	@Getter
@@ -19,19 +20,19 @@ class Customer {
 	}
 	public String statement() {
 		double totalAmount = 0;
-		StringBuilder result = new StringBuilder();
-		result.append("Rental Record for ").append(getName()).append("\n");
+		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
-		for (MovieRental movieRental : rentals) {
-			double rentalPrice = movieRental.getRentalPrice();
-			result.append("\t").append(movieRental.movie().title()).append("\t").append(rentalPrice).append("\n");
-		}
+
+		result += rentals.stream()
+				.map(movieRental -> "\t" + movieRental.movie().title() + "\t" + movieRental.getRentalPrice() + "\n")
+				.collect(Collectors.joining());
+
 		totalAmount += rentals.stream().mapToDouble(MovieRental::getRentalPrice).sum();
 		int frequentRenterPoints = rentals.stream().mapToInt(Customer::getFrequentRenterPoints).sum();
 		// add footer lines
-		result.append("Amount owed is ").append(totalAmount).append("\n");
-		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-		return result.toString();
+		result += "Amount owed is " + totalAmount + "\n";
+		result += "You earned " + frequentRenterPoints + " frequent renter points";
+		return result;
 	}
 
 	private static int getFrequentRenterPoints(MovieRental movieRental) {
