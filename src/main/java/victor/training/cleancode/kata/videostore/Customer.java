@@ -3,45 +3,27 @@ package victor.training.cleancode.kata.videostore;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
+    public void addRental(Movie m, int d) {
 		rentals.put(m, d);
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public String statement() {
-		double totalAmount = 0;
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		String result = "Rental Record for " + name + "\n";
 		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
+			double price = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
+			price = calculateNewPrice(each, price, dr);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
@@ -50,12 +32,29 @@ class Customer {
 				 && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + each.getTitle() + "\t" + price + "\n";
+			totalPrice += price;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private static double calculateNewPrice(Movie each, double thisAmount, int dr) {
+		switch (each.getPriceCode()) {
+			case Movie.REGULAR -> {
+				thisAmount += 2;
+				if (dr > 2)
+					thisAmount += (dr - 2) * 1.5;
+			}
+			case Movie.NEW_RELEASE -> thisAmount += dr * 3;
+			case Movie.CHILDRENS -> {
+				thisAmount += 1.5;
+				if (dr > 3)
+					thisAmount += (dr - 3) * 1.5;
+			}
+		}
+		return thisAmount;
 	}
 }
