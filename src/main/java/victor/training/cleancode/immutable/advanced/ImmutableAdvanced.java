@@ -22,12 +22,11 @@ public class ImmutableAdvanced {
   }
 }
 
-class Immutable {
+class Immutable { // shallow immutable
   private final Integer x;
   private final Integer y;
   private final List<Integer> list;
   private final Other other;
-
   Immutable(Integer x, Integer y, List<Integer> list, Other other) {
     this.x = x;
     this.y = y;
