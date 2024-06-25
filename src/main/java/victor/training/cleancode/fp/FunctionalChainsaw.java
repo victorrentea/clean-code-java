@@ -5,9 +5,10 @@ import victor.training.cleancode.fp.support.OrderLine;
 import victor.training.cleancode.fp.support.Product;
 import victor.training.cleancode.fp.support.ProductRepo;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
@@ -19,17 +20,28 @@ public class FunctionalChainsaw { // ... Massacre
   }
 
   public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
+		Map<Product, Integer> productsSoldOverLastYear = orders.stream()
 				.filter(Order::isActive)
-				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusYears(1)))
+				.filter(Order::isPlacedWithinLastYear)
 				.flatMap(o -> o.orderLines().stream())
-				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
-				.entrySet()
-				.stream()
+				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
+
+		// variables of type Stream<> should be avoided if the collection fits in memory
+//		Stream<Product> frequentProducts = productsSoldOverLastYear.entrySet().stream()
+		List<Product> frequentProducts = productsSoldOverLastYear.entrySet().stream()
 				.filter(e -> e.getValue() >= 10)
 				.map(Entry::getKey)
+				.toList();
+
+//		if (frequentProducts.count() > 10) {
+//			System.out.println("Too many frequent products. Limiting to 10");
+//		}
+
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds(); // 1 single DB call
+		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
 	}
+
 }
