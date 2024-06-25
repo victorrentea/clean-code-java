@@ -15,57 +15,17 @@ class Customer {
 	}
 
 	public String statement() {
-		int frequentRenterPoints = 0;
 		StringBuilder result = new StringBuilder("Rental Record for " + name + "\n");
-		// loop over each movie rental
-		double totalPrice = 0;
-		for (Rental rental : rentals) {
-			double price = calcNewPrice(rental);
-			totalPrice += price;
-			// show figures line for this rental
+		double totalPrice = rentals.stream().mapToDouble(Rental::calcNewPrice).sum();
+		rentals.forEach(rental -> {
+			double price = rental.calcNewPrice();
 			result.append("\t").append(rental.movie.title()).append("\t").append(price).append("\n");
-		}
-		for (Rental rental : rentals) {
-			// add frequent renter points
-			frequentRenterPoints = calcFrequentRenterPoints(frequentRenterPoints, rental);
-
-		}
+		});
+		int frequentRenterPoints = rentals.stream().mapToInt(Rental::calcFrequentRenterPoints).sum();
 		// add footer lines
 		result.append("Amount owed is ").append(totalPrice).append("\n");
 		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
 		return result.toString();
-	}
-
-	private static int calcFrequentRenterPoints(int frequentRenterPoints, Rental rental) {
-		frequentRenterPoints++;
-		// add bonus for a two day new release rental
-		if (shouldGetBonus(rental.movie, rental.daysRented)) {
-			frequentRenterPoints++;
-		}
-		return frequentRenterPoints;
-	}
-
-	private static boolean shouldGetBonus(Movie movie, int daysRented) {
-		Integer priceCode = movie.priceCode();
-		return priceCode != null &&
-				(priceCode == Movie.NEW_RELEASE)
-				&& daysRented > 1;
-	}
-
-	private static double calcNewPrice(Rental rental) {
-		int daysRented = rental.daysRented;
-		switch (rental.movie.priceCode()) {
-			case Movie.REGULAR -> {
-				return calcRegularMoviePrice(daysRented);
-			}
-			case Movie.NEW_RELEASE -> {
-				return calcNewReleaseMoviePrice(daysRented);
-			}
-			case Movie.CHILDREN -> {
-				return calcChildrenMoviePrice(daysRented);
-			}
-        }
-		return 0;
 	}
 
 	private static int calcNewReleaseMoviePrice(int daysRented) {
@@ -87,5 +47,28 @@ class Customer {
 	}
 
 	record Rental(Movie movie, int daysRented) {
+		private double calcNewPrice() {
+			int daysRented = this.daysRented;
+			return switch (this.movie.priceCode()) {
+				case REGULAR -> calcRegularMoviePrice(daysRented);
+				case NEW_RELEASE -> calcNewReleaseMoviePrice(daysRented);
+				case CHILDREN -> calcChildrenMoviePrice(daysRented);
+			};
+		}
+
+		private boolean shouldGetBonus() {
+			PriceCode priceCode = this.movie.priceCode();
+			return (priceCode == PriceCode.NEW_RELEASE)
+					&& this.daysRented > 1;
+		}
+
+		private int calcFrequentRenterPoints() {
+			int frequentRenterPoints = 1;
+			// add bonus for a two day new release rental
+			if (shouldGetBonus()) {
+				frequentRenterPoints++;
+			}
+			return frequentRenterPoints;
+		}
 	}
 }
