@@ -37,6 +37,7 @@ enum PriceCode {
     };
 
     public abstract double getPrice(int discountRate);
+
     public double getFrequentRenterPoints(int discountRate){
         return 1;
     }
