@@ -8,21 +8,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 class FileExportService {
    private final OrderRepo orderRepo;
 
-   public void exportOrders() throws IOException {
+   public void exportOrders(Consumer<Writer> action) throws IOException {
       File file = new File("target/orders.csv");
       System.out.println("Starting export into {} ... " + file.getAbsolutePath());
       long t0 = System.currentTimeMillis();
       try (Writer writer = new FileWriter(file)) {
 
-         writer.write("order_id;date\n");
-         orderRepo.findByActiveTrue()
-             .map(o -> o.id() + ";" + o.creationDate() + "\n")
-             .forEach(Unchecked.consumer(writer::write));
+         action.accept(writer); // transaction, connection, PDF, Excel
 
          System.out.println("Export DONE");
       } catch (Exception e) {
@@ -42,7 +40,12 @@ public class LoanPattern {
   private final FileExportService fileExporterService;
 
   public void exportOrders() throws IOException {
-    fileExporterService.exportOrders();
+    fileExporterService.exportOrders(writer ->{
+//      writer.write("order_id;date\n");
+//         orderRepo.findByActiveTrue()
+//             .map(o -> o.id() + ";" + o.creationDate() + "\n")
+//             .forEach(Unchecked.consumer(writer::write));
+    });
   }
 
   public void exportUsers() {

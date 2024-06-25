@@ -2,15 +2,18 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
  */
 public class SplitLoop {
+//  class X<A,B> {}
 
   // see tests
   public String computeStats(List<Employee> employees) {
+//    employees = new ArrayList<>();
     System.out.println("Consultant IDs: " + getConsultantIds(employees));
     return "Average age = " + getAverageInternalAge(employees) +
            "; Average salary = " + getAverageSalary(employees);

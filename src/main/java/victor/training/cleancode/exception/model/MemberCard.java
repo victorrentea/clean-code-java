@@ -1,5 +1,6 @@
 package victor.training.cleancode.exception.model;
 
+import io.vavr.control.Try;
 import victor.training.cleancode.optional.Optional_Intro.Discount;
 
 import javax.annotation.Nullable;
@@ -18,6 +19,8 @@ public class MemberCard {
    public MemberCard(String barcode, int fidelityPoints) {
      this.barcode = Objects.requireNonNull(barcode);
       this.fidelityPoints = fidelityPoints;
+//      Try<String> t;
+//      t.get
    }
 
   public Optional<Discount> computeDiscount() {
