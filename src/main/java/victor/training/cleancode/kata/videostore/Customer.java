@@ -21,6 +21,7 @@ class Customer {
 			double price = rental.calcNewPrice();
 			result.append("\t").append(rental.movie.title()).append("\t").append(price).append("\n");
 		});
+		// TODO use .collect(joining());
 		int frequentRenterPoints = rentals.stream().mapToInt(Rental::calcFrequentRenterPoints).sum();
 		// add footer lines
 		result.append("Amount owed is ").append(totalPrice).append("\n");
@@ -49,7 +50,7 @@ class Customer {
 	record Rental(Movie movie, int daysRented) {
 		private double calcNewPrice() {
 			int daysRented = this.daysRented;
-			return switch (this.movie.priceCode()) {
+			return switch (movie.priceCode()) {
 				case REGULAR -> calcRegularMoviePrice(daysRented);
 				case NEW_RELEASE -> calcNewReleaseMoviePrice(daysRented);
 				case CHILDREN -> calcChildrenMoviePrice(daysRented);
@@ -57,9 +58,9 @@ class Customer {
 		}
 
 		private boolean shouldGetBonus() {
-			PriceCode priceCode = this.movie.priceCode();
-			return (priceCode == PriceCode.NEW_RELEASE)
-					&& this.daysRented > 1;
+			PriceCode priceCode = movie.priceCode();
+			return priceCode == PriceCode.NEW_RELEASE
+					&& daysRented > 1;
 		}
 
 		private int calcFrequentRenterPoints() {
