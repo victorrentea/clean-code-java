@@ -22,38 +22,11 @@ public class ImmutableAdvanced {
   }
 }
 
-class Immutable { // shallow immutable
-  private final Integer x;
-  private final Integer y;
-  private final List<Integer> list;
-  private final Other other;
-  Immutable(Integer x, Integer y, List<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list;
-    this.other = other;
-  }
-
-  public List<Integer> getList() {
-    return list;
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
-  }
+record Immutable(
+    Integer x,
+    Integer y,
+    List<Integer> list,
+    Other other) { // shallow immutable
 }
 
 class Other {
