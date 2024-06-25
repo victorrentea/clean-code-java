@@ -1,6 +1,6 @@
 package victor.training.cleancode.kata.videostore;
 
-public enum MovieType {
+public enum PriceCode {
     REGULAR,
     NEW_RELEASE,
     CHILDRENS
