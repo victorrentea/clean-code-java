@@ -5,7 +5,7 @@ public record Rental(Movie movie, int daysRented) {
         return switch (movie.priceCode()) {
             case REGULAR -> calculateRegularPrice();
             case NEW_RELEASE -> daysRented * 3;
-            case CHILDRENS ->
+            case CHILDREN ->
                 daysRented > 3 ?  1.5 + (daysRented - 3) * 1.5 : 1.5;
         };
     }
