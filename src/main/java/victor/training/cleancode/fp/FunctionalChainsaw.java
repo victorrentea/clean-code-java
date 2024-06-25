@@ -44,4 +44,6 @@ public class FunctionalChainsaw { // ... Massacre
 				.collect(toList());
 	}
 
+	//Test commit
+
 }
