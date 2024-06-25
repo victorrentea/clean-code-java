@@ -20,10 +20,16 @@ record MovieRental(Movie movie, int numDays) {
   }
 
   private double getChildrenPrice() {
-    double basePrice = 1.5;
-    if (numDays > 3) {
-      return basePrice + (numDays - 3) * 1.5;
+    return f(1.5, 3);
+  }
+
+  private double f(double basePrice, int x) {
+    if (numDays > x) {
+      return basePrice + (numDays - x) * 1.5;
     }
+//    if (numDays > 7) {
+//      return basePrice + (numDays - x) * 1.5 + 11;
+//    }
     return basePrice;
   }
 
@@ -32,11 +38,7 @@ record MovieRental(Movie movie, int numDays) {
   }
 
   private double getRegularPrice() {
-    double rentalPrice = 2;
-    if (numDays > 2) {
-      return rentalPrice + (numDays - 2) * 1.5;
-    }
-    return rentalPrice;
+    return f(2, 2);
   }
 
 }
