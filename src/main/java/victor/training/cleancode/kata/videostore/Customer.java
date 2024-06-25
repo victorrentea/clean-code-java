@@ -12,18 +12,17 @@ class Customer {
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie movie, int days) {
 		rentals.add(new Rental(movie, days));
 	}
 
     public String statement() {
-		double totalAmount = 0;
         StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n").append(getReportSummary());
 		// loop over each movie rental
         int frequentRenterPoints = getFrequentRenterPoints(rentals);
-		totalAmount = getTotalAmount();
+        double totalAmount = getTotalAmount();
 
 		// add footer lines
 		result.append("Amount owed is ").append(totalAmount).append("\n");
@@ -32,7 +31,7 @@ class Customer {
 	}
 
 	private StringBuilder getReportSummary() {
-		StringBuilder result = new StringBuilder("");
+		StringBuilder result = new StringBuilder();
         // determine amounts for every line
         // show figures line for this rental
         rentals.forEach(rental -> result.append("\t").append(rental.movie().title()).append("\t")
