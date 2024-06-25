@@ -1,7 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Builder;
 
 import java.util.stream.Stream;
 
@@ -51,6 +50,11 @@ record Immutable(
     Point point,
     ImmutableList<Integer> list,
     Other other) {
+
+  public String otherPointed() {
+    return point + " at " + other;
+  }
+
 //  public Immutable withXY(int newX, int newY) { // wither
 //    return new Immutable(newX, newY, list, other);
 //  } // deep immutable
