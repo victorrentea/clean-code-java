@@ -1,22 +1,34 @@
 package victor.training.cleancode.kata.videostore;
 
 enum PriceCode {
-    REGULAR{
+    REGULAR {
         @Override
-        public double getDiscountFactor(int discountRate) {
+        public double getPrice(int discountRate) {
             if (discountRate <= 2) {
                 return 2;
             }
             return 2 + (discountRate - 2) * 1.5;
         }
-    },NEW_RELEASE{
+    },
+
+    NEW_RELEASE {
         @Override
-        public double getDiscountFactor(int discountRate) {
+        public double getPrice(int discountRate) {
             return discountRate * 3;
         }
-    }, CHILDREN{
+
         @Override
-        public double getDiscountFactor(int discountRate) {
+        public double getFrequentRenterPoints(int discountRate) {
+            if (discountRate > 1){
+                return 2;
+            }
+            return 1;
+        }
+    },
+
+    CHILDREN {
+        @Override
+        public double getPrice(int discountRate) {
             if (discountRate <= 3) {
                 return 1.5;
             }
@@ -24,15 +36,8 @@ enum PriceCode {
         }
     };
 
-    public abstract double getDiscountFactor(int discountRate) ;
-
-
-
-//
-//    private static double getPrice(int discountRate, double price) {
-//        price += 2;
-//        if (discountRate > 2)
-//            price += (discountRate - 2) * 1.5;
-//        return price;
-//    }
+    public abstract double getPrice(int discountRate);
+    public double getFrequentRenterPoints(int discountRate){
+        return 1;
+    }
 }
