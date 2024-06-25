@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ public class ImmutableAdvanced {
 
   private static void wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
+    immutable.list().clear();
   }
 }
 
@@ -26,21 +28,15 @@ record Immutable(
     Integer x,
     Integer y,
     List<Integer> list,
-    Other other) { // shallow immutable
+    Other other) { // deep immutable
+//  Immutable {
+//    list = Collections.unmodifiableList(list); // OK #1
+//  }
+  public List<Integer> list() {
+    return Collections.unmodifiableList(list); // OK #2
+//    return new ArrayList<>(list);// NO: -performance -misleading for caller
+  }
 }
 
-class Other {
-  private int a;
-
-  public Other(int a) {
-    this.a = a;
-  }
-
-  public int getA() {
-    return a;
-  }
-
-  public void setA(int a) {
-    this.a = a;
-  }
+record Other(int a) {
 }
