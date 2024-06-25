@@ -27,19 +27,7 @@ class Customer {
 			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(movie);
-            switch (movie.priceCode()) {
-                case REGULAR -> {
-                    thisAmount += 2;
-                    if (dr > 2)
-                        thisAmount += (dr - 2) * 1.5;
-                }
-                case NEW_RELEASE -> thisAmount += dr * 3;
-                case CHILDRENS -> {
-                    thisAmount += 1.5;
-                    if (dr > 3)
-                        thisAmount += (dr - 3) * 1.5;
-                }
-            }
+			thisAmount = calculateAmountByMoviePriceCode(movie.priceCode(), dr);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
@@ -53,5 +41,24 @@ class Customer {
 		result.append("Amount owed is ").append(totalAmount).append("\n");
 		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
 		return result.toString();
+	}
+
+	private static double calculateAmountByMoviePriceCode( PriceCode priceCode, int dr) {
+		double thisAmount=0l;
+
+		switch (priceCode) {
+			case REGULAR -> {
+				thisAmount += 2;
+				if (dr > 2)
+					thisAmount += (dr - 2) * 1.5;
+			}
+			case NEW_RELEASE -> thisAmount += dr * 3;
+			case CHILDRENS -> {
+				thisAmount += 1.5;
+				if (dr > 3)
+					thisAmount += (dr - 3) * 1.5;
+			}
+		}
+		return thisAmount;
 	}
 }
