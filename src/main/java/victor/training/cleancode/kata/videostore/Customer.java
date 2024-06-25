@@ -22,7 +22,7 @@ class Customer {
 		for (Map.Entry<Movie, Integer> rental : rentals.entrySet()) {
 			Movie movie = rental.getKey();
 			int daysRented = rental.getValue();
-			double price = calculateNewPrice(movie, daysRented);
+			double price = calcNewPrice(movie, daysRented);
 			// add frequent renter points
 			frequentRenterPoints = calcFrequentRenterPoints(frequentRenterPoints, movie, daysRented);
 			// show figures line for this rental
@@ -51,29 +51,33 @@ class Customer {
 				&& daysRented > 1;
 	}
 
-	private static double calculateNewPrice(Movie movie, int daysRented) {
+	private static double calcNewPrice(Movie movie, int daysRented) {
 		switch (movie.priceCode()) {
 			case Movie.REGULAR -> {
-				return calculateRegularMoviePrice(daysRented);
+				return calcRegularMoviePrice(daysRented);
 			}
 			case Movie.NEW_RELEASE -> {
-				return daysRented * 3;
+				return calcNewReleaseMoviePrice(daysRented);
 			}
 			case Movie.CHILDREN -> {
-				return calculateChildrenMoviePrice(daysRented);
+				return calcChildrenMoviePrice(daysRented);
 			}
         }
 		return 0;
 	}
 
-	private static double calculateChildrenMoviePrice(int daysRented) {
+	private static int calcNewReleaseMoviePrice(int daysRented) {
+		return daysRented * 3;
+	}
+
+	private static double calcChildrenMoviePrice(int daysRented) {
 		double price = 1.5;
 		if (daysRented > 3)
 			price += (daysRented - 3) * 1.5;
 		return price;
 	}
 
-	private static double calculateRegularMoviePrice(int daysRented) {
+	private static double calcRegularMoviePrice(int daysRented) {
 		double price = 2;
 		if (daysRented > 2)
 			price += (daysRented - 2) * 1.5;
