@@ -44,7 +44,7 @@ class CaptureSystemOutputExtension implements BeforeEachCallback, AfterEachCallb
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
     }
-
+//test
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
         boolean isTestMethodLevel = extensionContext.getTestMethod().isPresent();
