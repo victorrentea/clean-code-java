@@ -1,23 +1,16 @@
 package victor.training.cleancode.kata.videostore;
+
+import lombok.Getter;
+
 public class Movie {
 
-	private String _title;
-	MovieType _priceCode;
+    @Getter
+    private String _title;
+    @Getter
+    private MovieType _priceCode;
 
-	public Movie(String title, MovieType priceCode) {
-		_title = title;
-		_priceCode = priceCode;
-	}
-
-	public MovieType getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(MovieType arg) {
-		_priceCode = arg;
-	}
-
-	public String getTitle() {
-		return _title;
-	};
+    public Movie(String title, MovieType priceCode) {
+        _title = title;
+        _priceCode = priceCode;
+    }
 }
