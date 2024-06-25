@@ -4,14 +4,14 @@ import java.util.*;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
+	private final List<Rental> rentals = new ArrayList<>(); // preserves order of elements
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
     public void addRental(Movie m, int rentalDays) {
-		rentals.put(m, rentalDays);
+		rentals.add(new Rental(m, rentalDays));
 	}
 
 	public String statement() {
@@ -19,15 +19,16 @@ class Customer {
 		StringBuilder result = new StringBuilder("Rental Record for " + name + "\n");
 		// loop over each movie rental
 		double totalPrice = 0;
-		for (Map.Entry<Movie, Integer> rental : rentals.entrySet()) {
-			Movie movie = rental.getKey();
-			int daysRented = rental.getValue();
-			double price = calcNewPrice(movie, daysRented);
-			// add frequent renter points
-			frequentRenterPoints = calcFrequentRenterPoints(frequentRenterPoints, movie, daysRented);
-			// show figures line for this rental
-			result.append("\t").append(movie.title()).append("\t").append(price).append("\n");
+		for (Rental rental : rentals) {
+			double price = calcNewPrice(rental);
 			totalPrice += price;
+			// show figures line for this rental
+			result.append("\t").append(rental.movie.title()).append("\t").append(price).append("\n");
+		}
+		for (Rental rental : rentals) {
+			// add frequent renter points
+			frequentRenterPoints = calcFrequentRenterPoints(frequentRenterPoints, rental);
+
 		}
 		// add footer lines
 		result.append("Amount owed is ").append(totalPrice).append("\n");
@@ -35,10 +36,10 @@ class Customer {
 		return result.toString();
 	}
 
-	private static int calcFrequentRenterPoints(int frequentRenterPoints, Movie movie, int daysRented) {
+	private static int calcFrequentRenterPoints(int frequentRenterPoints, Rental rental) {
 		frequentRenterPoints++;
 		// add bonus for a two day new release rental
-		if (shouldGetBonus(movie, daysRented)) {
+		if (shouldGetBonus(rental.movie, rental.daysRented)) {
 			frequentRenterPoints++;
 		}
 		return frequentRenterPoints;
@@ -51,8 +52,9 @@ class Customer {
 				&& daysRented > 1;
 	}
 
-	private static double calcNewPrice(Movie movie, int daysRented) {
-		switch (movie.priceCode()) {
+	private static double calcNewPrice(Rental rental) {
+		int daysRented = rental.daysRented;
+		switch (rental.movie.priceCode()) {
 			case Movie.REGULAR -> {
 				return calcRegularMoviePrice(daysRented);
 			}
@@ -82,5 +84,8 @@ class Customer {
 		if (daysRented > 2)
 			price += (daysRented - 2) * 1.5;
 		return price;
+	}
+
+	record Rental(Movie movie, int daysRented) {
 	}
 }
