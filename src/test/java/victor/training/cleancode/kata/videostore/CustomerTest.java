@@ -10,9 +10,9 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
-        customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
-        customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
+        customer.addRental(new Movie(MovieType.NEW_RELEASE, "Star Wars"), 6);
+        customer.addRental(new Movie(MovieType.CHILDRENS, "Sofia"), 7);
+        customer.addRental(new Movie(MovieType.REGULAR, "Inception"), 5);
         
         String expected = """
             Rental Record for John Doe
