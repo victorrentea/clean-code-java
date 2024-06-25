@@ -3,7 +3,7 @@ package victor.training.cleancode.kata.videostore;
 import java.util.*;
 
 class Customer {
-	private String name;
+	private final String name;
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
 
 	public Customer(String name) {
@@ -14,24 +14,19 @@ class Customer {
 		rentals.put(m, d);
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
+		StringBuilder result = new StringBuilder("Rental Record for " + name + "\n");
 		// loop over each movie rental
 		for (Movie movie : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for every line
-			int dr = rentals.get(movie);
-			thisAmount = calculateAmountByMoviePriceCode(movie.priceCode(), dr);
-			// add frequent renter points
+            // determine amounts for every line
+			int rentalDuration = rentals.get(movie);
+            double thisAmount = calculatePrice(movie.priceCode(), rentalDuration);
+            // add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (movie.priceCode() == PriceCode.NEW_RELEASE && dr > 1)
+			if (movie.priceCode() == PriceCode.NEW_RELEASE && rentalDuration > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result.append("\t").append(movie.title()).append("\t").append(thisAmount).append("\n");
@@ -43,8 +38,8 @@ class Customer {
 		return result.toString();
 	}
 
-	private static double calculateAmountByMoviePriceCode( PriceCode priceCode, int dr) {
-		double thisAmount=0l;
+	private static double calculatePrice(PriceCode priceCode, int dr) {
+		double thisAmount = 0L;
 
 		switch (priceCode) {
 			case REGULAR -> {
