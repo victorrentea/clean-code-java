@@ -65,6 +65,8 @@ class CarSearchCriteria { // a DTO received from JSON
 class CarModel { // the Entity Model👑
   // @Id
   private Long id;
+
+  private long hhi;
   private String make;
   private String model;
   private Range yearRange; // -1 field => dev = 😊
