@@ -5,6 +5,8 @@ import java.util.Map;
 import static java.util.stream.Collectors.joining;
 
 public class PrimitiveObsession {
+  public static final String CARD = "CARD";
+  public static final String CASH = "CASH";
 
   public static void main(String[] args) {
     new PrimitiveObsession().f("CARD");
@@ -23,7 +25,7 @@ public class PrimitiveObsession {
   //</editor-fold>
 
   public void f(String paymentMethod) {
-    if (!"CARD".equals(paymentMethod) && !"CASH".equals(paymentMethod)) {
+    if (!CARD.equals(paymentMethod) && !CASH.equals(paymentMethod)) {
       throw new IllegalArgumentException("Only CARD or CASH payment method is supported");
     }
     Map<Long, Map<String, Integer>> map = fetchData(paymentMethod);
