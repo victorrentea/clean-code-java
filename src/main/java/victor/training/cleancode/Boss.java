@@ -11,7 +11,7 @@ public class Boss {
     int index = 0;
     int taskCount = tasks.size();
 //    if (tasks.isEmpty()) {
-    if (tasks.size() == 0) {
+    if (tasks.isEmpty()) {
       return;
     }
     System.out.println("Logic1");
