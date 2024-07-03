@@ -16,7 +16,7 @@ public class ExtractMethodObject_Validator {
         validator.m1("a",1, errors);
         validator.m2("b",1, errors);
         validator.m3("file.txt", 1L,"ref", errors);
-        validator.m4("a", 1L,5L, "g", errors);
+    validator.m4("a", 1L, 5L, "g2", errors);
         validator.m5(1, errors);
         if (!errors.isEmpty()) {
             throw new IllegalArgumentException(errors.toString());
