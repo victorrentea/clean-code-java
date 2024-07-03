@@ -88,9 +88,7 @@ class CarModel { // the Domain Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) {
-      throw new IllegalArgumentException("start larger than end");
-    }
+
     this.yearInterval = new Interval(startYear, endYear);
 //    this.startYear = startYear;
 //    this.endYear = endYear;
