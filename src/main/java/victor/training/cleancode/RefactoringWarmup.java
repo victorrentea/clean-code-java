@@ -31,9 +31,9 @@ class PlayGround {
 
 record R(int x) {}
 class One {
-  private final ITwo two;
+  private final Two two;
 
-  One(ITwo two) {
+  One(Two two) {
     this.two = two;
   }
 
@@ -43,8 +43,7 @@ class One {
   }
 }
 
-class Two implements ITwo {
-  @Override
+class Two {
   public int g2(R r, boolean cr323) {
     if (cr323) {
       System.out.println("b=" + 2); // doar pe UC323
@@ -52,7 +51,6 @@ class Two implements ITwo {
     return 1 + 2 + r.x();
   }
 
-  @Override
   public void unknown() {
     System.out.println("b=" + 987);
   }
