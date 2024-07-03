@@ -10,24 +10,22 @@ class CarSearch {
       CarSearchCriteria criteria, // din JSON
       List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> intersectYears(criteria, carModel))
+        .filter(carModel -> criteria.yearInterval().intersectsWith(carModel.yearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean intersectYears(CarSearchCriteria criteria, CarModel carModel) {
-    return new Interval(criteria.getStartYear(), criteria.getEndYear()).intervalsIntersect(
-        new Interval(carModel.getStartYear(), carModel.getEndYear()));
-  }
+
+  // filozofie: muta detaliile boring in clasele de pe langa, sa cureti ideea centrala
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersectsWith(new Interval(1250, 2000)));
   }
 }
 
@@ -56,6 +54,12 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public String getMake() {
     return make;
+  }
+
+  //  @JsonIgnore
+  //atentie sa nu dai panica in colegi
+  public Interval yearInterval() { // records ne-au scapat de un legacy Java de getter/setteri
+    return new Interval(startYear, endYear);
   }
 }
 
@@ -99,6 +103,10 @@ class CarModel { // the Entity Model👑
 
   public String getModel() {
     return model;
+  }
+
+  Interval yearInterval() {
+    return new Interval(startYear, endYear);
   }
 }
 
