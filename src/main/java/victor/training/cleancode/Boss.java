@@ -10,6 +10,7 @@ public class Boss {
   public void bossLevel(boolean b, List<Task> tasks, boolean cr323) {
     int index = 0;
     int taskCount = tasks.size();
+//    if (tasks.isEmpty()) {
     if (tasks.size() == 0) {
       return;
     }
