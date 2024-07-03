@@ -2,7 +2,6 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,22 +10,21 @@ import java.util.List;
 public class SplitLoop {
   // run tests
   public String computeStats(List<Employee> employees) {
-    long totalAge = 0; // variab acumulator
-    double averageSalary = 0;
-    List<Integer> consultantIds = new ArrayList<>();
-    for (Employee employee : employees) {
-      if (!employee.consultant()) {
-        totalAge += employee.age();
-      }
-    }
-    for (Employee employee : employees) {
-      if (employee.consultant()) {
-        consultantIds.add(employee.id());
-      }
-    }
-    for (Employee employee : employees) {
-      averageSalary += employee.salary();
-    }
+    // variab acumulator
+    long totalAge = employees.stream().filter(employee -> !employee.consultant()).mapToLong(Employee::age).sum();
+
+    List<Integer> consultantIds = employees.stream()
+        .filter(Employee::consultant)
+        .map(Employee::id)
+        .toList();
+    //    List<Integer> consultantIds = employees.stream()
+//        .filter(Employee::consultant)
+//        .map(Employee::id)
+////        .collect(Collectors.toList()); // java 8
+//        .toList(); // java 17
+
+    double averageSalary = employees.stream().mapToDouble(Employee::salary).sum();
+
     System.out.println("Average age = " + totalAge); // codu minte aici!! variabila are doua semnificatii
     long averageAge = totalAge / employees.stream().filter(e -> !e.consultant()).count();
     averageSalary /= employees.size();
