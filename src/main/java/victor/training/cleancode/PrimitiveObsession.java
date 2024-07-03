@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
@@ -7,7 +8,11 @@ import static victor.training.cleancode.PaymentMethod.CARD;
 import static victor.training.cleancode.PaymentMethod.CASH;
 
 enum PaymentMethod {
-  CARD, CASH
+  CARD, CASH;
+
+  public boolean oneOf(PaymentMethod... args) {
+    return Arrays.asList(args).contains(this);
+  }
 }
 public class PrimitiveObsession {
   public static void main(String[] args) {
@@ -27,9 +32,11 @@ public class PrimitiveObsession {
   //</editor-fold>
 
   public void f(PaymentMethod paymentMethod) {
-    if (CARD != paymentMethod && paymentMethod != CASH) {
+    if (!paymentMethod.oneOf(CARD, CASH)) {
       throw new IllegalArgumentException("Only CARD or CASH payment method is supported");
     }
+    // exercitiu pt cititor
+//    paymentMethod.checkOneOf(CARD, CASH);
     Map<Long, Map<String, Integer>> customerToProductCounts = fetchData(paymentMethod);
 
     for (var entry1 : customerToProductCounts.entrySet()) { // iterating map entries 🤢
