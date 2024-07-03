@@ -11,7 +11,11 @@ public class SplitLoop {
   // run tests
   public String computeStats(List<Employee> employees) {
     // variab acumulator
-    long totalAge = employees.stream().filter(employee -> !employee.consultant()).mapToLong(Employee::age).sum();
+    double averageAge = employees.stream()
+        .filter(employee -> !employee.consultant())
+        .mapToLong(Employee::age)
+        .average()
+        .orElseThrow();
 
     List<Integer> consultantIds = employees.stream()
         .filter(Employee::consultant)
@@ -22,12 +26,8 @@ public class SplitLoop {
 //        .map(Employee::id)
 ////        .collect(Collectors.toList()); // java 8
 //        .toList(); // java 17
+    double averageSalary = employees.stream().mapToDouble(Employee::salary).average().orElseThrow();
 
-    double averageSalary = employees.stream().mapToDouble(Employee::salary).sum();
-
-    System.out.println("Average age = " + totalAge); // codu minte aici!! variabila are doua semnificatii
-    long averageAge = totalAge / employees.stream().filter(e -> !e.consultant()).count();
-    averageSalary /= employees.size();
     System.out.println("Consultant IDs: " + consultantIds);
     return "Average age = " + averageAge + "; Average salary = " + averageSalary;
   }
