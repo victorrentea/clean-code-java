@@ -1,5 +1,9 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,14 +67,20 @@ class CarSearchCriteria { // a DTO received from JSON
   }
 }
 
-// @Entity
-class CarModel { // the Entity Model👑
-  // @Id
+@Entity //Hibernate  = sfintele entitati pe care toata logica ta sprijina
+class CarModel { // the Domain Entity Model👑
+  @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  // daca aplicatia ta are foarte mult creier. foarte complexe. multe reguli de biz,
+  // (nu doar muta date)
+
+  //  private int startYear;
+//  private int endYear;
+  @Embedded // NU AM NEVOIE NICI UN ALTER TABLE. in DB 1 tabela, in Java 2 obiecte.
+  // ORMapper-ul stie sa faca mapping intre ele
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -81,20 +91,17 @@ class CarModel { // the Entity Model👑
     if (startYear > endYear) {
       throw new IllegalArgumentException("start larger than end");
     }
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+  }
+
+  public Interval yearInterval() {
+    return yearInterval;//new Interval(startYear, endYear);
   }
 
   public Long getId() {
     return id;
-  }
-
-  public int getEndYear() {
-    return endYear;
-  }
-
-  public int getStartYear() {
-    return startYear;
   }
 
   public String getMake() {
@@ -104,10 +111,6 @@ class CarModel { // the Entity Model👑
   public String getModel() {
     return model;
   }
-
-  Interval yearInterval() {
-    return new Interval(startYear, endYear);
-  }
 }
 
 class CarModelMapper {
@@ -115,8 +118,16 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+    dto.startYear = carModel.yearInterval().start();
+//    dto.endYear = carModel.getEndYear();
+    dto.endYear = carModel.yearInterval().end();
     return dto;
   }
 
