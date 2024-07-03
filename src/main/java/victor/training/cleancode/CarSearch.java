@@ -6,30 +6,28 @@ import java.util.stream.Collectors;
 class CarSearch {
 
   // run tests
-  public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
+  public List<CarModel> filterCarModels(
+      CarSearchCriteria criteria, // din JSON
+      List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> intersectYears(criteria, carModel))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
+  }
+
+  private boolean intersectYears(CarSearchCriteria criteria, CarModel carModel) {
+    return new Interval(criteria.getStartYear(), criteria.getEndYear()).intervalsIntersect(
+        new Interval(carModel.getStartYear(), carModel.getEndYear()));
   }
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-  }
-}
-
-class MathUtil {
-
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
   }
 }
 
@@ -41,7 +39,9 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
     this.make = make;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }
@@ -74,7 +74,9 @@ class CarModel { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }
