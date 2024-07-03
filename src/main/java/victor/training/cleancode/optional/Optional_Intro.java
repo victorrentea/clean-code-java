@@ -16,11 +16,13 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    Optional<Discount> discount = computeDiscount(customer.getMemberCard());
-    if (discount.isPresent()) {
-      return "You got a discount of %" + discount.get().globalPercentage();
-    }
-    return "Earn more points to get a discount"; // FOMO = Fear Of Missing Out
+    return computeDiscount(customer.getMemberCard())
+        .map(Discount::globalPercentage)
+        .map(p -> "You got a discount of %" + p)
+        .orElse("Earn more points to get a discount");
+    // FOMO = Fear Of Missing Out
+//    return discount.map(value -> "You got a discount of %" + value.globalPercentage())
+//        .orElse("Earn more points to get a discount");
   }
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
