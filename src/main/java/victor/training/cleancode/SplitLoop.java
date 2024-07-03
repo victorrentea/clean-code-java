@@ -17,9 +17,14 @@ public class SplitLoop {
     for (Employee employee : employees) {
       if (!employee.consultant()) {
         totalAge += employee.age();
-      } else {
+      }
+    }
+    for (Employee employee : employees) {
+      if (employee.consultant()) {
         consultantIds.add(employee.id());
       }
+    }
+    for (Employee employee : employees) {
       averageSalary += employee.salary();
     }
     System.out.println("Average age = " + totalAge); // codu minte aici!! variabila are doua semnificatii
