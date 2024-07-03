@@ -11,19 +11,19 @@ import java.util.List;
 public class SplitLoop {
   // run tests
   public String computeStats(List<Employee> employees) {
-    long averageAge = 0; // variab acumulator
+    long totalAge = 0; // variab acumulator
     double averageSalary = 0;
     List<Integer> consultantIds = new ArrayList<>();
     for (Employee employee : employees) {
       if (!employee.consultant()) {
-        averageAge += employee.age();
+        totalAge += employee.age();
       } else {
         consultantIds.add(employee.id());
       }
       averageSalary += employee.salary();
     }
-    System.out.println("Average age = " + averageAge); // codu minte aici!! variabila are doua semnificatii
-    averageAge /= employees.stream().filter(e -> !e.consultant()).count();
+    System.out.println("Average age = " + totalAge); // codu minte aici!! variabila are doua semnificatii
+    long averageAge = totalAge / employees.stream().filter(e -> !e.consultant()).count();
     averageSalary /= employees.size();
     System.out.println("Consultant IDs: " + consultantIds);
     return "Average age = " + averageAge + "; Average salary = " + averageSalary;
