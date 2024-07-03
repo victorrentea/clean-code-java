@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
@@ -20,13 +21,13 @@ public class PrimitiveObsession {
   }
 
   //<editor-fold desc="fetchData()">
-  public Map<Long, Map<String, Integer>> fetchData(PaymentMethod paymentMethod) {
+  public Map<CustomerId, List<ProductCount>> fetchData(PaymentMethod paymentMethod) {
     Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;
-    return Map.of(customerId, Map.of(
-        "Table", product1Count,
-        "Chair", product2Count
+    return Map.of(new CustomerId(customerId), List.of(
+        new ProductCount("Table", product1Count),
+        new ProductCount("Chair", product2Count)
     ));
   }
   //</editor-fold>
@@ -37,13 +38,19 @@ public class PrimitiveObsession {
     }
     // exercitiu pt cititor
 //    paymentMethod.checkOneOf(CARD, CASH);
-    Map<Long, Map<String, Integer>> customerToProductCounts = fetchData(paymentMethod);
+    Map<CustomerId, List<ProductCount>> customerToProductCounts = fetchData(paymentMethod);
 
     for (var entry1 : customerToProductCounts.entrySet()) { // iterating map entries 🤢
-      String pl = entry1.getValue().entrySet().stream()
-          .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
+      String pl = entry1.getValue().stream()
+          .map(productCount -> productCount.count() + " pcs. of " + productCount.productName())
           .collect(joining(", "));
-      System.out.println("cid=" + entry1.getKey() + " got " + pl);
+      System.out.println("cid=" + entry1.getKey().id() + " got " + pl);
     }
+  }
+
+  record CustomerId(long id) {
+  }
+
+  record ProductCount(String productName, int count) {
   }
 }
