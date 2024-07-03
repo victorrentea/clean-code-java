@@ -38,16 +38,14 @@ class One {
   }
 
   public int f() {
-    two.g2(new R(7), true); // UC 323
-    return 2 * two.g2(new R(3), false); // UC 17
+    two.g2(new R(7)); // UC 323
+    return 2 * two.g2(new R(3)); // UC 17
   }
 }
 
 class Two {
-  public int g2(R r, boolean cr323) {
-    if (cr323) {
-      System.out.println("b=" + 2); // doar pe UC323
-    }
+  public int g2(R r) {
+    System.out.println("b=" + 2); // doar pe UC323
     return 1 + 2 + r.x();
   }
 
