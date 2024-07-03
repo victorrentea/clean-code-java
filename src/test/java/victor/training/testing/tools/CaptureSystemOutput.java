@@ -25,9 +25,6 @@ import java.io.PrintStream;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -96,22 +93,22 @@ public @interface   CaptureSystemOutput {
 
         void captureOutput() {
             this.copy = new ByteArrayOutputStream();
-            this.captureOut = new CaptureOutputStream(System.out, this.copy);
-            this.captureErr = new CaptureOutputStream(System.err, this.copy);
-            System.setOut(new PrintStream(this.captureOut));
-            System.setErr(new PrintStream(this.captureErr));
+            this.captureOut = new CaptureOutputStream(System.out, copy);
+            this.captureErr = new CaptureOutputStream(System.err, copy);
+            System.setOut(new PrintStream(captureOut));
+            System.setErr(new PrintStream(captureErr));
         }
 
         void releaseOutput() {
-            System.setOut(this.captureOut.getOriginal());
-            System.setErr(this.captureErr.getOriginal());
+            System.setOut(captureOut.getOriginal());
+            System.setErr(captureErr.getOriginal());
             this.copy = null;
         }
 
         private void flush() {
             try {
-                this.captureOut.flush();
-                this.captureErr.flush();
+                captureOut.flush();
+                captureErr.flush();
             }
             catch (IOException ex) {
                 // ignore
@@ -125,7 +122,7 @@ public @interface   CaptureSystemOutput {
         @Override
         public String toString() {
             flush();
-            return this.copy.toString();
+            return copy.toString();
         }
 
         private static class CaptureOutputStream extends OutputStream {
@@ -140,14 +137,14 @@ public @interface   CaptureSystemOutput {
             }
 
             PrintStream getOriginal() {
-                return this.original;
+                return original;
             }
 
             @Override
             public void write(int b) throws IOException {
-                this.copy.write(b);
-                this.original.write(b);
-                this.original.flush();
+                copy.write(b);
+                original.write(b);
+                original.flush();
             }
 
             @Override
@@ -157,14 +154,14 @@ public @interface   CaptureSystemOutput {
 
             @Override
             public void write(byte[] b, int off, int len) throws IOException {
-                this.copy.write(b, off, len);
-                this.original.write(b, off, len);
+                copy.write(b, off, len);
+                original.write(b, off, len);
             }
 
             @Override
             public void flush() throws IOException {
-                this.copy.flush();
-                this.original.flush();
+                copy.flush();
+                original.flush();
             }
 
         }
