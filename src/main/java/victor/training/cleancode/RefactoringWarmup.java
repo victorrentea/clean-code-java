@@ -29,7 +29,12 @@ class PlayGround {
 //       * Download "aggressive_refactoring.xml" from https://victorrentea.ro
 //       and import it in Settings>Editor>Inspections
 
-record R(int x) {}
+record R(int x) {
+  public int g2() {
+    System.out.println("b=" + 2); // doar pe UC323
+    return 1 + 2 + x();
+  }
+}
 class One {
   private final Two two;
 
@@ -38,16 +43,12 @@ class One {
   }
 
   public int f() {
-    two.g2(new R(7)); // UC 323
-    return 2 * two.g2(new R(3)); // UC 17
+    new R(7).g2(); // UC 323
+    return 2 * new R(3).g2(); // UC 17
   }
 }
 
 class Two {
-  public int g2(R r) {
-    System.out.println("b=" + 2); // doar pe UC323
-    return 1 + 2 + r.x();
-  }
 
   public void unknown() {
     System.out.println("b=" + 987);
