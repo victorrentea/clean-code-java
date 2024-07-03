@@ -67,6 +67,8 @@ class CarSearchCriteria { // a DTO received from JSON
   }
 }
 
+//@Getter
+//@Setter
 @Entity //Hibernate  = sfintele entitati pe care toata logica ta sprijina
 class CarModel { // the Domain Entity Model👑
   @Id
@@ -80,6 +82,7 @@ class CarModel { // the Domain Entity Model👑
 //  private int endYear;
   @Embedded // NU AM NEVOIE NICI UN ALTER TABLE. in DB 1 tabela, in Java 2 obiecte.
   // ORMapper-ul stie sa faca mapping intre ele
+//  @Setter(AccessLevel.NONE) // pe asta, nu vreau setter
   private Interval yearInterval;
 
   protected CarModel() {
