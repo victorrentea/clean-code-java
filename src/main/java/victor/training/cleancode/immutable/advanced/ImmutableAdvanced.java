@@ -1,7 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Builder;
 
 import java.util.stream.Stream;
 
@@ -29,19 +28,24 @@ public class ImmutableAdvanced {
 //        immutable.list(),
 //        immutable.other());
     // lui victor nu-i place
-    return immutable.toBuilder()
-        .x(immutable.x() + 1)
-        .y(immutable.y() + 1)
-        .build();
+//    return immutable.toBuilder()
+//        .x(immutable.x() + 1)
+//        .y(immutable.y() + 1)
+//        .build();
+
+    return immutable.withXY(immutable.x() + 1, immutable.y() + 1);
   }
 }
 
-@Builder(toBuilder = true) // lombok
+//@Builder(toBuilder = true) // lombok
 record Immutable(
     Integer x,
     Integer y,
     ImmutableList<Integer> list,
     Other other) { // deep immutable
+  public Immutable withXY(int x, int y) {// WITHer
+    return new Immutable(x, y, list, other);
+  }
 }
 
 record Other(int a) {
