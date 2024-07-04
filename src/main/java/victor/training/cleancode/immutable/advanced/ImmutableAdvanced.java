@@ -10,7 +10,7 @@ public class ImmutableAdvanced {
   public static void main(String[] args) {
     ImmutableList<Integer> list = Stream.of(1, 2, 3).collect(toImmutableList()); // ArrayList
 
-    Immutable immutable = new Immutable(1, 2, list, new Other(15));
+    Immutable immutable = new Immutable(new Point(1, 2), list, new Other(15));
     System.out.println("Before: " + immutable);
 
     Immutable moved = wilderness(immutable);
@@ -35,21 +35,30 @@ public class ImmutableAdvanced {
 
 //    return immutable.withXY(immutable.x() + 1, immutable.y() + 1);
 
-    return immutable.moveBy(1, 1); // au fromage
+    return immutable.withPoint(immutable.point().moveBy(1, 1)); // au fromage
   }
 }
 
+record Point(int x, int y) {
+  public Point moveBy(int dx, int dy) {
+    return new Point(x + dx, y + dy);
+  }
+}
 //@Builder(toBuilder = true) // lombok
 record Immutable(
-    Integer x,
-    Integer y,
+//    Integer x,
+//    Integer y,
+    Point point,
     ImmutableList<Integer> list,
     Other other) { // deep immutable
   //  public Immutable withXY(int x, int y) {// WITHer
 //    return new Immutable(x, y, list, other);
 //  }
-  public Immutable moveBy(int dx, int dy) {
-    return new Immutable(x + dx, y + dy, list, other);
+//  public Immutable moveBy(int dx, int dy) {
+//    return new Immutable(x + dx, y + dy, list, other);
+//  }
+  public Immutable withPoint(Point point) {
+    return new Immutable(point, list, other);
   }
 }
 
