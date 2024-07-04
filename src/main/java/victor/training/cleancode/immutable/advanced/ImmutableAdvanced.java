@@ -20,56 +20,16 @@ public class ImmutableAdvanced {
 
   private static void wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
-    immutable.getList().clear();// deprecation warning in IDE
+//    immutable.getList().clear();// deprecation warning in IDE
   }
 }
 
-class Immutable {
-  private final Integer x;
-  private final Integer y;
-  // nu poti folosi ImmutanleList in @Entity de hibernate
-  private final ImmutableList<Integer> list; // e de la google si repara java. guava = google java = google-java-commoms
-  private final Other other;
-
-  Immutable(Integer x, Integer y, ImmutableList<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list;
-    this.other = other;
-  }
-
-  public ImmutableList<Integer> getList() {
-//    return new ArrayList<>(list); // #1 prost = malloc + clientul crede ca a modificat lista
-//    return Collections.unmodifiableList(list); // DA: decoreaza lista originala blocand orice mutatie (pune o coaja peste lista originala))
-    return list; // DA: decoreaza lista originala blocand orice mutatie (pune o coaja peste lista originala))
-  }
-  public Integer getX() {
-    return x;
-  }
-  public Integer getY() {
-    return y;
-  }
-  public Other getOther() {
-    return other;
-  }
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
-  }
+record Immutable(
+    Integer x,
+    Integer y,
+    ImmutableList<Integer> list,
+    Other other) { // deep immutable
 }
 
-class Other {
-  private int a;
-
-  public Other(int a) {
-    this.a = a;
-  }
-
-  public int getA() {
-    return a;
-  }
-
-  public void setA(int a) {
-    this.a = a;
-  }
+record Other(int a) {
 }
