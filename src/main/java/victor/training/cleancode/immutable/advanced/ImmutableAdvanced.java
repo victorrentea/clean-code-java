@@ -13,14 +13,20 @@ public class ImmutableAdvanced {
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
 
-    wilderness(immutable);
+    Immutable moved = wilderness(immutable);
+    System.out.println("After:  " + moved);
 
-    System.out.println("After:  " + immutable);
   }
 
-  private static void wilderness(Immutable immutable) {
+  private static Immutable wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
 //    immutable.getList().clear();// deprecation warning in IDE
+    // TODO wilderness poate muta x-y al immutable
+    return new Immutable(
+        immutable.x() + 1,
+        immutable.y() + 1,
+        immutable.list(),
+        immutable.other());
   }
 }
 
