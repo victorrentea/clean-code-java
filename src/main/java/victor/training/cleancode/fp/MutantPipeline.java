@@ -8,12 +8,11 @@ import java.util.List;
 
 public class MutantPipeline {
   public int totalActiveOrderPrice(List<Order> orders) {
-    int sum = 0;
-    orders.stream()
-        .filter(order -> order.isActive())
-        .forEach(order -> {
-//           sum += order.getPrice(); // let's add to sum
-        });
+    int sum = 0; // stiva thread curent
+    orders.parallelStream()
+        .filter(Order::isActive)
+//        .forEach(order -> sum += order.price()); // nu poate pt ca ar permite modificari concurente la thread stack
+        .forEach(order -> sum += order.price());
     return sum;
   }
 
