@@ -1,5 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ public class ImmutableAdvanced {
 
   private static void wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
+    immutable.getList().clear();// bad practice, SOC clientului care crede CA CHIAR ti-a modificat lista
   }
 }
 
@@ -27,30 +29,25 @@ class Immutable {
   private final Integer y;
   private final List<Integer> list;
   private final Other other;
-
   Immutable(Integer x, Integer y, List<Integer> list, Other other) {
     this.x = x;
     this.y = y;
     this.list = list;
     this.other = other;
   }
-
   public List<Integer> getList() {
-    return list;
+//    return new ArrayList<>(list); // #1 prost = malloc + clientul crede ca a modificat lista
+    return Collections.unmodifiableList(list); // DA: decoreaza lista originala blocand orice mutatie (pune o coaja peste lista originala))
   }
-
   public Integer getX() {
     return x;
   }
-
   public Integer getY() {
     return y;
   }
-
   public Other getOther() {
     return other;
   }
-
   @Override
   public String toString() {
     return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
