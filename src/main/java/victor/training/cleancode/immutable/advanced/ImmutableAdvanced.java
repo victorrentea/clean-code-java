@@ -1,14 +1,14 @@
 package victor.training.cleancode.immutable.advanced;
 
-import java.util.Collections;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
+
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
-    List<Integer> list = Stream.of(1, 2, 3).collect(toList()); // ArrayList
+    ImmutableList<Integer> list = Stream.of(1, 2, 3).collect(toImmutableList()); // ArrayList
 
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
@@ -20,24 +20,28 @@ public class ImmutableAdvanced {
 
   private static void wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
-    immutable.getList().clear();// bad practice, SOC clientului care crede CA CHIAR ti-a modificat lista
+    immutable.getList().clear();// deprecation warning in IDE
   }
 }
 
 class Immutable {
   private final Integer x;
   private final Integer y;
-  private final List<Integer> list;
+  // nu poti folosi ImmutanleList in @Entity de hibernate
+  private final ImmutableList<Integer> list; // e de la google si repara java. guava = google java = google-java-commoms
   private final Other other;
-  Immutable(Integer x, Integer y, List<Integer> list, Other other) {
+
+  Immutable(Integer x, Integer y, ImmutableList<Integer> list, Other other) {
     this.x = x;
     this.y = y;
     this.list = list;
     this.other = other;
   }
-  public List<Integer> getList() {
+
+  public ImmutableList<Integer> getList() {
 //    return new ArrayList<>(list); // #1 prost = malloc + clientul crede ca a modificat lista
-    return Collections.unmodifiableList(list); // DA: decoreaza lista originala blocand orice mutatie (pune o coaja peste lista originala))
+//    return Collections.unmodifiableList(list); // DA: decoreaza lista originala blocand orice mutatie (pune o coaja peste lista originala))
+    return list; // DA: decoreaza lista originala blocand orice mutatie (pune o coaja peste lista originala))
   }
   public Integer getX() {
     return x;
