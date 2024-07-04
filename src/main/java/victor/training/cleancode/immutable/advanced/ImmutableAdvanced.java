@@ -33,7 +33,9 @@ public class ImmutableAdvanced {
 //        .y(immutable.y() + 1)
 //        .build();
 
-    return immutable.withXY(immutable.x() + 1, immutable.y() + 1);
+//    return immutable.withXY(immutable.x() + 1, immutable.y() + 1);
+
+    return immutable.moveBy(1, 1); // au fromage
   }
 }
 
@@ -43,8 +45,11 @@ record Immutable(
     Integer y,
     ImmutableList<Integer> list,
     Other other) { // deep immutable
-  public Immutable withXY(int x, int y) {// WITHer
-    return new Immutable(x, y, list, other);
+  //  public Immutable withXY(int x, int y) {// WITHer
+//    return new Immutable(x, y, list, other);
+//  }
+  public Immutable moveBy(int dx, int dy) {
+    return new Immutable(x + dx, y + dy, list, other);
   }
 }
 
