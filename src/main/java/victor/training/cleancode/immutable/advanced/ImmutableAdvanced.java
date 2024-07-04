@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Builder;
 
 import java.util.stream.Stream;
 
@@ -22,14 +23,20 @@ public class ImmutableAdvanced {
     // dark, deep logic not expected to change the immutable object x,y
 //    immutable.getList().clear();// deprecation warning in IDE
     // TODO wilderness poate muta x-y al immutable
-    return new Immutable(
-        immutable.x() + 1,
-        immutable.y() + 1,
-        immutable.list(),
-        immutable.other());
+//    return new Immutable(
+//        immutable.x() + 1,
+//        immutable.y() + 1,
+//        immutable.list(),
+//        immutable.other());
+    // lui victor nu-i place
+    return immutable.toBuilder()
+        .x(immutable.x() + 1)
+        .y(immutable.y() + 1)
+        .build();
   }
 }
 
+@Builder(toBuilder = true) // lombok
 record Immutable(
     Integer x,
     Integer y,
