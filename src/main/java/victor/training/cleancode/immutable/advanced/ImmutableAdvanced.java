@@ -13,12 +13,11 @@ public class ImmutableAdvanced {
     Immutable immutable = new Immutable(new Point(1, 2), list, new Other(15));
     System.out.println("Before: " + immutable);
 
-    Immutable moved = wilderness(immutable);
+    Immutable moved = immutable.withPoint(wilderness(immutable.point()));
     System.out.println("After:  " + moved);
-
   }
 
-  private static Immutable wilderness(Immutable immutable) {
+  private static Point wilderness(Point point) {
     // dark, deep logic not expected to change the immutable object x,y
 //    immutable.getList().clear();// deprecation warning in IDE
     // TODO wilderness poate muta x-y al immutable
@@ -34,8 +33,7 @@ public class ImmutableAdvanced {
 //        .build();
 
 //    return immutable.withXY(immutable.x() + 1, immutable.y() + 1);
-
-    return immutable.withPoint(immutable.point().moveBy(1, 1)); // au fromage
+    return point.moveBy(1, 1); // au fromage
   }
 }
 
