@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
 
-class PlayGround {
+class RefactoringWarmup {
   public static void main(String[] args) {
     System.out.println(new One(new Two()).f());
   }
