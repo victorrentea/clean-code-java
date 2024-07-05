@@ -22,9 +22,7 @@ public class Guards {
           } else {
             throw new IllegalArgumentException("Any marine should have the years of service set");
           }
-        } else {
-          result = retiredAmount();
-        }
+        } else result = retiredAmount();
       } else {
         result = DEAD_PAY_AMOUNT;
       }
@@ -41,10 +39,6 @@ public class Guards {
 
 record Marine(boolean dead, boolean retired, Integer yearsService, List<Award> awards) {
 }
-//There are only two things hard in programing:
-//    cache invalidation and naming things
-
-//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 record BonusPackage(int value) {
 }
