@@ -1,9 +1,24 @@
 package victor.training.cleancode;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 class RefactoringWarmup {
   public static void main(String[] args) {
     System.out.println(new One(new Two()).f());
+    loop();
+  }
+
+  private static void loop() {
+    List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    double ssq = 0;
+    for (Integer number : numbers) {
+      if (number % 2 == 0) {
+        ssq += number * number;
+      }
+    }
+    System.out.println(Math.sqrt(ssq));
   }
 }
 
@@ -25,6 +40,7 @@ class RefactoringWarmup {
 //    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
 //    - Move Method 'g' into R
 //    - Preview method/class: Ctrl-Shift-I
+//    - Quickfix for->stream
 //    - Change inspection severity & highlighting
 //       * Download "aggressive_refactoring.xml" from https://victorrentea.ro
 //       and import it in Settings>Editor>Inspections
