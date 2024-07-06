@@ -1,28 +1,59 @@
 package victor.training.cleancode;
 
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
 
 public class SplitLoopTest {
 
-   @Test
-   public void characterizationTest() {
-      String actual = new SplitLoop().computeStats(asList(
-          new Employee(1, 24, 2000, false),
-          new Employee(1, 27, 2000, false),
-          new Employee(2, 28, 1500, true),
-          new Employee(3, 30, 2500, true)));
-      assertEquals("Average age = 25; Average salary = 2000.0", actual);
-   }
+    @Test
+    void computesCorrectAverageSalaryAndTotalConsultantSalary() {
+        List<Employee> employees = List.of(
+            Employee.builder().id(1).age(24).salary(2000).consultant(false).build(),
+            Employee.builder().id(2).age(27).salary(2000).consultant(false).build(),
+            Employee.builder().id(3).age(28).salary(1500).consultant(true).build(),
+            Employee.builder().id(4).age(30).salary(2500).consultant(true).build()
+        );
+
+        String result = new SplitLoop().computeStats(employees);
+
+        assertEquals("Total consultant salary: 4000.0; Average salary = 2000.0 of [1, 2, 3, 4]", result);
+    }
+
+    @Test
+    void returnsZeroForEmptyEmployeeList() {
+        List<Employee> employees = new ArrayList<>();
+
+        String result = new SplitLoop().computeStats(employees);
+
+        assertEquals("Total consultant salary: 0.0; Average salary = NaN of []", result);
+    }
+
+    @Test
+    void computesCorrectlyWithAllConsultants() {
+        List<Employee> employees = List.of(
+            Employee.builder().id(1).age(24).salary(3000).consultant(true).build(),
+            Employee.builder().id(2).age(27).salary(4000).consultant(true).build()
+        );
+
+        String result = new SplitLoop().computeStats(employees);
+
+        assertEquals("Total consultant salary: 7000.0; Average salary = 3500.0 of [1, 2]", result);
+    }
+
+    @Test
+    void computesCorrectlyWithNoConsultants() {
+        List<Employee> employees = List.of(
+            Employee.builder().id(1).age(24).salary(2000).consultant(false).build(),
+            Employee.builder().id(2).age(27).salary(2500).consultant(false).build()
+        );
+
+        String result = new SplitLoop().computeStats(employees);
+
+        assertEquals("Total consultant salary: 0.0; Average salary = 2250.0 of [1, 2]", result);
+    }
 
 }

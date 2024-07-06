@@ -37,10 +37,10 @@ public class PaymentProcessor {
     });
   }
 
-  private Try<String> process(final FileWithMetadata wrapped) {
+  private Try<String> process(FileWithMetadata wrapped) {
     return Try.of(() -> {
       System.out.println("Insert in DB: " + wrapped);
-      final Set<Result> results = executorService.invokeAll(toCallable(wrapped))
+      Set<Result> results = executorService.invokeAll(toCallable(wrapped))
           .stream()
           .map(tFuture -> Try.of(tFuture::get)
               .onFailure(throwable -> logError("Worker failed", throwable))
@@ -57,12 +57,12 @@ public class PaymentProcessor {
     });
   }
 
-  private Set<Callable<Result>> toCallable(final FileWithMetadata wrapped) {
+  private Set<Callable<Result>> toCallable(FileWithMetadata wrapped) {
     return null;
   }
 
   private FileWithMetadata loadMetadata(PaymentsFile paymentsFile) {
-    if (paymentsFile.payments().isEmpty()) {
+    if (paymentsFile.payments().size() == 0) {
       throw new IllegalArgumentException("Empty file");
     }
     if (paymentsFile.payments().size() > 1000) {
@@ -75,7 +75,7 @@ public class PaymentProcessor {
   }
 
 
-  private void logError(final String someErrorMessage, final Throwable throwable) {
+  private void logError(String someErrorMessage, Throwable throwable) {
     System.out.println(someErrorMessage + ": " + throwable);
   }
 
