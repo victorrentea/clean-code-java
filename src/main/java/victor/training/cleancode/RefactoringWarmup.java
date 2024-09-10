@@ -6,7 +6,7 @@ import java.util.List;
 
 class RefactoringWarmup {
   public static void main(String[] args) {
-    System.out.println(new One(new Two()).f());
+    System.out.println(new One(new Two()).ff());
     loop();
   }
 
@@ -33,7 +33,7 @@ class One {
     this.two = two;
   }
 
-  public int f() {
+  public int ff() {
     R r = new R(3);
     int altundeva = two.g(r.x(), false); // cazul meu fara PRINT
     return 2 * two.g(r.x());
