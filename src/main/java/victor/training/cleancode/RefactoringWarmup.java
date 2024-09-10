@@ -35,17 +35,15 @@ class One {
 
   public int f() {
     R r = new R(3);
-    int altundeva = two.g(r.x(), false); // cazul meu fara PRINT, aici NU
-    return 2 * two.g(r.x(), true); // aici DA
+    int altundeva = two.g(r.x()); // cazul meu fara PRINT
+    return 2 * two.g(r.x());
   }
 }
 
 class Two {
-  public int g(int x, boolean cuPrint) {
+  public int g(int x) {
     int b = 2;
-    if (cuPrint) {
-      System.out.println("b=" + b);
-    }
+    System.out.println("b=" + b);
     return 1 + b + x;
   }
 
