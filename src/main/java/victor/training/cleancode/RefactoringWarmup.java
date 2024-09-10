@@ -23,8 +23,8 @@ class RefactoringWarmup {
 }
 
 
-
-record R(int x) {}
+record R(int x) {
+}
 
 class One {
   private final Two two;
@@ -41,6 +41,13 @@ class One {
 }
 
 class Two {
+
+  /** @deprecated please use {@link Two#g(int, boolean)} (int,boolean)} instead*/
+  @Deprecated(since = "1.6", forRemoval = true)
+  public int g(int x) {
+    return g(x, false);
+  }
+
   public int g(int x, boolean cuPrint) {
     int b = 2;
     if (cuPrint) {
