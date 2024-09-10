@@ -3,6 +3,7 @@ package victor.training.cleancode;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 class RefactoringWarmup {
   public static void main(String[] args) {
@@ -22,28 +23,7 @@ class RefactoringWarmup {
   }
 }
 
-// TODO: Practice Refactoring
-//  * How to?
-//    - Select text > Hover
-//    - Right-click > Refactor
-//    - Ctrl-Alt-Shift-T/^T to
-//    - Keys: [Ctrl-Alt / Opt-Cmd] + [V]ariable/[M]ethod/[P]arameter/i[N]line
-//  * What? // after every action undo/revert to start clean
-//    - Inline[N] Variable 'b'
-//    - Extract [V]ariable '1', '3 * two.g()'
-//    - Extract [M]ethod 'System.out..'
-//    - Inline[N] Method 'g'
-//    - Extract [P]arameter '1', 'r.x()'
-//    - Inline[N] Parameter 'c'
-//    - Change Signature 'g': add 1 param with default as 1st arg
-//    - Extract Interface 'Two'->ITwo; - Inline to Anonymous Class to destroy interface
-//    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
-//    - Move Method 'g' into R
-//    - Preview method/class: Ctrl-Shift-I
-//    - Quickfix for->stream
-//    - Change inspection severity & highlighting
-//       * Download "aggressive_refactoring.xml" from https://victorrentea.ro
-//       and import it in Settings>Editor>Inspections
+
 
 record R(int x) {}
 
@@ -55,15 +35,21 @@ class One {
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    R r = new R(3);
+    int altundeva = two.gInternDeCareNimeniSaNuStie(r.x(), i -> {
+    }); // cazul meu fara PRINT
+    return 2 * two.g(r.x());
   }
 }
-
 class Two {
-  public int g(R r) {
+  public int g(int x) {
+    return gInternDeCareNimeniSaNuStie(x, i -> System.out.println("i=" + i));
+  }
+
+  public int gInternDeCareNimeniSaNuStie(int x, Consumer<Integer> lambdica) {
     int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
+    lambdica.accept(x);
+    return 1 + b + x;
   }
 
   public void unknown() {
