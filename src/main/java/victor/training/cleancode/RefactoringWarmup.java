@@ -45,8 +45,9 @@ class Two {
   /** @deprecated please use {@link Two#g(int, boolean)} (int,boolean)} instead*/
   @Deprecated(since = "1.6", forRemoval = true)
   public int g(int x) {
-    return g(x, true);
+    return g(x, false);
   }
+
   public int g(int x, boolean cuPrint) {
     int b = 2;
     if (cuPrint) {
