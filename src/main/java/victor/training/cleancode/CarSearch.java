@@ -30,12 +30,27 @@ class SomeOtherClientCode {
 }
 
 class MathUtil {
-
+  /**
+   * @deprecated Use {@link #intervalsIntersect(Interval, Interval)} instead
+   */
+  @Deprecated
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+    return intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+  }
+
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
   }
 }
 
+record Interval(int start, int end) {
+}
+
+//@Value// love mai mult decat @Data, pt ca e immutable= private tot si final -setteri si +constructor
+//class Interval2 {
+//  int start;
+//  int end;
+//}
 
 class CarSearchCriteria { // a DTO received from JSON
   private final int startYear;
