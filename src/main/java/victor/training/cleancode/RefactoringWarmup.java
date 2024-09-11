@@ -27,9 +27,9 @@ class RefactoringWarmup {
 record R(int x) {}
 
 class One {
-  private final ITwo two;
+  private final Two two;
 
-  One(ITwo two) {
+  One(Two two) {
     this.two = two;
   }
 
@@ -40,17 +40,15 @@ class One {
   }
 }
 
-class Two implements ITwo {
+class Two {
   /**
    * @deprecated Use {@link #g(int, boolean)} instead
    */
   @Deprecated
-  @Override
   public int g(int x) {
     return g(x, true);
   }
 
-  @Override
   public int g(int x, boolean cuPrint) {
     int b = 2;
     if (cuPrint) {
@@ -59,7 +57,6 @@ class Two implements ITwo {
     return 1 + b + x;
   }
 
-  @Override
   public void unknown() {
     System.out.println("b=" + 987);
   }

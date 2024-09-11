@@ -5,18 +5,21 @@ import java.util.stream.Collectors;
 
 class CarSearch {
 
+  private static boolean intersectsYears(CarModel carModel, CarSearchCriteria criteria) {
+    return MathUtil.intervalsIntersect(
+        criteria.getStartYear(), criteria.getEndYear(),
+        carModel.getStartYear(), carModel.getEndYear());
+  }
+
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> intersectsYears(carModel, criteria))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 }
-
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
     System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
@@ -41,7 +44,9 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
     this.make = make;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }
@@ -74,7 +79,9 @@ class CarModel { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }

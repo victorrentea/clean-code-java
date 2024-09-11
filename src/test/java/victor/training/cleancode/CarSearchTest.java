@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CarSearchTest {
 
@@ -17,7 +17,7 @@ class CarSearchTest {
    // can't afford a 2021 car
    @Test
    void byYear_match() {
-      CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
+      CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford Mk2");
 
       List<CarModel> models = searchEngine.filterCarModels(criteria, List.of(fordFocusMk2));
 
