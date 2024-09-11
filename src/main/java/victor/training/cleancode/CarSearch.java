@@ -1,20 +1,16 @@
 package victor.training.cleancode;
 
+import lombok.Value;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 class CarSearch {
 
-  private static boolean intersectsYears(CarModel carModel, CarSearchCriteria criteria) {
-    return MathUtil.intervalsIntersect(
-        criteria.getStartYear(), criteria.getEndYear(),
-        carModel.getStartYear(), carModel.getEndYear());
-  }
-
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> intersectsYears(carModel, criteria))
+        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
@@ -31,19 +27,35 @@ class SomeOtherClientCode {
 
 class MathUtil {
   /**
-   * @deprecated Use {@link #intervalsIntersect(Interval, Interval)} instead
+   * @deprecated Use {@link Interval#intersects(Interval)} instead
    */
   @Deprecated
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+    return new Interval(start1, end1).intersects(new Interval(start2, end2));
   }
 
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
-  }
 }
 
-record Interval(int start, int end) {
+// vreau sa fie global in aplicatie sau specific fluxului meu?
+@Value
+final class Interval {
+  int start;
+  int end;
+
+  public Interval(int start, int end) {
+    if (start > end) {  // TODO vrentea 11.09.2024:   de confirmat cu produsu, am trimis mai lui x@..com
+      this.end = start;
+      this.start = end;
+    } else {
+      this.start = start;
+      this.end = end;
+    }
+  }
+
+  boolean intersects(Interval other) {
+    return start <= other.end && end >= other.start;
+  }
+
 }
 
 //@Value// love mai mult decat @Data, pt ca e immutable= private tot si final -setteri si +constructor
@@ -64,6 +76,10 @@ class CarSearchCriteria { // a DTO received from JSON
     }
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   public int getStartYear() {
@@ -99,6 +115,10 @@ class CarModel { // the Entity Model👑
     }
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   public Long getId() {
