@@ -5,12 +5,16 @@ import java.util.stream.Collectors;
 
 class CarSearch {
 
+  private static boolean filterByYears(CarSearchCriteria criteria, CarModel carModel) {
+    return MathUtil.intervalsIntersect(
+        criteria.getStartYear(), criteria.getEndYear(),
+        carModel.getStartYear(), carModel.getEndYear());
+  }
+
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> filterByYears(criteria, carModel))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
