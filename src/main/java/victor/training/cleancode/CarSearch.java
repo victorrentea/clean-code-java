@@ -5,16 +5,10 @@ import java.util.stream.Collectors;
 
 class CarSearch {
 
-  private static boolean filterByYears(CarSearchCriteria criteria, CarModel carModel) {
-    Range criteriaRange = new Range(criteria.getStartYear(), criteria.getEndYear());
-    Range carModelRange = new Range(carModel.getStartYear(), carModel.getEndYear());
-    return criteriaRange.intersects(carModelRange);
-  }
-
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> filterByYears(criteria, carModel))
+        .filter(carModel -> criteria.getYearRange().intersects(carModel.getYearRange()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
@@ -41,7 +35,8 @@ record Range(int start, int end) {
 }
 
 
-class CarSearchCriteria { // a DTO received from JSON
+class CarSearchCriteria { // a DTO received from JSON (payload of a request)
+  // don't change its fields -> breaking change your API clients
   private final int startYear;
   private final int endYear;
   private final String make;
@@ -51,6 +46,10 @@ class CarSearchCriteria { // a DTO received from JSON
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  Range getYearRange() { //helper function to support my core logic , good practice
+    return new Range(startYear, endYear);
   }
 
   public int getStartYear() {
@@ -67,13 +66,12 @@ class CarSearchCriteria { // a DTO received from JSON
 }
 
 // @Entity
-class CarModel { // the Entity Model👑
+class CarModel { // the Entity Model👑 < best part is that we should continuously improve its modelling
   // @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  private Range yearRange; // dramatic change : from 2 fields to a Range object
 
   protected CarModel() {
   } // for Hibernate
@@ -82,8 +80,11 @@ class CarModel { // the Entity Model👑
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearRange = new Range(startYear, endYear);
+  }
+
+  Range getYearRange() {
+    return yearRange;
   }
 
   public Long getId() {
@@ -91,11 +92,11 @@ class CarModel { // the Entity Model👑
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearRange.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearRange.start();
   }
 
   public String getMake() {
