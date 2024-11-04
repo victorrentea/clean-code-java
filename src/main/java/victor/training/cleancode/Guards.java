@@ -6,6 +6,12 @@ public class Guards {
 
   public static final int DEAD_PAY_AMOUNT = 1;
 
+
+
+  private int retiredAmount() {
+    return 2;
+  }
+
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
     if (marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
@@ -22,7 +28,9 @@ public class Guards {
           } else {
             throw new IllegalArgumentException("Any marine should have the years of service set");
           }
-        } else result = retiredAmount();
+        } else {
+          result = retiredAmount();
+        }
       } else {
         result = DEAD_PAY_AMOUNT;
       }
@@ -30,10 +38,6 @@ public class Guards {
       throw new IllegalArgumentException("Not applicable!");
     }
     return result;
-  }
-
-  private int retiredAmount() {
-    return 2;
   }
 }
 
