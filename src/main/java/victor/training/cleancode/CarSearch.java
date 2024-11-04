@@ -29,6 +29,9 @@ class MathUtil {
 }
 
 record Range(int start, int end) {
+  Range { // constructor validation, object invariants
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
   public boolean intersects(Range other) {
     return start <= other.end && other.start <= end;
   }
@@ -79,7 +82,7 @@ class CarModel { // the Entity Model👑 < best part is that we should continuou
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+
     this.yearRange = new Range(startYear, endYear);
   }
 
