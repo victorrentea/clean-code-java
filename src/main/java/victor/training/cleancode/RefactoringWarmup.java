@@ -12,12 +12,7 @@ class RefactoringWarmup {
 
   private static void loop() {
     List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-    double ssq = 0;
-    for (Integer number : numbers) {
-      if (number % 2 == 0) {
-        ssq += number * number;
-      }
-    }
+    double ssq = numbers.stream().filter(number -> number % 2 == 0).mapToDouble(number -> number * number).sum();
     System.out.println(Math.sqrt(ssq));
   }
 }
@@ -37,15 +32,13 @@ class RefactoringWarmup {
 //    - Inline[N] Parameter 'c'
 //    - Change Signature 'g': add 1 param with default as 1st arg
 //    - Extract Interface 'Two'->ITwo; - Inline to Anonymous Class to destroy interface
-//    - Rename 'g' -> 'h' by Shift-F6 or just edit>Alt-Enter>Rename
+//    - Rename 'g' -> 'h2' by Shift-F6 or just edit>Alt-Enter>Rename
 //    - Move Method 'g' into R
 //    - Preview method/class: Ctrl-Shift-I
 //    - Quickfix for->stream
 //    - Change inspection severity & highlighting
 //       * Download "aggressive_refactoring.xml" from https://victorrentea.ro
 //       and import it in Settings>Editor>Inspections
-
-record R(int x) {}
 
 class One {
   private final Two two;
@@ -55,18 +48,9 @@ class One {
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    R r = new R(3);
+    two.unknown();
+    return 2 * r.g();
   }
 }
 
-class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
-  }
-
-  public void unknown() {
-    System.out.println("b=" + 987);
-  }
-}
