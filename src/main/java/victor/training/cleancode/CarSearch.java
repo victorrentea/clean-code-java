@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 class CarSearch {
 
   private static boolean filterByYears(CarSearchCriteria criteria, CarModel carModel) {
-    return MathUtil.intervalsIntersect(
-        criteria.getStartYear(), criteria.getEndYear(),
-        carModel.getStartYear(), carModel.getEndYear());
+    Range criteriaRange = new Range(criteria.getStartYear(), criteria.getEndYear());
+    Range carModelRange = new Range(carModel.getStartYear(), carModel.getEndYear());
+    return criteriaRange.intersects(carModelRange);
   }
 
   // run tests
@@ -23,17 +23,20 @@ class CarSearch {
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(new Range(1000, 1600).intersects(new Range(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    Range range1 = new Range(1000, 1600);
+    System.out.println(range1.intersects(new Range(1250, 2000)));
   }
 }
 
 class MathUtil {
+}
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+record Range(int start, int end) {
+  public boolean intersects(Range other) {
+    return start <= other.end && other.start <= end;
   }
 }
 
