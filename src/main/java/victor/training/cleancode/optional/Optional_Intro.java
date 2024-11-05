@@ -17,14 +17,19 @@ public class Optional_Intro {
   }
 
   public static String getDiscountLine(Customer customer) {
-    return computeDiscount(customer.getMemberCard())
+//    return computeDiscount(customer.getMemberCard().get())
+    return customer.getMemberCard()
+        .flatMap(card -> computeDiscount(card))
         .map(Discount::globalPercentage)
         .map(p -> "You got a discount of %" + p)
         .orElse("Earn more points to get a discount!🤑");
   }
 
+  // optional should be used only for return values, not for method parameters or field types.
+
   private static Optional<Discount> computeDiscount(MemberCard card) {
-    if (card == null) { // guard condition
+    if (card == null) { // guard condition, defensive programming = paranoia about invalid input
+      // the best defense is a good offense: estinguish nulls in the first place or wrap them with Optional<>
       return Optional.empty();
     }
     if (card.getFidelityPoints() >= 100) {
