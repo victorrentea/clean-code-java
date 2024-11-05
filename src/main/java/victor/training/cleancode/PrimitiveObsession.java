@@ -14,8 +14,8 @@ public class PrimitiveObsession {
   }
 
   //<editor-fold desc="fetchData()">
-  public Map<CustomerId, Map<String, Integer>> fetchData(PaymentMethod paymentMethod) {
-    CustomerId customerId = new CustomerId(1L);
+  public Map<Long, Map<String, Integer>> fetchData(PaymentMethod paymentMethod) {
+    Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;
     return Map.of(customerId, Map.of(
@@ -25,38 +25,31 @@ public class PrimitiveObsession {
   }
   //</editor-fold>
 
-  // class Recording{ UUID/String/Long id; }
-  // 10K "String recordingId","rId", "id", "recId"
-  // String agentId, userId, agentUUID;
-
   public void primitiveObsession(PaymentMethod paymentMethod) {
 //    if (paymentMethod != CARD && paymentMethod != CASH) {
 //    if (!(paymentMethod == CARD || paymentMethod == CASH)) {
-    if (!paymentMethod.oneOf(CARD, CASH)) {
+    if (!(paymentMethod.oneOf(CARD, CASH))) {
       throw new IllegalArgumentException("Only CARD payment method is supported");
     }
-    Map<CustomerId, Map<String, Integer>> map = fetchData(paymentMethod);
+    Map<Long, Map<String, Integer>> map = fetchData(paymentMethod);
 
     for (var e : map.entrySet()) { // iterating map entries 🤢
       String pl = e.getValue().entrySet().stream()
           .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
           .collect(joining(", "));
-      CustomerId id = e.getKey();
-      System.out.println("cid=" + id.id + " got " + pl);
+      System.out.println("cid=" + e.getKey() + " got " + pl);
     }
   }
+
   enum PaymentMethod {
-    CARD, CASH, CREDIT, PAYPAL, UNKNOWN;
+    CARD, CASH;
 
     public static PaymentMethod valueOfIgnoringCase(String s) {
-      return valueOf(s.toUpperCase().trim());
+      return valueOf(s.toUpperCase());
     }
 
     public boolean oneOf(PaymentMethod... options) {
       return List.of(options).contains(this);
     }
-  }
-
-  record CustomerId(long id) {
   }
 }
