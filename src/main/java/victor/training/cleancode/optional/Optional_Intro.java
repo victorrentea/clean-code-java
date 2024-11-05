@@ -10,8 +10,8 @@ import java.util.Map;
 public class Optional_Intro {
   public static void main(String[] args) {
     // test with 10 points or no MemberCard
-    System.out.println(getDiscountLine(new Customer(
-        new MemberCard("bar", 60))));
+    System.out.println(getDiscountLine(new Customer(new MemberCard("bar", 60))));
+    System.out.println(getDiscountLine(new Customer(new MemberCard("bar", 10))));
   }
 
   public static String getDiscountLine(Customer customer) {
@@ -26,10 +26,12 @@ public class Optional_Intro {
     if (card.getFidelityPoints() >= 50) {
       return new Discount(3, Map.of());
     }
-    return null;
+    // Null-Object Design Pattern (GoF)= return an object that does nothing instead of returning a null
+    return Discount.NONE;
   }
 
   public record Discount(int globalPercentage, Map<String, Integer> categoryDiscounts) {
+    public static final Discount NONE = new Discount(0, Map.of());
   }
 }
 
