@@ -9,7 +9,7 @@ public class Boss {
   // 👌 TODO run tests
   public void bossLevel(boolean b, List<Task> tasks, boolean cr323) {
     int index = 0;
-    int j = tasks.size();
+    int tasksSize = tasks.size();
     if (tasks.size() == 0) {
       return;
     }
@@ -32,7 +32,7 @@ public class Boss {
         index++;
         System.out.println("Audit task #" + index + ": " + task);
       }
-      System.out.println("Logic6 " + j);
+      System.out.println("Logic6 " + tasksSize);
       System.out.println("Task Ids: " + taskIds);
     } else {
       System.out.println("Logic7 on fluff=false " + tasks);
