@@ -28,10 +28,6 @@ public class Optional_Intro {
   // optional should be used only for return values, not for method parameters or field types.
 
   private static Optional<Discount> computeDiscount(MemberCard card) {
-    if (card == null) { // guard condition, defensive programming = paranoia about invalid input
-      // the best defense is a good offense: estinguish nulls in the first place or wrap them with Optional<>
-      return Optional.empty();
-    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5, Map.of()));
     }
