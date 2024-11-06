@@ -1,7 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Value;
 
 import java.util.stream.Stream;
 
@@ -15,7 +14,6 @@ public class ImmutableAdvanced {
     System.out.println("Before: " + immutable);
 
     wilderness(immutable);
-    immutable.getList().clear();
 
     System.out.println("After:  " + immutable);
   }
@@ -25,12 +23,20 @@ public class ImmutableAdvanced {
   }
 }
 
-@Value // = @Getter + @ToString + @EqualsAndHashCode + @RequiredArgsConstructor + fields=final private
-class Immutable { // shallow immutable
-  Integer x;
-  Integer y;
-  ImmutableList<Integer> list; // NOT friends with Hibernate, but OK with Jackson, Mongo...
-  Other other;
+record Immutable(
+    Integer x,
+    Integer y,
+    ImmutableList<Integer> list,
+    Other other) {
+  //discouraged:
+//  public Immutable(Integer x, Integer y, Other other) {
+//    this(x, y, ImmutableList.<Integer>of(), other);
+//  }
+  // static factory method
+  public static Immutable of(Integer x, Integer y, Other other) {
+//    if (...)
+    return new Immutable(x, y, ImmutableList.of(), other);
+  }
 }
 
 record Other(int a) {
