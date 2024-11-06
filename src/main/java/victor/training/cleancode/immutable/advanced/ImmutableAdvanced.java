@@ -22,7 +22,7 @@ public class ImmutableAdvanced {
   }
 }
 
-class Immutable {
+class Immutable { // shallow immutable
   private final Integer x;
   private final Integer y;
   private final List<Integer> list;
