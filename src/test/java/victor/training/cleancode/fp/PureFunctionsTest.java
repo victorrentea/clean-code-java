@@ -7,6 +7,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import victor.training.cleancode.fp.PureFunction.CouponApplicationResult;
 import victor.training.cleancode.fp.support.*;
 
 import java.util.List;
@@ -51,6 +52,86 @@ class PureFunctionsTest {
     assertThat(result)
         .containsEntry(1L, 8d)
         .containsEntry(2L, 5d);
+  }
+
+  @Test
+  void appliesCouponsCorrectly() {
+    List<Product> products = List.of(
+        new Product().setId(1L).setCategory(ProductCategory.HOME),
+        new Product().setId(2L).setCategory(ProductCategory.ELECTRONICS)
+    );
+    Map<Long, Double> initialPrices = Map.of(1L, 100.0, 2L, 200.0);
+    List<Coupon> coupons = List.of(
+        new Coupon(ProductCategory.HOME, 10),
+        new Coupon(ProductCategory.ELECTRONICS, 20)
+    );
+
+    CouponApplicationResult result = PureFunction.applyCoupons(products, initialPrices, coupons);
+
+    assertThat(result.usedCoupons()).containsExactlyInAnyOrder(coupons.get(0), coupons.get(1));
+    assertThat(result.finalPrices()).containsEntry(1L, 90.0).containsEntry(2L, 180.0);
+  }
+
+  @Test
+  void noCouponsAppliedWhenNoneAreApplicable() {
+    List<Product> products = List.of(
+        new Product().setId(1L).setCategory(ProductCategory.HOME),
+        new Product().setId(2L).setCategory(ProductCategory.ELECTRONICS)
+    );
+    Map<Long, Double> initialPrices = Map.of(1L, 100.0, 2L, 200.0);
+    List<Coupon> coupons = List.of(
+        new Coupon(ProductCategory.KIDS, 10)
+    );
+
+    CouponApplicationResult result = PureFunction.applyCoupons(products, initialPrices, coupons);
+
+    assertThat(result.usedCoupons()).isEmpty();
+    assertThat(result.finalPrices()).containsEntry(1L, 100.0).containsEntry(2L, 200.0);
+  }
+
+  @Test
+  void appliesOnlyOneCouponPerProduct() {
+    List<Product> products = List.of(
+        new Product().setId(1L).setCategory(ProductCategory.HOME)
+    );
+    Map<Long, Double> initialPrices = Map.of(1L, 100.0);
+    List<Coupon> coupons = List.of(
+        new Coupon(ProductCategory.HOME, 10),
+        new Coupon(ProductCategory.HOME, 20)
+    );
+
+    CouponApplicationResult result = PureFunction.applyCoupons(products, initialPrices, coupons);
+
+    assertThat(result.usedCoupons()).containsExactly(coupons.get(0));
+    assertThat(result.finalPrices()).containsEntry(1L, 90.0);
+  }
+
+  @Test
+  void handlesEmptyProductList() {
+    List<Product> products = List.of();
+    Map<Long, Double> initialPrices = Map.of();
+    List<Coupon> coupons = List.of(
+        new Coupon(ProductCategory.HOME, 10)
+    );
+
+    CouponApplicationResult result = PureFunction.applyCoupons(products, initialPrices, coupons);
+
+    assertThat(result.usedCoupons()).isEmpty();
+    assertThat(result.finalPrices()).isEmpty();
+  }
+
+  @Test
+  void handlesEmptyCouponList() {
+    List<Product> products = List.of(
+        new Product().setId(1L).setCategory(ProductCategory.HOME)
+    );
+    Map<Long, Double> initialPrices = Map.of(1L, 100.0);
+    List<Coupon> coupons = List.of();
+
+    CouponApplicationResult result = PureFunction.applyCoupons(products, initialPrices, coupons);
+
+    assertThat(result.usedCoupons()).isEmpty();
+    assertThat(result.finalPrices()).containsEntry(1L, 100.0);
   }
 
 }
