@@ -13,13 +13,18 @@ public class ImmutableAdvanced {
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
 
-    wilderness(immutable);
+    Immutable immutable2 = wilderness(immutable);
 
-    System.out.println("After:  " + immutable);
+    System.out.println("After:  " + immutable2);
   }
 
-  private static void wilderness(Immutable immutable) {
+  private static Immutable wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
+    // i need to remove odd numbers from the list
+    ImmutableList<Integer> evens = immutable.list().stream()
+        .filter(i -> i % 2 == 0)
+        .collect(toImmutableList());
+    return new Immutable(immutable.x(), immutable.y(), evens, immutable.other());
   }
 }
 
