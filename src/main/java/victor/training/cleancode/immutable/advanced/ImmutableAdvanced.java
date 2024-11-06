@@ -1,6 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
 import java.util.stream.Stream;
 
@@ -24,53 +25,13 @@ public class ImmutableAdvanced {
   }
 }
 
+@Value // = @Getter + @ToString + @EqualsAndHashCode + @RequiredArgsConstructor + fields=final private
 class Immutable { // shallow immutable
-  private final Integer x;
-  private final Integer y;
-  private final ImmutableList<Integer> list; // NOT friends with Hibernate, but OK with Jackson, Mongo...
-  private final Other other;
-
-  Immutable(Integer x, Integer y, ImmutableList<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list;
-    this.other = other;
-  }
-
-  public ImmutableList<Integer> getList() {
-    return list;
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
-  }
+  Integer x;
+  Integer y;
+  ImmutableList<Integer> list; // NOT friends with Hibernate, but OK with Jackson, Mongo...
+  Other other;
 }
 
-class Other {
-  private int a;
-
-  public Other(int a) {
-    this.a = a;
-  }
-
-  public int getA() {
-    return a;
-  }
-
-  public void setA(int a) {
-    this.a = a;
-  }
+record Other(int a) {
 }
