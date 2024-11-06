@@ -13,6 +13,7 @@ public class ImmutableAdvanced {
     System.out.println("Before: " + immutable);
 
     wilderness(immutable);
+    immutable.getList().clear();
 
     System.out.println("After:  " + immutable);
   }
@@ -31,9 +32,13 @@ class Immutable { // shallow immutable
   Immutable(Integer x, Integer y, List<Integer> list, Other other) {
     this.x = x;
     this.y = y;
-    this.list = list;
+    this.list = List.copyOf(list);
     this.other = other;
   }
+
+//  public Iterator<Integer> listIterator() {
+//    return list.iterator();
+//  }
 
   public List<Integer> getList() {
     return list;
