@@ -4,7 +4,8 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 class Customer {
     @Getter
@@ -15,40 +16,39 @@ class Customer {
         this.name = name;
     }
 
-    public void addRental(Movie m, int daysRented) {
-        rentals.add(new Rental(m, daysRented));
+    private static String bodyLine(Rental rental) {
+        return "\t" + rental.movie().title() + "\t" + rental.amount();
+    }
+
+    public void addRental(Movie movie, int daysRented) {
+        rentals.add(new Rental(movie, daysRented));
     }
 
     public String statement() {
-        double totalAmount = getTotalAmount();
-        int frequentRenterPoints = getFrequentRenterPoints();
-        return getRentalRecords(totalAmount, frequentRenterPoints);
+        return header() + body() + footer();
     }
 
-    private String getRentalRecords(final double totalAmount, final int frequentRenterPoints) {
-        String rentalLines = rentals.stream()
-                .map(rental -> "\t" + rental.movie().title() + "\t" + rental.movie().priceCategory().calculateRentalPrice(rental.daysRented()))
-                .collect(Collectors.joining("\n"));
+    private String body() {
+        return rentals.stream().map(Customer::bodyLine).collect(joining("\n"));
+    }
 
-        // add footer lines
-        return "Rental Record for " + getName() + "\n" + (rentalLines + "\n") + ("Amount owed is " + totalAmount + "\n") + ("You earned " + frequentRenterPoints + " frequent renter points");
+    private String header() {
+        return "Rental Record for " + getName() + "\n";
+    }
+
+    private String footer() {
+        return "\nAmount owed is " + getTotalAmount() + "\n"
+               + "You earned " + getFrequentRenterPoints() + " frequent renter points";
     }
 
     private int getFrequentRenterPoints() {
-        return rentals.stream()
-                .mapToInt(movie -> {
-                    int points = 1;
-                    if (movie.movie().priceCategory() == PriceCategory.NEW_RELEASE && movie.daysRented() > 1) {
-                        points++;
-                    }
-                    return points;
-                })
-                .sum();
+        return rentals.stream().mapToInt(Rental::renterPoints).sum();
     }
 
     private double getTotalAmount() {
         return rentals.stream()
-                .mapToDouble(movie -> movie.movie().priceCategory().calculateRentalPrice(movie.daysRented()))
+            .mapToDouble(Rental::amount)
                 .sum();
     }
+
 }
