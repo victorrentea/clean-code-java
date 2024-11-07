@@ -1,7 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
-
+// Remove this comment (thi-cao)
 class Customer {
 	private String name;
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
@@ -53,6 +53,7 @@ class Customer {
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
+		
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
