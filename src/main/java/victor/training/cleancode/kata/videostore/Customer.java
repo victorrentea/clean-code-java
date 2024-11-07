@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
@@ -8,7 +9,7 @@ class Customer {
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie movie, int days) {
 		rentals.put(movie, days);
@@ -19,22 +20,29 @@ class Customer {
 	}
 
 	public String statement() {
-        int frequentRenterPoints = (int) (rentals.size() +
-                        rentals.keySet().stream()
-                                .filter(m -> m.priceCode() == Movie.PriceCode.NEW_RELEASE && rentals.get(m) > 1)
-                                .count());
+        long frequentRenterPoints = rentals.size() + rentals.keySet().stream()
+                                .filter(m -> isEligibleForBonus(m, rentals.get(m)))
+                                .count();
         StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 		// loop over each movie rental
         double totalRentalFee = rentals.keySet().stream()
                 .mapToDouble(movie -> getRentalFee(movie, rentals.get(movie))).sum();
 
-        rentals.keySet().forEach(movie -> result.append("\t").append(movie.title()).append("\t")
-                .append(getRentalFee(movie, rentals.get(movie))).append("\n"));
+        result.append(rentals.keySet().stream().map(this::getMovieAndPriceString).collect(Collectors.joining()));
 		// add footer lines
 		result.append("Amount owed is ").append(totalRentalFee).append("\n");
 		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
 		return result.toString();
 	}
+
+    private boolean isEligibleForBonus(Movie m, Integer daysRented) {
+        return m.priceCode() == Movie.PriceCode.NEW_RELEASE && daysRented > 1;
+    }
+
+    private String getMovieAndPriceString(Movie movie) {
+        return "\t" + movie.title() + "\t" +
+                getRentalFee(movie, rentals.get(movie)) + "\n";
+    }
 
     private static double getRentalFee(Movie movie, int daysRented) {
         double rentalFee = 0;
