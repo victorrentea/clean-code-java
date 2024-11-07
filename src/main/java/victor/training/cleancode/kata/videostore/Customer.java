@@ -25,14 +25,14 @@ class Customer {
 		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			double thisAmount = calculateRentalCost(each, dr);
+			int daysRental = rentals.get(each);
+			double thisAmount = calculateRentalCost(each, daysRental);
 			// add frequent renter points
 			frequentRenterPoints++;
-			// add bonus for a two day new release rental
+			// add bonus for a two days new release rental
 			if (each.priceCategory() != null &&
 				 (each.priceCategory() == PriceCategory.NEW_RELEASE)
-				 && dr > 1)
+				 && daysRental > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + each.title() + "\t" + thisAmount + "\n";
