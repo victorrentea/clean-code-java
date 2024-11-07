@@ -28,6 +28,5 @@ public enum PriceCategory {
         }
     };
 
-
     abstract double calculateRentalPrice(int daysRented);
 }
