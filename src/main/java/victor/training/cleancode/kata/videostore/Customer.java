@@ -2,10 +2,11 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
-    private String name;
-    private List<Rental> rentals = new ArrayList<>(); // preserves order of elements
+    private final String name;
+    private final List<Rental> rentals = new ArrayList<>(); // preserves order of elements
 
     public Customer(String name) {
         this.name = name;
@@ -24,10 +25,12 @@ class Customer {
     }
 
     public String statement() {
-        String result = "Rental Record for " + getName() + "\n";
-
-
         RentalStatement rentalStatement = computeRentalStatement();
+        return printRentalStatement(rentalStatement);
+    }
+
+    private String printRentalStatement(RentalStatement rentalStatement) {
+        String result = "Rental Record for " + getName() + "\n";
 
         for(RentalStatementItem rentalStatementItem: rentalStatement.rentalStatementItems()){
             // show figures line for this rental
@@ -41,25 +44,12 @@ class Customer {
     }
 
     private RentalStatement computeRentalStatement() {
+        double totalAmount;
+        List<RentalStatementItem> rentalStatementItems = rentals.stream().map(rental -> new RentalStatementItem(rental, rental.getRentalAmount()))
+                .collect(Collectors.toList());
 
-        Double totalAmount = 0.0;
-        List<RentalStatementItem> rentalStatementItems = new ArrayList<>();
-        for (Rental rental : rentals) {
-            double thisAmount =
-                    rental.getRentalAmount();
-
-            RentalStatementItem rentalStatementItem =
-                    new RentalStatementItem(rental, thisAmount);
-
-            rentalStatementItems.add(rentalStatementItem);
-        }
-
-        for (Rental rental : rentals) {
-            double thisAmount =
-                    rental.getRentalAmount();
-
-            totalAmount += thisAmount;
-        }
+        totalAmount = rentals.stream().mapToDouble(Rental::getRentalAmount)
+                .sum();
 
         // add frequent renter points
         int frequentRenterPoints = rentals.stream()
