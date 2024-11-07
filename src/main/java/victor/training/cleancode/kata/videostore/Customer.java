@@ -1,6 +1,8 @@
 package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 // Remove this comment (thi-cao)
 class Customer {
 	private String name;
@@ -18,20 +20,21 @@ class Customer {
 		return name;
 	}
 
+
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
+		for (Movie movie : rentals.keySet()) {
+			double currentMovieAmount = 0;
 			// determine amounts for every line
-			int daysRented = rentals.get(each);
-			thisAmount = getThisAmount(each.priceCode(), thisAmount, daysRented);
+			int daysRented = rentals.get(movie);
+			currentMovieAmount = getThisAmount(movie.priceCode(), currentMovieAmount, daysRented);
 
 			// show figures line for this rental
-			result += "\t" + each.title() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + movie.title() + "\t" + currentMovieAmount + "\n";
+			totalAmount += currentMovieAmount;
 		}
 		frequentRenterPoints = getFrequentRenterPoints();
 
