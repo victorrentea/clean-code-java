@@ -3,6 +3,7 @@ package victor.training.cleancode.kata.videostore;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
     @Getter
@@ -18,36 +19,26 @@ class Customer {
     }
 
     public String statement() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
+        double totalAmount = rentals.stream()
+                .mapToDouble(movie -> movie.movie().priceCategory().calculateRentalPrice(movie.daysRented()))
+                .sum();
+
+        int frequentRenterPoints = rentals.stream()
+                .mapToInt(movie -> {
+                    int points = 1;
+                    if (movie.movie().priceCategory() == PriceCategory.NEW_RELEASE && movie.daysRented() > 1) {
+                        points++;
+                    }
+                    return points;
+                })
+                .sum();
+
         String result = "Rental Record for " + getName() + "\n";
-        // loop over each movie rental
-        for (Rental rental : rentals) {
-			Movie movie = rental.movie();
-            double movieCost = movie.priceCategory().calculateRentalPrice(rental.daysRented());
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two days new release rental
-			if (movie.priceCategory() == PriceCategory.NEW_RELEASE && rental.daysRented() > 1) {
-				frequentRenterPoints++;
-			}
-            // show figures line for this rental
-            result += "\t" + movie.title() + "\t" + movieCost + "\n";
-            totalAmount += movieCost;
-        }
-        for (Rental rental : rentals) {
-			Movie movie = rental.movie();
-            double movieCost = movie.priceCategory().calculateRentalPrice(rental.daysRented());
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two days new release rental
-			if (movie.priceCategory() == PriceCategory.NEW_RELEASE && rental.daysRented() > 1) {
-				frequentRenterPoints++;
-			}
-            // show figures line for this rental
-            result += "\t" + movie.title() + "\t" + movieCost + "\n";
-            totalAmount += movieCost;
-        }
+        String rentalLines = rentals.stream()
+                .map(rental -> "\t" + rental.movie().title() + "\t" + rental.movie().priceCategory().calculateRentalPrice(rental.daysRented()))
+                .collect(Collectors.joining("\n"));
+
+        result += rentalLines + "\n";
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
