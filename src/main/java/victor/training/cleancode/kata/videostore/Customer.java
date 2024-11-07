@@ -3,6 +3,8 @@ package victor.training.cleancode.kata.videostore;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// test push
+
 class Customer {
     private final String name;
     private final List<Rental> rentals = new ArrayList<>();
