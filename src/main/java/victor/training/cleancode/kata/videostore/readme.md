@@ -6,3 +6,5 @@ This application supports a movie rental store/website
 - Keep tests green✅ (You are allowed to adjust the tests)
 - Refactor until you're proud™️
 - Have fun
+
+- Added by mikhail
