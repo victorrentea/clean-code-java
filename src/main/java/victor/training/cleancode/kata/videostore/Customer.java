@@ -1,49 +1,80 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
+    private String name;
+    private List<Rental> rentals = new ArrayList<>(); // preserves order of elements
 
-	public Customer(String name) {
-		this.name = name;
-	};
+    public Customer(String name) {
+        this.name = name;
+    }
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
-	}
+    private static int calculateFrequentRentalPoints(Rental rental) {
+        return rental.movie().priceCode() == Movie.PriceCode.NEW_RELEASE && rental.daysRented() > 1 ? 2 : 1;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void addRental(Movie m, int d) {
+        rentals.add(new Rental(m, d));
+    }
 
-	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
-		// loop over each movie rental
-		for (Movie movie : rentals.keySet()) {
-			// determine amounts for every line
-			int daysRented = rentals.get(movie);
+    public String getName() {
+        return name;
+    }
 
-			double thisAmount = movie.priceCode().calculateAmount(daysRented);
+    public String statement() {
+        String result = "Rental Record for " + getName() + "\n";
 
-			// add frequent renter points
-			frequentRenterPoints += calculateFrequentRentalPoints(movie.priceCode(), daysRented);
 
-			// show figures line for this rental
-			result += "\t" + movie.title() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
-	}
+        RentalStatement rentalStatement = computeRentalStatement();
 
-	private static int calculateFrequentRentalPoints(Movie.PriceCode priceCode, int daysRented) {
-		return priceCode == Movie.PriceCode.NEW_RELEASE && daysRented > 1 ? 2 : 1;
-	}
-	
+        for(RentalStatementItem rentalStatementItem: rentalStatement.rentalStatementItems()){
+            // show figures line for this rental
+            result += "\t" + rentalStatementItem.rental().movie().title() + "\t" + rentalStatementItem.rentalAmount() + "\n";
+        }
+
+        // add footer lines
+        result += "Amount owed is " + rentalStatement.totalAmount + "\n";
+        result += "You earned " + rentalStatement.frequentRenterPoints + " frequent renter points";
+        return result;
+    }
+
+    private RentalStatement computeRentalStatement() {
+
+        Double totalAmount = 0.0;
+        List<RentalStatementItem> rentalStatementItems = new ArrayList<>();
+        for (Rental rental : rentals) {
+            double thisAmount =
+                    rental.getRentalAmount();
+
+            RentalStatementItem rentalStatementItem =
+                    new RentalStatementItem(rental, thisAmount);
+
+            rentalStatementItems.add(rentalStatementItem);
+        }
+
+        for (Rental rental : rentals) {
+            double thisAmount =
+                    rental.getRentalAmount();
+
+            totalAmount += thisAmount;
+        }
+
+        // add frequent renter points
+        int frequentRenterPoints = rentals.stream()
+                .mapToInt(Customer::calculateFrequentRentalPoints)
+                .sum();
+
+
+        return new RentalStatement(rentalStatementItems, totalAmount, frequentRenterPoints);
+    }
+
+    record RentalStatement(List<RentalStatementItem> rentalStatementItems, Double totalAmount,
+                           int frequentRenterPoints) {
+    }
+
+    record RentalStatementItem(Rental rental, Double rentalAmount) {
+    }
+
 }
