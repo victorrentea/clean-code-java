@@ -48,8 +48,7 @@ class Customer {
         List<RentalStatementItem> rentalStatementItems = rentals.stream().map(rental -> new RentalStatementItem(rental, rental.getRentalAmount()))
                 .collect(Collectors.toList());
 
-        totalAmount = rentals.stream().mapToDouble(Rental::getRentalAmount)
-                .sum();
+        totalAmount = rentals.stream().mapToDouble(Rental::getRentalAmount).sum();
 
         // add frequent renter points
         int frequentRenterPoints = rentals.stream()
