@@ -3,15 +3,15 @@ package victor.training.cleancode.kata.videostore;
 import java.util.*;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int days) {
+		rentals.put(movie, days);
 	}
 
 	public String getName() {
@@ -19,43 +19,39 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+        int frequentRenterPoints = (int) (rentals.size() +
+                        rentals.keySet().stream()
+                                .filter(m -> m.priceCode() == Movie.PriceCode.NEW_RELEASE && rentals.get(m) > 1)
+                                .count());
+        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == PriceCode.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
-		}
+        double totalRentalFee = rentals.keySet().stream()
+                .mapToDouble(movie -> getRentalFee(movie, rentals.get(movie))).sum();
+
+        rentals.keySet().forEach(movie -> result.append("\t").append(movie.title()).append("\t")
+                .append(getRentalFee(movie, rentals.get(movie))).append("\n"));
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		result.append("Amount owed is ").append(totalRentalFee).append("\n");
+		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+		return result.toString();
 	}
+
+    private static double getRentalFee(Movie movie, int daysRented) {
+        double rentalFee = 0;
+        switch (movie.priceCode()) {
+            case REGULAR -> {
+                rentalFee += 2;
+                if (daysRented > 2)
+                    rentalFee += (daysRented - 2) * 1.5;
+            }
+            case NEW_RELEASE -> rentalFee += daysRented * 3;
+            case CHILDRENS -> {
+                rentalFee += 1.5;
+                if (daysRented > 3)
+                    rentalFee += (daysRented - 3) * 1.5;
+            }
+        }
+        return rentalFee;
+    }
+
 }
