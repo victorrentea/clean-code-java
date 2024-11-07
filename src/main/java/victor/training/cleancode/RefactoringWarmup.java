@@ -22,6 +22,7 @@ class RefactoringWarmup {
   }
 }
 
+
 // TODO: Practice Refactoring
 //  * How to?
 //    - Select text > Hover
