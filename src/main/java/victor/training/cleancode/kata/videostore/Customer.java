@@ -10,8 +10,8 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		rentals.put(movie, daysRented);
 	}
 
 	public String getName() {
@@ -28,26 +28,28 @@ class Customer {
 			// determine amounts for every line
 			int daysRented = rentals.get(each);
 			thisAmount = getThisAmount(each.priceCode(), thisAmount, daysRented);
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.priceCode() != null &&
-				 (each.priceCode() == PriceCode.NEW_RELEASE)
-				 && daysRented > 1)
-				frequentRenterPoints++;
+
 			// show figures line for this rental
 			result += "\t" + each.title() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
-		
+		frequentRenterPoints = getFrequentRenterPoints();
+
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
 
-	private static double getThisAmount(PriceCode each, double thisAmount, int daysRented) {
-        switch (each) {
+	private int getFrequentRenterPoints() {
+		return rentals.keySet().stream().mapToInt(movie -> {
+			int daysRented = rentals.get(movie);
+			return movie.priceCode() == PriceCode.NEW_RELEASE && daysRented > 1 ? 2 : 1;
+		}).sum();
+	}
+
+	private static double getThisAmount(PriceCode priceCode, double thisAmount, int daysRented) {
+        switch (priceCode) {
 			case REGULAR -> {
                 thisAmount += 2;
                 if (daysRented > 2)
