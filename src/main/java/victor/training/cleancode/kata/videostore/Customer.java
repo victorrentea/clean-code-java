@@ -3,7 +3,7 @@ package victor.training.cleancode.kata.videostore;
 import java.util.*;
 
 class Customer {
-	private String name;
+	private final String name;
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
 
 	public Customer(String name) {
@@ -24,24 +24,9 @@ class Customer {
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
-			switch (each.priceCategory()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
+			double thisAmount = calculateRentalCost(each, dr);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
@@ -57,5 +42,26 @@ class Customer {
 		result += "Amount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private static double calculateRentalCost(Movie each, int dr)
+	{
+		double thisAmount = 0;
+		switch (each.priceCategory()) {
+			case REGULAR:
+				thisAmount += 2;
+				if (dr > 2)
+					thisAmount += (dr - 2) * 1.5;
+				break;
+			case NEW_RELEASE:
+				thisAmount += dr * 3;
+				break;
+			case CHILDRENS:
+				thisAmount += 1.5;
+				if (dr > 3)
+					thisAmount += (dr - 3) * 1.5;
+				break;
+		}
+		return thisAmount;
 	}
 }
