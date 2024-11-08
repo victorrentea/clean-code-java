@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,7 @@ class SomeOtherClientCode {
 // canonical example = Money{amount, currency}
 // the more value objects, the better
 /** Closed interval */
+@Embeddable
 record Interval(int start, int end) {
   /** comutative */
   public boolean intersects(Interval other) {
@@ -73,8 +77,13 @@ class CarModel { // the Entity Model👑, private to my app. It is an arch goal 
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  // private BigDecimal transactionAmount;
+  // private String transactionCurrency; // WTF!!! NO
+  // private Money transactionAmount; // YES
+//  private int startYear;
+//  private int endYear;
+  @Embedded // no change in the DB schema! no ALTER TABLE! (ORM ftw)
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -83,12 +92,11 @@ class CarModel { // the Entity Model👑, private to my app. It is an arch goal 
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   Interval getYearInterval() {
-    return new Interval(startYear, endYear);
+    return yearInterval;
   }
 
   public Long getId() {
@@ -96,11 +104,11 @@ class CarModel { // the Entity Model👑, private to my app. It is an arch goal 
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearInterval.start();
   }
 
   public String getMake() {
