@@ -13,7 +13,7 @@ class CarSearch {
           int end1 = criteria.getEndYear();
           int start2 = carModel.getStartYear();
           int end2 = carModel.getEndYear();
-          return MathUtil.intervalsIntersect(new Interval(start1, end1), new Interval(start2, end2));
+          return new Interval(start1, end1).intervalsIntersect(new Interval(start2, end2));
         })
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
@@ -23,21 +23,19 @@ class CarSearch {
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
-  }
-}
-
-class MathUtil {
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
+    System.out.println(new Interval(1000, 1600).intervalsIntersect(new Interval(1250, 2000)));
   }
 }
 
 /** Closed interval */
 record Interval(int start, int end) {
+  /** comutative */
+  public boolean intervalsIntersect(Interval other) {
+    return start <= other.end && other.start <= end;
+  }
 }
 
 
