@@ -7,6 +7,17 @@ public class Guards {
   public static final int DEAD_PAY_AMOUNT = 1;
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
+    try {
+      int result = doGetPayAmount(marine, bonusPackage);
+      System.out.println("Log heavy .... " + result);
+      return result;
+    } catch (IllegalArgumentException e) {
+      System.out.println("Log light .... " + e.getMessage());
+      throw e;
+    }
+  }
+
+  private int doGetPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
     if (marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
       if (!marine.dead()) {
@@ -19,17 +30,19 @@ public class Guards {
             if (marine.awards().size() >= 3) {
               result += 2000;
             }
+            return result;
           } else {
             throw new IllegalArgumentException("Any marine should have the years of service set");
           }
-        } else result = retiredAmount();
+        } else {
+          return retiredAmount();
+        }
       } else {
-        result = DEAD_PAY_AMOUNT;
+        return DEAD_PAY_AMOUNT;
       }
     } else {
       throw new IllegalArgumentException("Not applicable!");
     }
-    return result;
   }
 
   private int retiredAmount() {
