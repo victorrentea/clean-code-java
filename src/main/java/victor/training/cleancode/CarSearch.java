@@ -34,6 +34,10 @@ class SomeOtherClientCode {
 /** Closed interval */
 @Embeddable
 record Interval(int start, int end) {
+  Interval { // you will never see an invalid interval again in your life (immutable!!)
+    // for select cases!
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
   /** comutative */
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
@@ -91,7 +95,6 @@ class CarModel { // the Entity Model👑, private to my app. It is an arch goal 
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.yearInterval = new Interval(startYear, endYear);
   }
 
