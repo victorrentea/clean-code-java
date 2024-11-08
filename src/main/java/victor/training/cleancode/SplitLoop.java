@@ -2,7 +2,6 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,15 +10,18 @@ import java.util.List;
 public class SplitLoop {
   // run tests
   public String computeStats(List<Employee> employees) {
-    List<Integer> employeeIds = new ArrayList<>();
     double totalConsultantSalary = 0;
     double averageSalary = 0;
+    List<Integer> employeeIds = employees.stream()
+        .map(Employee::id)
+        .toList();
+
+
     for (Employee employee : employees) {
       averageSalary += employee.salary();
       if (employee.consultant()) {
         totalConsultantSalary += employee.salary();
       }
-      employeeIds.add(employee.id());
     }
     f(averageSalary);
     System.out.println("Employee IDs: " + employeeIds);
