@@ -35,8 +35,13 @@ class SomeOtherClientCode {
 @Embeddable
 record Interval(int start, int end) {
   Interval { // you will never see an invalid interval again in your life (immutable!!)
-    // for select cases!
+    // for select cases! // not for all the attrs and structures
+    // examples: Order#status, Money#amount, Money#currencyx
     if (start > end) throw new IllegalArgumentException("start larger than end");
+    // === start <= end
+    // [1..3] OK
+    // [-7..-3] OK
+    // [-3..-7] NOT OK -> throws
   }
   /** comutative */
   public boolean intersects(Interval other) {
