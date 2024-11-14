@@ -2,8 +2,6 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,19 +15,16 @@ class PureFunction {
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
-  // TODO extract complexity into a pure function
-  public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
-    Customer customer = customerRepo.findById(customerId);
-    List<Product> products = productRepo.findAllById(productIds);
+  private static PriceCalculationResult applyCouponsToPrices(
+      List<Product> products,
+      Map<Long, Double> initialPrices,
+      List<Coupon> coupons) {
 
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
-      Double price = internalPrices.get(product.getId());
-      if (price == null) {
-        price = thirdPartyPricesApi.fetchPrice(product.getId());
-      }
-      for (Coupon coupon : customer.coupons()) {
+      double price = initialPrices.get(product.getId());
+      for (Coupon coupon : coupons) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {
           price = coupon.apply(product, price);
           usedCoupons.add(coupon);
@@ -37,9 +32,43 @@ class PureFunction {
       }
       finalPrices.put(product.getId(), price);
     }
+    return new PriceCalculationResult(usedCoupons, finalPrices);
+  }
 
-    couponRepo.markUsedCoupons(customerId, usedCoupons);
-    return finalPrices;
+  // TODO extract complexity into a pure function
+  public Map<Long, Double> computePrices(
+      long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
+//    assert internalPrices != null; // neah... assert can be disabled in prod with a JVM flag
+//    if (internalPrices== null) throw !!! = defensive programming== worse
+//    if (productIds.isEmpty()) throw !!! = defensive programming
+    // a key technique used by library code (used by unknown developers)
+    // but to avoid in core business logic
+    // you shall never ever ever see something of type collection being equal to null!!
+    // instead that thing (field, variable,param) should come in empty collection!!!!!
+    Customer customer = customerRepo.findById(customerId); // SELECT * FROM Customer WHERE id = ?
+    List<Product> products = productRepo.findAllById(productIds);// SELECT * FROM Product WHERE id IN (?, ?, ?)
+
+    Map<Long, Double> initialPrices = resolveInitialPrices(products, internalPrices);
+
+    PriceCalculationResult result = applyCouponsToPrices(products, initialPrices, customer.coupons());
+
+    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
+    return result.finalPrices();
+  }
+
+  private Map<Long, Double> resolveInitialPrices(List<Product> products, Map<Long, Double> internalPrices) {
+    Map<Long, Double> initialPrices = new HashMap<>();
+    for (Product product : products) {
+      Double price = internalPrices.get(product.getId());
+      if (price == null) {
+        price = thirdPartyPricesApi.fetchPrice(product.getId());
+      }
+      initialPrices.put(product.getId(), price);
+    }
+    return initialPrices;
+  }
+
+  private record PriceCalculationResult(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {
   }
 }
 
