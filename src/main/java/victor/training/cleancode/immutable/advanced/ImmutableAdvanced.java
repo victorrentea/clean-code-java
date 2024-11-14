@@ -1,7 +1,6 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
-import lombok.Value;
 
 import java.util.stream.Stream;
 
@@ -25,12 +24,12 @@ public class ImmutableAdvanced {
   }
 }
 
-@Value// generates equals, hashCode, toString, getters, makes al fields final
-class Immutable {
-  Integer x;
-  Integer y;
-  ImmutableList<Integer> list; // 3
-  Other other;
+// generates equals, hashCode, toString, getters, makes al fields final
+record Immutable(
+    Integer x,
+    Integer y,
+    ImmutableList<Integer> list,
+    Other other) {
 }
 
 record Other(int a) {
