@@ -1,8 +1,8 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Value;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -25,44 +25,12 @@ public class ImmutableAdvanced {
   }
 }
 
-class Immutable { // deep immutable
-  private final Integer x;
-  private final Integer y;
-  private final ImmutableList<Integer> list; // 3
-  private final Other other;
-
-  Immutable(Integer x, Integer y, ImmutableList<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list; //2 immutable clone
-//    this.list = List.copyOf(list); //2 immutable clone
-    this.other = other;
-  }
-
-  // 1
-//  public List<Integer> getList() {
-//    return Collections.unmodifiableList(list);
-//  }
-  public List<Integer> getList() {
-    return list;
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
-  }
+@Value// generates equals, hashCode, toString, getters, makes al fields final
+class Immutable {
+  Integer x;
+  Integer y;
+  ImmutableList<Integer> list; // 3
+  Other other;
 }
 
 record Other(int a) {
