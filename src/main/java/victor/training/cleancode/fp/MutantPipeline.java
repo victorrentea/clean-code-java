@@ -8,23 +8,27 @@ import java.util.List;
 
 public class MutantPipeline {
   public int totalActiveOrderPrice(List<Order> orders) {
-    int sum = 0;
-    orders.stream()
-        .filter(order -> order.isActive())
-        .forEach(order -> {
-//           sum += order.getPrice(); // let's add to sum
-        });
-    return sum;
+    // replace these
+    // var ref = new Object() {
+    //      int sum = 0;
+    //    };
+
+    //    final int[] sum = {0};
+
+    //    AtomicInteger sum = new AtomicInteger();
+
+    return orders.stream()
+        .filter(Order::isActive)
+        .mapToInt(Order::price)
+        .sum();
   }
 
 
   public List<LocalDate> getShipDates(List<Order> orders) {
     List<LocalDate> shipDates = new ArrayList<>();
-    orders.stream()
-        .filter(order -> order.isActive())
-        .forEach(order -> {
-          order.shipDate().ifPresent(date -> shipDates.add(date));
-        });
+    for (Order order : orders) {
+      order.shipDate().ifPresent(date -> shipDates.add(date));
+    }
     return shipDates;
   }
 }

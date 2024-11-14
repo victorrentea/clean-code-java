@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
 
@@ -15,7 +16,12 @@ class PureFunction {
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
-  private static PriceCalculationResult applyCouponsToPrices(
+  // functional core:
+  // subcutaneous test (avoiding the annoying skin=public method)
+  @VisibleForTesting // it will fail Sonar/Static code analysis if any other class in /src/main uses this method.
+  // it is only to be called from tests
+  //if you feel dirty move this method as public to another class.
+  static PriceCalculationResult applyCouponsToPrices(
       List<Product> products,
       Map<Long, Double> initialPrices,
       List<Coupon> coupons) {
@@ -36,6 +42,7 @@ class PureFunction {
   }
 
   // TODO extract complexity into a pure function
+  // imperative shell retrieving, reading, writing, and then calling the pure function holding most of my complexity.
   public Map<Long, Double> computePrices(
       long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
 //    assert internalPrices != null; // neah... assert can be disabled in prod with a JVM flag
