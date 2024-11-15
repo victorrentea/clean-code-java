@@ -5,4 +5,4 @@ This application supports a movie rental store/website
 - Solve the simplest issues first
 - Keep tests green✅ (You are allowed to adjust the tests)
 - Refactor until you're proud™️
-- Have fun
+- Have fun 
