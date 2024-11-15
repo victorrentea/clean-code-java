@@ -1,6 +1,6 @@
 package victor.training.cleancode.kata.videostore;
-public class Movie {
 
+public class Movie {
 	private final String mTitle;
 	private final PriceCategory mPriceCategory;
 
