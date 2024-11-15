@@ -35,7 +35,7 @@ class Customer {
 			result.append("\t").append(rental.movie.getTitle()).append("\t").append(thisAmount).append("\n");
 			totalAmount += thisAmount;
 		}
-		
+
 		// add footer lines
 		result.append("Amount owed is ").append(totalAmount).append("\n");
 		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
@@ -50,11 +50,11 @@ class Customer {
 		};
 	}
 
-	private static int calculateRenterPoints(Rental rental, int frequentRenterPoints, int dr) {
+	private static int calculateRenterPoints(Rental rental, int frequentRenterPoints, int daysDuration) {
 		// add frequent renter points
 		frequentRenterPoints++;
 		// add bonus for a two days new release rental
-		if ((rental.movie.getMovieType() == MovieType.NEW_RELEASE )  && dr > 1)
+		if ((rental.movie.getMovieType() == MovieType.NEW_RELEASE )  && daysDuration > 1)
 			frequentRenterPoints++;
 		return frequentRenterPoints;
 	}
