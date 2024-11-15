@@ -11,4 +11,5 @@ public enum PriceCategory {
     public int getIndex() {
         return mIndex;
     }
+
 }
