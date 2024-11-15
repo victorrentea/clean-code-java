@@ -2,15 +2,13 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
 
-
-
 class Customer {
-	private String name;
+	private final String name;
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
@@ -38,7 +36,7 @@ class Customer {
 				case Movie.NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
-				case Movie.CHILDRENS:
+				case Movie.CHILDREN:
 					thisAmount += 1.5;
 					if (dr > 3)
 						thisAmount += (dr - 3) * 1.5;
@@ -47,9 +45,7 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
+			if ((each.getPriceCode() == Movie.NEW_RELEASE)  && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
