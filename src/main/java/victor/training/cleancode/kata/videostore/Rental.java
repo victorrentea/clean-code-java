@@ -10,7 +10,7 @@ public record Rental(Movie movie, int duration) {
                     price += (duration - 2) * 1.5;
             }
             case NEW_RELEASE -> price += duration * 3;
-            case CHILDRENS -> {
+            case CHILDREN -> {
                 price += 1.5;
                 if (duration > 3)
                     price += (duration - 3) * 1.5;

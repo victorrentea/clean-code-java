@@ -11,7 +11,7 @@ public class CustomerTest {
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
         customer.addRental(new Movie("Star Wars", PriceCategory.NEW_RELEASE), 6);
-        customer.addRental(new Movie("Sofia", PriceCategory.CHILDRENS), 7);
+        customer.addRental(new Movie("Sofia", PriceCategory.CHILDREN), 7);
         customer.addRental(new Movie("Inception", PriceCategory.REGULAR), 5);
         
         String expected = """

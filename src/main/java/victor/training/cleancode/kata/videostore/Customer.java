@@ -3,6 +3,7 @@ package victor.training.cleancode.kata.videostore;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class Customer {
 
@@ -39,16 +40,12 @@ class Customer {
 	}
 
 	private String body() {
-		String result = "";
-		for (Rental rental : rentals) {
-			result += "\t" + rental.movie().getTitle() + "\t" + rental.price() + "\n";
-		}
-		return result;
+		return rentals.stream()
+				.map(rental -> "\t" + rental.movie().getTitle() + "\t" + rental.price() + "\n").collect(Collectors.joining());
 	}
 
 	private String header() {
-		String result = "Rental Record for " + getName() + "\n";
-		return result;
+		return  "Rental Record for " + getName() + "\n";
 	}
 
 }
