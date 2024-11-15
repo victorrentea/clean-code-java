@@ -1,8 +1,7 @@
 package victor.training.cleancode;
 
 import org.junit.jupiter.api.Test;
-import victor.training.testing.tools.CaptureSystemOutput;
-import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
+import victor.training.cleancode.CaptureSystemOutput.OutputCapture;
 
 import java.util.List;
 

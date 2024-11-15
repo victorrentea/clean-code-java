@@ -2,12 +2,10 @@ package victor.training.cleancode.kata.expense;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import victor.training.testing.tools.CaptureSystemOutput;
-import victor.training.testing.tools.CaptureSystemOutput.OutputCapture;
+import victor.training.cleancode.CaptureSystemOutput;
+import victor.training.cleancode.CaptureSystemOutput.OutputCapture;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseReportTest {
 
@@ -24,16 +22,17 @@ class ExpenseReportTest {
     ));
 
     Assertions.assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
-    """
-        Expenses Report
-        Dinner	100	\s
-        Dinner	100	\s
-        Breakfast	50	\s
-        Car Rental	200	\s
-        Meal expenses: 250
-        Total expenses: 450
-        """);
+        """
+            Expenses Report
+            Dinner	100	\s
+            Dinner	100	\s
+            Breakfast	50	\s
+            Car Rental	200	\s
+            Meal expenses: 250
+            Total expenses: 450
+            """);
   }
+
   @Test
   @CaptureSystemOutput
   void bigBreakfast(OutputCapture outputCapture) {
@@ -42,13 +41,13 @@ class ExpenseReportTest {
     ));
 
     Assertions.assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
-    """
-        Expenses Report
-        Breakfast	1200	X
-        Meal expenses: 1200
-        Total expenses: 1200
-        Meal expenses exceed limit
-        """);
+        """
+            Expenses Report
+            Breakfast	1200	X
+            Meal expenses: 1200
+            Total expenses: 1200
+            Meal expenses exceed limit
+            """);
   }
 
   @Test
@@ -59,12 +58,12 @@ class ExpenseReportTest {
     ));
 
     Assertions.assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
-    """
-        Expenses Report
-        Dinner	5200	X
-        Meal expenses: 5200
-        Total expenses: 5200
-        Meal expenses exceed limit
-        """);
+        """
+            Expenses Report
+            Dinner	5200	X
+            Meal expenses: 5200
+            Total expenses: 5200
+            Meal expenses exceed limit
+            """);
   }
 }
