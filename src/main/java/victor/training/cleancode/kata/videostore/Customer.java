@@ -21,39 +21,63 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 		// loop over each movie rental
-		for (Movie rental : rentals.keySet()) {
+		for (Movie movieRental : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(rental);
-			switch (rental.getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+			int dr = rentals.get(movieRental);
+			switch (movieRental.getMovieType()) {
+				case REGULAR:
+					thisAmount = calculateForRegular(thisAmount, dr);
 					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
+				case NEW_RELEASE:
+					thisAmount = calculateForNewRelease(thisAmount, dr);
 					break;
-				case Movie.CHILDREN:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+				case CHILDREN:
+					thisAmount = calculateForChildren(thisAmount, dr);
 					break;
 			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ((rental.getPriceCode() == Movie.NEW_RELEASE)  && dr > 1)
-				frequentRenterPoints++;
+			frequentRenterPoints = calculateRenterPoints(movieRental, frequentRenterPoints, dr);
 			// show figures line for this rental
-			result += "\t" + rental.getTitle() + "\t" + thisAmount + "\n";
+			result.append("\t").append(movieRental.getTitle()).append("\t").append(thisAmount).append("\n");
 			totalAmount += thisAmount;
 		}
+		
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		result.append("Amount owed is ").append(totalAmount).append("\n");
+		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+		return result.toString();
+	}
+
+	private static int calculateRenterPoints(Movie movieRental, int frequentRenterPoints, int dr) {
+		// add frequent renter points
+		frequentRenterPoints++;
+		// add bonus for a two day new release rental
+		if ((movieRental.getMovieType() == MovieType.NEW_RELEASE )  && dr > 1)
+			frequentRenterPoints++;
+		return frequentRenterPoints;
+	}
+
+	private static final double DEFAULT_RATE = 1.5;
+
+	private static double calculateForChildren(double thisAmount, int dr) {
+		 double newAmount = thisAmount + 1.5;
+		if (dr > 3)
+			newAmount += (dr - 3) * DEFAULT_RATE;
+		return newAmount;
+	}
+
+	private static double calculateForNewRelease(double thisAmount, int dr) {
+
+		return thisAmount += dr * 3;
+
+	}
+
+	private static double calculateForRegular(double thisAmount, int dr) {
+		thisAmount += 2;
+		if (dr > 2)
+			thisAmount += (dr - 2) * DEFAULT_RATE;
+		return thisAmount;
 	}
 }
