@@ -2,6 +2,8 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
 
+
+
 class Customer {
 	private String name;
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
