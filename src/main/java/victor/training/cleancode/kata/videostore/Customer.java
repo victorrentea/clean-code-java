@@ -9,7 +9,7 @@ class Customer {
 
 	@Getter
     private final String name;
-	private final List<Rental> rentals = new ArrayList<>(); // preserves order of elements
+	private final List<Rental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
