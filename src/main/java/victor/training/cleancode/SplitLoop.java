@@ -10,28 +10,28 @@ import java.util.List;
  */
 public class SplitLoop {
   // run tests
-  public String computeStats(List<Employee> list) {
+  public String computeStats(List<Employee> employees) {
     double totalConsultantSalary = 0;
     double averageSalary;
 
 
     List<Integer> employeeIds = new ArrayList<>();
-    for (Employee employee : list) {
+    for (Employee employee : employees) {
       employeeIds.add(employee.id());
     }
 
 
-    averageSalary = list.stream().mapToDouble(Employee::salary).sum();
+    averageSalary = employees.stream().mapToDouble(Employee::salary).sum();
 
 
-    for (Employee employee : list) {
+    for (Employee employee : employees) {
       if (employee.consultant()) {
         totalConsultantSalary += employee.salary();
       }
     }
     f(averageSalary);
     System.out.println("Employee IDs: " + employeeIds);
-    averageSalary /= list.size();
+    averageSalary /= employees.size();
     return "Total consultant salary: " + totalConsultantSalary + "; Average salary = " + averageSalary + " of " + employeeIds;
   }
 
