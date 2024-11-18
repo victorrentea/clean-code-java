@@ -2,8 +2,8 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Break the loops and refactor to use .stream to compute stuff.
@@ -15,10 +15,9 @@ public class SplitLoop {
     double averageSalary;
 
 
-    List<Integer> employeeIds = new ArrayList<>();
-    for (Employee employee : list) {
-      employeeIds.add(employee.id());
-    }
+    List<Integer> employeeIds = list.stream().map(Employee::id)
+        .collect(Collectors.toList());
+//        .toList();
 
 
     averageSalary = list.stream().mapToDouble(Employee::salary).sum();
