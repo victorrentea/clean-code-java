@@ -11,29 +11,24 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            new Interval(criteria.getStartYear(), criteria.getEndYear()),
-            new Interval(carModel.getStartYear(), carModel.getEndYear())))
+        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
+
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
 
 class MathUtil {
-
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
-  }
 
   // veche naspa pe care vreau sa o omor
 }
@@ -44,6 +39,10 @@ class MathUtil {
 final class Interval {
   int start;
   int end;
+
+  public boolean intersects(Interval other) { // POO
+    return start <= other.end && other.start <= end; // copiata cu drag de pe StackOverflow
+  }
 }
 
 
@@ -57,6 +56,10 @@ class CarSearchCriteria { // a DTO received from JSON
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   public int getStartYear() {
@@ -91,6 +94,10 @@ class CarModel { // the Entity Model👑
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   public Long getId() {
