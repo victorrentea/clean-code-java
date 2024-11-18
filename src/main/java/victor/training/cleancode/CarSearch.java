@@ -72,6 +72,7 @@ class CarSearchCriteria { // a DTO received from JSON
   }
 }
 
+
 // @Entity
 class CarModel { // the Entity Model👑
   // @Id
