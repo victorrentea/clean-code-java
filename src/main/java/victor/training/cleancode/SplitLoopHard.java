@@ -1,8 +1,7 @@
 package victor.training.cleancode;
 
-import lombok.Builder;
+import victor.training.cleancode.SplitLoop.Employee;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +43,8 @@ public class SplitLoopHard {
         }
         return "Average employee age = " + averageAge + "; Average consultant salary = " + averageConsultantSalary;
     }
-}
-interface EmployeeService {
-    Integer retrieveSalary(int employeeId);
+
+    interface EmployeeService {
+        Integer retrieveSalary(int employeeId);
+    }
 }

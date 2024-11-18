@@ -1,6 +1,7 @@
 package victor.training.cleancode;
 
 import org.junit.jupiter.api.Test;
+import victor.training.cleancode.SplitLoop.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 4000.0; Average salary = 2000.0 of [1, 2, 3, 4]", result);
+        assertEquals("Total consultant salary: 4000.0; ids: [1, 2, 3, 4]", result);
     }
 
     @Test
@@ -29,7 +30,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 0.0; Average salary = NaN of []", result);
+        assertEquals("Total consultant salary: 0.0; ids: []", result);
     }
 
     @Test
@@ -41,7 +42,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 7000.0; Average salary = 3500.0 of [1, 2]", result);
+        assertEquals("Total consultant salary: 7000.0; ids: [1, 2]", result);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 0.0; Average salary = 2250.0 of [1, 2]", result);
+        assertEquals("Total consultant salary: 0.0; ids: [1, 2]", result);
     }
 
 }

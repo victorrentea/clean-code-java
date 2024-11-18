@@ -5,6 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import victor.training.cleancode.SplitLoop.Employee;
+import victor.training.cleancode.SplitLoopHard.EmployeeService;
+
+import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +30,7 @@ public class SplitLoopHardTest {
   public void consultantIdNull() {
     consultant = consultant.toBuilder().id(null).build();
 
-    String actual = splitLoopHard.computeStatsHard(asList(consultant));
+    String actual = splitLoopHard.computeStatsHard(Collections.singletonList(consultant));
 
     assertEquals("Employee(s) not persisted", actual);
   }
@@ -37,7 +41,7 @@ public class SplitLoopHardTest {
     when(employeeService.retrieveSalary(consultant.id())).thenReturn(null);
 
     assertThrows(RuntimeException.class, () ->
-        splitLoopHard.computeStatsHard(asList(consultant)));
+        splitLoopHard.computeStatsHard(Collections.singletonList(consultant)));
   }
 
   @Test
