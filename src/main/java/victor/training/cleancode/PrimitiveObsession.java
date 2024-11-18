@@ -48,7 +48,19 @@ public class PrimitiveObsession {
   }
 
   enum PaymentMethod {
-    CARD, CASH, CREDIT;
+    CARD("Card"),
+    CASH("Cash"),
+    CREDIT("Credit");
+
+    private final String label;
+
+    PaymentMethod(String label) {
+      this.label = label;
+    }
+
+    public String getLabel() {
+      return label;
+    }
 
     public boolean oneOf(PaymentMethod... paymentMethods) {
       return List.of(paymentMethods).contains(this);
