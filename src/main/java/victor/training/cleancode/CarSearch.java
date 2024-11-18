@@ -1,16 +1,19 @@
 package victor.training.cleancode;
 
+import lombok.Value;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 class CarSearch {
+  // TODO nu-i mai bine un WHERE decat 1k in RAM ?
 
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
         .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+            new Interval(criteria.getStartYear(), criteria.getEndYear()),
+            new Interval(carModel.getStartYear(), carModel.getEndYear())))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
@@ -19,18 +22,28 @@ class CarSearch {
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 }
 
 class MathUtil {
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
   }
+
+  // veche naspa pe care vreau sa o omor
+}
+
+// value object (design pattern) =
+// = immutable object that has no identity (no ID field)., eg Money{amount, currency}
+@Value // = un fel de @Data da mai bun: toate campurile sunt private final
+final class Interval {
+  int start;
+  int end;
 }
 
 
