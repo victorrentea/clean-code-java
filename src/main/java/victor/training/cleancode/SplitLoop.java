@@ -11,15 +11,23 @@ import java.util.List;
 public class SplitLoop {
   // run tests
   public String computeStats(List<Employee> employees) {
-    List<Integer> employeeIds = new ArrayList<>();
     double totalConsultantSalary = 0;
-    double averageSalary = 0;
+    double averageSalary;
+
+
+    List<Integer> employeeIds = new ArrayList<>();
     for (Employee employee : employees) {
-      averageSalary += employee.salary();
+      employeeIds.add(employee.id());
+    }
+
+
+    averageSalary = employees.stream().mapToDouble(Employee::salary).sum();
+
+
+    for (Employee employee : employees) {
       if (employee.consultant()) {
         totalConsultantSalary += employee.salary();
       }
-      employeeIds.add(employee.id());
     }
     f(averageSalary);
     System.out.println("Employee IDs: " + employeeIds);
