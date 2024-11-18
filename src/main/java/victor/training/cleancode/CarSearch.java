@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import lombok.Value;
 
 import java.util.List;
@@ -36,6 +38,7 @@ class MathUtil {
 // value object (design pattern) =
 // = immutable object that has no identity (no ID field)., eg Money{amount, currency}
 @Value // = un fel de @Data da mai bun: toate campurile sunt private final
+@Embeddable
 final class Interval {
   int start;
   int end;
@@ -77,13 +80,16 @@ class CarSearchCriteria { // a DTO received from JSON
 
 
 // @Entity
-class CarModel { // the Entity Model👑
+class CarModel { // the Domain Entity Model👑
   // @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  //  private int startYear;
+//  private int endYear;
+//  @OneToOne // ALTER TABLE < nu e necesar
+  @Embedded // la mine in tabela pune acele 2 campuri
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -92,12 +98,13 @@ class CarModel { // the Entity Model👑
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   Interval getYearInterval() {
-    return new Interval(startYear, endYear);
+    return yearInterval;
   }
 
   public Long getId() {
@@ -105,11 +112,11 @@ class CarModel { // the Entity Model👑
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.getEnd();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearInterval.getStart();
   }
 
   public String getMake() {
