@@ -43,6 +43,12 @@ final class Interval {
   int start;
   int end;
 
+  public Interval(int start, int end) {
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+    this.start = start;
+    this.end = end;
+  }
+
   public boolean intersects(Interval other) { // POO
     return start <= other.end && other.start <= end; // copiata cu drag de pe StackOverflow
   }
@@ -97,7 +103,9 @@ class CarModel { // the Domain Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+//    if (startYear > endYear) // 2010......2000
+    if (startYear > endYear)
+      throw new IllegalArgumentException("start larger than end");
 //    this.startYear = startYear;
 //    this.endYear = endYear;
     this.yearInterval = new Interval(startYear, endYear);
