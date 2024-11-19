@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
 
@@ -15,15 +16,17 @@ class PureFunction {
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
-  private static DiscountingResult applyCoupons(
+  @VisibleForTesting // test subcutanat pe functional core
+  // sonar si intellij va crapa scan daca alta clasa din /src/main cheama aceasta metoda
+  static DiscountingResult applyCoupons(
       List<Product> products,
       Map<Long, Double> resolvedPrices,
-      Customer customer) {
+      List<Coupon> coupons) {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
       Double price = resolvedPrices.get(product.getId());
-      for (Coupon coupon : customer.coupons()) {
+      for (Coupon coupon : coupons) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {
           price = coupon.apply(product, price);
           usedCoupons.add(coupon);
@@ -38,15 +41,13 @@ class PureFunction {
   // 4 @Test x 4 @Mock = 😐
   // 9 @Test x 4 @Mock = 😭🤯
   // TODO extract complexity into a pure function
-  public Map<Long, Double> computePrices(
+  // imperative shell
+  public Map<Long, Double> computePrices( // high level policy
       long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId); // SELECT WHERE ID = ?
     List<Product> products = productRepo.findAllById(productIds); // SELECT WHERE ID IN (?, ?)
-
     Map<Long, Double> resolvedPrices = resolvePrices(internalPrices, products);
-
-    DiscountingResult result = applyCoupons(products, resolvedPrices, customer);
-
+    DiscountingResult result = applyCoupons(products, resolvedPrices, customer.coupons());
     couponRepo.markUsedCoupons(customerId, result.usedCoupons());
     return result.finalPrices();
   }
