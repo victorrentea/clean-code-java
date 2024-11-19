@@ -21,7 +21,8 @@ public class Optional_Intro {
     System.out.println(getDiscountLine(new Customer()));
   }
 
-  public static String getDiscountLine(Customer customer) {
+  private static String getDiscountLine(Customer customer) {
+
     return customer.getMemberCard()
         .flatMap(Optional_Intro::computeDiscount)
         .map(d -> "You got a discount of %" + d.globalPercentage())
