@@ -5,10 +5,11 @@ import victor.training.cleancode.fp.support.OrderLine;
 import victor.training.cleancode.fp.support.Product;
 import victor.training.cleancode.fp.support.ProductRepo;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
+import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
 
 public class FunctionalChainsaw { // ... Massacre
@@ -18,18 +19,29 @@ public class FunctionalChainsaw { // ... Massacre
     this.productRepo = productRepo;
   }
 
-  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
+	private static Map<Product, Integer> getRecentProductQuantities(List<Order> orders) {
 		return orders.stream()
 				.filter(Order::isActive)
-				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusYears(1)))
+				.filter(Order::isRecent)
 				.flatMap(o -> o.orderLines().stream())
-				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
+				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
+	}
+
+  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
+		// Flux/Mono/Iterator
+		List<Product> frequentProducts = getRecentProductQuantities(orders)
 				.entrySet()
 				.stream()
 				.filter(e -> e.getValue() >= 10)
 				.map(Entry::getKey)
-				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.toList();
+
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
+		return frequentProducts.stream()
+//				.filter(p -> !p.isDeleted())
+				.filter(not(Product::isDeleted))
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
 	}
+
 }

@@ -12,6 +12,10 @@ public class Order {
   private boolean active;
   private int price;
 
+  public boolean isRecent() {
+    return creationDate.isAfter(LocalDate.now().minusYears(1));
+  }
+
   public Long id() {
     return id;
   }

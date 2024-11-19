@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class CarSearch {
-  // TODO nu-i mai bine un WHERE decat 1k in RAM ?
+  // TODO nu-i mai bine un WHERE decat 1000 elemente in RAM  aduse din DB sa le filtrez in Java?
 
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
