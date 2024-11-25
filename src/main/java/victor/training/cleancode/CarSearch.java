@@ -41,6 +41,17 @@ class TimeUtils {
 // eg> Money{amount, currency}
 @Embeddable
 record Interval(int start, int end) {
+  public Interval {
+    if (start > end) { // scary! but useful in complex domains
+      throw new IllegalArgumentException("start larger than end");
+    }
+  }
+
+//  @AssertTrue // doesn't do anything by itself. until someone validates this instance (eg. Hibernate, @Validated)
+//  public boolean isValid() {
+//    return start <= end;
+//  }
+
   public boolean intersects(Interval interval2) {
     return start <= interval2.end && interval2.start <= end;
   }
@@ -95,7 +106,7 @@ class CarModel/* implements Period*/ { // the Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+//    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
 //    this.startYear = startYear;
 //    this.endYear = endYear;
     this.yearInterval = new Interval(startYear, endYear);
