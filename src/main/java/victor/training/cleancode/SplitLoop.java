@@ -7,12 +7,20 @@ import java.util.stream.Collectors;
 
 /** Break the loops and refactor to use .stream to compute stuff. */
 public class SplitLoop {
+  private static double f(List<Employee> employees) { // PURE
+    double totalConsultantSalary = 0.0;
+    for (Employee employee : employees) {
+      if (employee.consultant()) {
+        double salary = employee.salary();
+        totalConsultantSalary += salary;
+      }
+    }
+    return totalConsultantSalary;
+  }
+
   // run tests
   public String computeStats(List<Employee> employees) {
-    double totalConsultantSalary = employees.stream()
-        .filter(Employee::consultant)
-        .mapToDouble(Employee::salary)
-        .sum();
+    double totalConsultantSalary = f(employees);
 
     List<Integer> employeeIds = employees.stream()
         .map(Employee::id)
