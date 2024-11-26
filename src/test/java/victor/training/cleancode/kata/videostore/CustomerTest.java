@@ -11,7 +11,7 @@ public class CustomerTest {
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
         customer.addRental(new Movie("Star Wars", PriceCode.NEW_RELEASE), 6);
-        customer.addRental(new Movie("Sofia", PriceCode.CHILDRENS), 7);
+        customer.addRental(new Movie("Sofia", PriceCode.CHILDREN), 7);
         customer.addRental(new Movie("Inception", PriceCode.REGULAR), 5);
         
         String expected = """
@@ -22,6 +22,6 @@ public class CustomerTest {
             Amount owed is 32.0
             You earned 4 frequent renter points""";
         
-        assertEquals(expected, customer.statement());
+        assertEquals(expected, customer.buildInvoice());
     }
 }
