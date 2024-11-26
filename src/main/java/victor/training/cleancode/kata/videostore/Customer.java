@@ -49,7 +49,7 @@ public class Customer {
     private StringBuilder addFooterLines(StringBuilder result) {
         double totalOwedAmount = getTotalOwedAmount();
 
-        return result.append("Amount owed is ").append(totalOwedAmount).append("\n").append("You earned ")
-                .append(frequentRenterPoints).append(" frequent renter points");
+        return result.append(String.format("Amount owed is %.1f\nYou earned %d frequent renter points", totalOwedAmount,
+                frequentRenterPoints));
     }
 }
