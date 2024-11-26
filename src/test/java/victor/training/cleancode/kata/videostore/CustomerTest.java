@@ -23,5 +23,6 @@ public class CustomerTest {
             You earned 4 frequent renter points""";
 
         assertThat(expected).isEqualToIgnoringNewLines(customer.statement());
+//        assertEquals(expected, customer.statement());// use this is above fails to compile
     }
 }
