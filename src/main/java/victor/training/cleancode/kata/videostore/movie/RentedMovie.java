@@ -1,6 +1,8 @@
 package victor.training.cleancode.kata.videostore.movie;
 
-public abstract class RentedMovie {
+import victor.training.cleancode.kata.videostore.enums.MovieType;
+
+public abstract class RentedMovie {  // Sealed
 
     protected final String title;
     protected final int rentedDays;
@@ -30,4 +32,13 @@ public abstract class RentedMovie {
     public double getPrice() {
         return price;
     }
+
+    public static RentedMovie create(String title, int rentedDays, MovieType movieType) {
+        return switch (movieType) {
+            case REGULAR -> new RegularRentedMovie(title, rentedDays);
+            case NEW_RELEASE -> new NewReleaseRentedMovie(title, rentedDays);
+            case CHILDREN -> new ChildrenRentedMovie(title, rentedDays);
+        };
+    }
+
 }

@@ -1,9 +1,8 @@
 package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
-import victor.training.cleancode.kata.videostore.movie.ChildrenRentedMovie;
-import victor.training.cleancode.kata.videostore.movie.NewReleaseRentedMovie;
-import victor.training.cleancode.kata.videostore.movie.RegularRentedMovie;
+import victor.training.cleancode.kata.videostore.enums.MovieType;
+import victor.training.cleancode.kata.videostore.movie.RentedMovie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,10 +12,10 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new NewReleaseRentedMovie("Star Wars", 6));
-        customer.addRental(new ChildrenRentedMovie("Sofia", 7));
-        customer.addRental(new RegularRentedMovie("Inception", 5));
-        
+        customer.addRental(RentedMovie.create("Star Wars", 6, MovieType.NEW_RELEASE));
+        customer.addRental(RentedMovie.create("Sofia", 7, MovieType.CHILDREN));
+        customer.addRental(RentedMovie.create("Inception", 5, MovieType.REGULAR));
+
         String expected = """
             Rental Record for John Doe
             	Star Wars	18.0
@@ -25,6 +24,6 @@ public class CustomerTest {
             Amount owed is 32.0
             You earned 4 frequent renter points""";
         
-        assertEquals(expected, customer.statement());
+        assertEquals(expected, customer.getClientRentalMoviesPrintableStatus());
     }
 }

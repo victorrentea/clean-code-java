@@ -21,15 +21,21 @@ class Customer {
 		return name;
 	}
 
-	public String statement() {
-
+	public String getClientRentalMoviesPrintableStatus() {
 		String result = "Rental Record for " + getName() + "\n";
-		// loop over each movie rental
-		double totalAmount = rentals.stream().map(RentedMovie::getPrice).reduce(0.0, Double::sum); // TODO change
+		double totalAmount = rentals.stream().mapToDouble(RentedMovie::getPrice).sum();
 		int frequentRenterPoints = rentals.stream().map(RentedMovie::getFrequentRenterPoints).mapToInt(Integer::intValue).sum();
-		result += rentals.stream().map(RentedMovie::getPrintableTitleAndPrice).collect(Collectors.joining("\n"));
-		// add footer lines
-		result += "\nAmount owed is " + totalAmount + "\n";
+		result += createTitlesAndPricesString();
+		result += addFinalLines(totalAmount, frequentRenterPoints);
+		return result;
+	}
+
+	private String createTitlesAndPricesString() {
+		return rentals.stream().map(RentedMovie::getPrintableTitleAndPrice).collect(Collectors.joining("\n"));
+	}
+
+	private static String addFinalLines(double totalAmount, int frequentRenterPoints) {
+		String result = "\nAmount owed is " + totalAmount + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
