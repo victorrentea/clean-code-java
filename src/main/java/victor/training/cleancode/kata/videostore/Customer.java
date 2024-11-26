@@ -9,7 +9,7 @@ import java.util.List;
 public class Customer {
     private final String name;
 
-    private final List<Rental> rentals = new ArrayList<>(); // preserves order of elements
+    private final List<Rental> rentals = new ArrayList<>();
     private int frequentRenterPoints;
 
     public Customer(String name) {
