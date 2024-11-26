@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.beans.Transient;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,6 +22,9 @@ class Product {
   private LocalDateTime createDate;
   private boolean premium;
   private boolean deleted;
+
+//  @Transient
+//  transient  double tempraryPrice;
 
 
   public Product(String name, ProductCategory category) {
