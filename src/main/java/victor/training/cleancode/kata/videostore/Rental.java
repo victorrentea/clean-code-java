@@ -10,12 +10,55 @@ public record Rental(Movie movie, int daysRented) {
     public static final int CHILDREN_DAYS_THRESHOLD = 3;
 
 
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    // more code
+    §
     public double calculateCost(int daysRented) {
         return switch (movie.movieType()) {
             case REGULAR -> REGULAR_BASE_COST + Math.max(0, (daysRented - REGULAR_DAYS_THRESHOLD) * REGULAR_EXTRA_COST);
             case NEW_RELEASE -> daysRented * NEW_RELEASE_COST;
             case CHILDREN ->
-                    CHILDREN_BASE_COST + Math.max(0, (daysRented - CHILDREN_DAYS_THRESHOLD) * CHILDREN_EXTRA_COST);
+                CHILDREN_BASE_COST + Math.max(0, (daysRented - CHILDREN_DAYS_THRESHOLD) * CHILDREN_EXTRA_COST);
+//            default -> 0;
+
+            // NEVER
+//            default -> throw new IllegalArgumentException("Unknown movie type: " + movie.movieType());
+
+            // DO NOT DEFINE A DEFAULT CASE.
+            // COMPILATION FAILS WHEN A NEW MOVIE TYPE IS ADDED
         };
     }
 }
