@@ -1,24 +1,18 @@
 package victor.training.cleancode.kata.videostore;
 
+import static victor.training.cleancode.kata.videostore.Rental.getRentalCost;
+
 public enum PriceCategory {
     CHILDRENS {
         @Override
         double calculateRentalPrice(int daysRented) {
-            double rentalCost = 1.5;
-            if (daysRented > 3) {
-                rentalCost += (daysRented - 3) * 1.5;
-            }
-            return rentalCost;
+            return getRentalCost(daysRented, 1.5, 3);
         }
     },
     REGULAR {
         @Override
         double calculateRentalPrice(int daysRented) {
-            double rentalCost = 2;
-            if (daysRented > 2) {
-                rentalCost += (daysRented - 2) * 1.5;
-            }
-            return rentalCost;
+            return getRentalCost(daysRented,2, 2);
         }
     },
     NEW_RELEASE {
@@ -27,6 +21,7 @@ public enum PriceCategory {
             return  daysRented * 3;
         }
     };
+
 
     abstract double calculateRentalPrice(int daysRented);
 }
