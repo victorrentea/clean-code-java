@@ -1,5 +1,5 @@
 ## Movie Rental Kata
-This application supports a movie rental store/website
+This application supports a rentedMovie rental store/website
 
 - Articulate your thoughts
 - Solve the simplest issues first

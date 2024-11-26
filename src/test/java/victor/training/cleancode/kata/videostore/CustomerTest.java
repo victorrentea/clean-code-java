@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
+import victor.training.cleancode.kata.videostore.enums.PriceCode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -10,9 +11,9 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
-        customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
-        customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
+        customer.addRental(new RentedMovie("Star Wars", PriceCode.NEW_RELEASE, 6));
+        customer.addRental(new RentedMovie("Sofia", PriceCode.CHILDREN, 7));
+        customer.addRental(new RentedMovie("Inception", PriceCode.REGULAR,5));
         
         String expected = """
             Rental Record for John Doe
