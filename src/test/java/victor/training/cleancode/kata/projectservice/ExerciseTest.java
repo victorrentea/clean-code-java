@@ -39,7 +39,7 @@ class ExerciseTest {
     projectServices.setService(service);
     User user = new User();
 
-    when(projectServicesRepo.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
+    when(projectServicesRepo.findByProjectId(any())).thenReturn(List.of(projectServices));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -55,7 +55,7 @@ class ExerciseTest {
     projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(projectServicesRepo.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
+    when(projectServicesRepo.findByProjectId(any())).thenReturn(List.of(projectServices));
     when(userRepo.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
@@ -134,7 +134,7 @@ class ExerciseTest {
     projectServices.setService(service);
     User user = new User();
 
-    when(projectServicesRepo.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
+    when(projectServicesRepo.findByProjectId(any())).thenReturn(List.of(projectServices));
     when(userRepo.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);

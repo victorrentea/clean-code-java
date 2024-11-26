@@ -16,7 +16,7 @@ public class Exercise {
 
    public void sendUserMessageOnCreate(UserDto userDto, Project project, MessageAction action) {
       if (userDto.getRole() == UserRole.ADMIN) {
-         List<ProjectServices> projectServices = projectServicesRepo.getProjectServicesByProjectId(project.getId());
+         List<ProjectServices> projectServices = projectServicesRepo.findByProjectId(project.getId());
          List<ProjectServices> subscribedProjectServices = projectServices.stream()
              .filter(projectService -> projectService.getStatus() == Status.SUBSCRIBED)
              .collect(Collectors.toList());
