@@ -18,11 +18,11 @@ public record Rental(Movie movie, int rentalDays) {
 
     private double calculateChildrenPrice() {
         //more verbose but easier to understand. and closer to the spec and the PO 💖
-        double basePrice = 1.5;
+        double price = 1.5;
         if (rentalDays > 3) {
-            basePrice += (rentalDays - 3) * 1.5;
+            price += (rentalDays - 3) * 1.5;
         }
-        return basePrice;
+        return price;
     }
 
     private double calculateRegularPrice() {
