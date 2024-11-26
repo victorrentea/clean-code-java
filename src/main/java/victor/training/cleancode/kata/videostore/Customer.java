@@ -2,6 +2,7 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static victor.training.cleancode.kata.videostore.Category.NEW_RELEASE;
 
@@ -23,25 +24,24 @@ class Customer {
 
     public String statement() {
         double totalAmount = 0;
-        int renterPoints = 0;
-        String result = "Rental Record for " + getName() + "\n";
+        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 
         // loop over each movie rental
+        int renterPoints = 0;
         for (Movie movie : rentals.keySet()) {
             double totalPrice = 0;
             int numberOfRentals = rentals.get(movie);
-
             totalPrice += calculatePrice(numberOfRentals, movie.category);
-
             renterPoints += 1 + calculateBonus(movie, numberOfRentals);
-            // show figures line for this rental
-            result += "\t" + movie.getTitle() + "\t" + totalPrice + "\n";
+
+            result.append("\t").append(movie.getTitle())
+                    .append("\t").append(totalPrice).append("\n");
             totalAmount += totalPrice;
         }
         // add footer lines
-        result += "Amount owed is " + totalAmount + "\n";
-        result += "You earned " + renterPoints + " frequent renter points";
-        return result;
+        result.append("Amount owed is ").append(totalAmount).append("\n");
+        result.append("You earned ").append(renterPoints).append(" frequent renter points");
+        return result.toString();
     }
 
     private int calculateBonus(Movie movie, int numberOfRentals) {
