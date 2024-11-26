@@ -1,10 +1,11 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 class Customer {
-	private String name;
-	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
+	private final String name;
+	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
 	public Customer(String name) {
 		this.name = name;
