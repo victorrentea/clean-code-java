@@ -2,13 +2,14 @@ package victor.training.cleancode.kata.videostore;
 
 import lombok.Getter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class Customer {
     private final String name;
-    private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
+
+    private final List<Rental> rentals = new ArrayList<>(); // preserves order of elements
     private int frequentRenterPoints;
 
     public Customer(String name) {
@@ -17,22 +18,29 @@ public class Customer {
 
     public void addRental(Movie movieToRent, int daysRented) {
         frequentRenterPoints += movieToRent.calcRenterPoints(daysRented);
-        rentals.put(movieToRent, daysRented);
+        rentals.add(new Rental(movieToRent, daysRented));
     }
 
     public String generateRentalStatement() {
         StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 
-        double totalOwedAmount = rentals.keySet().stream()
-                .mapToDouble(movie -> movie.calcRentalCost(rentals.get(movie))).sum();
+        double totalOwedAmount = getTotalOwedAmount();
 
-        rentals.keySet().stream().map(this::generateRentalLine).forEach(result::append);
+        appendAllRentalLines(result);
 
         return addFooterLines(result, totalOwedAmount).toString();
     }
 
-    private String generateRentalLine(Movie movie) {
-        return "\t" + movie.title() + "\t" + movie.calcRentalCost(rentals.get(movie)) + "\n";
+    private void appendAllRentalLines(StringBuilder result) {
+        rentals.stream().map(this::generateRentalLine).forEach(result::append);
+    }
+
+    private double getTotalOwedAmount() {
+        return rentals.stream().mapToDouble(rental -> rental.movie().calcRentalCost(rental.daysRented())).sum();
+    }
+
+    private String generateRentalLine(Rental rental) {
+        return "\t" + rental.movie().title() + "\t" + rental.movie().calcRentalCost(rental.daysRented()) + "\n";
     }
 
     private StringBuilder addFooterLines(StringBuilder result, double totalOwedAmount) {
