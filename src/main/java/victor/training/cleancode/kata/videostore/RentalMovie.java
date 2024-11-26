@@ -14,7 +14,7 @@ public record RentalMovie(Movie movie, int days) {
     }
 
     public double getRentalCostByPriceCode() {
-        return switch (movie().priceCode()) {
+        return switch (movie.priceCode()) {
             case REGULAR -> calculateRentalCost(days, 2, 2);
             case NEW_RELEASE -> days * 3;
             case CHILDREN -> calculateRentalCost(days, 3, 1.5);
