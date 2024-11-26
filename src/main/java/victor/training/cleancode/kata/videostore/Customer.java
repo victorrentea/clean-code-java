@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class Customer {
@@ -22,17 +23,19 @@ public class Customer {
     }
 
     public String generateRentalStatement() {
-        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
-
-        double totalOwedAmount = getTotalOwedAmount();
+        StringBuilder result = addHeaderLines();
 
         appendAllRentalLines(result);
 
-        return addFooterLines(result, totalOwedAmount).toString();
+        return addFooterLines(result).toString();
+    }
+
+    private StringBuilder addHeaderLines() {
+        return new StringBuilder("Rental Record for " + getName() + "\n");
     }
 
     private void appendAllRentalLines(StringBuilder result) {
-        rentals.stream().map(this::generateRentalLine).forEach(result::append);
+        result.append(rentals.stream().map(this::generateRentalLine).collect(Collectors.joining()));
     }
 
     private double getTotalOwedAmount() {
@@ -43,7 +46,9 @@ public class Customer {
         return "\t" + rental.movie().title() + "\t" + rental.movie().calcRentalCost(rental.daysRented()) + "\n";
     }
 
-    private StringBuilder addFooterLines(StringBuilder result, double totalOwedAmount) {
+    private StringBuilder addFooterLines(StringBuilder result) {
+        double totalOwedAmount = getTotalOwedAmount();
+
         return result.append("Amount owed is ").append(totalOwedAmount).append("\n").append("You earned ")
                 .append(frequentRenterPoints).append(" frequent renter points");
     }
