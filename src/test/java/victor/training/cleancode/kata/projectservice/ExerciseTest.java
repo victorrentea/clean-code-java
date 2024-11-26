@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,11 +36,11 @@ class ExerciseTest {
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.CREATED);
+    projectServices.setStatus(ProjectServices.Status.CREATED);
     projectServices.setService(service);
     User user = new User();
 
-    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(Arrays.asList(projectServices));
+    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -51,10 +53,10 @@ class ExerciseTest {
     projectUser.setRole(ProjectUserRoleType.ADMIN);
     Project project = new Project();
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(Arrays.asList(projectServices));
+    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
     when(userService.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
@@ -67,14 +69,14 @@ class ExerciseTest {
   void sendsMessageOnCreateForNonAdmin() {
     ProjectUserDTO projectUser = new ProjectUserDTO();
     projectUser.setRole(ProjectUserRoleType.VIEW);
-    projectUser.setServices(Arrays.asList("service"));
+    projectUser.setServices(List.of("service"));
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(serviceService.findAll()).thenReturn(Arrays.asList(service));
+    when(serviceService.findAll()).thenReturn(Collections.singletonList(service));
     when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(projectServices);
     when(userService.findByUuid(any())).thenReturn(Optional.of(user));
 
@@ -87,14 +89,14 @@ class ExerciseTest {
   void doesNotSendMessageOnCreateForNonAdminWhenNoMatchingService() {
     ProjectUserDTO projectUser = new ProjectUserDTO();
     projectUser.setRole(ProjectUserRoleType.VIEW);
-    projectUser.setServices(Arrays.asList("nonexistentService"));
+    projectUser.setServices(List.of("nonexistentService"));
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(serviceService.findAll()).thenReturn(Arrays.asList(service));
+    when(serviceService.findAll()).thenReturn(Collections.singletonList(service));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -105,15 +107,15 @@ class ExerciseTest {
   void sendsMessageOnCreateForContributorWithSubscribedService() {
     ProjectUserDTO projectUser = new ProjectUserDTO();
     projectUser.setRole(ProjectUserRoleType.CONTRIBUTOR);
-    projectUser.setServices(Arrays.asList("service"));
+    projectUser.setServices(List.of("service"));
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     projectServices.setService(service);
     User user = new User();
 
-    when(serviceService.findAll()).thenReturn(Arrays.asList(service));
+    when(serviceService.findAll()).thenReturn(Collections.singletonList(service));
     when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(projectServices);
     when(userService.findByUuid(any())).thenReturn(Optional.of(user));
 
@@ -129,11 +131,11 @@ class ExerciseTest {
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
-    projectServices.setProjectServiceStatus(ProjectServiceStatus.SUBSCRIBED);
+    projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     projectServices.setService(service);
     User user = new User();
 
-    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(Arrays.asList(projectServices));
+    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
     when(userService.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);

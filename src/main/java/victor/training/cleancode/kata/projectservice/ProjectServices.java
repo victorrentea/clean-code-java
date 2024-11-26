@@ -1,24 +1,30 @@
 package victor.training.cleancode.kata.projectservice;
 
 public class ProjectServices {
-   private ProjectServiceStatus projectServiceStatus;
+   private Status status;
    private Service service;
 
-   public ProjectServiceStatus getProjectServiceStatus() {
-      return projectServiceStatus;
+   public Status getStatus() {
+      return status;
    }
 
    public Service getService() {
       return service;
    }
 
-   public ProjectServices setProjectServiceStatus(ProjectServiceStatus projectServiceStatus) {
-      this.projectServiceStatus = projectServiceStatus;
+   public ProjectServices setStatus(Status status) {
+      this.status = status;
       return this;
    }
 
    public ProjectServices setService(Service service) {
       this.service = service;
       return this;
+   }
+
+   public enum Status {
+      DRAFT,
+      CREATED,
+      SUBSCRIBED
    }
 }

@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.projectservice;
 
 import lombok.RequiredArgsConstructor;
+import victor.training.cleancode.kata.projectservice.ProjectServices.Status;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ public class Exercise {
       if (projectUser.getRole() == ProjectUserRoleType.ADMIN) {
          List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
          List<ProjectServices> subscribedProjectServices = projectServices.stream()
-             .filter(projectService -> projectService.getProjectServiceStatus() == ProjectServiceStatus.SUBSCRIBED)
+             .filter(projectService -> projectService.getStatus() == Status.SUBSCRIBED)
              .collect(Collectors.toList());
 
          subscribedProjectServices.forEach(subscribedProjectService -> {
@@ -33,7 +34,7 @@ public class Exercise {
          projectServices.forEach(pS -> services.forEach(service -> {
             if (service.getName().equals(pS)) {
                ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
-               if (projectServices1 != null && projectServices1.getProjectServiceStatus() == ProjectServiceStatus.SUBSCRIBED) {
+               if (projectServices1 != null && projectServices1.getStatus() == Status.SUBSCRIBED) {
                   ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
                   projectServicesDTO.setService(service);
                   User user = userService.findByUuid(projectUser.getUuid()).get();
