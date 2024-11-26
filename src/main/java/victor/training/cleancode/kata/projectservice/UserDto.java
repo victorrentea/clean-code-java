@@ -2,12 +2,12 @@ package victor.training.cleancode.kata.projectservice;
 
 import java.util.List;
 
-public class ProjectUserDTO {
-   private ProjectUserRoleType role;
+public class UserDto {
+   private UserRole role;
    private String uuid;
    private List<String> services;
 
-   public ProjectUserRoleType getRole() {
+   public UserRole getRole() {
       return role;
    }
 
@@ -19,17 +19,17 @@ public class ProjectUserDTO {
       return services;
    }
 
-   public ProjectUserDTO setRole(ProjectUserRoleType role) {
+   public UserDto setRole(UserRole role) {
       this.role = role;
       return this;
    }
 
-   public ProjectUserDTO setServices(List<String> services) {
+   public UserDto setServices(List<String> services) {
       this.services = services;
       return this;
    }
 
-   public ProjectUserDTO setUuid(String uuid) {
+   public UserDto setUuid(String uuid) {
       this.uuid = uuid;
       return this;
    }

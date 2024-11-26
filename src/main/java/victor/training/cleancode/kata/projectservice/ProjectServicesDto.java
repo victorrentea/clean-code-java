@@ -1,6 +1,6 @@
 package victor.training.cleancode.kata.projectservice;
 
-public class ProjectServicesDTO {
+public class ProjectServicesDto {
    private Service service;
 
    public void setService(Service service) {

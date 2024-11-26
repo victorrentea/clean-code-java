@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -18,21 +17,21 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ExerciseTest {
   @Mock
-  private ProjectServicesService projectServicesService;
+  private ProjectServicesRepo projectServicesRepo;
   @Mock
-  private UserService userService;
+  private UserRepo userRepo;
   @Mock
   private UserServiceHelper userServiceHelper;
   @Mock
-  private ServiceService serviceService;
+  private ServiceRepo serviceRepo;
 
   @InjectMocks
   private Exercise exercise;
 
   @Test
   void sendsMessageOnCreateForAdminWithSubscribedService() {
-    ProjectUserDTO projectUser = new ProjectUserDTO();
-    projectUser.setRole(ProjectUserRoleType.ADMIN);
+    UserDto projectUser = new UserDto();
+    projectUser.setRole(UserRole.ADMIN);
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
@@ -40,7 +39,7 @@ class ExerciseTest {
     projectServices.setService(service);
     User user = new User();
 
-    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
+    when(projectServicesRepo.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -49,15 +48,15 @@ class ExerciseTest {
 
   @Test
   void sendsMessageOnCreateForAdmin() {
-    ProjectUserDTO projectUser = new ProjectUserDTO();
-    projectUser.setRole(ProjectUserRoleType.ADMIN);
+    UserDto projectUser = new UserDto();
+    projectUser.setRole(UserRole.ADMIN);
     Project project = new Project();
     ProjectServices projectServices = new ProjectServices();
     projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
-    when(userService.findByUuid(any())).thenReturn(Optional.of(user));
+    when(projectServicesRepo.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
+    when(userRepo.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -67,8 +66,8 @@ class ExerciseTest {
 
   @Test
   void sendsMessageOnCreateForNonAdmin() {
-    ProjectUserDTO projectUser = new ProjectUserDTO();
-    projectUser.setRole(ProjectUserRoleType.VIEW);
+    UserDto projectUser = new UserDto();
+    projectUser.setRole(UserRole.VIEW);
     projectUser.setServices(List.of("service"));
     Project project = new Project();
     Service service = new Service().setName("service");
@@ -76,9 +75,9 @@ class ExerciseTest {
     projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(serviceService.findAll()).thenReturn(Collections.singletonList(service));
-    when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(projectServices);
-    when(userService.findByUuid(any())).thenReturn(Optional.of(user));
+    when(serviceRepo.findAll()).thenReturn(Collections.singletonList(service));
+    when(projectServicesRepo.findByServiceAndProject(any(), any())).thenReturn(projectServices);
+    when(userRepo.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -87,8 +86,8 @@ class ExerciseTest {
 
   @Test
   void doesNotSendMessageOnCreateForNonAdminWhenNoMatchingService() {
-    ProjectUserDTO projectUser = new ProjectUserDTO();
-    projectUser.setRole(ProjectUserRoleType.VIEW);
+    UserDto projectUser = new UserDto();
+    projectUser.setRole(UserRole.VIEW);
     projectUser.setServices(List.of("nonexistentService"));
     Project project = new Project();
     Service service = new Service().setName("service");
@@ -96,7 +95,7 @@ class ExerciseTest {
     projectServices.setStatus(ProjectServices.Status.SUBSCRIBED);
     User user = new User();
 
-    when(serviceService.findAll()).thenReturn(Collections.singletonList(service));
+    when(serviceRepo.findAll()).thenReturn(Collections.singletonList(service));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -105,8 +104,8 @@ class ExerciseTest {
 
   @Test
   void sendsMessageOnCreateForContributorWithSubscribedService() {
-    ProjectUserDTO projectUser = new ProjectUserDTO();
-    projectUser.setRole(ProjectUserRoleType.CONTRIBUTOR);
+    UserDto projectUser = new UserDto();
+    projectUser.setRole(UserRole.CONTRIBUTOR);
     projectUser.setServices(List.of("service"));
     Project project = new Project();
     Service service = new Service().setName("service");
@@ -115,9 +114,9 @@ class ExerciseTest {
     projectServices.setService(service);
     User user = new User();
 
-    when(serviceService.findAll()).thenReturn(Collections.singletonList(service));
-    when(projectServicesService.findByServiceAndProject(any(), any())).thenReturn(projectServices);
-    when(userService.findByUuid(any())).thenReturn(Optional.of(user));
+    when(serviceRepo.findAll()).thenReturn(Collections.singletonList(service));
+    when(projectServicesRepo.findByServiceAndProject(any(), any())).thenReturn(projectServices);
+    when(userRepo.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
@@ -126,8 +125,8 @@ class ExerciseTest {
 
   @Test
   void setsServiceOnProjectServicesDTOForAdminWithSubscribedService() {
-    ProjectUserDTO projectUser = new ProjectUserDTO();
-    projectUser.setRole(ProjectUserRoleType.ADMIN);
+    UserDto projectUser = new UserDto();
+    projectUser.setRole(UserRole.ADMIN);
     Project project = new Project();
     Service service = new Service().setName("service");
     ProjectServices projectServices = new ProjectServices();
@@ -135,12 +134,12 @@ class ExerciseTest {
     projectServices.setService(service);
     User user = new User();
 
-    when(projectServicesService.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
-    when(userService.findByUuid(any())).thenReturn(Optional.of(user));
+    when(projectServicesRepo.getProjectServicesByProjectId(any())).thenReturn(List.of(projectServices));
+    when(userRepo.findByUuid(any())).thenReturn(Optional.of(user));
 
     exercise.sendUserMessageOnCreate(projectUser, project, MessageAction.CREATE);
 
-    ArgumentCaptor<ProjectServicesDTO> captor = ArgumentCaptor.forClass(ProjectServicesDTO.class);
+    ArgumentCaptor<ProjectServicesDto> captor = ArgumentCaptor.forClass(ProjectServicesDto.class);
     verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(captor.capture(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser), eq("ADMIN"));
     assertEquals(service, captor.getValue().getService());
   }

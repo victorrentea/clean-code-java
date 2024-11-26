@@ -1,8 +1,7 @@
-## Movie Rental Kata
 This application supports a movie rental store/website
 
-- Articulate your thoughts
+- Try to articulate your thoughts: "What's wrong with this code?"
 - Solve the simplest issues first
 - Keep tests green✅ (You are allowed to adjust the tests)
-- Refactor until you're proud™️
-- Have fun
+- Refactor until you're proud of how simple you make it
+- Enjoy working together!🎉

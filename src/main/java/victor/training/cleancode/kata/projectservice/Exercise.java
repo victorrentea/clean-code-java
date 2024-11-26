@@ -9,39 +9,39 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 @RequiredArgsConstructor
 public class Exercise {
-   private final ProjectServicesService projectServicesService;
-   private final UserService userService;
+   private final ProjectServicesRepo projectServicesRepo;
+   private final UserRepo userRepo;
+   private final ServiceRepo serviceRepo;
    private final UserServiceHelper userServiceHelper;
-   private final ServiceService serviceService;
 
-   public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction action) {
-      if (projectUser.getRole() == ProjectUserRoleType.ADMIN) {
-         List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
+   public void sendUserMessageOnCreate(UserDto userDto, Project project, MessageAction action) {
+      if (userDto.getRole() == UserRole.ADMIN) {
+         List<ProjectServices> projectServices = projectServicesRepo.getProjectServicesByProjectId(project.getId());
          List<ProjectServices> subscribedProjectServices = projectServices.stream()
              .filter(projectService -> projectService.getStatus() == Status.SUBSCRIBED)
              .collect(Collectors.toList());
 
          subscribedProjectServices.forEach(subscribedProjectService -> {
-            ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-            projectServicesDTO.setService(subscribedProjectService.getService());
-            User user = userService.findByUuid(projectUser.getUuid()).get();
-            userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, action, user, projectUser, ProjectUserRoleType.ADMIN.name());
+            ProjectServicesDto projectServicesDto = new ProjectServicesDto();
+            projectServicesDto.setService(subscribedProjectService.getService());
+            User user = userRepo.findByUuid(userDto.getUuid()).get();
+            userServiceHelper.sendUserToServicesOnCreate(projectServicesDto, project, action, user, userDto, UserRole.ADMIN.name());
          });
       } else {
-         List<String> projectServices = projectUser.getServices();
-         List<victor.training.cleancode.kata.projectservice.Service> services = serviceService.findAll();
+         List<String> projectServices = userDto.getServices();
+         List<victor.training.cleancode.kata.projectservice.Service> services = serviceRepo.findAll();
 
          projectServices.forEach(pS -> services.forEach(service -> {
             if (service.getName().equals(pS)) {
-               ProjectServices projectServices1 = projectServicesService.findByServiceAndProject(service, project);
+               ProjectServices projectServices1 = projectServicesRepo.findByServiceAndProject(service, project);
                if (projectServices1 != null && projectServices1.getStatus() == Status.SUBSCRIBED) {
-                  ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
-                  projectServicesDTO.setService(service);
-                  User user = userService.findByUuid(projectUser.getUuid()).get();
-                  if (projectUser.getRole() == ProjectUserRoleType.VIEW) {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, action, user, projectUser, ProjectUserRoleType.VIEW.name());
+                  ProjectServicesDto projectServicesDto = new ProjectServicesDto();
+                  projectServicesDto.setService(service);
+                  User user = userRepo.findByUuid(userDto.getUuid()).get();
+                  if (userDto.getRole() == UserRole.VIEW) {
+                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDto, project, action, user, userDto, UserRole.VIEW.name());
                   } else {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, action, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
+                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDto, project, action, user, userDto, UserRole.CONTRIBUTOR.name());
                   }
                }
             }
