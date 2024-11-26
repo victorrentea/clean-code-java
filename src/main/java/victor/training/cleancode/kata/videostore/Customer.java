@@ -30,11 +30,11 @@ class Customer {
     private String createMoviesPricesString() {
         return rentals
                 .stream()
-                .map(movieRental -> "\t" + movieRental.movie().getTitle() + "\t" +
-                        movieRental.movie().getMovieType()
+            .map(movieRental -> "\t" + movieRental.movie().title() + "\t" +
+                                movieRental.movie().movieType()
                                 .getStrategy()
                                 .calculatePrice(movieRental.rentalDays())
-                        + "\n")
+                                + "\n")
                 .collect(Collectors.joining());
     }
 
@@ -42,7 +42,7 @@ class Customer {
         return rentals
                 .stream()
                 .mapToInt(movieRental -> movieRental.movie()
-                        .getMovieType()
+                    .movieType()
                         .getStrategy()
                         .calculateFrequentRenterPoints(movieRental.rentalDays()))
                 .sum();
@@ -52,7 +52,7 @@ class Customer {
         return rentals
                 .stream()
                 .mapToDouble(movieRental -> movieRental.movie()
-                        .getMovieType()
+                    .movieType()
                         .getStrategy()
                         .calculatePrice(movieRental.rentalDays()))
                 .sum();

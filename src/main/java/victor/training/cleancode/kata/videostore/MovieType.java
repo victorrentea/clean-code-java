@@ -5,6 +5,7 @@ public enum MovieType {
     NEW_RELEASE(new NewReleaseRentalStrategy()),
     CHILDREN(new ChildrenRentalStrategy());
 
+    //    abstract double
     private final MovieRentalStrategy strategy;
 
     MovieType(MovieRentalStrategy strategy) {
