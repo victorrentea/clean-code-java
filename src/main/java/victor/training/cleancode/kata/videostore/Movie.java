@@ -3,26 +3,12 @@ import lombok.Getter;
 
 @Getter
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	Integer _priceCode;
+	private final String title;
+	private final MovieType movieType;
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+	public Movie(String title, MovieType movieType) {
+		this.title = title;
+		this.movieType = movieType;
 	}
 
-	public Integer getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
-	}
-
-	public String getTitle() {
-		return _title;
-	};
 }

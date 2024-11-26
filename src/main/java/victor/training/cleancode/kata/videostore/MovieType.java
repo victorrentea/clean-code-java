@@ -1,8 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 public enum MovieType {
-    REGULAR(new RegularRentalStrategy()), // or (RegularPriceStrategy::class)
-    // or"regularPriceStrategy" the name of the sprign bean + a @SpringBootTest with a for (enum values)
+    REGULAR(new RegularRentalStrategy()),
     NEW_RELEASE(new NewReleaseRentalStrategy()),
     CHILDREN(new ChildrenRentalStrategy());
 
@@ -16,4 +15,3 @@ public enum MovieType {
         return strategy;
     }
 }
-// applicationContext.getBean(enumV.strategyClazz)
