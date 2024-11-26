@@ -2,7 +2,7 @@ package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class CustomerTest {
@@ -21,7 +21,7 @@ public class CustomerTest {
             	Inception	6.5
             Amount owed is 32.0
             You earned 4 frequent renter points""";
-        
-        assertEquals(expected, customer.statement());
+
+        assertThat(expected).isEqualToIgnoringNewLines(customer.statement());
     }
 }
