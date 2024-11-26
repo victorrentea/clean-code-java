@@ -2,43 +2,51 @@ package victor.training.cleancode.kata.videostore;
 
 import victor.training.cleancode.kata.videostore.movie.RentedMovie;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 class Customer {
-	private final String name;
-	private final List<RentedMovie> rentals = new LinkedList<>(); // preserves order of elements
+  private final String name;
+  private final List<RentedMovie> rentals = new LinkedList<>(); // preserves order of elements
 
-	public Customer(String name) {
-		this.name = name;
-	}
+  public Customer(String name) {
+    this.name = name;
+  }
 
-	public void addRental(RentedMovie arg) {
-		rentals.add(arg);
-	}
+  public void addRental(RentedMovie arg) {
+    rentals.add(arg);
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getClientRentalMoviesPrintableStatus() {
-		String result = "Rental Record for " + getName() + "\n";
-		double totalAmount = rentals.stream().mapToDouble(RentedMovie::getPrice).sum();
-		int frequentRenterPoints = rentals.stream().map(RentedMovie::getFrequentRenterPoints).mapToInt(Integer::intValue).sum();
-		result += createTitlesAndPricesString();
-		result += addFinalLines(totalAmount, frequentRenterPoints);
-		return result;
-	}
+  public String getClientRentalMoviesPrintableStatus() {
+    // optimize code for browsing.
+    return formatHeader() + formatBody() + formatFooter();
+  }
 
-	private String createTitlesAndPricesString() {
-		return rentals.stream().map(RentedMovie::getPrintableTitleAndPrice).collect(Collectors.joining("\n"));
-	}
+  private int totalPoints() {
+    return rentals.stream().map(RentedMovie::getFrequentRenterPoints).mapToInt(Integer::intValue).sum();
+  }
 
-	private static String addFinalLines(double totalAmount, int frequentRenterPoints) {
-		String result = "\nAmount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
-	}
+  private double totalAmount() {
+    return rentals.stream().mapToDouble(RentedMovie::getPrice).sum();
+  }
+
+  private String formatHeader() {
+    return "Rental Record for " + getName() + "\n";
+  }
+
+  private String formatBody() {
+    return rentals.stream().map(RentedMovie::getPrintableTitleAndPrice).collect(Collectors.joining("\n"));
+  }
+
+  private String formatFooter() {
+    return "\nAmount owed is " + totalAmount() + "\n"
+           + "You earned " + totalPoints() + " frequent renter points";
+  }
 
 
 }

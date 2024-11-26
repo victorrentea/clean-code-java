@@ -2,8 +2,7 @@ package victor.training.cleancode.kata.videostore.movie;
 
 import victor.training.cleancode.kata.videostore.enums.MovieType;
 
-public abstract class RentedMovie {  // Sealed
-
+public abstract class RentedMovie /*permits*/ {  // Sealed
     protected final String title;
     protected final int rentedDays;
     protected final double price;

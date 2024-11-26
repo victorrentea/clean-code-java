@@ -1,6 +1,6 @@
 package victor.training.cleancode.kata.videostore.movie;
 
-public class RegularRentedMovie extends RentedMovie {
+class RegularRentedMovie extends RentedMovie {
 
     public RegularRentedMovie(String title, int rentedDays) {
         super(title, rentedDays);
