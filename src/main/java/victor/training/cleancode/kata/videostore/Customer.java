@@ -1,22 +1,22 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 class Customer {
     private final String name;
-    private final Map<Movie, RentalDays> rentals = new LinkedHashMap<>(); // preserves order of elements
+    private final List<MovieRental> rentals = new ArrayList<>(); // preserves order of elements
 
     public Customer(String name) {
         this.name = name;
     }
 
     public void addRental(Movie movie, int rentalDays) {
-        rentals.put(movie, new RentalDays(rentalDays));
+        rentals.add(new MovieRental(movie, rentalDays));
     }
 
-    public String statement() {
+    public String movieRentalStatus() {
         String result = "Rental Record for " + name + "\n";
         String moviePrices = createMoviesPricesString();
         double totalPriceToPay = calculateTotalPriceToPay();
@@ -28,18 +28,18 @@ class Customer {
     }
 
     private String createMoviesPricesString() {
-        return rentals.keySet()
+        return rentals
                 .stream()
                 .map(movie -> "\t" + movie.getTitle() + "\t" +
                         movie.getMovieType()
                                 .getStrategy()
-                                .calculatePrice(rentals.get(movie).days())
+                                .calculatePrice(movieRental.rentalDays())
                         + "\n")
                 .collect(Collectors.joining());
     }
 
     private int calculateFrequentRenterPoints() {
-        return rentals.entrySet()
+        return rentals
                 .stream()
                 .mapToInt(entry -> entry.getKey()
                         .getMovieType()
@@ -49,7 +49,7 @@ class Customer {
     }
 
     private double calculateTotalPriceToPay() {
-        return rentals.entrySet()
+        return rentals
                 .stream()
                 .mapToDouble(entry -> entry.getKey()
                         .getMovieType()
@@ -57,6 +57,4 @@ class Customer {
                         .calculatePrice(entry.getValue().days()))
                 .sum();
     }
-
-    private record RentalDays(int days) {}
 }
