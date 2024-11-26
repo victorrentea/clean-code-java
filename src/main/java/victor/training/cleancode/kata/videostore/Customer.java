@@ -23,33 +23,25 @@ public class Customer {
     }
 
     public String generateRentalStatement() {
-        StringBuilder result = addHeaderLines();
-
-        appendAllRentalLines(result);
-
-        return addFooterLines(result).toString();
+        return "Rental Record for " + getName() + "\n" + getAllRentalLines() + addFooterLines();
     }
 
-    private StringBuilder addHeaderLines() {
-        return new StringBuilder("Rental Record for " + getName() + "\n");
-    }
-
-    private void appendAllRentalLines(StringBuilder result) {
-        result.append(rentals.stream().map(this::generateRentalLine).collect(Collectors.joining()));
+    private String getAllRentalLines() {
+        return rentals.stream().map(this::generateRentalLine).collect(Collectors.joining());
     }
 
     private double getTotalOwedAmount() {
-        return rentals.stream().mapToDouble(rental -> rental.movie().calcRentalCost(rental.daysRented())).sum();
+        return rentals.stream().mapToDouble(rental -> rental.calculateCost(rental.daysRented())).sum();
     }
 
     private String generateRentalLine(Rental rental) {
-        return "\t" + rental.movie().title() + "\t" + rental.movie().calcRentalCost(rental.daysRented()) + "\n";
+        return "\t" + rental.movie().title() + "\t" + rental.calculateCost(rental.daysRented()) + "\n";
     }
 
-    private StringBuilder addFooterLines(StringBuilder result) {
+    private String addFooterLines() {
         double totalOwedAmount = getTotalOwedAmount();
 
-        return result.append(String.format("Amount owed is %.1f\nYou earned %d frequent renter points", totalOwedAmount,
-                frequentRenterPoints));
+        return String.format("Amount owed is %.1f\nYou earned %d frequent renter points", totalOwedAmount,
+                frequentRenterPoints);
     }
 }
