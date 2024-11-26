@@ -45,7 +45,7 @@ public record Rental(Movie movie, int daysRented) {
     // more code
     // more code
     // more code
-    §
+
     public double calculateCost(int daysRented) {
         return switch (movie.movieType()) {
             case REGULAR -> REGULAR_BASE_COST + Math.max(0, (daysRented - REGULAR_DAYS_THRESHOLD) * REGULAR_EXTRA_COST);
