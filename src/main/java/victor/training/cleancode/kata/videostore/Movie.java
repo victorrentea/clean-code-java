@@ -1,22 +1,19 @@
 package victor.training.cleancode.kata.videostore;
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
+//	public static final int CHILDRENS = 2;
+//	public static final int REGULAR = 0;
+//	public static final int NEW_RELEASE = 1;
 	private String _title;
-	Integer _priceCode;
+	Category category;
 
-	public Movie(String title, Integer priceCode) {
+	public Movie(String title, Category category) {
 		_title = title;
-		_priceCode = priceCode;
+		this.category = category;
 	}
+
 
 	public Integer getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
+		return category.getCode();
 	}
 
 	public String getTitle() {

@@ -2,6 +2,8 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.*;
 
+import static victor.training.cleancode.kata.videostore.Category.*;
+
 class Customer {
 	private String name;
 	private Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements
@@ -23,34 +25,32 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
+		for (Movie movie : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
+			int numberOfRentals = rentals.get(movie);
+			switch (movie.category) {
+				case REGULAR -> {
 					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case Movie.CHILDRENS:
+					if (numberOfRentals > 2)
+						thisAmount += (numberOfRentals - 2) * 1.5;
+				}
+				case NEW_RELEASE -> thisAmount += numberOfRentals * 3;
+				case CHILDREN -> {
 					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
+					if (numberOfRentals > 3)
+						thisAmount += (numberOfRentals - 3) * 1.5;
+				}
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
+			if (movie.getPriceCode() != null &&
+				 (movie.getPriceCode() == NEW_RELEASE.getCode())
+				 && numberOfRentals > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
 		// add footer lines
