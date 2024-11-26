@@ -1,5 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
+import victor.training.cleancode.kata.videostore.movie.RentedMovie;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
