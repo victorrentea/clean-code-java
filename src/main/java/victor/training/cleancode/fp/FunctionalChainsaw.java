@@ -5,8 +5,8 @@ import victor.training.cleancode.fp.support.OrderLine;
 import victor.training.cleancode.fp.support.Product;
 import victor.training.cleancode.fp.support.ProductRepo;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import static java.util.stream.Collectors.*;
@@ -18,18 +18,31 @@ public class FunctionalChainsaw { // ... Massacre
     this.productRepo = productRepo;
   }
 
-  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
-				.filter(Order::isActive)
-				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusYears(1)))
-				.flatMap(o -> o.orderLines().stream())
-				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
+	// const f = (param) => bla.bla;
+	private static List<Product> getFrequentProducts(Map<Product, Integer> recentProductCounts) {
+		return recentProductCounts
 				.entrySet()
 				.stream()
 				.filter(e -> e.getValue() >= 10)
 				.map(Entry::getKey)
+				.toList();
+	}
+
+  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
+		List<Order> recentActiveOrders = orders.stream()
+				.filter(Order::isActive)
+				.filter(Order::isRecent)
+				.toList();
+		Map<Product, Integer> recentProductCounts = recentActiveOrders.stream()
+				.flatMap(o -> o.orderLines().stream())
+				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
+
+		List<Product> frequentProducts = getFrequentProducts(recentProductCounts);
+		List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
+		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
 	}
+
 }

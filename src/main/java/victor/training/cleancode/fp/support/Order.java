@@ -5,12 +5,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class Order {
+  //  @Value("${prop}")
+//  public static final int RECENT_YEARS = 1;
   private Long id;
   private List<OrderLine> orderLines = List.of();
   private LocalDate creationDate;
   private LocalDate shipDate;
   private boolean active;
   private int price;
+
+
+  public boolean isRecent() {
+    LocalDate oneYearAgo = LocalDate.now().minusYears(1);
+    return creationDate.isAfter(oneYearAgo);
+  }
 
   public Long id() {
     return id;
