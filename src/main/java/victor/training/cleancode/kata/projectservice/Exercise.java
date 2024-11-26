@@ -14,7 +14,7 @@ public class Exercise {
    private final UserServiceHelper userServiceHelper;
    private final ServiceService serviceService;
 
-   public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction messageAction) {
+   public void sendUserMessageOnCreate(ProjectUserDTO projectUser, Project project, MessageAction action) {
       if (projectUser.getRole() == ProjectUserRoleType.ADMIN) {
          List<ProjectServices> projectServices = projectServicesService.getProjectServicesByProjectId(project.getId());
          List<ProjectServices> subscribedProjectServices = projectServices.stream()
@@ -25,7 +25,7 @@ public class Exercise {
             ProjectServicesDTO projectServicesDTO = new ProjectServicesDTO();
             projectServicesDTO.setService(subscribedProjectService.getService());
             User user = userService.findByUuid(projectUser.getUuid()).get();
-            userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.ADMIN.name());
+            userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, action, user, projectUser, ProjectUserRoleType.ADMIN.name());
          });
       } else {
          List<String> projectServices = projectUser.getServices();
@@ -39,9 +39,9 @@ public class Exercise {
                   projectServicesDTO.setService(service);
                   User user = userService.findByUuid(projectUser.getUuid()).get();
                   if (projectUser.getRole() == ProjectUserRoleType.VIEW) {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.VIEW.name());
+                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, action, user, projectUser, ProjectUserRoleType.VIEW.name());
                   } else {
-                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, messageAction, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
+                     userServiceHelper.sendUserToServicesOnCreate(projectServicesDTO, project, action, user, projectUser, ProjectUserRoleType.CONTRIBUTOR.name());
                   }
                }
             }
