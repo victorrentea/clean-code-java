@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 class Customer {
@@ -20,22 +21,23 @@ class Customer {
   }
 
   public String buildInvoice() {
-    StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
+    return "Rental Record for " + getName() + "\n" +
+           getMovieSummary() +
+           // add footer lines
+           "Amount owed is " + getTotalRentalFees() + "\n" +
+           "You earned " + getFrequentRenterPoints() + " frequent renter points";
+  }
 
-    double totalRentalFees = rentals.stream()
-            .mapToDouble(Rental::getMovieRentalFee)
-            .sum();
+  private String getMovieSummary() {
+    return rentals.stream()
+        .map(rental -> "\t" + rental.movie().title() + "\t" + rental.getMovieRentalFee() + "\n")
+        .collect(Collectors.joining());
+  }
 
-    String movieSummary = rentals.stream()
-            .map(rental -> "\t" + rental.movie().title() + "\t" + rental.getMovieRentalFee() + "\n")
-            .collect(Collectors.joining());
-
-    result.append(movieSummary);
-
-    // add footer lines
-    result.append("Amount owed is ").append(totalRentalFees).append("\n");
-    result.append("You earned ").append(getFrequentRenterPoints()).append(" frequent renter points");
-    return result.toString();
+  private double getTotalRentalFees() {
+    return rentals.stream()
+        .mapToDouble(Rental::getMovieRentalFee)
+        .sum();
   }
 
   private int getFrequentRenterPoints() {
