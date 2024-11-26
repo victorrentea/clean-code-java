@@ -30,13 +30,13 @@ class PureFunctionsTest {
   ProductRepo productRepo;
   @Captor
   ArgumentCaptor<List<Coupon>> couponCaptor;
+
   PureFunction priceService;
   ThirdPartyPriceProvider thirdPartyPriceProvider;
 
 
   @BeforeEach
   final void setup() {
-
     thirdPartyPriceProvider = new ThirdPartyPriceProvider(thirdPartyPrices);
     priceService = new PureFunction(customerRepo, couponRepo, thirdPartyPriceProvider, productRepo);
   }
