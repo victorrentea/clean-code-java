@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -27,10 +28,18 @@ class PureFunctionsTest {
   CouponRepo couponRepo;
   @Mock
   ProductRepo productRepo;
-  @InjectMocks
-  PureFunction priceService;
   @Captor
   ArgumentCaptor<List<Coupon>> couponCaptor;
+  PureFunction priceService;
+  ThirdPartyPriceProvider thirdPartyPriceProvider;
+
+
+  @BeforeEach
+  final void setup() {
+
+    thirdPartyPriceProvider = new ThirdPartyPriceProvider(thirdPartyPrices);
+    priceService = new PureFunction(customerRepo, couponRepo, thirdPartyPriceProvider, productRepo);
+  }
 
   @Test
   void computePrices() {

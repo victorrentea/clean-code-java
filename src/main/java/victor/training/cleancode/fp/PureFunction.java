@@ -12,25 +12,27 @@ import java.util.Map;
 @RequiredArgsConstructor
 class PureFunction {
   private final CustomerRepo customerRepo;
-  private final ThirdPartyPricesApi thirdPartyPricesApi;
+  //  private final ThirdPartyPricesApi thirdPartyPricesApi;
   private final CouponRepo couponRepo;
+  private final ThirdPartyPriceProvider thirdPartyPriceProvider;
   private final ProductRepo productRepo;
 
   // TODO extract complexity into a pure function
-  public Map<Long, Double> computePrices(
+
+  public Map<Long, Double> computePrices( // High Level, Imperative Shell
       long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds);
-    Map<Long, Double> initialPrices = resolvePrices(internalPrices, products);
-    ApplyCouponsResult result = applyCoupons(products, initialPrices, customer.coupons());
+    Map<Long, Double> initialPrices = thirdPartyPriceProvider.resolvePrices(internalPrices, products);
+    ApplyCouponsResult result = applyCoupons(products, initialPrices, customer.coupons()); // complex logic extyracted as a PURE FUNCTION
     couponRepo.markUsedCoupons(customerId, result.usedCoupons());
     return result.finalPrices();
   }
-
   private record ApplyCouponsResult(
       List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {
   }
 //  public static int hellInBackend;
+
 
   @VisibleForTesting // + package-protected = subcutaneous tests
   //  will fail Sonar/IntelliJ all other static code analysis when another class in the same packe
@@ -55,18 +57,5 @@ class PureFunction {
     return new ApplyCouponsResult(usedCoupons, finalPrices);
   }
 
-  private Map<Long, Double> resolvePrices(Map<Long, Double> internalPrices, List<Product> products) {
-    Map<Long, Double> initialPrices = new HashMap<>();
-    for (Product product : products) {
-      Double price = internalPrices.get(product.getId());
-      if (price == null) {
-        price = thirdPartyPricesApi.fetchPrice(product.getId());
-      }
-      initialPrices.put(product.getId(), price);
-//      product.setTemporaryPrice(price); // temporary field code smell!!!!!!!! NEVER@*&^!$(#!^@$&%^!@*^$%
-//      internalPrices.put(product.getId(), price); // mutating parameter state - code smell
-    }
-    return initialPrices;
-  }
 }
 
