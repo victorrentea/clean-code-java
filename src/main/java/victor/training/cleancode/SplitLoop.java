@@ -5,9 +5,8 @@ import lombok.Builder;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Break the loops and refactor to use .stream to compute stuff. */
 public class SplitLoop {
-  // run tests
+  // TODO Split loops and refactor to .stream. Run Tests✅
   public String computeStats(List<Employee> employees) {
     List<Integer> employeeIds = new ArrayList<>();
     double totalConsultantSalary = 0;

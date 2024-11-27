@@ -1,37 +1,11 @@
 package victor.training.cleancode;
 
 
-class Movie {
-    enum Category {
-        REGULAR, NEW_RELEASE, CHILDREN
-    }
-
-    private final Category category;
-    private final String title;
-
-    public Movie(Category category, String title) {
-        this.category = category;
-        this.title = title;
-    }
-    public Category getCategory() {
-        return category;
-    }
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{category=" + category + ", title='" + title + "'}";
-    }
-}
-
-
 public class Switch {
 
     // run tests
     public int computePrice(Movie movie, int days) {// query method
-        switch (movie.getCategory()) {
+        switch (movie.category()) {
             case REGULAR:
                 return days + 1;
             case NEW_RELEASE:
@@ -39,7 +13,7 @@ public class Switch {
             case CHILDREN:
                 return 5;
         }
-        return 0; // ?!.. Free!! Deducted from your salary!
+        return 0;
     }
 
     // run tests
@@ -48,7 +22,7 @@ public class Switch {
         System.out.println("Some shared initial stuff");
 
         // check parental advisory
-        switch (movie.getCategory()) {
+        switch (movie.category()) {
             case REGULAR:
                 System.out.println("Process regular movie: " + movie);
                 break;
@@ -61,5 +35,16 @@ public class Switch {
         }
 
         System.out.println("More common code after");
+    }
+
+    record Movie(Category category, String title) {
+        @Override
+        public String toString() {
+            return "Movie{category=" + category + ", title='" + title + "'}";
+        }
+
+        enum Category {
+            REGULAR, NEW_RELEASE, CHILDREN
+        }
     }
 }

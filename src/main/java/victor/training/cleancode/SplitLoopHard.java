@@ -4,13 +4,11 @@ import victor.training.cleancode.SplitLoop.Employee;
 
 import java.util.List;
 
-/**
- * Break the loops and refactor to use .stream to compute stuff.
- */
 public class SplitLoopHard {
 
     EmployeeService employeeService;
 
+    // TODO Split loops and refactor to .stream. Run Tests✅
     public String computeStatsHard(List<Employee> employees) {
         long totalEmpAge = 0;
         double totalConsultantSalary = 0;

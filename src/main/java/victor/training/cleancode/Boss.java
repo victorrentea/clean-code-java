@@ -16,7 +16,6 @@ public class Boss {
     System.out.println("Logic1");
     List<Integer> taskIds = new ArrayList<>();
     if (b) {
-      // for GDPR
       System.out.println("Logic3");
       check(tasks);
       for (Task task : tasks) {

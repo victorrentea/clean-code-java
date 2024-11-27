@@ -1,10 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
-
 class SomeController {
   SomeService someService;
 
@@ -46,7 +41,7 @@ class MyService {
 
 public class BooleanParameters {
 
-  // Warning⚠️: this method might be called from multiple places in the codebase ...
+  // ⚠️ has multiple callers
   public static void bigUglyMethod(int storeId, Task task) {
     System.out.println("Donkey Logic 1 " + task + " and " + storeId);
     System.out.println(task);
@@ -55,8 +50,8 @@ public class BooleanParameters {
     // System.out.println("Logic just for CR#323 : " + task);
 
     System.out.println("Sheep Logic 1 " + storeId);
-    System.out.println("Sheep Logic 2 " + storeId);
-    System.out.println("Sheep Logic 3 " + storeId);
+    System.out.println("Sheep Logic 2 ");
+    System.out.println("Sheep Logic 3 ");
   }
 }
 

@@ -11,8 +11,8 @@ public class Guards {
     if (marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
       if (!marine.dead()) {
         if (!marine.retired()) {
-          if (marine.yearsService() != null) {
-            result = marine.yearsService() * 100 + bonusPackage.value();
+          if (marine.yearsOfService() != null) {
+            result = marine.yearsOfService() * 100 + bonusPackage.value();
             if (!marine.awards().isEmpty()) {
               result += 1000;
             }
@@ -37,7 +37,7 @@ public class Guards {
   }
 }
 
-record Marine(boolean dead, boolean retired, Integer yearsService, List<Award> awards) {
+record Marine(boolean dead, boolean retired, Integer yearsOfService, List<Award> awards) {
 }
 
 record BonusPackage(int value) {

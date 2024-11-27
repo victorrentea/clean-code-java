@@ -1,10 +1,11 @@
 package victor.training.cleancode;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest; // from the dependency junit-jupiter-api
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import victor.training.cleancode.CaptureSystemOutput.OutputCapture;
-import victor.training.cleancode.Movie.Category;
+import victor.training.cleancode.Switch.Movie;
+import victor.training.cleancode.Switch.Movie.Category;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
