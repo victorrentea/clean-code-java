@@ -62,7 +62,7 @@ public class PaymentProcessor {
   }
 
   private FileWithMetadata loadMetadata(PaymentsFile paymentsFile) {
-    if (paymentsFile.payments().size() == 0) {
+    if (paymentsFile.payments().isEmpty()) {
       throw new IllegalArgumentException("Empty file");
     }
     if (paymentsFile.payments().size() > 1000) {
