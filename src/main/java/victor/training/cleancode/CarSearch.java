@@ -8,19 +8,12 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> matchesProductionYears(criteria, carModel))
+        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean matchesProductionYears(CarSearchCriteria criteria, CarModel carModel) {
-    Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
-    Interval carInterval = new Interval(carModel.getStartYear(), carModel.getEndYear());
-//    return MathUtil.intersects(criteriaInterval, carInterval); // gresit, non-OOP!
-    return criteriaInterval.intersects(carInterval);
-//    return criteriaInterval.intersects(carInterval); // corect: keep behavior next to state
-  }
 }
 
 class SomeOtherClientCode {
@@ -64,6 +57,10 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
+  }
 }
 
 // @Entity
@@ -104,6 +101,10 @@ class CarModel { // the Entity Model👑
 
   public String getModel() {
     return model;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 }
 
