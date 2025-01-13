@@ -34,9 +34,10 @@ record Interval(int start, int end) {
 }
 
 
-class CarSearchCriteria { // a DTO received from JSON
+class CarSearchCriteria /*extends Interval - NU */ { // a DTO received from JSON = FROZEN
   private final int startYear;
   private final int endYear;
+  //  private final Interval yearInterval;// ti-ai rupt clienntii pentru ca ai schimbat OPENAPI-ul
   private final String make;
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -44,6 +45,10 @@ class CarSearchCriteria { // a DTO received from JSON
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   public int getStartYear() {
@@ -57,20 +62,18 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
-
-  public Interval getYearInterval() {
-    return new Interval(startYear, endYear);
-  }
 }
 
 // @Entity
-class CarModel { // the Entity Model👑
+class CarModel { // the Domain Entity Model👑
   // @Id
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  //  private int startYear;
+//  private int endYear;
+  // BUN pt ca -1 camp, +semantica
+  private Interval yearInterval;// pot aici #potisitu pentru ca nimeni nu stie de structura asta!
 
   protected CarModel() {
   } // for Hibernate
@@ -79,8 +82,9 @@ class CarModel { // the Entity Model👑
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
@@ -88,11 +92,11 @@ class CarModel { // the Entity Model👑
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearInterval.start();
   }
 
   public String getMake() {
@@ -104,7 +108,7 @@ class CarModel { // the Entity Model👑
   }
 
   public Interval getYearInterval() {
-    return new Interval(startYear, endYear);
+    return yearInterval;
   }
 }
 
