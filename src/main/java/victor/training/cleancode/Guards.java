@@ -41,5 +41,6 @@ record BonusPackage(int value) {
 }
 
 class Award {
+//  private final String name;
 
 }
