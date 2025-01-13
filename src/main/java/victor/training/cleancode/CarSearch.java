@@ -34,26 +34,11 @@ class SomeOtherClientCode {
 class MathUtil {
   //  public static boolean intervalsIntersect(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
   public static boolean intervalsIntersectNew(Interval interval1, Interval interval2) { // BUNA
-    return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
+    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
   }
 }
 
-class Interval {
-  private final int start;
-  private final int end;
-
-  public Interval(int start, int end) {
-    this.start = start;
-    this.end = end;
-  }
-
-  public int getEnd() {
-    return end;
-  }
-
-  public int getStart() {
-    return start;
-  }
+record Interval(int start, int end) { // campurile sunt imutabile + sintaxa compacta
 }
 
 
