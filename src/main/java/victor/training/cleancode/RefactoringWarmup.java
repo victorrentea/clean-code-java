@@ -62,6 +62,7 @@ class One {
     two.gg(new R(1)); // acest apel vrea 3 in loc de 1 in corpul metodei gg
     return 2 * two.gg(new R(3));
   }
+
 }
 
 class Two {

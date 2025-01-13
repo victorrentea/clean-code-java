@@ -8,10 +8,16 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(criteria.getStartYear(), criteria.getEndYear(), carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> matchesProductionYears(criteria, carModel))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
+  }
+
+  private boolean matchesProductionYears(CarSearchCriteria criteria, CarModel carModel) {
+    return MathUtil.intervalsIntersect(
+        criteria.getStartYear(), criteria.getEndYear(),
+        carModel.getStartYear(), carModel.getEndYear());
   }
 }
 
@@ -26,6 +32,7 @@ class SomeOtherClientCode {
 
 class MathUtil {
 
+  //  public static boolean intervalsIntersect(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
   }
