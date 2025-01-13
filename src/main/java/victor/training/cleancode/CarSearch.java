@@ -17,28 +17,29 @@ class CarSearch {
   private boolean matchesProductionYears(CarSearchCriteria criteria, CarModel carModel) {
     Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
     Interval carInterval = new Interval(carModel.getStartYear(), carModel.getEndYear());
-    return MathUtil.intervalsIntersectNew(criteriaInterval, carInterval);
+//    return MathUtil.intersects(criteriaInterval, carInterval); // gresit, non-OOP!
+    return criteriaInterval.intersects(carInterval);
+//    return criteriaInterval.intersects(carInterval); // corect: keep behavior next to state
   }
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersectNew(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-
-    System.out.println(MathUtil.intervalsIntersectNew(new Interval(1000, 1600), new Interval(1250, 2000)));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
 
-class MathUtil {
-  //  public static boolean intervalsIntersect(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
-  public static boolean intervalsIntersectNew(Interval interval1, Interval interval2) { // BUNA
-    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
-  }
+class MathUtil { // sau globala in python
 }
 
-record Interval(int start, int end) { // campurile sunt imutabile + sintaxa compacta
+record Interval(int start, int end) {
+  //  public static boolean intersects(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
+  public boolean intersects(Interval other) { // BUNA
+    return start <= other.end && other.start <= end;
+  } // campurile sunt imutabile + sintaxa compacta
 }
 
 
