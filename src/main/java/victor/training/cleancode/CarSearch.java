@@ -8,9 +8,7 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> MathUtil.intervalsIntersect(criteria.getStartYear(), criteria.getEndYear(), carModel.getStartYear(), carModel.getEndYear()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
