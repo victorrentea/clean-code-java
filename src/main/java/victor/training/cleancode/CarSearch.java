@@ -32,8 +32,6 @@ class SomeOtherClientCode {
   }
 }
 
-class MathUtil { // sau globala in python
-}
 
 record Interval(int start, int end) {
   //  public static boolean intersects(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
