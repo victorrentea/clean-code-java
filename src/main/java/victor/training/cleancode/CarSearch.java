@@ -15,26 +15,44 @@ class CarSearch {
   }
 
   private boolean matchesProductionYears(CarSearchCriteria criteria, CarModel carModel) {
-    return MathUtil.intervalsIntersect(
-        criteria.getStartYear(), criteria.getEndYear(),
-        carModel.getStartYear(), carModel.getEndYear());
+    Interval criteriaInterval = new Interval(criteria.getStartYear(), criteria.getEndYear());
+    Interval carInterval = new Interval(carModel.getStartYear(), carModel.getEndYear());
+    return MathUtil.intervalsIntersectNew(criteriaInterval, carInterval);
   }
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersectNew(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+
+    System.out.println(MathUtil.intervalsIntersectNew(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 }
 
 class MathUtil {
-
   //  public static boolean intervalsIntersect(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+  public static boolean intervalsIntersectNew(Interval interval1, Interval interval2) { // BUNA
+    return interval1.getStart() <= interval2.getEnd() && interval2.getStart() <= interval1.getEnd();
+  }
+}
+
+class Interval {
+  private final int start;
+  private final int end;
+
+  public Interval(int start, int end) {
+    this.start = start;
+    this.end = end;
+  }
+
+  public int getEnd() {
+    return end;
+  }
+
+  public int getStart() {
+    return start;
   }
 }
 
