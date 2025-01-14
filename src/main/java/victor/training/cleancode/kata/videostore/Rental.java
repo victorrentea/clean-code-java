@@ -3,22 +3,18 @@ package victor.training.cleancode.kata.videostore;
 public record Rental(Movie movie, int daysOfRental) {
 
   public double price() {
-    switch (movie.priceCode()) {
-      case REGULAR:
-        return regularPrice();
-      case NEW_RELEASE:
-        return daysOfRental * 3;
-      case CHILDREN:
-        return childrenPrice();
-      default:
-        throw new IllegalStateException("Unknown price code: " + movie.priceCode());
-//      default: return 999999;
-    }
+    return switch (movie.priceCode()) {
+      case REGULAR -> regularPrice();
+      case NEW_RELEASE -> daysOfRental * 3;
+      case CHILDREN -> childrenPrice();
+      // NU PUNE default daca folsesti swithc ca expresie in java 17
+      // pt ca compilatorul iti va da eroare daca nu acoperi toate cazurile
+//      default -> throw new IllegalStateException("Unknown price code: " + movie.priceCode());
+    };
   }
 
   private double childrenPrice() {
-    double result;
-    result = 1.5;
+    double result = 1.5;
     if (daysOfRental > 3)
       result += (daysOfRental - 3) * 1.5;
     return result;
