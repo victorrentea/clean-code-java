@@ -43,9 +43,7 @@ class Customer {
   }
 
   private double getTotalPrice() {
-    return rentals.stream()
-        .mapToDouble(Rental::price)
-        .sum();
+    return rentals.stream().mapToDouble(Rental::price).sum();
   }
 
   private int getRenterPoints() {
