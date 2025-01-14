@@ -7,9 +7,11 @@ class CarSearch {
 
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
+    int a = 2;
     List<CarModel> results = carModels.stream()
         .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
         .collect(Collectors.toList());
+//    criteria.getYearInterval().
     System.out.println("More filtering logic ...");
     return results;
   }
@@ -27,10 +29,17 @@ class SomeOtherClientCode {
 
 
 record Interval(int start, int end) {
+  Interval {
+    if (start > end) throw new IllegalArgumentException("start larger than end"); // rar in industrie
+  }
   //  public static boolean intersects(IntervalIntersectsParams ) {... prea specific ACESTEI fucnctii, non-reusable
   public boolean intersects(Interval other) { // BUNA
     return start <= other.end && other.start <= end;
   } // campurile sunt imutabile + sintaxa compacta
+
+  public int length() { // synthetic getter, o valoare derivata din ce am campuri
+    return end - start;
+  }
 }
 
 
@@ -65,6 +74,7 @@ class CarSearchCriteria /*extends Interval - NU */ { // a DTO received from JSON
 }
 
 // @Entity
+//@Getter
 class CarModel { // the Domain Entity Model👑
   // @Id
   private Long id;
@@ -81,7 +91,7 @@ class CarModel { // the Domain Entity Model👑
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+//    if (startYear > endYear) throw new IllegalArgumentException("start larger than end"); // business rule
 //    this.startYear = startYear;
 //    this.endYear = endYear;
     this.yearInterval = new Interval(startYear, endYear);
