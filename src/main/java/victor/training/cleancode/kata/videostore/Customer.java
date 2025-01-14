@@ -1,62 +1,54 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 class Customer {
-	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
+  private final String name;
+  private final List<Rental> rentals = new ArrayList<>();
 
-	public Customer(String name) {
-		this.name = name;
-	}
+  public Customer(String name) {
+    this.name = name;
+  }
 
   public void addRental(Movie movie, int daysOfRental) {
-		rentals.put(movie, daysOfRental);
-	}
+    rentals.add(new Rental(movie, daysOfRental));
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String statement() {
-		double totalPrice = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
-		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.priceCode()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDREN:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.priceCode() != null &&
-					(each.priceCode() == PriceCodeEnum.NEW_RELEASE)
-					&& dr > 1)
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + movie.title() + "\t" + price + "\n";
-			totalPrice += price;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalPrice + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
-	}
+  public String statement() {
+    String result = "Rental Record for " + name + "\n";
+    for (Rental rental : rentals) {
+      double price = rental.getPrice();
+      result += "\t" + rental.movie().title() + "\t" + price + "\n";
+    }
+    result += getFooterLines();
+    return result;
+  }
+
+  private String getFooterLines() {
+    return "Amount owed is " + getTotalPrice() + "\n" +
+           "You earned " + getRenterPoints() + " frequent renter points";
+  }
+
+  private double getTotalPrice() {
+    return rentals.stream()
+        .mapToDouble(Rental::getPrice)
+        .sum();
+  }
+
+  private int getRenterPoints() {
+    int frequentRenterPoints = 0;
+    for (Rental rental : rentals) {
+      // add frequent renter points
+      frequentRenterPoints++;
+      int daysOfRental = rental.daysOfRental();
+      if (rental.movie().priceCode() == PriceCodeEnum.NEW_RELEASE && daysOfRental > 1)
+        frequentRenterPoints++;
+    }
+    return frequentRenterPoints;
+  }
 }
