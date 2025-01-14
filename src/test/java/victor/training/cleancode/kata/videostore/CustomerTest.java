@@ -24,7 +24,7 @@ public class CustomerTest {
             Amount owed is 33.5
             You earned 5 frequent renter points""";
 
-        assertThat(expected).isEqualToIgnoringNewLines(customer.statement());
-//        assertEquals(expected, customer.statement());// use this is above fails to compile
+        assertThat(expected).isEqualToIgnoringNewLines(customer.getStatement());
+//        assertEquals(expected, customer.getStatement());// use this is above fails to compile
     }
 }

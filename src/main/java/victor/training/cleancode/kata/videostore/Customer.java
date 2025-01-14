@@ -3,6 +3,8 @@ package victor.training.cleancode.kata.videostore;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
   private final String name;
   private final List<Rental> rentals = new ArrayList<>();
@@ -19,17 +21,23 @@ class Customer {
     return name;
   }
 
-  public String statement() {
-    String result = "Rental Record for " + name + "\n";
-    for (Rental rental : rentals) {
-      double price = rental.price();
-      result += "\t" + rental.movie().title() + "\t" + price + "\n";
-    }
-    result += getFooterLines();
-    return result;
+  public String getStatement() {
+    return getHeader() + getBody() + getFooter();
   }
 
-  private String getFooterLines() {
+  private String getHeader() {
+    return "Rental Record for " + name + "\n";
+  }
+
+  private String getBody() {
+    return rentals.stream().map(this::bodyLine).collect(joining());
+  }
+
+  private String bodyLine(Rental rental) {
+    return "\t" + rental.movie().title() + "\t" + rental.price() + "\n";
+  }
+
+  private String getFooter() {
     return "Amount owed is " + getTotalPrice() + "\n" +
            "You earned " + getRenterPoints() + " frequent renter points";
   }
@@ -41,14 +49,7 @@ class Customer {
   }
 
   private int getRenterPoints() {
-    int frequentRenterPoints = 0;
-    for (Rental rental : rentals) {
-      // add frequent renter points
-      frequentRenterPoints++;
-      int daysOfRental = rental.daysOfRental();
-      if (rental.movie().priceCode() == PriceCode.NEW_RELEASE && daysOfRental > 1)
-        frequentRenterPoints++;
-    }
-    return frequentRenterPoints;
+    return rentals.stream().mapToInt(Rental::getFrequentRenterPoints).sum();
   }
+
 }

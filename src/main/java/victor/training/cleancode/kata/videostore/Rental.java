@@ -15,16 +15,26 @@ public record Rental(Movie movie, int daysOfRental) {
 
   private double childrenPrice() {
     double result = 1.5;
-    if (daysOfRental > 3)
+    if (daysOfRental > 3) {
       result += (daysOfRental - 3) * 1.5;
+    }
     return result;
   }
 
   private double regularPrice() {
 //    return 2 + Math.max(0, daysOfRental - 2) * 1.5;
     double result = 2;
-    if (daysOfRental > 2)
+    if (daysOfRental > 2) {
       result += (daysOfRental - 2) * 1.5;
+    }
     return result;
+  }
+
+  public int getFrequentRenterPoints() {
+    int frequentRenterPoints = 1;
+    if (movie.priceCode() == PriceCode.NEW_RELEASE && daysOfRental > 1) {
+      frequentRenterPoints++;
+    }
+    return frequentRenterPoints;
   }
 }
