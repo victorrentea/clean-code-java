@@ -1,7 +1,8 @@
 package victor.training.cleancode.kata.videostore;
 
-public enum PriceCodeEnum {
+public enum PriceCode {
 	REGULAR,
 	NEW_RELEASE,
 	CHILDREN
+//	,ELDERS
 }

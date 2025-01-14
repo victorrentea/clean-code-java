@@ -2,23 +2,33 @@ package victor.training.cleancode.kata.videostore;
 
 public record Rental(Movie movie, int daysOfRental) {
 
-  public double getPrice() {
-    double thisAmount = 0;
+  public double price() {
     switch (movie.priceCode()) {
       case REGULAR:
-        thisAmount += 2;
-        if (daysOfRental > 2)
-          thisAmount += (daysOfRental - 2) * 1.5;
-        return thisAmount;
+        return regularPrice();
       case NEW_RELEASE:
-        thisAmount += daysOfRental * 3;
-        return thisAmount;
+        return daysOfRental * 3;
       case CHILDREN:
-        thisAmount += 1.5;
-        if (daysOfRental > 3)
-          thisAmount += (daysOfRental - 3) * 1.5;
-        return thisAmount;
+        return childrenPrice();
+      default:
+        throw new IllegalStateException("Unknown price code: " + movie.priceCode());
+//      default: return 999999;
     }
-    return thisAmount;
+  }
+
+  private double childrenPrice() {
+    double result;
+    result = 1.5;
+    if (daysOfRental > 3)
+      result += (daysOfRental - 3) * 1.5;
+    return result;
+  }
+
+  private double regularPrice() {
+//    return 2 + Math.max(0, daysOfRental - 2) * 1.5;
+    double result = 2;
+    if (daysOfRental > 2)
+      result += (daysOfRental - 2) * 1.5;
+    return result;
   }
 }

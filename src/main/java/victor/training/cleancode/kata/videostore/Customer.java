@@ -22,7 +22,7 @@ class Customer {
   public String statement() {
     String result = "Rental Record for " + name + "\n";
     for (Rental rental : rentals) {
-      double price = rental.getPrice();
+      double price = rental.price();
       result += "\t" + rental.movie().title() + "\t" + price + "\n";
     }
     result += getFooterLines();
@@ -36,7 +36,7 @@ class Customer {
 
   private double getTotalPrice() {
     return rentals.stream()
-        .mapToDouble(Rental::getPrice)
+        .mapToDouble(Rental::price)
         .sum();
   }
 
@@ -46,7 +46,7 @@ class Customer {
       // add frequent renter points
       frequentRenterPoints++;
       int daysOfRental = rental.daysOfRental();
-      if (rental.movie().priceCode() == PriceCodeEnum.NEW_RELEASE && daysOfRental > 1)
+      if (rental.movie().priceCode() == PriceCode.NEW_RELEASE && daysOfRental > 1)
         frequentRenterPoints++;
     }
     return frequentRenterPoints;
