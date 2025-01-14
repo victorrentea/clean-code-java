@@ -9,10 +9,10 @@ class Customer {
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+  public void addRental(Movie movie, int daysOfRental) {
+		rentals.put(movie, daysOfRental);
 	}
 
 	public String getName() {
@@ -20,7 +20,7 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
+		double totalPrice = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
@@ -51,11 +51,11 @@ class Customer {
 					&& dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.title() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + movie.title() + "\t" + price + "\n";
+			totalPrice += price;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalPrice + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
