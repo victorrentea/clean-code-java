@@ -6,10 +6,18 @@ import java.util.stream.Collectors;
 class CarSearch {
 
   // run tests
+
+  /**
+   * MUST HAVE daca alti devi pe care nu-i cunosti vor folosi aceasta metoda
+   *
+   * @param criteria
+   * @param carModels
+   * @return
+   */
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
+        .filter(carModel -> MathUtil.intervalsIntersect(criteria.
+                getStartYear(), criteria.getEndYear(),
             carModel.getStartYear(), carModel.getEndYear()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
