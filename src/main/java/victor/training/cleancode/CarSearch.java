@@ -16,37 +16,45 @@ class CarSearch {
     Interval interval1 = new Interval(criteria.getStartYear(), criteria.getEndYear());
     Interval interval2 = new Interval(carModel.getStartYear(), carModel.getEndYear());
     return MathUtil.intervalsIntersect(interval1, interval2);
-//    return MathUtil.intervalsIntersect(
-//        criteria.getStartYear(), criteria.getEndYear(),
-//        carModel.getStartYear(), carModel.getEndYear());
   }
 }
 
 class SomeOtherClientCode {
+  private void applyLength1Filter() { // pretend
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
+  }
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
+
+//  public void method(int a, int b, int c, int d, int e, int f, int g) {
+  // logica
+//  }
 }
+//class MethodParams {
+//  int a=1;
+//  int b=2;
+//  int c=3;
+//  int d=4;
+//
+//  public void method() {
+//    // logica ?
+//  }
+//
+//}
 
 class MathUtil {
   // veche si rea:
 
-  /**
-   * @deprecated Use {@link #intervalsIntersect(Interval, Interval)} instead
-   */
-  @Deprecated(forRemoval = true) // si apoi speri sa nu mai fie folosita de client in x luni.
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
-  }
+  // si apoi speri sa nu mai fie folosita de client in x luni.
 
   // noua si buna:
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
     return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
   }
-
 }
 
 // o clasa noua cu atribute declarate (cu tip), ideal IMUTABILA (stare nemodificabila dupa instantiere)
