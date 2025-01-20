@@ -6,7 +6,7 @@ import java.util.List;
 
 class RefactoringWarmup {
   public static void main(String[] args) {
-    System.out.println(new One(new Two()).f());
+    System.out.println(new One(new TwoImpl()).f());
     loop();
   }
 
@@ -48,22 +48,24 @@ class RefactoringWarmup {
 record R(int x) {}
 
 class One {
-  private final Two two;
+  public static final int DAYS_PER_WEEK = 7;
+  private final TwoImpl two;
 
-  One(Two two) {
+  One(TwoImpl two) {
     this.two = two;
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    two.g(DAYS_PER_WEEK, new R(3));
+    return 2 * two.g(1, new R(3));
   }
 }
 
-class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
+class TwoImpl {
+  public int g(int i, R r) {
+    int x = r.x();
+    System.out.println("b=" + x);
+    return i + x + x;
   }
 
   public void unknown() {
