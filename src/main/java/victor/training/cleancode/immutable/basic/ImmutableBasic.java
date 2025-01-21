@@ -21,6 +21,18 @@ public class ImmutableBasic {
       System.out.println(immutable);
    }
 }
+
+// record Immutable(
+//    Integer x,
+//    List<Integer> list,
+//    Other other) {
+//
+//   @Override
+//   public List<Integer> list() {
+//      return Collections.unmodifiableList(list); // readonly collection
+//   }
+//}
+
 // unui obiect imutabil nu ii poti schimba starea dupa instantiere
 class Immutable { // = deep immutable: nu poti schimba nici pe el nici obiectele referite
    // poti da o instanta din aceasta clasa oricui, fara sa te temi ca va fi modificata
