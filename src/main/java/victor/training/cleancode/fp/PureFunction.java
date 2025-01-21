@@ -61,10 +61,15 @@ class PureFunction {
 //    }
 
     // BUG: se cheama trhird party de fiecare data, chiar daca avem deja pretul in internalPrices
-    return products.stream()
-        .collect(ImmutableMap.toImmutableMap(Product::getId,
-            product -> internalPrices.getOrDefault(product.getId(), thirdPartyPricesApi.fetchPrice(product.getId()))));
+    return products.stream().collect(ImmutableMap.toImmutableMap(Product::getId,
+        product -> resolvePrice(internalPrices, product)));
+  }
 
+  private Double resolvePrice(Map<Long, Double> internalPrices, Product product) {
+    if (internalPrices.containsKey(product.getId())) {
+      return internalPrices.get(product.getId());
+    }
+    return thirdPartyPricesApi.fetchPrice(product.getId());
   }
 
   // prices, usedCoupons = f(customer, products, internalPrices)
