@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
@@ -32,8 +33,12 @@ class PureFunction {
     return result.finalPrices();
   }
 
-  // pure function holding the logic of applying coupons
-  private Result applyCoupons(List<Product> products, ImmutableMap<Long, Double> initialPrices, List<Coupon> coupons) {
+  // pure function holding the logic of applying coupons << logica e aici!
+  // daca tot am izolat logica complexa intr-o metoda pura fara dependente
+  // n-ar fi convenabil sa testez direct metoda asta? (evitand astfel cele 4 MOCKURILE necesare)
+  @VisibleForTesting
+  // permite accesul doar din teste la aceasta metoda
+  Result applyCoupons(List<Product> products, ImmutableMap<Long, Double> initialPrices, List<Coupon> coupons) {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
