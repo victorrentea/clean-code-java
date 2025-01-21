@@ -9,25 +9,41 @@ public class ImmutableBasic {
    public static void main(String[] args) {
       List<Integer> list = Stream.of(1, 2, 3, 4, 5).collect(toList());
 
-      Immutable immutable = new Immutable();
-
-      immutable.x = 2;
-      immutable.list = list;
-      immutable.other = new Other(13);
+      Immutable immutable = new Immutable(2, list, new Other(13));
 
       System.out.println(immutable);
 
       // LOTS OF BUSINESS LOGIC HERE
+      immutable.getList().clear();
 
-      System.out.println(immutable.list);
+      System.out.println(immutable.getList());
       System.out.println(immutable);
    }
 }
 
-class Immutable {
-   public Integer x;
-   public List<Integer> list;
-   public Other other;
+// unui obiect imutabil nu ii poti schimba starea dupa instantiere
+class Immutable { // = shallow immutable
+   private final Integer x;
+   private final List<Integer> list;
+   private final Other other;
+
+   public Immutable(Integer x, List<Integer> list, Other other) {
+      this.x = x;
+      this.list = list;
+      this.other = other;
+   }
+
+   public Integer getX() {
+      return x;
+   }
+
+   public List<Integer> getList() {
+      return list;
+   }
+
+   public Other getOther() {
+      return other;
+   }
 
    public String toString() {
       return String.format("Immutable{x=%d, numbers=%s, other=%s}", x, list, other);
