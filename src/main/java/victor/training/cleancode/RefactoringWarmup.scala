@@ -1,37 +1,36 @@
 package victor.training.cleancode
 
-import scala.math.sqrt
-
 class RefactoringWarmup {
   def main(args: Array[String]): Unit = {
     val two = new Two()
     println(two.loop(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)))
     println(new One(two).f())
-    println(two.g(R(1)))
+    println(two.g2(R(1)))
   }
 }
 
 class One(private val two: Two) {
   def f(): Int = {
-    2 * two.g(R(3))
+    2 * two.g2(R(3))
   }
 }
 
 class Two {
-  def g(r: R): Int = {
+  def g2(rec: R): Int = {
     val b = 2
+    println("b2=" + b)
     println("b=" + b)
-    1 + b + r.x
+    1 + b + rec.x
   }
 
   def loop(numbers: List[Int]): Double = {
-    println("b=" + 987)
-    //    var ssq = 0;
-    //    for (n <- numbers) {
-    //      if (n % 2 == 0) {
-    //        ssq += n * n
-    //      }
-    //    }
+    println("b=" + 42) // sensu' vetii
+    var ssq = 0
+    for (n <- numbers) {
+      if (n % 2 == 0) {
+        ssq += n * n
+      }
+    }
 
     //    val ssq = numbers.filter(_ % 2 == 0).map(n => n * n).sum
     // cu for comprehension te rog
@@ -39,7 +38,7 @@ class Two {
     //      n <- numbers
     //      if n % 2 == 0
     //    } yield n * n
-    sqrt(ssq)
+    //    sqrt(ssq)
   }
 }
 
