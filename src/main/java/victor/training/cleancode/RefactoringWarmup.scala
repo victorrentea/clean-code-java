@@ -26,7 +26,19 @@ class Two {
 
   def loop(numbers: List[Int]): Double = {
     println("b=" + 987)
-    val ssq = numbers.filter(_ % 2 == 0).map(n => n * n).sum
+    //    var ssq = 0;
+    //    for (n <- numbers) {
+    //      if (n % 2 == 0) {
+    //        ssq += n * n
+    //      }
+    //    }
+
+    //    val ssq = numbers.filter(_ % 2 == 0).map(n => n * n).sum
+    // cu for comprehension te rog
+    //    val ssq = for {
+    //      n <- numbers
+    //      if n % 2 == 0
+    //    } yield n * n
     sqrt(ssq)
   }
 }
