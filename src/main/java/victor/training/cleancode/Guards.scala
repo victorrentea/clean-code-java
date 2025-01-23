@@ -1,6 +1,5 @@
 package victor.training.cleancode
 
-import victor.training.cleancode.java.Guards.DEAD_PAY_AMOUNT
 
 object Guards {
   val DEAD_PAY_AMOUNT: Int = 1
@@ -9,14 +8,12 @@ object Guards {
 
 class Guards {
 
-  import Guards._
-
   def getPayAmount(marine: Marine, bonusPackage: BonusPackage): Int = {
     if (marine == null || (bonusPackage.value < 10 || bonusPackage.value > 100)) {
       throw new IllegalArgumentException("Not applicable!")
     }
     if (marine.dead) {
-      return DEAD_PAY_AMOUNT // early return
+      return Guards.DEAD_PAY_AMOUNT // early return
     }
     if (marine.retired) {
       return retiredAmount()
