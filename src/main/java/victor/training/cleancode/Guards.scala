@@ -6,6 +6,7 @@ object Guards {
   val DEAD_PAY_AMOUNT: Int = 1
 }
 
+
 class Guards {
 
   import Guards._

@@ -7,6 +7,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import victor.training.cleancode.PureFunction;
 import victor.training.cleancode.java.fp.support.*;
 
 import java.util.List;

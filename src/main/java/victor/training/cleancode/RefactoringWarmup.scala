@@ -5,18 +5,21 @@ class RefactoringWarmup {
     val two = new Two()
     println(two.loop(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)))
     println(new One(two).f())
-    println(two.g2(R(1)))
+    println(two.g(R(1)))
   }
 }
 
 class One(private val two: Two) {
   def f(): Int = {
-    2 * two.g2(R(3))
+    2 * two.g(R(3))
   }
 }
 
+
 class Two {
-  def g2(rec: R): Int = {
+  //  type CustomerId = Int
+  //  type PNK = Int
+  def g(rec: R): Int = {
     val b = 2
     println("b2=" + b)
     println("b=" + b)
