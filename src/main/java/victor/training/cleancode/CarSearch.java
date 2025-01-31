@@ -24,7 +24,6 @@ class SomeOtherClientCode {
   private void applyCapacityFilter() { // pretend
     Interval interval1 = new Interval(1000, 1600);
     Interval interval2 = new Interval(1250, 2000);
-//    interval1.
     System.out.println(interval1.intersects(interval2));
   }
 
@@ -45,10 +44,6 @@ class SomeOtherClientCode {
 record Interval(int start, int end) {
   Interval {
     if (start > end) throw new IllegalArgumentException("start larger than end"); // putine echipe fac asta
-  }
-
-  public int length() {
-    return end - start;
   }
   /**
    * comutativ operation

@@ -1,6 +1,5 @@
 package victor.training.cleancode.immutable.basic;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,9 +20,9 @@ public class ImmutableBasic {
       System.out.println(immutable);
    }
 }
+
 // unui obiect imutabil nu ii poti schimba starea dupa instantiere
-class Immutable { // = deep immutable: nu poti schimba nici pe el nici obiectele referite
-   // poti da o instanta din aceasta clasa oricui, fara sa te temi ca va fi modificata
+class Immutable { // = shallow immutable
    private final Integer x;
    private final List<Integer> list;
    private final Other other;
@@ -39,7 +38,7 @@ class Immutable { // = deep immutable: nu poti schimba nici pe el nici obiectele
    }
 
    public List<Integer> getList() {
-      return Collections.unmodifiableList(list); // readonly collection
+      return list;
    }
 
    public Other getOther() {
@@ -51,12 +50,18 @@ class Immutable { // = deep immutable: nu poti schimba nici pe el nici obiectele
    }
 }
 
-//evita asta pt ca:
-// method reference limitation Other::a
-// breaks the uniform interface: obiectele (OOP) ar trebui sa expuna metode, nu atribute, pentru a putea adauga ulterior metode aditionale
 class Other {
-   public final int a;
+   private int a;
+
    public Other(int a) {
+      this.a = a;
+   }
+
+   public int getA() {
+      return a;
+   }
+
+   public void setA(int a) {
       this.a = a;
    }
 }
