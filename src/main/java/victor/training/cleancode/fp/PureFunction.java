@@ -59,13 +59,10 @@ class PureFunction {
 //      }
 //      resolvedPrices.put(product.getId(), price);
 //    }
-//    return  ImmutableMap.copyOf(resolvedPrices);
 
     // BUG: se cheama trhird party de fiecare data, chiar daca avem deja pretul in internalPrices
     return products.stream().collect(ImmutableMap.toImmutableMap(Product::getId,
         product -> resolvePrice(internalPrices, product)));
-    // return {product.id: internalPrices.get(product.id) ?? thirdPartyPricesApi.fetchPrice(product.id) for product in products}
-    // return {product.id: resolvePrice(internalPrices, product) for product in products} 💖
   }
 
   private Double resolvePrice(Map<Long, Double> internalPrices, Product product) {
@@ -73,9 +70,6 @@ class PureFunction {
       return internalPrices.get(product.getId());
     }
     return thirdPartyPricesApi.fetchPrice(product.getId());
-
-    // in python metoda asta ar fi scrisa ca:
-    // return internalPrices.get(product.id) ?? thirdPartyPricesApi.fetchPrice(product.id)
   }
 
   // prices, usedCoupons = f(customer, products, internalPrices)
