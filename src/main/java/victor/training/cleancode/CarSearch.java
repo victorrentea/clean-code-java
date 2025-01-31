@@ -47,8 +47,12 @@ class SomeOtherClientCode {
 //}
 
 class MathUtil {
+  // veche si rea:
+
+  // si apoi speri sa nu mai fie folosita de client in x luni.
+
+  // noua si buna:
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    // "Feature Envy" code smell - logica sta departe de datele pe care lucreaza = nu e OOP
     return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
   }
 }
