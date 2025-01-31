@@ -42,9 +42,6 @@ class SomeOtherClientCode {
 
 // o clasa noua cu atribute declarate (cu tip), ideal IMUTABILA (stare nemodificabila dupa instantiere)
 record Interval(int start, int end) {
-  Interval {
-    if (start > end) throw new IllegalArgumentException("start larger than end"); // putine echipe fac asta
-  }
   /**
    * comutativ operation
    */
@@ -116,7 +113,9 @@ class CarModel { // the Domain Model👑 = structura de date interna, PRIVATA ap
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-
+    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+//    this.startYear = startYear;
+//    this.endYear = endYear;
     this.productionYears = new Interval(startYear, endYear);
   }
 
