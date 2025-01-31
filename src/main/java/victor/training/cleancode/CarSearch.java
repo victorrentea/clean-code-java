@@ -15,19 +15,19 @@ class CarSearch {
   private boolean matchesProductionYears(CarModel carModel, CarSearchCriteria criteria) {
     Interval interval1 = new Interval(criteria.getStartYear(), criteria.getEndYear());
     Interval interval2 = new Interval(carModel.getStartYear(), carModel.getEndYear());
-    return interval1.intersects(interval2);
+    return MathUtil.intervalsIntersect(interval1, interval2);
   }
 }
 
 class SomeOtherClientCode {
   private void applyLength1Filter() { // pretend
-    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
   private void applyLengthFilter() { // pretend
-    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
+    System.out.println(MathUtil.intervalsIntersect(new Interval(1000, 1600), new Interval(1250, 2000)));
   }
 
 //  public void method(int a, int b, int c, int d, int e, int f, int g) {
@@ -47,14 +47,14 @@ class SomeOtherClientCode {
 //}
 
 class MathUtil {
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    // "Feature Envy" code smell - logica sta departe de datele pe care lucreaza = nu e OOP
+    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
+  }
 }
 
 // o clasa noua cu atribute declarate (cu tip), ideal IMUTABILA (stare nemodificabila dupa instantiere)
-record Interval(int start, int end) {
-  public boolean intersects(Interval other) {
-    // "Feature Envy" code smell - logica sta departe de datele pe care lucreaza = nu e OOP
-    return start <= other.end && other.start <= end;
-  } // = ctor, getter, hash/equals, toString din java 17
+record Interval(int start, int end) { // = ctor, getter, hash/equals, toString din java 17
 }
 //class Interval {
 //  private final int start;
