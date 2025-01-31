@@ -141,8 +141,8 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getProductionYears().start();
-    dto.endYear = carModel.getProductionYears().end();
+    dto.startYear = carModel.getStartYear();
+    dto.endYear = carModel.getEndYear();
     return dto;
   }
 
