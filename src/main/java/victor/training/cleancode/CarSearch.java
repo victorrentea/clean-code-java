@@ -6,12 +6,17 @@ import java.util.stream.Collectors;
 class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getProductionYears()))
+        .filter(carModel -> matchesProductionYears(carModel, criteria))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
+  private boolean matchesProductionYears(CarModel carModel, CarSearchCriteria criteria) {
+    Interval interval1 = new Interval(criteria.getStartYear(), criteria.getEndYear());
+    Interval interval2 = new Interval(carModel.getStartYear(), carModel.getEndYear());
+    return interval1.intersects(interval2);
+  }
 }
 
 class SomeOtherClientCode {
@@ -22,11 +27,12 @@ class SomeOtherClientCode {
     System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    Interval interval1 = new Interval(1000, 1600);
-    Interval interval2 = new Interval(1250, 2000);
-    System.out.println(interval1.intersects(interval2));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 
+//  public void method(int a, int b, int c, int d, int e, int f, int g) {
+  // logica
+//  }
 }
 //class MethodParams {
 //  int a=1;
@@ -40,14 +46,15 @@ class SomeOtherClientCode {
 //
 //}
 
+class MathUtil {
+}
+
 // o clasa noua cu atribute declarate (cu tip), ideal IMUTABILA (stare nemodificabila dupa instantiere)
 record Interval(int start, int end) {
-  /**
-   * comutativ operation
-   */
   public boolean intersects(Interval other) {
+    // "Feature Envy" code smell - logica sta departe de datele pe care lucreaza = nu e OOP
     return start <= other.end && other.start <= end;
-  }
+  } // = ctor, getter, hash/equals, toString din java 17
 }
 //class Interval {
 //  private final int start;
@@ -70,7 +77,6 @@ record Interval(int start, int end) {
 class CarSearchCriteria { // a DTO received from JSON
   private final int startYear;
   private final int endYear;
-  //  private final Interval interval; // nu ating structura pentru a nu-mi strica API public (REST)
   private final String make;
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -88,24 +94,19 @@ class CarSearchCriteria { // a DTO received from JSON
     return endYear;
   }
 
-  public Interval getYearInterval() {
-    return new Interval(startYear, endYear);
-  }
-
   public String getMake() {
     return make;
   }
 }
 
 // @Entity
-class CarModel { // the Domain Model👑 = structura de date interna, PRIVATA aplicatiei, ascunsa inauntrul ei.
+class CarModel { // the Entity Model👑
   // @Id
   private Long id;
   private String make;
   private String model;
-  //  private int startYear;
-//  private int endYear;
-  private Interval productionYears;
+  private int startYear;
+  private int endYear;
 
   protected CarModel() {
   } // for Hibernate
@@ -114,17 +115,20 @@ class CarModel { // the Domain Model👑 = structura de date interna, PRIVATA ap
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-//    this.startYear = startYear;
-//    this.endYear = endYear;
-    this.productionYears = new Interval(startYear, endYear);
-  }
-
-  public Interval getProductionYears() {
-    return productionYears;
+    this.startYear = startYear;
+    this.endYear = endYear;
   }
 
   public Long getId() {
     return id;
+  }
+
+  public int getEndYear() {
+    return endYear;
+  }
+
+  public int getStartYear() {
+    return startYear;
   }
 
   public String getMake() {
