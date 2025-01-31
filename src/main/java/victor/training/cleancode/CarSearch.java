@@ -4,21 +4,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class CarSearch {
+
+  // run tests
+
+  /**
+   * MUST HAVE daca alti devi pe care nu-i cunosti vor folosi aceasta metoda
+   *
+   * @param criteria
+   * @param carModels
+   * @return
+   */
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> matchesProductionYears(carModel, criteria))
+        .filter(carModel -> MathUtil.intervalsIntersect(criteria.
+                getStartYear(), criteria.getEndYear(),
+            carModel.getStartYear(), carModel.getEndYear()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
-  }
-
-  private boolean matchesProductionYears(CarModel carModel, CarSearchCriteria criteria) {
-    Interval interval1 = new Interval(criteria.getStartYear(), criteria.getEndYear());
-    Interval interval2 = new Interval(carModel.getStartYear(), carModel.getEndYear());
-    return MathUtil.intervalsIntersect(interval1, interval2);
-//    return MathUtil.intervalsIntersect(
-//        criteria.getStartYear(), criteria.getEndYear(),
-//        carModel.getStartYear(), carModel.getEndYear());
   }
 }
 
@@ -32,43 +35,12 @@ class SomeOtherClientCode {
 }
 
 class MathUtil {
-  // veche si rea:
 
-  /**
-   * @deprecated Use {@link #intervalsIntersect(Interval, Interval)} instead
-   */
-  @Deprecated(forRemoval = true) // si apoi speri sa nu mai fie folosita de client in x luni.
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
   }
-
-  // noua si buna:
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    return interval1.start() <= interval2.end() && interval2.start() <= interval1.end();
-  }
-
 }
 
-// o clasa noua cu atribute declarate (cu tip), ideal IMUTABILA (stare nemodificabila dupa instantiere)
-record Interval(int start, int end) { // = ctor, getter, hash/equals, toString din java 17
-}
-//class Interval {
-//  private final int start;
-//  private final int end;
-//
-//  public Interval(int start, int end) {
-//    this.start = start;
-//    this.end = end;
-//  }
-//
-//  public int getStart() {
-//    return start;
-//  }
-//
-//  public int getEnd() {
-//    return end;
-//  }
-//}
 
 class CarSearchCriteria { // a DTO received from JSON
   private final int startYear;
