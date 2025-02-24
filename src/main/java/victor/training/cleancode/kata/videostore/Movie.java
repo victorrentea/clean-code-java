@@ -6,18 +6,10 @@ import lombok.Data;
 public class Movie {
 
 	private final String title;
-	Categories priceCode;
+	Categories category;
 
-	public Movie( String title, Categories priceCode) {
+	public Movie( String title, Categories category ) {
 		this.title = title;
-		this.priceCode = priceCode;
+		this.category = category;
 	}
-
-	public Categories getPriceCode() {
-		return priceCode;
-	}
-
-	public String getTitle() {
-		return title;
-	};
 }

@@ -1,22 +1,21 @@
 package victor.training.cleancode.kata.videostore;
 
+import lombok.Data;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Data
 class Customer {
 	private final String name;
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String statement() {
@@ -24,11 +23,11 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
+		for (Movie movie : rentals.keySet()) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
+			int dr = rentals.get(movie);
+			switch (movie.getCategory()) {
 				case REGULAR:
 					thisAmount += 2;
 					if (dr > 2)
@@ -46,12 +45,12 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Categories.NEW_RELEASE )
+			if (movie.getCategory() != null &&
+				 (movie.getCategory() == Categories.NEW_RELEASE )
 				 && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
 		// add footer lines
