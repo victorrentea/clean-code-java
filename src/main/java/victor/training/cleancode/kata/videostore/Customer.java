@@ -1,6 +1,7 @@
 package victor.training.cleancode.kata.videostore;
 
 import java.util.LinkedHashMap;
+
 import java.util.Map;
 
 class Customer {
