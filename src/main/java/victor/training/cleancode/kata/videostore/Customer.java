@@ -2,21 +2,20 @@ package victor.training.cleancode.kata.videostore;
 
 import lombok.Getter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
-@
 class Customer {
 	@Getter
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
+	private final List<MovieRental> rentals = new LinkedList<>(); // preserves order of elements TODO find a better way to store this
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int rentalDays) {
+		rentals.add(new MovieRental(movie, rentalDays));
 	}
 
 	public String statement() {
@@ -24,35 +23,34 @@ class Customer {
 		int frequentRenterPoints = 0;
 		StringBuilder result = new StringBuilder( "Rental Record for " + getName() + "\n" );
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
+		for (MovieRental movieRental : rentals) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.priceCode()) {
+			switch (movieRental.movie().priceCode()) {
 				case Movie.REGULAR:
 					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					if (movieRental.rentalDays() > 2)
+						thisAmount += (movieRental.rentalDays() - 2) * 1.5;
 					break;
 
 				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
+					thisAmount += movieRental.rentalDays() * 3;
 					break;
 
 				case Movie.CHILDREN:
 					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+					if (movieRental.rentalDays() > 3)
+						thisAmount += (movieRental.rentalDays() - 3) * 1.5;
 					break;
 
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two-day new release rental
-			if ( each.priceCode() == Movie.NEW_RELEASE && dr > 1 )
+			if ( movieRental.movie().priceCode() == Movie.NEW_RELEASE && movieRental.rentalDays() > 1 )
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result.append( "\t" ).append( each.title() ).append( "\t" ).append( thisAmount ).append( "\n" );
+			result.append( "\t" ).append( movieRental.movie().title() ).append( "\t" ).append( thisAmount ).append( "\n" );
 			totalAmount += thisAmount;
 		}
 		// add footer lines
