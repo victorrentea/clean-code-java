@@ -22,29 +22,28 @@ class Customer
 
   public String prepareRentalRecord()
   {
-    String result = "Rental Record for " + name + "\n";
+    StringBuilder result = new StringBuilder( "Rental Record for " + name + "\n" );
 
-    int frequentRenterPoints = getFrequentRenterPoints();
+    rentals.forEach( mr -> result.append( generateResult( mr ) ) );
 
-    // Calculate total amount
-    for ( MovieRental movieRental : rentals )
-    {
-      result += "\t" + movieRental.movie().title() + "\t" + movieRental.computeAmount() + "\n";
-    }
-
-    double totalAmount = rentals.stream().mapToDouble( MovieRental::computeAmount ).sum();
-
-    // add footer lines
-    result += "Amount owed is " + totalAmount + "\n";
-    result += "You earned " + frequentRenterPoints + " frequent renter points";
-    return result;
+    return result.append( "Amount owed is " )
+			.append( rentals.stream().mapToDouble( MovieRental::computeAmount ).sum() )
+      .append( "\n" )
+			.append( "You earned " )
+			.append( getFrequentRenterPoints() )
+			.append( " frequent renter points" )
+			.toString();
   }
 
-  private int getFrequentRenterPoints( )
+  private static String generateResult( MovieRental movieRental )
+  {
+    return "\t" + movieRental.movie().title() + "\t" + movieRental.computeAmount() + "\n";
+  }
+
+  private int getFrequentRenterPoints()
   {
     long count = rentals.stream()
-      .map( Customer::isEligibleForBonus )
-      .filter( r -> r )
+      .filter( Customer::isEligibleForBonus )
       .count();
 
     return ( int ) count + rentals.size();
