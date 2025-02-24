@@ -26,4 +26,22 @@ public record MovieRental(Movie movie, int rentalDays)
     }
     return thisAmount;
   }
+
+  public String getStatement()
+  {
+    return "\t" + movie().title() + "\t" + getPrice() + "\n";
+  }
+
+  public int getFrequentRenterPoints()
+  {
+    int frequentRenterPoints = 0;
+    // add frequent renter points
+    frequentRenterPoints++;
+    // add bonus for a two-day new release rental
+    if ( movie().priceCode() == Movie.NEW_RELEASE && rentalDays() > 1 )
+    {
+      frequentRenterPoints++;
+    }
+    return frequentRenterPoints;
+  }
 }

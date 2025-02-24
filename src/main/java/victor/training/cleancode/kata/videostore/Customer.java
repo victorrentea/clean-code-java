@@ -19,24 +19,12 @@ class Customer {
 	}
 
 	public String statement() {
-		int frequentRenterPoints = 0;
 		StringBuilder result = new StringBuilder( "Rental Record for " + getName() + "\n" );
-		double totalAmount = 0; // rentals.stream().mapToDouble( MovieRental::getPrice ).sum();
-
-		// loop over each movie rental
-		for (MovieRental movieRental : rentals) {
-			double thisAmount = 0;
-			// determine amounts for every line
-			thisAmount = movieRental.getPrice();
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two-day new release rental
-			if ( movieRental.movie().priceCode() == Movie.NEW_RELEASE && movieRental.rentalDays() > 1 )
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result.append( "\t" ).append( movieRental.movie().title() ).append( "\t" ).append( thisAmount ).append( "\n" );
-			totalAmount += thisAmount;
-		}
+		double totalAmount = rentals.stream().mapToDouble( MovieRental::getPrice ).sum();
+		int frequentRenterPoints = rentals.stream().mapToInt( MovieRental::getFrequentRenterPoints ).sum();
+		rentals.forEach( movieRental -> {
+			result.append( movieRental.getStatement() );
+		} );
 		// add footer lines
 		result.append( "Amount owed is " ).append( totalAmount ).append( "\n" );
 		result.append( "You earned " ).append( frequentRenterPoints ).append( " frequent renter points" );
