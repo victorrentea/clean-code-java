@@ -1,7 +1,5 @@
 package victor.training.cleancode.kata.videostore;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,6 @@ import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
 
 class Customer
 {
-  @Getter
   private final String name;
   private final List<MovieRental> rentals = new ArrayList<>();
 
@@ -23,28 +20,19 @@ class Customer
     rentals.add( new MovieRental( movie, daysRented ) );
   }
 
-  public String statement()
+  public String prepareRentalRecord()
   {
-    double totalAmount = 0;
-    String result = "Rental Record for " + getName() + "\n";
+    String result = "Rental Record for " + name + "\n";
 
-//		rentals.stream()
-//			.map( Customer::computeAmount )
-//			.mapToDouble( a -> a )
-//			.sum();
-
-
-    // Calculate frequent renter point
     int frequentRenterPoints = getFrequentRenterPoints();
 
     // Calculate total amount
     for ( MovieRental movieRental : rentals )
     {
-      // show figures line for this rental
-      double rentAmount = computeAmount( movieRental );
-      result += "\t" + movieRental.movie().title() + "\t" + rentAmount + "\n";
-      totalAmount += rentAmount;
+      result += "\t" + movieRental.movie().title() + "\t" + computeAmount( movieRental ) + "\n";
     }
+
+    double totalAmount = rentals.stream().mapToDouble( Customer::computeAmount ).sum();
 
     // add footer lines
     result += "Amount owed is " + totalAmount + "\n";
