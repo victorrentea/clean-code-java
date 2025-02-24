@@ -23,45 +23,54 @@ class Customer {
 		// loop over each movie rental
     double totalDue = 0;
     for (Rental rental : rentals) {
-			double balanceDue = 0;
-			// determine amounts for every line
-			int daysRented = rental.rentalDays();
 
-			Movie movie = rental.movie();
-			switch ( movie.getCategory()) {
-				case REGULAR:
-					balanceDue += 2;
-					if ( daysRented > 2)
-						balanceDue += ( daysRented - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					balanceDue += daysRented * 3;
-					break;
-				case CHILDREN:
-					balanceDue += 1.5;
-					if ( daysRented > 3)
-						balanceDue += ( daysRented - 3) * 1.5;
-					break;
-			}
-
+			double balanceDue = getBalanceDue(rental);
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + balanceDue + "\n";
+			result += "\t" + rental.movie().getTitle() + "\t" + balanceDue + "\n";
 			totalDue += balanceDue;
 		}
 
-		int frequentRenterPoints = 0;
-		for (Rental rental : rentals) {
-			Movie movie = rental.movie();
-			int daysRented = rental.rentalDays();
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if ( movie.getCategory() == Category.NEW_RELEASE && daysRented > 1 )
-				frequentRenterPoints++;
-		}
+		int frequentRenterPoints = getFrequentRenterPoints( rentals );
 		// add footer lines
 		result += "Amount owed is " + totalDue + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
+	}
+
+	private double getBalanceDue( Rental rental )
+	{
+		double balanceDue = 0;
+		int daysRented = rental.rentalDays();
+		Movie movie = rental.movie();
+		switch ( movie.getCategory()) {
+			case REGULAR:
+				balanceDue += 2;
+				if ( daysRented > 2)
+					balanceDue += ( daysRented - 2) * 1.5;
+        return balanceDue;
+			case NEW_RELEASE:
+				balanceDue += daysRented * 3;
+        return balanceDue;
+			case CHILDREN:
+				balanceDue += 1.5;
+				if ( daysRented > 3)
+					balanceDue += ( daysRented - 3) * 1.5;
+        return balanceDue;
+		}
+		return balanceDue;
+	}
+
+	private int getFrequentRenterPoints( List<Rental> rentals )
+	{
+		int frequentRenterPoints = 0;
+		for (Rental rental : rentals) {
+			Movie movie = rental.movie();
+			// add frequent renter points
+			frequentRenterPoints++;
+			// add bonus for a two day new release rental
+			if ( movie.getCategory() == Category.NEW_RELEASE && rental.rentalDays() > 1 )
+				frequentRenterPoints++;
+		}
+		return frequentRenterPoints;
 	}
 }
