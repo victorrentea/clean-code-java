@@ -6,6 +6,7 @@ import java.util.Map;
 import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
 
 class Customer {
+	private int id;
 	private final String name;
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
