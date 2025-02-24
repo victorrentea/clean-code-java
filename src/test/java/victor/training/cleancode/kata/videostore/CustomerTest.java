@@ -1,8 +1,10 @@
 package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
+import victor.training.cleancode.kata.videostore.Movie.Genre;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static victor.training.cleancode.kata.videostore.Movie.Genre.*;
 
 
 public class CustomerTest {
@@ -10,10 +12,10 @@ public class CustomerTest {
     @Test
     public void characterizationTest() {
         Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
-        customer.addRental( new Movie("Sofia", Movie.CHILDREN ), 7);
-        customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
-        customer.addRental( new Movie("Wicked", Movie.CHILDREN ), 3);
+        customer.addRental( new Movie( "Star Wars", NEW_RELEASE), 6);
+        customer.addRental( new Movie("Sofia", CHILDREN ), 7);
+        customer.addRental(new Movie("Inception", REGULAR), 5);
+        customer.addRental( new Movie("Wicked", CHILDREN ), 3);
 
         String expected = """
             Rental Record for John Doe
