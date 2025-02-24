@@ -44,19 +44,30 @@ class Customer {
 		Movie movie = rental.movie();
 		switch ( movie.getCategory()) {
 			case REGULAR:
-				balanceDue += 2;
-				if ( daysRented > 2)
-					balanceDue += ( daysRented - 2) * 1.5;
-        return balanceDue;
+				return regularRentalCost( daysRented );
 			case NEW_RELEASE:
-				balanceDue += daysRented * 3;
-        return balanceDue;
+        return daysRented * 3;
 			case CHILDREN:
-				balanceDue += 1.5;
-				if ( daysRented > 3)
-					balanceDue += ( daysRented - 3) * 1.5;
-        return balanceDue;
+				return childrenRentalCost( daysRented );
 		}
+		return balanceDue;
+	}
+
+	private double childrenRentalCost( int daysRented )
+	{
+		double balanceDue = 0;
+		balanceDue += 1.5;
+		if ( daysRented > 3)
+			balanceDue += ( daysRented - 3) * 1.5;
+		return balanceDue;
+	}
+
+	private double regularRentalCost( int daysRented )
+	{
+		double balanceDue = 0;
+		balanceDue += 2;
+		if ( daysRented > 2)
+			balanceDue += ( daysRented - 2) * 1.5;
 		return balanceDue;
 	}
 
