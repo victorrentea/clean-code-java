@@ -29,10 +29,10 @@ class Customer
     // Calculate total amount
     for ( MovieRental movieRental : rentals )
     {
-      result += "\t" + movieRental.movie().title() + "\t" + computeAmount( movieRental ) + "\n";
+      result += "\t" + movieRental.movie().title() + "\t" + movieRental.computeAmount() + "\n";
     }
 
-    double totalAmount = rentals.stream().mapToDouble( Customer::computeAmount ).sum();
+    double totalAmount = rentals.stream().mapToDouble( MovieRental::computeAmount ).sum();
 
     // add footer lines
     result += "Amount owed is " + totalAmount + "\n";
@@ -48,35 +48,6 @@ class Customer
       .count();
 
     return ( int ) count + rentals.size();
-  }
-
-  private static double computeAmount( MovieRental movieRental )
-  {
-    double amount = 0;
-    int daysRented = movieRental.daysRented();
-
-    switch ( movieRental.movie().movieType() )
-    {
-      case REGULAR:
-        amount += 2;
-        if ( daysRented > 2 )
-        {
-          amount += ( daysRented - 2 ) * 1.5;
-        }
-        return amount;
-      case NEW_RELEASE:
-        amount += daysRented * 3;
-        return amount;
-      case CHILDREN:
-        amount += 1.5;
-        if ( daysRented > 3 )
-        {
-          amount += ( daysRented - 3 ) * 1.5;
-        }
-        return amount;
-    }
-
-    return amount;
   }
 
   private static boolean isEligibleForBonus( MovieRental movieRental )
