@@ -1,13 +1,10 @@
 package victor.training.cleancode.kata.videostore;
 
 import lombok.Getter;
-import victor.training.cleancode.kata.videostore.Movie.Genre;
+import victor.training.cleancode.kata.videostore.Movie.PriceCategory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 class Customer
 {
@@ -30,53 +27,29 @@ class Customer
   {
     double totalAmount = 0;
     int frequentRenterPoints = 0;
-    String result = "Rental Record for " + getName() + "\n";
+    StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
     // loop over each movie rental
     for ( Rental rental : rentals )
     {
       // determine amounts for every line
       int daysRented = rental.days();
-      double cost = getCost( rental, daysRented );
+      double cost = rental.getCost( );
       // add frequent renter points
       frequentRenterPoints++;
       // add bonus for a two-day new release rental
-      if ( rental.priceCode() == Genre.NEW_RELEASE && daysRented > 1 )
+      if ( rental.movie().priceCategory() == PriceCategory.NEW_RELEASE && daysRented > 1 )
       {
         frequentRenterPoints++;
       }
       // show figures line for this rental
-      result += "\t" + rental.title() + "\t" + cost + "\n";
+      result.append(rental);
       totalAmount += cost;
     }
     // add footer lines
-    result += "Amount owed is " + totalAmount + "\n";
-    result += "You earned " + frequentRenterPoints + " frequent renter points";
-    return result;
+    result.append("Amount owed is ").append(totalAmount).append("\n");
+    result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+    return result.toString();
   }
 
-  private static double getCost( Movie movie, int daysRented )
-  {
-    double cost = 0;
-    switch ( movie.priceCode() )
-    {
-      case REGULAR ->
-      {
-        cost += 2;
-        if ( daysRented > 2 )
-        {
-          cost += ( daysRented - 2 ) * 1.5;
-        }
-      }
-      case NEW_RELEASE -> cost += daysRented * 3;
-      case CHILDREN ->
-      {
-        cost += 1.5;
-        if ( daysRented > 3 )
-        {
-          cost += ( daysRented - 3 ) * 1.5;
-        }
-      }
-    }
-    return cost;
-  }
+
 }

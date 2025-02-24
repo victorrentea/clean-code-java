@@ -1,10 +1,9 @@
 package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
-import victor.training.cleancode.kata.videostore.Movie.Genre;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static victor.training.cleancode.kata.videostore.Movie.Genre.*;
+import static victor.training.cleancode.kata.videostore.Movie.PriceCategory.*;
 
 
 public class CustomerTest {
