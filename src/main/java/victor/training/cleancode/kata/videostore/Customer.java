@@ -19,31 +19,15 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
 		int frequentRenterPoints = 0;
 		StringBuilder result = new StringBuilder( "Rental Record for " + getName() + "\n" );
+		double totalAmount = 0; // rentals.stream().mapToDouble( MovieRental::getPrice ).sum();
+
 		// loop over each movie rental
 		for (MovieRental movieRental : rentals) {
 			double thisAmount = 0;
 			// determine amounts for every line
-			switch (movieRental.movie().priceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (movieRental.rentalDays() > 2)
-						thisAmount += (movieRental.rentalDays() - 2) * 1.5;
-					break;
-
-				case Movie.NEW_RELEASE:
-					thisAmount += movieRental.rentalDays() * 3;
-					break;
-
-				case Movie.CHILDREN:
-					thisAmount += 1.5;
-					if (movieRental.rentalDays() > 3)
-						thisAmount += (movieRental.rentalDays() - 3) * 1.5;
-					break;
-
-			}
+			thisAmount = movieRental.getPrice();
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two-day new release rental
