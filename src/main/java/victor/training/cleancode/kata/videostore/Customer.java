@@ -2,23 +2,22 @@ package victor.training.cleancode.kata.videostore;
 
 import lombok.Getter;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
 
 class Customer {
 	@Getter
   private final String name;
-	// preserves order of elements TODO find a better way to store this
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); 
+	private final List<MovieRental> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-  public void addRental(Movie movie, int d) {
-		rentals.put(movie, d);
+  public void addRental(Movie movie, int daysRented) {
+		rentals.add(new MovieRental( movie, daysRented ));
 	}
 
   public String statement() {
@@ -26,39 +25,17 @@ class Customer {
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 
-    for ( Movie movie : rentals.keySet() )
+    for ( MovieRental movieRental : rentals )
     {
-      double thisAmount = 0;
-      // determine amounts for every line
-      int daysRented = rentals.get( movie );
-      switch ( movie.movieType() )
-      {
-        case REGULAR:
-          thisAmount += 2;
-          if ( daysRented > 2 )
-          {
-            thisAmount += ( daysRented - 2 ) * 1.5;
-          }
-          break;
-        case NEW_RELEASE:
-          thisAmount += daysRented * 3;
-          break;
-        case CHILDREN:
-          thisAmount += 1.5;
-          if ( daysRented > 3 )
-          {
-            thisAmount += ( daysRented - 3 ) * 1.5;
-          }
-          break;
-      }
-      frequentRenterPoints++;
+			double thisAmount = computeAmount( movieRental );
+			frequentRenterPoints++;
 			
-      if ( isEligibleForBonus( movie, daysRented ) )
+      if ( isEligibleForBonus( movieRental ) )
       {
         frequentRenterPoints++;
       }
       // show figures line for this rental
-      result += "\t" + movie.title() + "\t" + thisAmount + "\n";
+      result += "\t" + movieRental.movie().title() + "\t" + thisAmount + "\n";
       totalAmount += thisAmount;
     }
 		// add footer lines
@@ -67,8 +44,36 @@ class Customer {
 		return result;
 	}
 
-	private static boolean isEligibleForBonus( Movie movie, int dr )
+	private static double computeAmount( MovieRental movieRental )
 	{
-		return ( movie.movieType() == NEW_RELEASE ) && dr > 1;
+		double amount = 0;
+		int daysRented = movieRental.daysRented();
+
+		switch ( movieRental.movie().movieType() )
+		{
+			case REGULAR:
+				amount += 2;
+				if ( daysRented > 2 )
+				{
+					amount += ( daysRented - 2 ) * 1.5;
+				}
+				break;
+			case NEW_RELEASE:
+				amount += daysRented * 3;
+				break;
+			case CHILDREN:
+				amount += 1.5;
+				if ( daysRented > 3 )
+				{
+					amount += ( daysRented - 3 ) * 1.5;
+				}
+				break;
+		}
+		return amount;
+	}
+
+	private static boolean isEligibleForBonus( MovieRental movieRental )
+	{
+		return ( movieRental.movie().movieType() == NEW_RELEASE ) && movieRental.daysRented() > 1;
 	}
 }
