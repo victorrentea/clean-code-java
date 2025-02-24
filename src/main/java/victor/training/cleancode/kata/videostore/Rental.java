@@ -31,6 +31,6 @@ public record Rental(Movie movie, int days )
     @Override
     public String toString()
     {
-        return String.format("\t%s\t%s\n", movie().title(), getCost());
+        return String.format("\t%s\t%s\n", movie().title(), getCost() );
     }
 }
