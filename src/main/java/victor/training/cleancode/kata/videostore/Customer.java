@@ -3,8 +3,6 @@ package victor.training.cleancode.kata.videostore;
 import java.util.ArrayList;
 import java.util.List;
 
-import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
-
 class Customer
 {
   private final String name;
@@ -24,7 +22,7 @@ class Customer
   {
     StringBuilder result = new StringBuilder( "Rental Record for " + name + "\n" );
 
-    rentals.forEach( mr -> result.append( generateResult( mr ) ) );
+    rentals.forEach( mr -> result.append( mr.generateResult() ) );
 
     return result.append( "Amount owed is " )
 			.append( rentals.stream().mapToDouble( MovieRental::computeAmount ).sum() )
@@ -35,22 +33,11 @@ class Customer
 			.toString();
   }
 
-  private static String generateResult( MovieRental movieRental )
-  {
-    return "\t" + movieRental.movie().title() + "\t" + movieRental.computeAmount() + "\n";
-  }
-
   private int getFrequentRenterPoints()
   {
-    long count = rentals.stream()
-      .filter( Customer::isEligibleForBonus )
-      .count();
-
-    return ( int ) count + rentals.size();
+    return ( int ) ( rentals.stream()
+          .filter( MovieRental::isEligibleForBonus )
+          .count() + rentals.size());
   }
 
-  private static boolean isEligibleForBonus( MovieRental movieRental )
-  {
-    return ( movieRental.movie().movieType() == NEW_RELEASE ) && movieRental.daysRented() > 1;
-  }
 }

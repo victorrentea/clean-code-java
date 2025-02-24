@@ -1,7 +1,19 @@
 package victor.training.cleancode.kata.videostore;
 
+import static victor.training.cleancode.kata.videostore.MovieType.NEW_RELEASE;
+
 public record MovieRental(Movie movie, int daysRented)
 {
+  public boolean isEligibleForBonus()
+  {
+    return ( movie().movieType() == NEW_RELEASE ) && daysRented() > 1;
+  }
+
+  public String generateResult()
+  {
+    return "\t" + movie().title() + "\t" + computeAmount() + "\n";
+  }
+
   public double computeAmount()
   {
     double amount = 0;
