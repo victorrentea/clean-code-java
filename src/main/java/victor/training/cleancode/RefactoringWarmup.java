@@ -8,7 +8,7 @@ class RefactoringWarmup {
     Two two = new Two();
     System.out.println(two.loop(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
     System.out.println(new One(two).f());
-    System.out.println(two.g(new R(1)));
+    System.out.println(two.g(3, new R(1)));
   }
 }
 
@@ -20,27 +20,29 @@ class One {
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    return 2 * two.g(3, new R(3));
   }
 }
 
+// Remove all those useless interfaces
+
+// Remove all those useless interfaces !!!
 class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
+
+  public int g(int i, R r) {
+    System.out.println("b=" + i);
+    return 1 + i + r.x();
   }
 
   public double loop(List<Integer> numbers) {
     System.out.println("b=" + 987);
-    double ssq = 0;
-    for (Integer number : numbers) {
-      if (number % 2 == 0) {
-        ssq += number * number;
-      }
-    }
+    double ssq = numbers.stream()
+        .filter(number -> number % 2 == 0)
+        .mapToDouble(number -> number * number)
+        .sum();
     return Math.sqrt(ssq);
   }
+
 }
 
 record R(int x) {

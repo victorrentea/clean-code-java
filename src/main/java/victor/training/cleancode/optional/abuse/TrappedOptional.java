@@ -1,7 +1,5 @@
 package victor.training.cleancode.optional.abuse;
 
-import lombok.Data;
-
 import java.util.Optional;
 
 public class TrappedOptional {
@@ -24,9 +22,13 @@ public class TrappedOptional {
 
   public void trappedOptional(MyDto dto) {
     MyEntity entity = new MyEntity();
-    Optional.ofNullable(dto.recipientPerson)
-            .map(String::toUpperCase)
-            .ifPresent(name -> entity.setRecipient(name));
+//    Optional.ofNullable(dto.recipientPerson)
+//            .map(String::toUpperCase)
+//            .ifPresent(name -> entity.setRecipient(name));
+
+    if (dto.recipientPerson != null) {
+      entity.setRecipient(dto.recipientPerson.toUpperCase());
+    }
 
   }
 

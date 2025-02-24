@@ -28,9 +28,13 @@ class SomeOtherClientCode {
 
 class MathUtil {
 
+  //  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
   public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
   }
+}
+
+record Interval(int start, int end) {
 }
 
 

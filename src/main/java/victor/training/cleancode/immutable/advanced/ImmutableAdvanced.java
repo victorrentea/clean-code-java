@@ -1,74 +1,58 @@
 package victor.training.cleancode.immutable.advanced;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
+import lombok.With;
+
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
-    List<Integer> list = Stream.of(1, 2, 3).collect(toList()); // ArrayList
+    var list = Stream.of(1, 2, 3).collect(toImmutableList()); // ArrayList
 
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
 
-    wilderness(immutable);
+    var translated = wilderness(immutable);
 
-    System.out.println("After:  " + immutable);
+    System.out.println("After translated:  " + translated);
   }
 
-  private static void wilderness(Immutable immutable) {
+  private static Immutable wilderness(Immutable immutable) {
+//    immutable.list().clear(); // compiler warning
     // dark, deep logic not expected to change the immutable object x,y
+//    return new Immutable(immutable.x() + 1,
+//                          immutable.y() +1,
+//                            ImmutableList.copyOf(immutable.list()),
+//                            immutable.other());
+    return immutable.translate(1, 1);
   }
 }
 
-class Immutable {
-  private final Integer x;
-  private final Integer y;
-  private final List<Integer> list;
-  private final Other other;
+// with-mania
 
-  Immutable(Integer x, Integer y, List<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list;
-    this.other = other;
-  }
+record Immutable(
+    @With
+    Integer x,
+    @With
+    Integer y,
+    ImmutableList<Integer> list,
+    Other other) {
 
-  public List<Integer> getList() {
-    return list;
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
+  // more semantics not just with.with...
+  public Immutable translate(int dx, int dy) {
+    return withX(x + dx).withY(y + dy);
   }
 }
+//@Value // <java 17
+//class Immutable {
+//  Integer x;
+//  Integer y;
+//  ImmutableList<Integer> list;
+//  Other other;
+//}
 
-class Other {
-  private int a;
+record Other(int a) {
 
-  public Other(int a) {
-    this.a = a;
-  }
-
-  public int getA() {
-    return a;
-  }
-
-  public void setA(int a) {
-    this.a = a;
-  }
 }
