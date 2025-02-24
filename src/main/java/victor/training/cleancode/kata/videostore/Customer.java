@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 class Customer {
@@ -23,7 +24,6 @@ class Customer {
 		// loop over each movie rental
     double totalDue = 0;
     for (Rental rental : rentals) {
-
 			double balanceDue = getBalanceDue(rental);
 			// show figures line for this rental
 			result += "\t" + rental.movie().getTitle() + "\t" + balanceDue + "\n";
@@ -62,15 +62,15 @@ class Customer {
 
 	private int getFrequentRenterPoints( List<Rental> rentals )
 	{
-		int frequentRenterPoints = 0;
+		int baseFrequentRenterPoints = rentals.size();
+		int additionalFrequentRenterPoints = 0;
+
 		for (Rental rental : rentals) {
 			Movie movie = rental.movie();
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
 			if ( movie.getCategory() == Category.NEW_RELEASE && rental.rentalDays() > 1 )
-				frequentRenterPoints++;
+				additionalFrequentRenterPoints++;
 		}
-		return frequentRenterPoints;
+
+		return baseFrequentRenterPoints + additionalFrequentRenterPoints;
 	}
 }
