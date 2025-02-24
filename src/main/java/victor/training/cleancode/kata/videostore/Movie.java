@@ -9,6 +9,7 @@ public class Movie {
 	public Movie(String title, Integer priceCode) {
 		_title = title;
 		_priceCode = priceCode;
+
 	}
 
 	public Integer getPriceCode() {
