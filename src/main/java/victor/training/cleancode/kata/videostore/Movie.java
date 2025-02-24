@@ -6,9 +6,9 @@ import lombok.Data;
 public class Movie {
 
 	private final String title;
-	Categories category;
+	Category category;
 
-	public Movie( String title, Categories category ) {
+	public Movie( String title, Category category ) {
 		this.title = title;
 		this.category = category;
 	}

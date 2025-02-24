@@ -2,59 +2,62 @@ package victor.training.cleancode.kata.videostore;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
+	private final List<Rental> rentalDays = new ArrayList<>(); // preserves order of elements TODO find a better way to store this
+//	private final Map<Movie, Integer> rentalDays = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
 	public Customer(String name) {
 		this.name = name;
 	}
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental( Movie movie, int days) {
+		rentalDays.put( movie, days);
 	}
 
 	public String statement() {
-		double totalAmount = 0;
+		double totalDue = 0;
 		int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
-		for (Movie movie : rentals.keySet()) {
-			double thisAmount = 0;
+		for (Movie movie : rentalDays.keySet()) {
+			double balanceDue = 0;
 			// determine amounts for every line
-			int dr = rentals.get(movie);
+			int daysRented = rentalDays.get( movie);
 			switch (movie.getCategory()) {
 				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+					balanceDue += 2;
+					if ( daysRented > 2)
+						balanceDue += ( daysRented - 2) * 1.5;
 					break;
 				case NEW_RELEASE:
-					thisAmount += dr * 3;
+					balanceDue += daysRented * 3;
 					break;
-				case CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+				case CHILDREN:
+					balanceDue += 1.5;
+					if ( daysRented > 3)
+						balanceDue += ( daysRented - 3) * 1.5;
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if (movie.getCategory() != null &&
-				 (movie.getCategory() == Categories.NEW_RELEASE )
-				 && dr > 1)
+				 (movie.getCategory() == Category.NEW_RELEASE )
+				 && daysRented > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + movie.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result += "\t" + movie.getTitle() + "\t" + balanceDue + "\n";
+			totalDue += balanceDue;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
+		result += "Amount owed is " + totalDue + "\n";
 		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
