@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
 	@Getter
@@ -22,9 +23,7 @@ class Customer {
 		StringBuilder result = new StringBuilder( "Rental Record for " + getName() + "\n" );
 		double totalAmount = rentals.stream().mapToDouble( MovieRental::getPrice ).sum();
 		int frequentRenterPoints = rentals.stream().mapToInt( MovieRental::getFrequentRenterPoints ).sum();
-		rentals.forEach( movieRental -> {
-			result.append( movieRental.getStatement() );
-		} );
+		result.append( rentals.stream().map(MovieRental::getStatement).collect( Collectors.joining() ) );
 		// add footer lines
 		result.append( "Amount owed is " ).append( totalAmount ).append( "\n" );
 		result.append( "You earned " ).append( frequentRenterPoints ).append( " frequent renter points" );
