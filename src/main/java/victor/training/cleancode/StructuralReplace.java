@@ -11,9 +11,12 @@ public class StructuralReplace {
 
   public void location1() {
     String firstName = "John";
-    log.info(Library.render(Library.translate("Hello %s %s"), firstName, "Doe"));
+    log.info(Library.render(Library.translate("Hello %s %s"),
+        firstName,
+        "Doe"));
     log.info(Library.render(Library.translate("Hi " + "%s"), firstName.toUpperCase()));
     log.info(Library.render("No Template", firstName));
+
 //    log.info(Library.renderTranslate("Hello %s %s", firstName, "Doe")); // result
 //    log.info(Library.renderTranslate("Hi " + "%s", firstName.toUpperCase())); // result
 //    log.info(Library.render("No Template", firstName)); // result
