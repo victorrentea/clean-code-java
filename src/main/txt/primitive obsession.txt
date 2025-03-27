@@ -1,0 +1,9 @@
+redeemCoupon(
+    CouponId couponId, 
+    string customerId, 
+    string email, 
+    CountryEnum countryIso) {...}
+
+redeemCoupon(new CouponId("13"),"52","a@b.com",CountryEnum.US);
+
+record CouponId(String value) {}

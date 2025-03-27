@@ -1,0 +1,12 @@
+Try<Long> horrorFP(Data data) { // Try is a monad from vavr library
+  return process(data) 
+    .onSuccess(e -> log.info("X"))
+    .flatMap(repo::save)
+    .andThen(id -> audit(data));
+}
+
+Try<String> process(Data data) {
+  if (data.name().isBlank()) 
+    return Try.failure(new Ex("…"));
+  return Try.success(data.name() + "!");
+} 

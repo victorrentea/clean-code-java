@@ -1,0 +1,3 @@
+// .ts/.js
+var best = list.reduce((prev, e) => 
+  new Dec(prev?.price || 0).gte(e.price || 0) ? prev : e, undefined);

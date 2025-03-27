@@ -1,0 +1,4 @@
+createSum() {
+    return (a, b) => a + b;
+}
+var r = createSum() (createSum() (1,2), createSum() (3,4)); 

@@ -1,0 +1,6 @@
+
+if (!user.active) throw new Exception("User is not active");
+
+var dateTime = getLastLogin(user);
+
+if (dateTime - now() > 30 days) auditReturningUser(user);

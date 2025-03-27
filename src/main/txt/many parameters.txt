@@ -1,0 +1,15 @@
+boolean intervalIntersect(int start1, int end1, int start2, int end2) {
+    return start1 <= end2 && start2 <= end1;
+}
+
+class IntervalUtils {
+    boolean intervalIntersect(IntervalDto interval1, IntervalDto interval2) {
+        return intervalIntersect(interval1.start, interval1.end, interval2.start, interval2.end);
+    }
+}
+
+record Interval(int start, int end) {
+    boolean intersects(Interval other) {
+        return start <= other.end && other.start <= end;
+    }
+}

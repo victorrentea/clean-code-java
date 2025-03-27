@@ -1,0 +1,7 @@
+if (feature['flag1521']) {
+  if (feature['flag2333']) {
+    if (x.rebound) throw new Exception("Rebound");
+  }
+  x.tear = true; // FIX ME
+}
+..10 more flags used in this file

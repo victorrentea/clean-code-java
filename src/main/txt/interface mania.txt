@@ -1,0 +1,12 @@
+// In the same build unit (eg Maven module):
+
+interface AService {
+   f();
+}  
+
+class AServiceImpl implements AService {
+   // the only implementation
+   f() {}
+}
+
+program to abstractions

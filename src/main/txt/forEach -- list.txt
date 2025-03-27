@@ -1,0 +1,16 @@
+var result = new ArrayList<Order>();
+list.forEach(order -> {
+    if (order.getPrice() > 100) {
+        result.add(order);
+    }
+});
+// a) traditional imperative
+for (Order order : list) {
+    if (order.getPrice() > 100) {
+        result.add(order);
+    }
+}
+// b) FP
+result = list.stream()
+    .filter(order -> order.getPrice() > 100)
+    .toList()

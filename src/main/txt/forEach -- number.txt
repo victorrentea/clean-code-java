@@ -1,0 +1,15 @@
+var sum = 0;
+orders.forEach(order => {
+    sum += order.getPrice();
+});
+
+for (Order order : orders) {
+    sum += order.getPrice();
+}
+
+var sum = orders.stream()
+    .mapToInt(Order::getPrice)
+    .sum();
+
+var sum = orders.map(Order::getPrice)
+    .reduce((a,b)=>a+b,0)

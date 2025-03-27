@@ -1,0 +1,10 @@
+var result = new ArrayList<Order>();
+for (var order : list) {
+    if (order.getPrice() > 100) {
+        result.add(order);
+    }
+}
+
+result = list.stream()
+    .filter(order -> order.getPrice() > 100)
+    .toList()

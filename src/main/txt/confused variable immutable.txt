@@ -1,0 +1,6 @@
+handle(Form form) {
+    var validatedForm = validate(form);
+    form = normalize(validatedForm);
+    form = process(form);
+    audit(form);
+}

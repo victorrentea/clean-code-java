@@ -1,0 +1,11 @@
+class Interval {
+    int start;
+    int end;
+    int length;
+
+    Interval(start, end) {
+        this.start = start;
+        this.end = end;
+        this.length = end - start;
+    }
+}
