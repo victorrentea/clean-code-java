@@ -2,8 +2,10 @@ class AClass {
     int field = 0;
     f() {
         this.field = 0;
-        g(); // adds to this.field
+        g(); 
         return this.field;
     }
-
+    g() {
+        this.field += 1;
+    }
 }

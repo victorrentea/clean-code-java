@@ -1,6 +1,8 @@
-Try<Long> horrorFP(Data data) { // Try is a monad from vavr library
+Throw not exceptions, but return thy failures in peace.” - FP preacher
+
+Try<Long> horrorFP(Data data) { // vavr.Try = specialized Either<Result,Exception>
   return process(data) 
-    .onSuccess(e -> log.info("X"))
+    .onSuccess(e -> log.info(e))
     .flatMap(repo::save)
     .andThen(id -> audit(data));
 }
@@ -10,3 +12,5 @@ Try<String> process(Data data) {
     return Try.failure(new Ex("…"));
   return Try.success(data.name() + "!");
 } 
+
+// rewrite the above 2 functions throwing (runtime) exceptions

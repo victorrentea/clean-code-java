@@ -1,6 +1,5 @@
-handle(Form form) {
-    var validatedForm = validate(form);
-    form = normalize(validatedForm);
+handle(ImmutableForm form) {
+    form = validate(form);
     form = process(form);
     audit(form);
 }

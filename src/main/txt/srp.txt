@@ -1,19 +1,12 @@
 bigUglyMethod(p1,p2,p3) {
-  donkey(p1,p2)
+  println("Pretend: Donkey Logic");
+  println("Using " + p1 + " and " + p2);
+  println("Even more donkey Logic");
 
-  // sheep
+  // handle sheep
   println("Pretend: Sheep Logic with " + p2 + " and " + p3);
   println("More Sheep Logic");
-  println("Even more Sheep Logic");
-  println("More Sheep Logic");
-  println("Even more Sheep Logic");
-  println("More Sheep Logic");
-  println("Even more Sheep Logic");
+    println("Even more Sheep Logic");
+    println("More Sheep Logic");
   println("Even more Sheep Logic - sheep have complex psychology");
-}
-
-donkey(p1,p2) {
-  println("Pretend: Donkey Logic with " + p1 + " and " + p2);
-  println("More Donkey Logic");
-  println("Even more donkey Logic");
 }

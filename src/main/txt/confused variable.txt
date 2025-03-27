@@ -1,6 +1,6 @@
-var sum = 0;
+var avg = 0;
 for (Order order : orders) {
-    sum += order.amount();
+    avg += order.amount();
 }
-var avg = sum / orders.size();
 log.debug("Average=" + avg); 
+avg = avg / orders.size();

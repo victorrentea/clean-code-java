@@ -8,5 +8,3 @@ class AServiceImpl implements AService {
    // the only implementation
    f() {}
 }
-
-program to abstractions

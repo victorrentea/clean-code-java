@@ -1,9 +1,8 @@
-redeemCoupon(
-    CouponId couponId, 
+approveCredit(
+    string creditId, 
     string customerId, 
-    string email, 
+    string iban, 
     CountryEnum countryIso) {...}
 
-redeemCoupon(new CouponId("13"),"52","a@b.com",CountryEnum.US);
+approveCredit("13","52","RO65BTRLRONCRT0123456789","US");
 
-record CouponId(String value) {}

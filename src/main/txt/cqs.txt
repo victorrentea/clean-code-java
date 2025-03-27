@@ -1,6 +1,4 @@
 
-if (!user.active) throw new Exception("User is not active");
+log.debug("Last seen user: " + getLastLogin(user));
 
-var dateTime = getLastLogin(user);
-
-if (dateTime - now() > 30 days) auditReturningUser(user);
+if (user.lastLogin > 1 year ago) throw new Exception("User Frozen");

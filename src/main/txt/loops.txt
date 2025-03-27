@@ -1,10 +1,9 @@
+Loops are a code smell
+search for "loops" in https://drive.google.com/file/d/1M3mwL8wIOHvvnfbAsxbn9JB5WPHTpllo/view?usp=sharing
+
 var result = new ArrayList<Order>();
 for (var order : list) {
     if (order.getPrice() > 100) {
         result.add(order);
     }
 }
-
-result = list.stream()
-    .filter(order -> order.getPrice() > 100)
-    .toList()
