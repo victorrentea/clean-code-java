@@ -1,7 +1,7 @@
-if (feature['flag1521']) {
-  if (feature['flag2333']) {
+if (feature['display_inline_price']) {
+  if (feature['bf']) {
     if (x.rebound) throw new Exception("Rebound");
   }
-  x.tear = true; // FIX ME
+  x.tear = true; // FIXME
 }
-..10 more flags used in this file
++10 more flags used in this file

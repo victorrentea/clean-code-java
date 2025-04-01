@@ -6,6 +6,6 @@ class Interval {
     Interval(start, end) {
         this.start = start;
         this.end = end;
-        this.length = end - start; // pre-calcualate it
+        this.length = end - start; // pre-calculate it
     }
 }
