@@ -2,3 +2,9 @@
 if (user.lastLogin > 1 year ago) throw new Exception("User Frozen");
 
 log.debug("Last seen user: " + getLastLogin(user));
+
+
+
+LocalDateTime getLastLogin(User user) {
+    ?
+}

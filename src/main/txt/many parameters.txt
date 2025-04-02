@@ -1,3 +1,5 @@
+var match = intervalIntersect(search.yearStart, search.yearEnd, carModel.yearStart, carModel.yearEnd);
+
 boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
     return start1 <= end2 && start2 <= end1;
 }
