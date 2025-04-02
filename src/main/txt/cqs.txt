@@ -1,10 +1,15 @@
+CQS principle 1994 = Command (returning void and changing state) or  Query (returns data and is a PURE function) Separation
+
 
 if (user.lastLogin > 1 year ago) throw new Exception("User Frozen");
 
 log.debug("Last seen user: " + getLastLogin(user));
 
-
-
-LocalDateTime getLastLogin(User user) {
-    ?
+fun getLastLogin(user:User) {
+    user.lastLogin = now();
+    return user.lastLogin
 }
+
+Customer entity;
+CustomerDto dto;
+fun map(entity:Customer):Dto =

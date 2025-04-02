@@ -7,3 +7,7 @@ for (var order : list) {
         result.add(order);
     }
 }
+
+result = list.stream().filter(o->o.price > 100).toList()
+result = list.sequence.filter{it.price>100}
+result = [order for order in list if order.price > 100]

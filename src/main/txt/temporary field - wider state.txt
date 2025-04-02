@@ -1,8 +1,10 @@
+class BClass {}
 class AClass {
     int field = 0;
     f() {
         this.field = 0;
-        g(); 
+        g(); // side effect
+        print(this.field)
         return this.field;
     }
     g() {

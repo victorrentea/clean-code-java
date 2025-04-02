@@ -1,11 +1,17 @@
 // Single Responsibility Principle (SRP) = extract any complexity you can name
 // Single Level of Abstraction (SLAb) = orchestrate decoupled complexity
 grewOverYears(p1,p2,p3) {
-  // handle Donkey
+  handleDonkey(p1,p2)
+  shearSheep(p2,p3)
+}
+
+fun handleDonkey(p1,p2) {
   println("Donkey Logic");
   println("More Donkey using " + p1 + " and " + p2);
   println("Even more Donkey Logic");
+}
 
+fun  shearSheep(p2,p3) {
   println("Sheep Logic");
   println("More Sheep Logic using " + p2 + " and " + p3);
     println("Sheep Logic");

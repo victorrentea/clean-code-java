@@ -1,3 +1,9 @@
+Bus Factor = # people killed by a bike to have deep 💩 in your project>
+- pair programming
+- Code Review 4 or 6 eyes,
+- volunteer for a task on the project you know least about
+- showcase smart things you did
+
 def old_logic(): # 2y old
     stuffA
     stuffB
@@ -6,4 +12,4 @@ def old_logic(): # 2y old
 def my_logic(): # 1d old
     stuffA
     stuffB
-    stuffMyPrecious
+    stuffMyPreciousssssLogic
