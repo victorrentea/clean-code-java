@@ -1,8 +1,4 @@
-approveCredit(
-    string creditId, 
-    string customerId, 
-    string iban, 
-    CountryEnum countryIso) {...}
+approveCredit(string customerId, string iban, string currency) {...}
 
-approveCredit("13","52","RO65BTRLRONCRT0123456789","US");
+approveCredit("RO65BTRLRONCRT0123456789","52","USD");
 
