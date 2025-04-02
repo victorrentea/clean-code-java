@@ -1,7 +1,11 @@
-if (feature['display_inline_price']) {
-  if (feature['bf']) {
-    if (x.rebound) throw new Exception("Rebound");
-  }
-  x.tear = true; // FIXME
+class DeadCode {
+    private fun notCalled() {  }
+
+    public fun unused(offerId:Int, loan:Loan) {
+        val local = 1
+        print("Some logic with " + loan)
+        if (Features.flags["display_inline_price"]) {
+            if (loan.rebound) throw Exception("Rebound");
+        }
+    }
 }
-+10 more flags used in this file
