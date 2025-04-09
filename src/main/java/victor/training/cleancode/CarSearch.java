@@ -1,7 +1,5 @@
 package victor.training.cleancode;
 
-import lombok.Value;
-
 import java.util.List;
 
 class CarSearch {
@@ -15,12 +13,10 @@ class CarSearch {
     return results;
   }
 }
-@Value // 💖 Lombok genereaza tot ce-i mai jos
-class Interval { // immutable object: nu-si poate schimba starea dupa instantiere
-  int start;
-  int end;
-  public boolean intersects(Interval interval2) {
-    return start <= interval2.end && interval2.start <= end;
+
+record Interval(int start, int end) { // immutable object: nu-si poate schimba starea dupa instantiere
+  public boolean intersects(Interval other) {
+    return start <= other.end && other.start <= end;
   }
 }
 
