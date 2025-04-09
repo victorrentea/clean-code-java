@@ -80,14 +80,6 @@ class CarModel { // the Entity Model👑 test
     return id;
   }
 
-  public int getEndYear() {
-    return yearInterval.end();
-  }
-
-  public int getStartYear() {
-    return yearInterval.start();
-  }
-
   public String getMake() {
     return make;
   }
@@ -95,12 +87,6 @@ class CarModel { // the Entity Model👑 test
   public String getModel() {
     return model;
   }
-
-  // OCD zice: Cupleaza CarModel de CarSearchCriteria
-  //  public boolean intersects(CarSearchCriteria criteria){
-  //    return criteria.getStartYear() <= endYear && startYear <= criteria.getEndYear();
-  //  }
-
 }
 
 class CarModelMapper {
@@ -108,8 +94,9 @@ class CarModelMapper {
     CarModelDto dto = new CarModelDto();
     dto.make = carModel.getMake();
     dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.startYear = carModel.getYearInterval().start();
+    dto.endYear = carModel.getYearInterval().end();
     return dto;
   }
 
