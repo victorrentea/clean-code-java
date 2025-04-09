@@ -14,6 +14,8 @@ public class SplitLoop {
       if (employee.consultant()) {
         totalConsultantSalary += employee.salary();
       }
+    }
+    for (Employee employee : employees) {
       employeeIds.add(employee.id());
     }
     System.out.println("Employee IDs: " + employeeIds);
