@@ -18,6 +18,9 @@ class CarSearch {
 
 @Embeddable // cele 2 atribute vor deveni coloane in tabela CarModel
 record Interval(int start, int end) { // immutable object: nu-si poate schimba starea dupa instantiere
+  public Interval {
+     if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
   }
@@ -68,7 +71,6 @@ class CarModel { // the Entity Model👑 test
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.yearInterval = new Interval(startYear, endYear);
   }
 

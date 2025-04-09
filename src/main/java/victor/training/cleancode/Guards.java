@@ -9,10 +9,10 @@ public class Guards {
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     //  if (!( marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100))) {
     if (marine == null || bonusPackage.value() < 10 || bonusPackage.value() > 100) {
-      throw new IllegalArgumentException("Not applicable!");
+      throw new IllegalArgumentException("Not applicable!"); // early throw
     }
-    if (marine.dead()) {
-      return DEAD_PAY_AMOUNT;
+    if (marine.dead()) { // guard condition
+      return DEAD_PAY_AMOUNT; // early return
     }
     if (marine.retired()) {
       return retiredAmount();
