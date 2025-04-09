@@ -12,10 +12,32 @@ class CarSearch {
             .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
             .toList();
     System.out.println("More filtering logic ...");
+
+//    new Money(10,"euro"); // gresit
+    new Money(10,Currency.EUR); // corect
     return results;
   }
 }
 
+enum Currency {EUR, USD, CHF}
+// primitive obsession "Code Smell": abuz de stringuri si numere
+//record Money(int amount, String currency) { }
+record Money(int amount, Currency currency) { }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Value Object = doar date 💖imutabile fara identitate (nu au PK in DB)
 @Embeddable // cele 2 atribute vor deveni coloane in tabela CarModel
 record Interval(int start, int end) { // immutable object: nu-si poate schimba starea dupa instantiere
   public Interval {
