@@ -35,7 +35,7 @@ class SomeService {
 class MyService {
   public void useCase323(int id, Task task) {
     // TODO The shared called method must execute logic specific for my use-case #323
-    BooleanParameters.bigUglyMethod(id, task);
+    BooleanParameters.bigUglyMethodForBG(id, task);
   }
 }
 
@@ -43,15 +43,27 @@ public class BooleanParameters {
 
   // ⚠️ has multiple callers
   public static void bigUglyMethod(int storeId, Task task) {
+    donkey(storeId, task);
+    sheep(storeId);
+  }
+
+  public static void bigUglyMethodForBG(int storeIdX, Task task) {
+    donkey(storeIdX, task);
+    System.out.println("Logic just for CR#323 : " + task);
+    sheep(storeIdX);
+  }
+
+  private static void sheep(int storeIdX) {
+    int altaVariabImposibilSaStriciCeva = storeIdX + 1;
+    System.out.println("Sheep Logic 1 " + altaVariabImposibilSaStriciCeva);
+    System.out.println("Sheep Logic 2 ");
+    System.out.println("Sheep Logic 3 ");
+  }
+
+  private static void donkey(int storeId, Task task) {
     System.out.println("Donkey Logic 1 " + task + " and " + storeId);
     System.out.println(task);
     System.out.println("Donkey Logic 3 " + task);
-
-    // System.out.println("Logic just for CR#323 : " + task);
-
-    System.out.println("Sheep Logic 1 " + storeId);
-    System.out.println("Sheep Logic 2 ");
-    System.out.println("Sheep Logic 3 ");
   }
 }
 
