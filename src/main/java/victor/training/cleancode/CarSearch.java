@@ -12,25 +12,25 @@ class CarSearch {
             //        .filter(carModel -> carModel.intersects(criteria)) // <- coupling
             //        .filter(carModel -> carModel.intersects({start:criteria.start,
             // end:criteria.end})) // <- TS
-            .filter(carModel -> criteria.getYearInterval().intervalsIntersect(carModel.getYearInterval()))
+            .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
             .toList();
     System.out.println("More filtering logic ...");
     return results;
   }
   // - metoda in plus care trebuie si ea inteleasa
-  // - metoda intervalsIntersect tot ia 4 param->urata pentru toti altii
+  // - metoda isIntersectingWith tot ia 4 param->urata pentru toti altii
   //   private boolean yearIntervalsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-  //    return MathUtil.intervalsIntersect(
+  //    return MathUtil.isIntersectingWith(
   //        criteria.getStartYear(), criteria.getEndYear(),
   //        carModel.getStartYear(), carModel.getEndYear());
   //  }
 }
 // class SomeOtherClientCode {
 //  private void applyLengthFilter() { // pretend
-//    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+//    System.out.println(MathUtil.isIntersectingWith(1000, 1600, 1250, 2000));
 //  }
 //  private void applyCapacityFilter() { // pretend
-//    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+//    System.out.println(MathUtil.isIntersectingWith(1000, 1600, 1250, 2000));
 //  }
 // }
 class MathUtil {
@@ -44,7 +44,8 @@ class Interval {
     this.end = end;
   }
 
-  public boolean intervalsIntersect(Interval interval2) {
+//  public boolean isIntersectingWith(Interval interval2) {
+  public boolean intersects(Interval interval2) {
     return start <= interval2.end && interval2.start <= end;
   }
 }
