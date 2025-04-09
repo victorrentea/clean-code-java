@@ -16,12 +16,12 @@ class CarSearch {
             .filter(
                 carModel ->
                     MathUtil.intervalsIntersect(
-                        new Interval(criteria.getStartYear(), criteria.getEndYear()),
-                        new Interval(carModel.getStartYear(), carModel.getEndYear())))
+                        criteria.getYearInterval(), carModel.getYearInterval()))
             .toList();
     System.out.println("More filtering logic ...");
     return results;
   }
+
   // - metoda in plus care trebuie si ea inteleasa
   // - metoda intervalsIntersect tot ia 4 param->urata pentru toti altii
   //   private boolean yearIntervalsIntersect(CarSearchCriteria criteria, CarModel carModel) {
@@ -30,7 +30,6 @@ class CarSearch {
   //        carModel.getStartYear(), carModel.getEndYear());
   //  }
 }
-
 // class SomeOtherClientCode {
 //  private void applyLengthFilter() { // pretend
 //    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
@@ -39,13 +38,11 @@ class CarSearch {
 //    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
 //  }
 // }
-
 class MathUtil {
   public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
     return interval1.start <= interval2.end && interval2.start <= interval1.end;
   }
 }
-
 class Interval {
   int start;
   int end;
@@ -79,6 +76,10 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public String getMake() {
     return make;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 }
 
@@ -120,6 +121,10 @@ class CarModel { // the Entity Model👑 test
 
   public String getModel() {
     return model;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   // OCD zice: Cupleaza CarModel de CarSearchCriteria
