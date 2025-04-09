@@ -1,5 +1,7 @@
 package victor.training.cleancode;
 
+import jakarta.persistence.Embeddable;
+
 import java.util.List;
 
 class CarSearch {
@@ -14,6 +16,7 @@ class CarSearch {
   }
 }
 
+@Embeddable // cele 2 atribute vor deveni coloane in tabela CarModel
 record Interval(int start, int end) { // immutable object: nu-si poate schimba starea dupa instantiere
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
@@ -56,8 +59,8 @@ class CarModel { // the Entity Model👑 test
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+//  @Embedded
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -66,8 +69,11 @@ class CarModel { // the Entity Model👑 test
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
+  }
+
+  public Interval getYearInterval() {
+    return yearInterval;
   }
 
   public Long getId() {
@@ -75,11 +81,11 @@ class CarModel { // the Entity Model👑 test
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearInterval.start();
   }
 
   public String getMake() {
@@ -88,10 +94,6 @@ class CarModel { // the Entity Model👑 test
 
   public String getModel() {
     return model;
-  }
-
-  public Interval getYearInterval() {
-    return new Interval(startYear, endYear);
   }
 
   // OCD zice: Cupleaza CarModel de CarSearchCriteria
