@@ -1,35 +1,58 @@
 package victor.training.cleancode;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 class CarSearch {
 
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
-    List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
-        .collect(Collectors.toList());
+    List<CarModel> results =
+        carModels.stream()
+            //        .filter(carModel -> carModel.intersects(criteria.getStartYear(),
+            // criteria.getEndYear()))
+            //        .filter(carModel -> carModel.intersects(criteria)) // <- coupling
+            //        .filter(carModel -> carModel.intersects({start:criteria.start,
+            // end:criteria.end})) // <- TS
+            .filter(
+                carModel ->
+                    MathUtil.intervalsIntersect(
+                        new Interval(criteria.getStartYear(), criteria.getEndYear()),
+                        new Interval(carModel.getStartYear(), carModel.getEndYear())))
+            .toList();
     System.out.println("More filtering logic ...");
     return results;
   }
+  // - metoda in plus care trebuie si ea inteleasa
+  // - metoda intervalsIntersect tot ia 4 param->urata pentru toti altii
+  //   private boolean yearIntervalsIntersect(CarSearchCriteria criteria, CarModel carModel) {
+  //    return MathUtil.intervalsIntersect(
+  //        criteria.getStartYear(), criteria.getEndYear(),
+  //        carModel.getStartYear(), carModel.getEndYear());
+  //  }
 }
 
-class SomeOtherClientCode {
-  private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-  }
-  private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-  }
-}
+// class SomeOtherClientCode {
+//  private void applyLengthFilter() { // pretend
+//    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+//  }
+//  private void applyCapacityFilter() { // pretend
+//    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+//  }
+// }
 
 class MathUtil {
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    return interval1.start <= interval2.end && interval2.start <= interval1.end;
+  }
+}
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+class Interval {
+  int start;
+  int end;
+
+  public Interval(int start, int end) {
+    this.start = start;
+    this.end = end;
   }
 }
 
@@ -98,6 +121,12 @@ class CarModel { // the Entity Model👑 test
   public String getModel() {
     return model;
   }
+
+  // OCD zice: Cupleaza CarModel de CarSearchCriteria
+  //  public boolean intersects(CarSearchCriteria criteria){
+  //    return criteria.getStartYear() <= endYear && startYear <= criteria.getEndYear();
+  //  }
+
 }
 
 class CarModelMapper {
