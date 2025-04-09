@@ -7,44 +7,30 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-            //        .filter(carModel -> carModel.intersects(criteria.getStartYear(),
-            // criteria.getEndYear()))
-            //        .filter(carModel -> carModel.intersects(criteria)) // <- coupling
-            //        .filter(carModel -> carModel.intersects({start:criteria.start,
-            // end:criteria.end})) // <- TS
             .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
             .toList();
     System.out.println("More filtering logic ...");
     return results;
   }
-  // - metoda in plus care trebuie si ea inteleasa
-  // - metoda isIntersectingWith tot ia 4 param->urata pentru toti altii
-  //   private boolean yearIntervalsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-  //    return MathUtil.isIntersectingWith(
-  //        criteria.getStartYear(), criteria.getEndYear(),
-  //        carModel.getStartYear(), carModel.getEndYear());
-  //  }
 }
-// class SomeOtherClientCode {
-//  private void applyLengthFilter() { // pretend
-//    System.out.println(MathUtil.isIntersectingWith(1000, 1600, 1250, 2000));
-//  }
-//  private void applyCapacityFilter() { // pretend
-//    System.out.println(MathUtil.isIntersectingWith(1000, 1600, 1250, 2000));
-//  }
-// }
-class MathUtil {
-}
-class Interval {
-  int start;
-  int end;
+class Interval { // immutable object: nu-si poate schimba starea dupa instantiere
+  private final int start;
+  private final int end;
 
   public Interval(int start, int end) {
     this.start = start;
     this.end = end;
   }
+  public int getStart() {
+    return start;
+  }
+  public int getEnd() {
+    return end;
+  }
+  public int getLength() {
+    return end - start;
+  }
 
-//  public boolean isIntersectingWith(Interval interval2) {
   public boolean intersects(Interval interval2) {
     return start <= interval2.end && interval2.start <= end;
   }
