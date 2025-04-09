@@ -8,27 +8,25 @@ class RefactoringWarmup {
     Two two = new Two();
     System.out.println(two.loop(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
     System.out.println(new One(two).f());
-    System.out.println(two.g(new R(1)));
+    System.out.println(two.g(new R(1), 3));
   }
 }
 
 class One {
   private final Two two;
-
   One(Two two) {
     this.two = two;
   }
-
   public int f() {
-    return 2 * two.g(new R(3));
+    return 2 * two.g(new R(3), 1);
   }
 }
 
 class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
+  public int g(R r, int p) {
+    int c = r.x();
+    System.out.println("b=" + c);
+    return p + c + r.x();
   }
 
   public double loop(List<Integer> numbers) {
