@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
+import lombok.Builder;
 import lombok.Setter;
-import lombok.experimental.Accessors;
 
 public class BuilderAntiPattern {
   public static void main(String[] args) {
@@ -16,10 +16,14 @@ public class BuilderAntiPattern {
         .b("b")
         .c("c")
         .build();
+//    Exp iexp = new Exp(
+//        a="a",
+//        b="b",
+//        c="c");
     //iexp.d("#situ");
   }
 }
-@Accessors(fluent = true)
+//@Accessors(fluent = true)
 @Setter
 class Exp {
   private String a,b,c,d;
@@ -28,59 +32,13 @@ class Exp {
     return this; //se returneaza pe sine pt a putea clientul sa puna .b(..).c(..)
   }
 }
-
+@Builder
 class IExp { // imutabil
-  private final String a;
-  private final String b;
-  private final String c;
-  private final String d;
-
-  IExp(String a, String b, String c, String d) {
-    this.a = a;
-    this.b = b;
-    this.c = c;
-    this.d = d;
-  }
-
-  public static IExpBuilder builder() {
-    return new IExpBuilder();
-  }
-
-  public static class IExpBuilder {
-    private String a;
-    private String b;
-    private String c;
-    private String d;
-
-    IExpBuilder() {
-    }
-
-    public IExpBuilder a(String a) {
-      this.a = a;
-      return this;
-    }
-
-    public IExpBuilder b(String b) {
-      this.b = b;
-      return this;
-    }
-
-    public IExpBuilder c(String c) {
-      this.c = c;
-      return this;
-    }
-
-    public IExpBuilder d(String d) {
-      this.d = d;
-      return this;
-    }
-
-    public IExp build() {
-      return new IExp(a, b, c, d);
-    }
-
-    public String toString() {
-      return "IExp.IExpBuilder(a=" + a + ", b=" + b + ", c=" + c + ", d=" + d + ")";
-    }
-  }
+  private final String a,b,c,d;
 }
+// pe obiectele mutabile nu are sens builder!!
+
+// FOLOSESTE @Builder DOAR DACA ob tau este >3 campuri si immutabil (@Value sau record): eg: Dto, Mondo Document
+// FOLOSESTE @Setter fluenti daca ob tau este modificabil: @Entity hibernate
+//  Dar: in loc sa repeti @Asccesors(fluent=true) pe fiecare clasa, poti pune "lombok.accessors.fluent=true" in lombok.config in / proiectului
+// "builder pattern" 99% din implem este un workaround pt o limitare de limbaj (nu avem in Java named params)
