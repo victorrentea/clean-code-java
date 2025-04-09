@@ -6,22 +6,17 @@ class CarSearch {
 
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
-    List<CarModel> results =
-        carModels.stream()
+    List<CarModel> results = carModels.stream()
             //        .filter(carModel -> carModel.intersects(criteria.getStartYear(),
             // criteria.getEndYear()))
             //        .filter(carModel -> carModel.intersects(criteria)) // <- coupling
             //        .filter(carModel -> carModel.intersects({start:criteria.start,
             // end:criteria.end})) // <- TS
-            .filter(
-                carModel ->
-                    MathUtil.intervalsIntersect(
-                        criteria.getYearInterval(), carModel.getYearInterval()))
+            .filter(carModel -> criteria.getYearInterval().intervalsIntersect(carModel.getYearInterval()))
             .toList();
     System.out.println("More filtering logic ...");
     return results;
   }
-
   // - metoda in plus care trebuie si ea inteleasa
   // - metoda intervalsIntersect tot ia 4 param->urata pentru toti altii
   //   private boolean yearIntervalsIntersect(CarSearchCriteria criteria, CarModel carModel) {
@@ -39,9 +34,6 @@ class CarSearch {
 //  }
 // }
 class MathUtil {
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    return interval1.start <= interval2.end && interval2.start <= interval1.end;
-  }
 }
 class Interval {
   int start;
@@ -50,6 +42,10 @@ class Interval {
   public Interval(int start, int end) {
     this.start = start;
     this.end = end;
+  }
+
+  public boolean intervalsIntersect(Interval interval2) {
+    return start <= interval2.end && interval2.start <= end;
   }
 }
 
