@@ -1,6 +1,6 @@
 package victor.training.cleancode;
 
-import lombok.Data;
+import lombok.Value;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ class CarSearch {
     return results;
   }
 }
-@Data // Lombok genereaza tot ce-i mai jos
+@Value // 💖 Lombok genereaza tot ce-i mai jos
 class Interval { // immutable object: nu-si poate schimba starea dupa instantiere
-  private final int start;
-  private final int end;
+  /*private final*/ int start;
+  /*private final*/ int end;
 
 //  public Interval(int start, int end) {
 //    this.start = start;
