@@ -27,8 +27,6 @@ namespace Soat.CleanCode.VideoStore.Original
 
             foreach (var rental in _rentals)
             {
-                
-
                 var thisAmount = RentalHelper.CalculateRentalAmount(rental);
 
                 statement += RentalHelper.RentalStatement(rental, thisAmount);
