@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿    using System.Collections.Generic;
 using System.Globalization;
 
 namespace Soat.CleanCode.VideoStore.Original
