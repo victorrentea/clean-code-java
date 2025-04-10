@@ -20,6 +20,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
                          "Rental Record for Fred\n\tThe cell\t9.0\nYou owed 9.0\nYou earned 2 frequent renter points \n");
         }
 
+        //push
         [Fact]
         public void TestDualNewReleaseStatement()
         {
