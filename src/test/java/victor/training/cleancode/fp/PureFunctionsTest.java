@@ -38,8 +38,8 @@ class PureFunctionsTest {
     Coupon coupon2 = new Coupon(ProductCategory.ELECTRONICS, 4);
     Customer customer = new Customer(List.of(coupon1, coupon2));
     when(customerRepo.findById(13L)).thenReturn(customer);
-    Product p1 = new Product().setId(1L).setCategory(ProductCategory.HOME);
-    Product p2 = new Product().setId(2L).setCategory(ProductCategory.KIDS);
+    Product p1 = new Product().id(1L).category(ProductCategory.HOME);
+    Product p2 = new Product().id(2L).category(ProductCategory.KIDS);
     when(productRepo.findAllById(List.of(1L, 2L))).thenReturn(List.of(p1, p2));
     when(thirdPartyPrices.fetchPrice(2L)).thenReturn(5d);
 

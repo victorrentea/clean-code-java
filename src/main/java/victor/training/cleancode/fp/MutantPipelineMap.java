@@ -10,11 +10,11 @@ public class MutantPipelineMap {
   private final PaymentCardRepository paymentCardRepository;
   private final PaymentCardMapper paymentCardMapper;
 
-  public PaymentCardResponseDto setUserAliasCard(final long ssoId, final long paymentCardId, final String alias) {
+  public PaymentCardResponseDto setUserAliasCard(long ssoId, long paymentCardId, String alias) {
     return paymentCardRepository.findById(paymentCardId)
-        .filter(card -> card.getId() == ssoId)
+        .filter(card -> card.id() == ssoId)
         .map(card -> {
-          card.setUserAlias(alias);
+          card.userAlias(alias);
           return paymentCardMapper.toDto(paymentCardRepository.save(card));
         })
         .orElseThrow(() -> new IllegalArgumentException("Card " + paymentCardId + " with sso " + ssoId + " cannot be found"));

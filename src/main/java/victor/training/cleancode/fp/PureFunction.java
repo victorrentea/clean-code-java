@@ -2,8 +2,6 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +23,9 @@ class PureFunction {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
-      Double price = internalPrices.get(product.getId());
+      Double price = internalPrices.get(product.id());
       if (price == null) {
-        price = thirdPartyPricesApi.fetchPrice(product.getId());
+        price = thirdPartyPricesApi.fetchPrice(product.id());
       }
       for (Coupon coupon : customer.coupons()) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {
@@ -35,7 +33,7 @@ class PureFunction {
           usedCoupons.add(coupon);
         }
       }
-      finalPrices.put(product.getId(), price);
+      finalPrices.put(product.id(), price);
     }
 
     couponRepo.markUsedCoupons(customerId, usedCoupons);

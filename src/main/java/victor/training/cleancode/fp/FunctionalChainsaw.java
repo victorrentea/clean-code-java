@@ -28,8 +28,8 @@ public class FunctionalChainsaw { // ... Massacre
 				.stream()
 				.filter(e -> e.getValue() >= 10)
 				.map(Entry::getKey)
-				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.filter(p -> !p.deleted())
+				.filter(p -> !productRepo.getHiddenProductIds().contains(p.id()))
 				.collect(toList());
 	}
 }

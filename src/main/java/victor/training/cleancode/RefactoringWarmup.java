@@ -26,12 +26,12 @@ class Two {
 
   public double loop(List<Integer> numbers) {
     System.out.println("b=" + 987);
-    double ssq = 0;
-    for (Integer number : numbers) {
-      if (number % 2 == 0) {
-        ssq += number * number;
-      }
-    }
+    double ssq = numbers.stream()
+        .filter(number -> number % 2 == 0)
+        .mapToDouble(number -> number * number)
+        .sum();
+    // py: ssq = sum(number * number for number in numbers if number % 2 == 0)
+    // ts: ssq = numbers.filter(n => n % 2 == 0).map(n => n * n).reduce(0, (a, b) => a + b);
     return Math.sqrt(ssq);
   }
 }

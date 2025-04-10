@@ -23,7 +23,7 @@ class Coupon {
   }
 
   public boolean isApplicableFor(Product product) {
-    return (product.getCategory() == category || category == null) && !product.isPremium();
+    return (product.category() == category || category == null) && !product.isPremium();
   }
 
   public Double apply(Product product, Double price) {
