@@ -3,31 +3,46 @@ package victor.training.cleancode.kata.videostore;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
+
 class Customer {
-    private final String name;
-    private final List<Rental> rentals = new ArrayList<>();
+  private final String name;
+  private final List<Rental> rentals = new ArrayList<>();
 
-    public Customer(String name) {
-        this.name = name;
-    }
+  public Customer(String name) {
+    this.name = name;
+  }
 
-    public void addRental(Movie movie, int daysRented) {
-        rentals.add(new Rental(movie, daysRented));
-    }
+  public void addRental(Rental rental) {
+    rentals.add(rental);
+  }
 
-    public String statement() {
-        int frequentRenterPoints = 0;
-        StringBuilder rentalStatement = new StringBuilder("Rental Record for " + name + "\n");
+  public String statement() {
+    return header() + body() + footer();
+  }
 
-        for (Rental rentedMovie : rentals) {
-            frequentRenterPoints += rentedMovie.computeFrequentRenterPoints();
+  private String header() {
+    return "Rental Record for " + name + "\n";
+  }
 
-            rentalStatement.append("\t").append(rentedMovie.movie().title()).append("\t").append(rentedMovie.getRentalPrice()).append("\n");
-        }
-        double totalAmount = rentals.stream().mapToDouble(Rental::getRentalPrice).sum();
+  private String body() {
+    return rentals.stream().map(this::rentalLine).collect(joining());
+  }
 
-        rentalStatement.append("Amount owed is ").append(totalAmount).append("\n");
-        rentalStatement.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-        return rentalStatement.toString();
-    }
+  private String rentalLine(Rental rental) {
+    return "\t" + rental.movie().title() + "\t" + rental.price() + "\n";
+  }
+
+  private String footer() {
+    return "Amount owed is " + totalPrice() + "\n"
+           + "You earned " + totalPoints() + " frequent renter points";
+  }
+
+  private double totalPrice() {
+    return rentals.stream().mapToDouble(Rental::price).sum();
+  }
+
+  private int totalPoints() {
+    return rentals.stream().mapToInt(Rental::frequentRenterPoints).sum();
+  }
 }
