@@ -40,7 +40,7 @@ You earned 5 frequent renter points
                 Console.WriteLine(actual);
             }
 
-
+            Console.ReadLine();
         }
     }
 

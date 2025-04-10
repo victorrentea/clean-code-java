@@ -23,8 +23,8 @@ namespace Soat.CleanCode.VideoStore.Original
         {
             var (totalAmount, result) = DeterminesAmountOfRentals();
 
-            result += "You owed " + totalAmount.ToString("0.0", CultureInfo.InvariantCulture) + "\n";
-            result += "You earned " + FrequentRenterPoints.ToString() + " frequent renter points \n";
+            result += "You owed " + totalAmount.ToString("0.0", CultureInfo.InvariantCulture) + "\r\n";
+            result += "You earned " + FrequentRenterPoints.ToString() + " frequent renter points \r\n";
 
             return result;
         }
@@ -32,14 +32,14 @@ namespace Soat.CleanCode.VideoStore.Original
         private (decimal, string) DeterminesAmountOfRentals()
         {
             var totalAmount = 0m;
-            var result = "Rental Record for " + Name + "\n";
+            var result = "Rental Record for " + Name + "\r\n";
             foreach (var rental in _rentals)
             {
                 //dtermines the amount for each line
                 var thisAmount = CalculateThisAmount(rental);
                 CalculateFrequentRenterPoints(rental);
 
-                result += "\t" + rental.Movie.Title + "\t" + thisAmount.ToString("0.0", CultureInfo.InvariantCulture) + "\n";
+                result += "\t" + rental.Movie.Title + "\t" + thisAmount.ToString("0.0", CultureInfo.InvariantCulture) + "\r\n";
                 totalAmount += thisAmount;
             }
             return (totalAmount, result);
