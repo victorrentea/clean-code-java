@@ -25,6 +25,13 @@ class PureFunction {
   public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds); // SELECT * WHERE id IN (1,2,3,...)
+    Map<Long, Double> initialPrices = resolveInitialPrices(internalPrices, products);
+    ApplyCouponsResults result = applyCoupons(products, initialPrices, customer.coupons());
+    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
+    return result.finalPrices();
+  }
+
+  private Map<Long, Double> resolveInitialPrices(Map<Long, Double> internalPrices, List<Product> products) {
     Map<Long, Double> initialPrices = new HashMap<>();
     for (Product product : products) {
       Double price = internalPrices.get(product.id());
@@ -33,9 +40,7 @@ class PureFunction {
       }
       initialPrices.put(product.id(), price);
     }
-    ApplyCouponsResults result = applyCoupons(products, initialPrices, customer.coupons());
-    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
-    return result.finalPrices();
+    return initialPrices;
   }
 //   TS const {usedCoupons, finalPrices}  = applyCoupons(products, initialPrices, customer);
 //   C# var (usedCoupons, finalPrices) = applyCoupons(products, initialPrices, customer);
