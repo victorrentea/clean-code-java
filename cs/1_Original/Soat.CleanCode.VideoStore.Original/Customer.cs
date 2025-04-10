@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 
 namespace Soat.CleanCode.VideoStore.Original
 {
-    public class Customer 
+    public class Customer
     {
         private List<Rental> _rentals = new List<Rental>();
         public string Name { get; }
@@ -21,14 +20,14 @@ namespace Soat.CleanCode.VideoStore.Original
         public string CalculateRentalPointsStatement()
         {
             var frequentRenterPoints = 0;
-            var totalAmount          = 0m;
-            var result               = $"Rental Record for {Name}\n";
+            var totalAmount = 0m;
+            var result = $"Rental Record for {Name}\n";
 
             foreach (var rental in _rentals)
             {
-                var thisAmount = CustomerHelper.CalculateRentalPoints(rental);
-
                 frequentRenterPoints += CustomerHelper.CalculateFrequentRenterPoints(rental);
+
+                var thisAmount = CustomerHelper.CalculateRentalAmount(rental);
 
                 result += $"\t{rental.Movie.Title} \t {thisAmount.ToOneDecimalString()}\n";
 

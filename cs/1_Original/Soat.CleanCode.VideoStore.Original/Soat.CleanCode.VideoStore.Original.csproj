@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Customer.cs" />
-    <Compile Include="CustomerHelper.cs" />
+    <Compile Include="RentalHelper.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieType.cs" />
     <Compile Include="Program.cs" />
