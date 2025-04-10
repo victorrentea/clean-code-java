@@ -16,8 +16,13 @@ namespace Soat.CleanCode.VideoStore.Original
         public int GetFrequentRenterPoints()
         {
             int points = _rentals.Count;
-            int extraPoints = _rentals.Where(x => x.Movie.PriceCode == Movie.NEW_RELEASE && x.DaysRented > 1).Count();
+            int extraPoints = _rentals.Where(x => IsEligibleForBonus(x)).Count();
             return points + extraPoints;
+        }
+
+        private static bool IsEligibleForBonus(Rental x)
+        {
+            return x.Movie.PriceCode == Movie.NEW_RELEASE && x.DaysRented > 1;
         }
 
         public void AddRental(Rental rental)
