@@ -47,9 +47,10 @@
            
         }
 
-        public static string RentalStatement(Rental rental, decimal thisAmount)
+        public static string RentalStatement(Rental rental)
         {
-            return $"\t{rental.Movie.Title} \t {thisAmount.ToOneDecimalString()}\n";
+            var amount = CalculateRentalAmount(rental);
+            return $"\t{rental.Movie.Title} \t {amount.ToOneDecimalString()}\n";
         }
     }
 }

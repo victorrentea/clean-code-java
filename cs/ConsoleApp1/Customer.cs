@@ -19,20 +19,11 @@ namespace Soat.CleanCode.VideoStore.Original
 
         public string CalculateRentalPointsStatement()
         {
-            var frequentRenterPoints = 0;
-            var totalAmount = 0m;
             var statement = RentalHelper.InitialStatement(Name);
 
-            _rentals.ForEach(r => { frequentRenterPoints += RentalHelper.CalculateFrequentRenterPoints(r);});
-
-            foreach (var rental in _rentals)
-            {
-                var thisAmount = RentalHelper.CalculateRentalAmount(rental);
-
-                statement += RentalHelper.RentalStatement(rental, thisAmount);
-
-                totalAmount += thisAmount;
-            }
+            var frequentRenterPoints =  _rentals.Select(r =>  RentalHelper.CalculateFrequentRenterPoints(r)).Sum();
+            var totalAmount =  _rentals.Select(r =>  RentalHelper.CalculateRentalAmount(r)).Sum();
+            _rentals.ForEach(r => { statement += RentalHelper.RentalStatement(r); });
 
             statement += RentalHelper.EndStatement(frequentRenterPoints, totalAmount);
 
