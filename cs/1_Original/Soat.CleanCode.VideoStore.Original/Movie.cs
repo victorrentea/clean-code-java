@@ -7,13 +7,12 @@
         public const int CHILDREN    = 2;
 
         public int PriceCode { get; set; }
-        public virtual string Title { get; }
+        public string Title { get; }
 
         public Movie(string title, int priceCode)
         {
             Title     = title;
             PriceCode = priceCode;
-            //comment
         }
     }
 }
