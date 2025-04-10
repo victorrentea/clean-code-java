@@ -2,17 +2,15 @@
 {
     public class Movie
     {
-        public const int REGULAR     = 0;
-        public const int NEW_RELEASE = 1;
-        public const int CHILDREN    = 2;
-
+        public MovieType Type { get; }
         public int PriceCode { get; set; }
-        public virtual string Title { get; }
+        public string Title { get; }
 
-        public Movie(string title, int priceCode)
+        public Movie(string title, int priceCode, MovieType movieType)
         {
-            Title     = title;
+            Title = title;
             PriceCode = priceCode;
+            Type = movieType;
         }
     }
 }
