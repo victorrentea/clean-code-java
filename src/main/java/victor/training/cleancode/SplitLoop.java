@@ -31,6 +31,9 @@ public class SplitLoop {
 //    PY employeeIds = [e.id for e in employees]
 //    C# employeeIds = employees.Select(e => e.id).ToList();
 
+//    C# employeeIds = []
+//    C# employeeIds = employees.ForEach(e => list.Add(id));
+
     System.out.println("Employee IDs: " + employeeIds);
     return "Total consultant salary: " + totalConsultantSalary + "; ids: " + employeeIds;
   }

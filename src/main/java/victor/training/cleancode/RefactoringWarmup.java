@@ -4,11 +4,14 @@ package victor.training.cleancode;
 import java.util.List;
 
 class RefactoringWarmup {
+
+  public static final int THE_ANSWER_OF_LIFE = 42;
+
   public static void main(String[] args) {
     Two two = new Two();
     System.out.println(two.loop(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
     System.out.println(new One(two).f());
-    System.out.println(new R(1).g(3));
+    System.out.println(new R(1).g(THE_ANSWER_OF_LIFE));
   }
 }
 

@@ -1,10 +1,8 @@
 class DeadCode {
-    private fun notCalled() {  }
 
-    public fun unused(offerId:Int, loan:Loan) {
-        val local = 1
+    public fun unused( loan:Loan) {
         print("Some logic with " + loan)
-        if (Features.flags["display_inline_price"]) {
+        if (Features.flags["display_inline_price"]) { // TRUE de acum 3 ani
             if (loan.rebound) throw Exception("Rebound");
         }
     }
