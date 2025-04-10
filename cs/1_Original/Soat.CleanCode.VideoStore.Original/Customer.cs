@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Soat.CleanCode.VideoStore.Original
 {
@@ -12,6 +13,12 @@ namespace Soat.CleanCode.VideoStore.Original
         {
             Name = name;
         }
+        public int GetFrequentRenterPoints()
+        {
+            int points = _rentals.Count;
+            int extraPoints = _rentals.Where(x => x.Movie.PriceCode == Movie.NEW_RELEASE && x.DaysRented > 1).Count();
+            return points + extraPoints;
+        }
 
         public void AddRental(Rental rental)
         {
@@ -20,24 +27,15 @@ namespace Soat.CleanCode.VideoStore.Original
 
         public string Statement()
         {
-            var frequentRenterPoints = 0;
             var totalAmount = 0m;
             var result = "Rental Record for " + Name + "\r\n";
             foreach (var rental in _rentals)
             {
-                decimal thisAmount = rental.GetAmmount();
-
-                frequentRenterPoints++;
-
-                if (rental.Movie.PriceCode == Movie.NEW_RELEASE
-                    && rental.DaysRented > 1)
-                {
-                    frequentRenterPoints++;
-                }
-
-                result += "\t" + rental.Movie.Title + "\t" + thisAmount.ToString("0.0", CultureInfo.InvariantCulture) + "\r\n";
-                totalAmount += thisAmount;
+                result += "\t" + rental.Movie.Title + "\t" + rental.Amount.ToString("0.0", CultureInfo.InvariantCulture) + "\r\n";
+                totalAmount += rental.Amount;
             }
+            
+            var frequentRenterPoints = GetFrequentRenterPoints();
 
             result += "You owed " + totalAmount.ToString("0.0", CultureInfo.InvariantCulture) + "\r\n";
             result += "You earned " + frequentRenterPoints.ToString() + " frequent renter points \r\n";
