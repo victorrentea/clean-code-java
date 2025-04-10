@@ -2,7 +2,8 @@
 
 namespace Soat.CleanCode.VideoStore.Original.Tests
 {
-    public class VideoStoreTests
+
+    public class VideoStoreTests 
     {
         private readonly Customer _customer;
 
@@ -28,7 +29,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
             Assert.Equal(_customer.Statement(),
                          "Rental Record for Fred\n\tThe cell\t9.0\n\tThe Tigger Movie\t9.0\nYou owed 18.0\nYou earned 4 frequent renter points \n");
         }
-
+        //push
         [Fact]
         public void TestSingleChildrensStatement()
         {
