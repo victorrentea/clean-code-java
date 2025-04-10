@@ -1,6 +1,0 @@
-double sum = 0; // ... .sum();
-for (Order order : orders) {
-    sum += order.amount();
-}
-double avg = sum / orders.size();
-log.debug("Average = " + avg);

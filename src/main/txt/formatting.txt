@@ -1,8 +1,0 @@
-for ( var e : list )
-{
-    if ( e % 2 == 0 )
-    {
-        print (e,
-               "isOdd")
-    }
-}
