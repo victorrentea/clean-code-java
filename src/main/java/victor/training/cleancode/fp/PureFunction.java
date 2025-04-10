@@ -27,7 +27,7 @@ class PureFunction {
 
     Map<Long, Double> initialPrices = resolveInitialPrices(internalPrices, products);
 
-    ApplyCouponsResults result = applyCoupons(products, initialPrices, customer);
+    ApplyCouponsResults result = applyCoupons(products, initialPrices, customer.coupons());
 //   PY usedCoupons, finalPrices  = applyCoupons(products, initialPrices, customer);
 //   TS const {usedCoupons, finalPrices}  = applyCoupons(products, initialPrices, customer);
 //   C# var (usedCoupons, finalPrices) = applyCoupons(products, initialPrices, customer);
@@ -38,12 +38,12 @@ class PureFunction {
   private record ApplyCouponsResults(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {
   }
   // PURE function: da la fel si nu schimba stare in exterior
-  private ApplyCouponsResults applyCoupons(List<Product> products, Map<Long, Double> initialPrices, Customer customer) {
+  private ApplyCouponsResults applyCoupons(List<Product> products, Map<Long, Double> initialPrices, List<Coupon> coupons) {
     List<Coupon> usedCoupons = new ArrayList<>();
     Map<Long, Double> finalPrices = new HashMap<>();
     for (Product product : products) {
       double price = initialPrices.get(product.id());
-      for (Coupon coupon : customer.coupons()) {
+      for (Coupon coupon : coupons) {
         if (canApplyCoupon(product, coupon, usedCoupons)) {
           price = coupon.apply(product, price);
           usedCoupons.add(coupon);
