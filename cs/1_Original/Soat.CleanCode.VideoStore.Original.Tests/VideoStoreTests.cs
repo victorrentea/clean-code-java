@@ -16,7 +16,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
         {
             _customer.AddRental(new Rental(new Movie("The cell", Movie.NEW_RELEASE), 3));
             Assert.Equal(_customer.Statement(),
-                         "Rental Record for Fred\n\tThe cell\t9.0\nYou owed 9.0\nYou earned 2 frequent renter points \n");
+                         "Rental Record for Fred\r\n\tThe cell\t9.0\r\nYou owed 9.0\r\nYou earned 2 frequent renter points \r\n");
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
             _customer.AddRental(new Rental(new Movie("The Tigger Movie", Movie.NEW_RELEASE), 3));
 
             Assert.Equal(_customer.Statement(),
-                         "Rental Record for Fred\n\tThe cell\t9.0\n\tThe Tigger Movie\t9.0\nYou owed 18.0\nYou earned 4 frequent renter points \n");
+                         "Rental Record for Fred\r\n\tThe cell\t9.0\r\n\tThe Tigger Movie\t9.0\r\nYou owed 18.0\r\nYou earned 4 frequent renter points \r\n");
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
             _customer.AddRental(new Rental(new Movie("The Tigger Movie", Movie.CHILDREN), 3));
 
             Assert.Equal(_customer.Statement(),
-                         "Rental Record for Fred\n\tThe Tigger Movie\t1.5\nYou owed 1.5\nYou earned 1 frequent renter points \n");
+                         "Rental Record for Fred\r\n\tThe Tigger Movie\t1.5\r\nYou owed 1.5\r\nYou earned 1 frequent renter points \r\n");
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
             _customer.AddRental(new Rental(new Movie("Eraserhead",              Movie.REGULAR), 3));
 
             Assert.Equal(_customer.Statement(),
-                         "Rental Record for Fred\n\tPlan 9 from Outer Space\t2.0\n\t8 1/2\t2.0\n\tEraserhead\t3.5\nYou owed 7.5\nYou earned 3 frequent renter points \n");
+                         "Rental Record for Fred\r\n\tPlan 9 from Outer Space\t2.0\r\n\t8 1/2\t2.0\r\n\tEraserhead\t3.5\r\nYou owed 7.5\r\nYou earned 3 frequent renter points \r\n");
         }
     }
 }

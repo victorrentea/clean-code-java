@@ -34,9 +34,9 @@ You earned 5 frequent renter points
             }
             else
             {
-                Console.WriteLine("Tests failed.\n***Expected output:");
+                Console.WriteLine("Tests failed.\r\n***Expected output:");
                 Console.WriteLine(expected);
-                Console.WriteLine("\n***Actual output:");
+                Console.WriteLine("\r\n***Actual output:");
                 Console.WriteLine(actual);
             }
 
