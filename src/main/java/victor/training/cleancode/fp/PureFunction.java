@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import victor.training.cleancode.fp.support.*;
 
 import java.util.ArrayList;
@@ -35,24 +36,6 @@ class PureFunction {
     couponRepo.markUsedCoupons(customerId, result.usedCoupons());
     return result.finalPrices();
   }
-  private record ApplyCouponsResults(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {
-  }
-  // PURE function: da la fel si nu schimba stare in exterior
-  private ApplyCouponsResults applyCoupons(List<Product> products, Map<Long, Double> initialPrices, List<Coupon> coupons) {
-    List<Coupon> usedCoupons = new ArrayList<>();
-    Map<Long, Double> finalPrices = new HashMap<>();
-    for (Product product : products) {
-      double price = initialPrices.get(product.id());
-      for (Coupon coupon : coupons) {
-        if (canApplyCoupon(product, coupon, usedCoupons)) {
-          price = coupon.apply(product, price);
-          usedCoupons.add(coupon);
-        }
-      }
-      finalPrices.put(product.id(), price);
-    }
-    return new ApplyCouponsResults(usedCoupons, finalPrices);
-  }
 
   private Map<Long, Double> resolveInitialPrices(Map<Long, Double> internalPrices, List<Product> products) {
     Map<Long, Double> initialPrices = new HashMap<>();
@@ -77,8 +60,28 @@ class PureFunction {
     return initialPrices;
   }
 
-  private boolean canApplyCoupon(Product product, Coupon coupon, List<Coupon> usedCoupons) {
+  record ApplyCouponsResults(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {  }
+  // PURE function: da la fel si nu schimba stare in exterior
+  @VisibleForTesting // crapa sonaru daca e chemata din alte clase din src/main; doar @Teste au voie la ea
+  static ApplyCouponsResults applyCoupons(List<Product> products, Map<Long, Double> initialPrices, List<Coupon> coupons) {
+    List<Coupon> usedCoupons = new ArrayList<>();
+    Map<Long, Double> finalPrices = new HashMap<>();
+    for (Product product : products) {
+      double price = initialPrices.get(product.id());
+      for (Coupon coupon : coupons) {
+        if (canApplyCoupon(product, coupon, usedCoupons)) {
+          price = coupon.apply(product, price);
+          usedCoupons.add(coupon);
+        }
+      }
+      finalPrices.put(product.id(), price);
+    }
+    return new ApplyCouponsResults(usedCoupons, finalPrices);
+  }
+
+  private static boolean canApplyCoupon(Product product, Coupon coupon, List<Coupon> usedCoupons) {
     return coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon);
   }
+
 }
 
