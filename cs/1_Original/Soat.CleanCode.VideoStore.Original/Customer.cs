@@ -5,7 +5,11 @@ namespace Soat.CleanCode.VideoStore.Original
 {
     public class Customer
     {
+<<<<<<< HEAD
         //Hello by Csaba Tar
+=======
+        //hello
+>>>>>>> 9f723deb0af4a3dee2b1051a1720f11f76483a2f
         private readonly List<Rental> _rentals = new List<Rental>();
         public string Name { get; }
 
