@@ -3,15 +3,19 @@ package victor.training.cleancode.kata.videostore;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+class Rental {
+	//TODO...
+}
+
 class Customer {
 	private final String name;
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
-	public void addRental(Movie m, int d) {
+  public void addRental(Movie m, int d) {
 		rentals.put(m, d);
 	}
 
@@ -22,7 +26,7 @@ class Customer {
 	public String statement() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		String result = "Rental Record for " + name + "\n";
 		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {
 			double thisAmount = 0;
