@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E3EF44DD-AE09-48CD-AA05-D0A82D7E7038}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Soat.CleanCode.VideoStore.Original</RootNamespace>
     <AssemblyName>Soat.CleanCode.VideoStore.Original</AssemblyName>
@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="Customer.cs" />
     <Compile Include="Movie.cs" />
-    <Compile Include="MovieType.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rental.cs" />
   </ItemGroup>
