@@ -25,7 +25,7 @@ namespace Soat.CleanCode.VideoStore.Original.Tests
         {
             _customer.AddRental(new Rental(new Movie("The cell",         Movie.NEW_RELEASE), 3));
             _customer.AddRental(new Rental(new Movie("The Tigger Movie", Movie.NEW_RELEASE), 3));
-
+            //test
             Assert.Equal(_customer.Statement(),
                          "Rental Record for Fred\n\tThe cell\t9.0\n\tThe Tigger Movie\t9.0\nYou owed 18.0\nYou earned 4 frequent renter points \n");
         }
