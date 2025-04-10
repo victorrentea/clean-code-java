@@ -28,5 +28,7 @@ hs_err_pid*
 .classpath
 *.iml
 .vs
+*.sqlite
+*.json
 
 prod/
