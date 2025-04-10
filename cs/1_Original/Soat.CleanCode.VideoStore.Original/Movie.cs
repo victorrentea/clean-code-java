@@ -13,6 +13,7 @@
         {
             Title     = title;
             PriceCode = priceCode;
+            //comment
         }
     }
 }
