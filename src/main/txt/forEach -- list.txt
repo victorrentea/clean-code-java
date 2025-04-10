@@ -1,6 +1,0 @@
-var result = new ArrayList<Order>();
-list.forEach(order -> {
-    if (order.getPrice() > 100) {
-        result.add(order);
-    }
-});

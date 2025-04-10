@@ -1,4 +1,0 @@
-var sum = 0;
-orders.forEach(order => {
-    sum += order.getPrice();
-});

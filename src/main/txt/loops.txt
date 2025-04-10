@@ -1,9 +1,0 @@
-Loops are a code smell
-!search "loops" in https://drive.google.com/file/d/1M3mwL8wIOHvvnfbAsxbn9JB5WPHTpllo
-
-var result = new ArrayList<Order>();
-for (var order : list) {
-    if (order.getPrice() > 100) {
-        result.add(order);
-    }
-}

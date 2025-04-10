@@ -1,4 +1,0 @@
-approveCredit(string customerId, string iban, string currency) {...}
-
-approveCredit("RO65BTRLRONCRT0123456789","52","USD");
-

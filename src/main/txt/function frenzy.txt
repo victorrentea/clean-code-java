@@ -1,4 +1,0 @@
-sum() {
-    return (a, b) => a + b;
-}
-var r = sum() (sum() (1,2), 7);
