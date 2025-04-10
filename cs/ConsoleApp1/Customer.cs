@@ -21,22 +21,28 @@ namespace Soat.CleanCode.VideoStore.Original
         {
             var frequentRenterPoints = 0;
             var totalAmount = 0m;
-            var result = $"Rental Record for {Name}\n";
+            var statement = RentalHelper.InitialStatement(Name);
+
+            _rentals.ForEach(r => { frequentRenterPoints += RentalHelper.CalculateFrequentRenterPoints(r);});
 
             foreach (var rental in _rentals)
             {
-                frequentRenterPoints += RentalHelper.CalculateFrequentRenterPoints(rental);
+                
 
                 var thisAmount = RentalHelper.CalculateRentalAmount(rental);
 
-                result += $"\t{rental.Movie.Title} \t {thisAmount.ToOneDecimalString()}\n";
+                statement += RentalHelper.RentalStatement(rental, thisAmount);
 
                 totalAmount += thisAmount;
             }
 
-            result += $"You owed {totalAmount.ToOneDecimalString()}\nYou earned {frequentRenterPoints} frequent renter points \n";
+            statement += RentalHelper.EndStatement(frequentRenterPoints, totalAmount);
 
-            return result;
+            return statement;
         }
+
+        
+
+
     }
 }

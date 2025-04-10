@@ -35,5 +35,21 @@
 
             return thisAmount;
         }
+
+        public static string InitialStatement(string Name)
+        {
+            return $"Rental Record for {Name}\n";
+        }
+
+        public static string EndStatement(int frequentRenterPoints, decimal totalAmount)
+        {
+           return $"You owed {totalAmount.ToOneDecimalString()}\nYou earned {frequentRenterPoints} frequent renter points \n";
+           
+        }
+
+        public static string RentalStatement(Rental rental, decimal thisAmount)
+        {
+            return $"\t{rental.Movie.Title} \t {thisAmount.ToOneDecimalString()}\n";
+        }
     }
 }
