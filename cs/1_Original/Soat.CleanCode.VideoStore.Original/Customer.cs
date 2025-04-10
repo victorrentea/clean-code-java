@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Soat.CleanCode.VideoStore.Original
 {
-    public class Customer
+    public class Customer 
     {
         private List<Rental> _rentals = new List<Rental>();
         public string Name { get; }
@@ -26,53 +26,18 @@ namespace Soat.CleanCode.VideoStore.Original
 
             foreach (var rental in _rentals)
             {
+                var thisAmount = CustomerHelper.CalculateRentalPoints(rental);
 
-                var thisAmount = CalculateRentalPoints(rental);
+                frequentRenterPoints += CustomerHelper.CalculateFrequentRenterPoints(rental);
 
-                frequentRenterPoints++;
+                result += $"\t{rental.Movie.Title} \t {thisAmount.ToOneDecimalString()}\n";
 
-                if (rental.Movie.Type == MovieType.NEW_RELEASE
-                    && rental.DaysRented > 1)
-                {
-                    frequentRenterPoints++;
-                }
-
-                result += $"\t{rental.Movie.Title} \t {thisAmount.ToString("0.0", CultureInfo.InvariantCulture)}\n";
                 totalAmount += thisAmount;
             }
 
-            result += $"You owed {totalAmount.ToString("0.0", CultureInfo.InvariantCulture)}\n";
-            result += $"You earned {frequentRenterPoints.ToString()} frequent renter points \n";
+            result += $"You owed {totalAmount.ToOneDecimalString()}\nYou earned {frequentRenterPoints} frequent renter points \n";
 
             return result;
-        }
-
-        private static decimal CalculateRentalPoints(Rental rental)
-        {
-            var thisAmount = 0m;
-            //dtermines the amount for each line
-            switch (rental.Movie.Type)
-            {
-                case MovieType.REGULAR:
-                    thisAmount += 2;
-                    if (rental.DaysRented > 2)
-                    {
-                        thisAmount += (rental.DaysRented - 2) * 1.5m;
-                    }
-                    break;
-                case MovieType.NEW_RELEASE:
-                    thisAmount += rental.DaysRented * 3;
-                    break;
-                case MovieType.CHILDREN:
-                    thisAmount += 1.5m;
-                    if (rental.DaysRented > 3)
-                    {
-                        thisAmount += (rental.DaysRented - 3) * 1.5m;
-                    }
-                    break;
-            }
-
-            return thisAmount;
         }
     }
 }
