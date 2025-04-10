@@ -5,6 +5,7 @@ namespace Soat.CleanCode.VideoStore.Original
 {
     public class Customer
     {
+        //hello
         private readonly List<Rental> _rentals = new List<Rental>();
         public string Name { get; }
 
