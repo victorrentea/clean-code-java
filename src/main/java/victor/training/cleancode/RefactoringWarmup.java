@@ -33,12 +33,23 @@ class Two {
 
   public double loop(List<Integer> numbers) {
     System.out.println("b=" + 987);
-    double ssq = 0;
+    // isn't for more efficient? @rui
+    // a) numbers.size < 100 - doesn't matter
+    // b) numbers.size >100.000 ?? where did these elements come from?
+    //    in a well-behaved stateless microservice - NOT from my memory
+    //.   orderMonoRepo.streamAll(): Stream<Order>
+    //.   orderMonoRepo.search(criteria) : List<Order> // 100.000 elements < <<< WRONG!!
+    //.   orderMonoRepo.search(criteria,pageRequest) : Page<Order> // 100 elements x 1000 pages
+    // the relative overhead of Stream vs for loop is negligible for BE systems
+    double ssq = 0.0;
     for (Integer number : numbers) {
       if (number % 2 == 0) {
-        ssq += number * number;
+        double v = number * number;
+        ssq += v;
       }
     }
+    //    ssq =  numbers.stream().filter(n->n%2==0).map(n->n*n).reduce(0, Integer::sum);
+    ssq = numbers.stream().filter(n -> n % 2 == 0).mapToInt(n -> n * n).sum();
     return Math.sqrt(ssq);
   }
 }
