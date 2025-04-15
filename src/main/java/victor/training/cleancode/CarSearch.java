@@ -9,16 +9,12 @@ class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
 //    Year year = Year.of(2024)
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> yearsIntersect(criteria, carModel))
+        .filter(carModel -> criteria.yearInterval().doesIntersect(carModel.yearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean yearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-    return new Interval(criteria.getStartYear(), criteria.getEndYear()).doesIntersect(
-        new Interval(carModel.getStartYear(), carModel.getEndYear()));
-  }
 }
 
 // any name you invent, look for 5 alternatives. brcause devs suck at names.
@@ -34,6 +30,7 @@ class CarSearch {
 // - thread safety - do I do heavy multi threaded flows in microservices ?
 // - code safety: to call a method without worrying of it changing the state of my parameter
 // @Value (lombok)
+// record Money(amount, currency) {}
 record Interval(int start, int end) {
   Interval {
     if (start > end) { // self-validating constructor - scary for most developers. wild: < 5%
@@ -81,6 +78,10 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  public Interval yearInterval() {
+    return new Interval(startYear, endYear);
+  }
 }
 
 //@Document
@@ -120,6 +121,10 @@ class CarModel { // the Entity Model👑 test
 
   public String getModel() {
     return model;
+  }
+
+  public Interval yearInterval() {
+    return new Interval(startYear, endYear);
   }
 }
 
