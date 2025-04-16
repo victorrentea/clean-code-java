@@ -1,0 +1,28 @@
+f(x,z) {
+  stuff A using x, z
+
+}
+stuffB(x,y) {
+    stuff B using x, y
+}
+
+caller1:
+f(x,z)
+stuffB(x,y)
+
+caller2:
+f(x,z)
+
+
+f1(b) -> g(b)
+
+
+g(cart) {
+  if (cart.ro) {
+    ...
+    ...
+    ...
+    ...
+    ...
+  }
+}

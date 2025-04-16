@@ -1,9 +1,11 @@
 def old_logic(): # 2y old
-    stuffA
-    stuffB
+    ab();
     stuffX
 
 def my_logic(): # 1d old
+    ab()
+    stuffMyPrecious
+
+def ab():
     stuffA
     stuffB
-    stuffMyPrecious

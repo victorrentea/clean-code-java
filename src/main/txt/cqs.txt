@@ -2,7 +2,11 @@
 #You get this with MUTABLE objects
 #Command-Query Separation (CQS) violation: TERRIBLE NAME: get- changing state.
 
+
 if (user.lastLogin - now() > 1 year) throw new Exception("User Frozen");
+
+var price = applyPromotions(cart, promotions, ...)
+log.debug(cart)
 
 log.debug("Last seen user: " + getLastLogin(user));
 
