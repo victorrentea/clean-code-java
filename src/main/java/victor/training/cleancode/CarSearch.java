@@ -33,12 +33,16 @@ class CarSearch {
 // why?
 // - thread safety - do I do heavy multi threaded flows in microservices ?
 // - code safety: to call a method without worrying of it changing the state of my parameter
-// @Value (lombok)
-record Interval(int start, int end) {
-  Interval {
+class Interval {
+  private final int start;
+  private final int end;
+
+  Interval(int start, int end) {
     if (start > end) { // self-validating constructor - scary for most developers. wild: < 5%
       throw new IllegalArgumentException("start larger than end");
     }
+    this.start = start;
+    this.end = end;
   }
 
   //  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
@@ -50,6 +54,14 @@ record Interval(int start, int end) {
   // between a getter and a method returning a "derived value" from the objects fields
   public int length() {
     return end - start;
+  }
+
+  public int getStart() {
+    return start;
+  }
+
+  public int getEnd() {
+    return end;
   }
 }
 
