@@ -5,12 +5,16 @@ public class Switch {
 
     // run tests
     public int computePrice(Movie movie, int days) {// query method
-        return switch (movie.category()) { // return switch (enum) idiom
-            case REGULAR -> days + 1;
-            case NEW_RELEASE -> days * 2;
-            case CHILDREN -> 5;
-            case ELDERS -> 1;
-        };
+        switch (movie.category()) {
+            case REGULAR:
+                return days + 1;
+            case NEW_RELEASE:
+                return days * 2;
+            case CHILDREN:
+                return 5;
+            default:
+                throw new IllegalStateException("Unexpected value: " + movie.category());
+        }
     }
 
     // run tests
@@ -41,7 +45,7 @@ public class Switch {
         }
 
         enum Category {
-            REGULAR, NEW_RELEASE, CHILDREN, ELDERS
+            REGULAR, NEW_RELEASE, CHILDREN
         }
     }
 }
