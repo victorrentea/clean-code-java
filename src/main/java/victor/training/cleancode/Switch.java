@@ -12,9 +12,8 @@ public class Switch {
                 return days * 2;
             case CHILDREN:
                 return 5;
-            default:
-                throw new IllegalStateException("Unexpected value: " + movie.category());
         }
+        return 0;
     }
 
     // run tests
