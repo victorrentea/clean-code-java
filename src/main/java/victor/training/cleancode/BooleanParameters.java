@@ -43,15 +43,53 @@ public class BooleanParameters {
 
   // ⚠️ has multiple callers
   public static void bigUglyMethod(int storeId, Task task) {
-    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
-    System.out.println(task);
-    System.out.println("Donkey Logic 3 " + task);
+    donkey(storeId, task);
 
     // System.out.println("Logic just for CR#323 : " + task);
 
+    sheep(storeId);
+  }
+
+  private static void sheep(int storeId) {
     System.out.println("Sheep Logic 1 " + storeId);
     System.out.println("Sheep Logic 2 ");
     System.out.println("Sheep Logic 3 ");
+    System.out.println("Sheep Logic 1 " + storeId);
+    System.out.println("Sheep Logic 2 ");
+    System.out.println("Sheep Logic 3 ");
+    System.out.println("Sheep Logic 1 " + storeId);
+    System.out.println("Sheep Logic 2 ");
+    System.out.println("Sheep Logic 3 ");
+    System.out.println("Sheep Logic 1 " + storeId);
+    System.out.println("Sheep Logic 2 ");
+    System.out.println("Sheep Logic 3 ");
+  }
+
+  private static void donkey(int storeId, Task task) {
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
   }
 }
 
