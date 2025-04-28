@@ -8,28 +8,18 @@ class CarSearch {
   // run tests
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> intervalIntersect(criteria, carModel))
+        .filter(carModel -> criteria.yearInterval().intersects(carModel.yearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
-  }
-
-  private boolean intervalIntersect(CarSearchCriteria criteria, CarModel carModel) {
-    // - pass the criteria to new Interval(criteria)
-    // - receive the two interval objects as params to this func. extract intervals from criteria/carModel in other places
-    // - carModel+criteria.getYearInterval():Interval ?
-//    return new Interval(criteria)
-    return criteria.getYearInterval()
-        .intersects(
-            carModel.getYearInterval());
   }
 
   //  private Predicate<CarModel> yesICan_BUT_I_SHOULDNT(CarSearchCriteria criteria) {
 //    // SCARY TO JAVA DEVS BECAUSE you don;t know
 //    // when, how many times, in what transaction, in what thread, will the function you returned be used and actually called
 //    return carModel -> MathUtil.intervalsIntersect(
-//        criteria.getStartYear(), criteria.getEndYear(),
-//        carModel.getStartYear(), carModel.getEndYear());
+//        criteria.startYear(), criteria.endYear(),
+//        carModel.startYear(), carModel.endYear());
 //  }
 }
 
@@ -51,7 +41,7 @@ class MathUtil {
 // a value object = little immutable class lacking PK (vs an Entity)
 record Interval(int start, int end) {
   //  public Interval(CarSearchCriteria criteria) {
-//    this(criteria.getStartYear(), criteria.getEndYear());
+//    this(criteria.startYear(), criteria.endYear());
 //  }
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
@@ -83,7 +73,7 @@ class CarSearchCriteria { // a DTO received from JSON
     return make;
   }
 
-  public Interval getYearInterval() {
+  public Interval yearInterval() {
     return new Interval(startYear, endYear);
   }
 }
@@ -94,8 +84,9 @@ class CarModel { // the Entity Model👑 test
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  //  private int startYear;
+//  private int endYear;
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -104,42 +95,41 @@ class CarModel { // the Entity Model👑 test
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
-  public Long getId() {
+  public Interval yearInterval() {
+    return yearInterval;
+  }
+
+  public Long id() {
     return id;
   }
 
-  public int getEndYear() {
-    return endYear;
+  public int endYear() {
+    return yearInterval.end();
   }
 
-  public int getStartYear() {
-    return startYear;
+  public int startYear() {
+    return yearInterval.start();
   }
 
-  public String getMake() {
+  public String make() {
     return make;
   }
 
-  public String getModel() {
+  public String model() {
     return model;
-  }
-
-  public Interval getYearInterval() {
-    return new Interval(startYear, endYear);
   }
 }
 
 class CarModelMapper {
   public CarModelDto toDto(CarModel carModel) {
     CarModelDto dto = new CarModelDto();
-    dto.make = carModel.getMake();
-    dto.model = carModel.getModel();
-    dto.startYear = carModel.getStartYear();
-    dto.endYear = carModel.getEndYear();
+    dto.make = carModel.make();
+    dto.model = carModel.model();
+    dto.startYear = carModel.startYear();
+    dto.endYear = carModel.endYear();
     return dto;
   }
 
