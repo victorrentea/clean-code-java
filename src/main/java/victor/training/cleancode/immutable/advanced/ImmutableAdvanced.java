@@ -24,8 +24,10 @@ public class ImmutableAdvanced {
     // dark, deep logic not expected to change the immutable object x,y
 //    immutable.list().clear();
     // I MUST "change" x,y, to add +1
-    return new Immutable(immutable.x() + 1, immutable.y() + 1, immutable.list(), immutable.other());
+//    return immutable.withXY(immutable.x() + 1, immutable.y() + 1);
+    return immutable.translate(1, 1);
   }
+
 }
 
 record Immutable(
@@ -33,6 +35,13 @@ record Immutable(
     Integer y,
     ImmutableList<Integer> list,
     Other other) {
+  public Immutable withXY(int x, int y) { // wither
+    return new Immutable(x, y, list(), other());
+  }
+
+  public Immutable translate(int dx, int dy) { // more semantic
+    return new Immutable(x + dx, y + dy, list, other);
+  }
 }
 
 //class Immutable {
