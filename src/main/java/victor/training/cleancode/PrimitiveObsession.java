@@ -1,17 +1,21 @@
 package victor.training.cleancode;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
+import static victor.training.cleancode.PrimitiveObsession.PaymentMethod.CARD;
+import static victor.training.cleancode.PrimitiveObsession.PaymentMethod.CASH;
 
 public class PrimitiveObsession {
 
   public static void main(String[] args) {
-    new PrimitiveObsession().primitiveObsession("CARD");
+    new PrimitiveObsession().primitiveObsession(PaymentMethod.valueOf("CARD"));
   }
 
   //<editor-fold desc="fetchData()">
-  public Map<Long, Map<String, Integer>> fetchData(String paymentMethod) {
+  public Map<Long, Map<String, Integer>> fetchData(PaymentMethod paymentMethod) {
     Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;
@@ -22,8 +26,11 @@ public class PrimitiveObsession {
   }
   //</editor-fold>
 
-  public void primitiveObsession(String paymentMethod) {
-    if (!"CARD".equals(paymentMethod) && !"CASH".equals(paymentMethod)) {
+  public void primitiveObsession(PaymentMethod paymentMethod) {
+//  public void primitiveObsession(String paymentMethod) {
+//    if (paymentMethod != CARD && paymentMethod != CASH) {
+//    if (paymentMethod.notOneOf(CARD, CASH)) {
+    if (!EnumSet.of(CARD, CASH).contains(paymentMethod)) {
       throw new IllegalArgumentException("Only CARD payment method is supported");
     }
     Map<Long, Map<String, Integer>> map = fetchData(paymentMethod);
@@ -33,6 +40,26 @@ public class PrimitiveObsession {
           .map(entry -> entry.getValue() + " pcs. of " + entry.getKey())
           .collect(joining(", "));
       System.out.println("cid=" + e.getKey() + " got " + pl);
+    }
+  }
+
+  enum PaymentMethod {
+    CARD, CASH, BLOOD;
+
+    public boolean notOneOf(PaymentMethod... methods) {
+//      for (PaymentMethod method : methods) {
+//        if (this == method) {
+//          throw new IllegalArgumentException("Only " + Arrays.toString(methods) + "  payment method is supported");
+//        }
+//      }
+//      Arrays.stream(methods)
+//          .filter(method -> this == method)
+//          .findFirst()
+//          .ifPresent(method -> {
+//            throw new IllegalArgumentException("Only " + Arrays.toString(methods) + " payment method is supported");
+//          });
+
+      return !List.of(methods).contains(this);
     }
   }
 }

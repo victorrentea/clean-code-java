@@ -40,9 +40,9 @@ class MathUtil {
 //@Value
 // a value object = little immutable class lacking PK (vs an Entity)
 record Interval(int start, int end) {
-  //  public Interval(CarSearchCriteria criteria) {
-//    this(criteria.startYear(), criteria.endYear());
-//  }
+  Interval { // X-FEW teams do validation in constructors
+    if (start > end) throw new IllegalArgumentException("start larger than end");
+  }
   public boolean intersects(Interval other) {
     return start <= other.end && other.start <= end;
   }
@@ -52,6 +52,7 @@ record Interval(int start, int end) {
 class CarSearchCriteria { // a DTO received from JSON
   private final int startYear;
   private final int endYear;
+  //  private final Interval yearInterval; // NO structure change in API MOdel
   private final String make;
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
@@ -84,8 +85,6 @@ class CarModel { // the Entity Model👑 test
   private Long id;
   private String make;
   private String model;
-  //  private int startYear;
-//  private int endYear;
   private Interval yearInterval;
 
   protected CarModel() {
@@ -94,7 +93,6 @@ class CarModel { // the Entity Model👑 test
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.yearInterval = new Interval(startYear, endYear);
   }
 
