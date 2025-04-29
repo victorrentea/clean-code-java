@@ -1,5 +1,7 @@
 package victor.training.cleancode.immutable.advanced;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -11,6 +13,7 @@ public class ImmutableAdvanced {
 
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
+    list.clear();
 
     wilderness(immutable);
 
@@ -19,24 +22,31 @@ public class ImmutableAdvanced {
 
   private static void wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
+//    immutable.getList().clear();
   }
 }
 
 class Immutable {
   private final Integer x;
   private final Integer y;
+  //  private final ImmutableList<Integer> list; // best from guava
   private final List<Integer> list;
   private final Other other;
 
   Immutable(Integer x, Integer y, List<Integer> list, Other other) {
     this.x = x;
     this.y = y;
-    this.list = list;
+    this.list = new ArrayList<>(list);// protect against others keeping a ref to the mutable arraylist.
     this.other = other;
   }
 
+//  public Stream<Integer> getList() {
+//  public Iterator<Integer> getList() {
+//  public Iterable<Integer> getList() { // okish
+
   public List<Integer> getList() {
-    return list;
+//    return new ArrayList<>(list); // malloc
+    return Collections.unmodifiableList(list); // immutable decorator
   }
 
   public Integer getX() {
@@ -57,18 +67,10 @@ class Immutable {
   }
 }
 
-class Other {
-  private int a;
-
-  public Other(int a) {
-    this.a = a;
-  }
-
-  public int getA() {
-    return a;
-  }
-
-  public void setA(int a) {
-    this.a = a;
-  }
+record Other(int a) { // j17+
 }
+
+//@Value // = generates final class, getter, ctor,tostring, hahscode...
+//class Other {
+//  int a;
+//}

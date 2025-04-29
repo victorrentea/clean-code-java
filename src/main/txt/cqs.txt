@@ -1,4 +1,17 @@
+Temporal Coupling = flip two lines and have unexpected bugs
 
 if (user.lastLogin - now() > 1 year) throw new Exception("User Frozen");
 
-log.debug("Last seen user: " + getLastLogin(user));
+log.debug("Last seen user: " + getLastLogin(user)); // used to be AFTER
+
+BUG: even old users are able to login now.
+
+// the name misleads us to believe it's a QUERY
+Date getLastLogin(user) { // violated CQS: it both returns and changes (COMMAND)
+    user.lastLogin = now()
+    return user.lastLogin
+}
+
+a) escalate side effects to top-level < I was too stupid to do this
+b) rename the method to HIGHLIGHT the command inside. updateAndGetLastLogin()
+c) // comment
