@@ -14,14 +14,17 @@ public class ImmutableAdvanced {
     System.out.println("Before: " + immutable);
 //    list.clear();
 
-    wilderness(immutable);
+    // avoid re-assigning variable
+    var translatedImmutable = wilderness(immutable);
 
-    System.out.println("After:  " + immutable);
+    System.out.println("After:  " + translatedImmutable);
   }
 
-  private static void wilderness(Immutable immutable) {
+  private static Immutable wilderness(Immutable immutable) {
     // dark, deep logic not expected to change the immutable object x,y
 //    immutable.list().clear();
+    // I MUST "change" x,y, to add +1
+    return new Immutable(immutable.x() + 1, immutable.y() + 1, immutable.list(), immutable.other());
   }
 }
 
