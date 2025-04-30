@@ -4,3 +4,7 @@ list.forEach(order -> {
         result.add(order);
     }
 });
+
+
+a) for (order...) resu
+b) list.stream.filter(->).toList
