@@ -10,8 +10,11 @@ public class MonadicError {
 
   private String process(String payload) {
     if (payload == null || payload.isBlank()) {
+      throw new IllegalArgumentException("Invalid payload");
+    }
+    if (payload.contains("Analytica")) {
       // FIXME: "It's not FP to throw exceptions!", the preacher said
-      throw new IllegalArgumentException("Invalid input.");
+      throw new IllegalArgumentException("Banned Business");
     }
     return payload.trim().toUpperCase();
   }
