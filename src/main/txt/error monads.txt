@@ -1,16 +1,16 @@
 Throw not exceptions, but return thy failures in peace.” - FP preacher
 
-Try<Long> horrorFP(Data data) { // vavr.Try = specialized Either<Result,Exception>
-  return process(data) 
+Try<Long> horrorFP(Data payload) { // vavr.Try = specialized Either<Result,Exception>
+  return process(payload)
     .onSuccess(e -> log.info(e))
     .flatMap(repo::save)
-    .andThen(id -> audit(data));
+    .andThen(id -> audit(payload));
 }
 
-Try<String> process(Data data) {
-  if (data.name().isBlank()) 
+Try<String> process(Data payload) {
+  if (payload.name().isBlank())
     return Try.failure(new Ex("…"));
-  return Try.success(data.name() + "!");
+  return Try.success(payload.name() + "!");
 } 
 
 // rewrite the above 2 functions throwing (runtime) exceptions

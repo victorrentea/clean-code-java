@@ -1,8 +1,12 @@
 package victor.training.cleancode.fp.support;
 
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Stream;
 
-public interface OrderRepo  {
-  Stream<Order> findByActiveTrue(); // Streaming query over 1 million orders
+public interface OrderRepo {
+  List<Order> findAll();
+  List<Order> findByActiveTrueAndCreationDateAfter(LocalDate date);
+  Stream<Order> findByActiveTrue();
 }

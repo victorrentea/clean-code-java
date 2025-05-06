@@ -1,9 +1,7 @@
 package victor.training.cleancode.fp;
 
-import victor.training.cleancode.fp.support.Order;
-import victor.training.cleancode.fp.support.OrderLine;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
+import lombok.RequiredArgsConstructor;
+import victor.training.cleancode.fp.support.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,17 +9,15 @@ import java.util.Map.Entry;
 
 import static java.util.stream.Collectors.*;
 
-public class FunctionalChainsaw { // ... Massacre
+@RequiredArgsConstructor
+public class FunctionalChainsaw/*Massacre*/ {
 	private final ProductRepo productRepo;
+	private final OrderRepo orderRepo;
 
-  public FunctionalChainsaw(ProductRepo productRepo) {
-    this.productRepo = productRepo;
-  }
-
-  public List<Product> getFrequentOrderedProducts(List<Order> orders) {
-		return orders.stream()
+	public List<Product> getHotProducts() {
+		return orderRepo.findAll().stream()
 				.filter(Order::isActive)
-				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusYears(1)))
+				.filter(o -> o.creationDate().isAfter(LocalDate.now().minusMonths(1)))
 				.flatMap(o -> o.orderLines().stream())
 				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
 				.entrySet()

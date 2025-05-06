@@ -10,16 +10,16 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ReduceRodeoTest {
+class ReduceAbuseTest {
 
-    private final ReduceRodeo sut = new ReduceRodeo();
+    private final ReduceAbuse sut = new ReduceAbuse();
 
     @Test
     void noPremiumOrders() {
         Order normalOrder = new Order().setPrice(100);
         List<Order> orderList = List.of(normalOrder);
 
-        var result = sut.getLastPremium(orderList);
+        var result = sut.getLastPremiumOrder(orderList);
 
         assertThat(result).isNull();
     }
@@ -32,7 +32,7 @@ class ReduceRodeoTest {
 
         List<Order> orderList = List.of(premiumOrder);
 
-        var result = sut.getLastPremium(orderList);
+        var result = sut.getLastPremiumOrder(orderList);
 
         assertThat(result).isEqualTo(premiumOrder);
     }
@@ -49,7 +49,7 @@ class ReduceRodeoTest {
 
         List<Order> orderList = List.of(premiumOrder1, premiumOrder2);
 
-        var result = sut.getLastPremium(orderList);
+        var result = sut.getLastPremiumOrder(orderList);
 
         assertThat(result).isEqualTo(premiumOrder2);
     }

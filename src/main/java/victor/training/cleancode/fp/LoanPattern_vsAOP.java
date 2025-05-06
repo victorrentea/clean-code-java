@@ -2,7 +2,7 @@ package victor.training.cleancode.fp;
 
 import java.util.function.Supplier;
 
-public class FunctionFrenzy_vsAOP {
+public class LoanPattern_vsAOP {
 
   public static void main(String[] args) {
     timeIt(() -> suspect());
