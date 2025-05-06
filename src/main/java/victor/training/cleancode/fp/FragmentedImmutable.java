@@ -1,0 +1,21 @@
+package victor.training.cleancode.fp;
+
+public class FragmentedImmutable {
+  public static void main(String[] args) {
+    POI poi = new POI(50, 50, "drop", "Toilet");
+    jitter(poi);
+    System.out.println("jittered poi: " + poi);
+  }
+
+  private static void jitter(POI poi) {
+    // TODO +1 to poi.x and .y
+  }
+
+  record POI(
+      int x,
+      int y,
+      String icon,
+      String name
+  ) {}
+}
+

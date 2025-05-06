@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public class ReactiveCode {
+public class TangledTuples {
 
   protected final Api api;
 

@@ -6,6 +6,7 @@ public class MonadicError {
     Long id = insert(request);
     audit(request);
     return id;
+    // TODO plot twist: bulk processing
   }
 
   private String process(String payload) {
