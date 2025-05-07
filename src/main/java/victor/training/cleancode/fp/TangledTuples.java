@@ -5,11 +5,9 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 public class TangledTuples {
-
   protected final Api api;
 
   public Mono<ACD> reactiveEnrich(int id) {
-    // blocking⛔️ code:
     var a = api.a(id).block();
     var b = api.b(a).block();
     var c = api.c(a, b).block();
