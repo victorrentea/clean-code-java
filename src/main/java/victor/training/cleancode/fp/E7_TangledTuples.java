@@ -2,6 +2,7 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuples;
 
 @RequiredArgsConstructor
 public class E7_TangledTuples {
@@ -9,19 +10,20 @@ public class E7_TangledTuples {
 
   // ... Reactive Programming
   public Mono<Result> reactiveEnrich(int id) {
-    var a = api.a(id).block();
-    var b = api.b(a).block();
-    var c = api.c(a, b).block();
-    var d = api.d(id).block();
-    return Mono.just(new Result(a, c, d));
+//    var a = api.a(id).block();
+//    var b = api.b(a).block();
+//    var c = api.c(a, b).block();
+//    var d = api.d(id).block();
+//    return Mono.just(new Result(a, c, d));
 
-//    var wtf = api.a(id)
-//        .flatMap(a -> api.b(a)
-//            .flatMap(b -> api.c(a, b)
-//                .map(c -> Tuples.of(a, b, c))
-//            ))
-//        .zipWith(api.d(id));
-//    return wtf;
+    var wtf = api.a(id)
+        .flatMap(a -> api.b(a)
+            .flatMap(b -> api.c(a, b)
+                .map(c -> Tuples.of(a, b, c))
+            ))
+        .zipWith(api.d(id))
+        .map(tt -> new Result(tt.getT1().getT1(), tt.getT1().getT3(), tt.getT2()));
+    return wtf;
   }
 
   protected interface Api {
