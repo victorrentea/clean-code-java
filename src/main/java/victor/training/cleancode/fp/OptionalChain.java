@@ -1,6 +1,6 @@
 package victor.training.cleancode.fp;
 
-public class Optional_Chain {
+public class OptionalChain {
   private static final MyMapper mapper = new MyMapper();
 
   public static void main(String[] args) {

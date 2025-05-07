@@ -1,4 +1,4 @@
-package victor.training.cleancode.optional;
+package victor.training.cleancode.fp.nonnull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;
@@ -9,5 +9,5 @@ import java.lang.annotation.RetentionPolicy;
 @Nonnull
 @TypeQualifierDefault({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NonNullByDefault {
+public @interface AllNonnull {
 }
