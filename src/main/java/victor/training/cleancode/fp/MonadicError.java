@@ -3,9 +3,9 @@ package victor.training.cleancode.fp;
 public class MonadicError {
   public Long tryingToDoStuff(String payload) {
     var request = process(payload);
-    Long id = insert(request);
-    audit(request);
-    return id;
+    Long newId = dbInsert(request);
+    kafkaSendAudit(request);
+    return newId;
     // TODO plot twist: bulk processing
   }
 
@@ -20,13 +20,12 @@ public class MonadicError {
     return payload.trim().toUpperCase();
   }
 
-  private Long insert(String data) {
+  private Long dbInsert(String data) {
     if (Math.random() < .001) throw new IllegalArgumentException("UK Violation: NULL tea");
-    return 42L; // the new ID
+    return 42L;
   }
 
-  private void audit(String s) {
-    // pretend kafka.send
+  private void kafkaSendAudit(String message) {
     //throw new RuntimeException("Kafka is down; #life"); // imagine
   }
 }

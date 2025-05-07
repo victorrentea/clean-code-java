@@ -12,9 +12,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class MutantPipeline {
-  //region .setField(
-  private final PaymentCardRepository paymentCardRepository;
-  //endregion
 
   //region .add
   public List<LocalDate> getShipDates(List<Order> orders) {
@@ -25,7 +22,6 @@ public class MutantPipeline {
     return shipDates;
   }
   //endregion
-  private final PaymentCardMapper paymentCardMapper;
 
   //region +=
   public int totalActiveOrderPrice(List<Order> orders) {
@@ -37,6 +33,12 @@ public class MutantPipeline {
     }
     return sum;
   }
+  //endregion
+
+  //region .setField(
+  private final PaymentCardRepository paymentCardRepository;
+  private final PaymentCardMapper paymentCardMapper;
+
   public PaymentCardDto updateCardAlias(long paymentCardId, long ssoId, String newAlias) {
     return paymentCardRepository.findById(paymentCardId)
         .filter(card -> card.getId() == ssoId)

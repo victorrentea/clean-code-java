@@ -1,7 +1,0 @@
-package ..domain.model;
-
-@Data // Lombok
-class Interval {
-  private int start;
-  private int end;
-}
