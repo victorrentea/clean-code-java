@@ -1,9 +1,12 @@
 package victor.training.cleancode.fp.nonnull;
 
+import javax.annotation.Nullable;
+
 public class NullSafetyViaAnnotations {
   String field;
 
-  public String method(String param) {
+  @Nullable
+  public String method(@Nullable String param) {
     return null;
   }
 

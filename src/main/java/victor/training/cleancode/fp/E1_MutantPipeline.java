@@ -7,30 +7,27 @@ import victor.training.cleancode.fp.support.PaymentCardMapper;
 import victor.training.cleancode.fp.support.PaymentCardRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class E1_MutantPipeline {
   //region +=
   public int totalActiveOrderPrice(List<Order> orders) {
-    int sum = 0;
-    for (Order order : orders) {
-      if (order.isActive()) {
-        sum += order.price();
-      }
-    }
-    return sum;
+    return orders.stream()
+        .filter(Order::isActive)
+        .mapToInt(Order::price)
+        .sum();
   }
   //endregion
 
   //region .add
   public List<LocalDate> getShipDates(List<Order> orders) {
-    List<LocalDate> shipDates = new ArrayList<>();
-    orders.stream()
+    return orders.stream()
         .filter(Order::isActive)
-        .forEach(order -> order.shipDate().ifPresent(shipDates::add));
-    return shipDates;
+        .map(Order::shipDate)
+        .flatMap(Optional::stream)
+        .toList();
   }
   //endregion
 
@@ -39,13 +36,12 @@ public class E1_MutantPipeline {
   private final PaymentCardMapper paymentCardMapper;
 
   public PaymentCardDto updateCardAlias(long paymentCardId, long ssoId, String newAlias) {
-    return paymentCardRepository.findById(paymentCardId)
+    var paymentCard = paymentCardRepository.findById(paymentCardId)
         .filter(card -> card.getId() == ssoId)
-        .map(card -> {
-          card.setAlias(newAlias);
-          return paymentCardMapper.toDto(paymentCardRepository.save(card));
-        })
         .orElseThrow();
+    paymentCard.setAlias(newAlias);
+    var saved = paymentCardRepository.save(paymentCard);
+    return paymentCardMapper.toDto(saved);
   }
   //endregion
 }

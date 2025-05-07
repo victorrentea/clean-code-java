@@ -2,22 +2,16 @@ package victor.training.cleancode.fp;
 
 import lombok.Data;
 
-import java.util.Optional;
-
 public class E4_OptionalObsession {
   public Entity trappedOptional(Dto dto) {
     Entity entity = new Entity();
-    Optional.ofNullable(dto)
-        .map(Dto::recipientPerson)
-        .map(String::trim)
-        .map(String::toLowerCase)
-        .filter(s -> !s.isBlank())
-        .map(s -> s + "@example.com")
-        .ifPresentOrElse(
-            email -> entity.setRecipient(email),
-            () -> entity.setRecipient("anonymous@example.com")
-        );
     entity.setAge(dto.age());
+    var personName = dto.recipientPerson();
+    if (personName != null && !personName.isBlank()) {
+      entity.setRecipient(personName.trim().toLowerCase() + "@example.com");
+    } else {
+      entity.setRecipient("anonymous@example.com");
+    }
     return entity;
   }
 

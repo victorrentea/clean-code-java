@@ -1,23 +1,40 @@
 package victor.training.cleancode.fp;
 
+import io.vavr.Tuple;
+import io.vavr.control.Try;
+
 import java.util.List;
+import java.util.stream.Stream;
 
 public class E5_MonadicError {
-  public Long tryingToDoStuff(String payload) {
-    var request = process(payload);
-    Long newId = dbInsert(request);
-    kafkaSendAudit(request);
-    return newId;
+  public List<Long> tryingToDoStuff(Stream<String> payloads) {
+
+    var tries = payloads.map(payload -> process(payload)
+            .mapTry(r -> Tuple.of(r, dbInsert(r)))
+            .andThen(t -> kafkaSendAudit(t._1))
+            .map(t -> t._2))
+        .toList();
+    var errors = tries.stream()
+        .filter(Try::isFailure)
+        .map(Try::getCause)
+        .toList();
+    System.err.println(errors);
+
+    var successfulIds = tries.stream()
+        .filter(Try::isSuccess)
+        .map(Try::get)
+        .toList();
+    return successfulIds;
   }
 
-  private String process(String payload) {
+  private Try<String> process(String payload) {
     if (payload.isBlank()) {
-      throw new IllegalArgumentException("Invalid payload");
+      return Try.failure(new IllegalArgumentException("Invalid payload"));
     }
     if (payload.contains("Analytica")) {
-      throw new IllegalArgumentException("Banned Business"); // FIXME: "not FP!", preacher's PR Comment
+      return Try.failure(new IllegalArgumentException("Banned Business")); // FIXME: "not FP!", preacher's PR Comment
     }
-    return payload.trim().toUpperCase();
+    return Try.success(payload.trim().toUpperCase());
   }
 
   private Long dbInsert(String data) {

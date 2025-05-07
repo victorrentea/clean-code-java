@@ -1,12 +1,16 @@
 package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
-import victor.training.cleancode.fp.support.*;
+import victor.training.cleancode.fp.support.OrderLine;
+import victor.training.cleancode.fp.support.OrderRepo;
+import victor.training.cleancode.fp.support.Product;
+import victor.training.cleancode.fp.support.ProductControlApi;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map.Entry;
 
+import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
@@ -14,18 +18,25 @@ public class E2_FunctionalChainsaw/*Massacre*/ {
   private final ProductControlApi productControlApi;
   private final OrderRepo orderRepo;
 
+  //  @Transactional(readonly=true)
   public List<Product> getHotProducts() {
-    return orderRepo.findAll().stream()
-        .filter(Order::isActive)
-        .filter(o -> o.creationDate().isAfter(LocalDate.now().minusMonths(1)))
+//    var productCounts = orderRepo.findAll().stream()
+//        .filter(Order::isActive)
+//        .filter(Order::wasPlacedWithingTheLastMonth) // power <1% > WHERE
+    var productCounts = orderRepo.findByActiveTrueAndCreationDateAfter(
+            LocalDate.now().minusMonths(1)
+        )
         .flatMap(o -> o.orderLines().stream())
-        .collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
-        .entrySet()
-        .stream()
+        .collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
+    var frequentProducts = productCounts.entrySet().stream()
         .filter(e -> e.getValue() >= 10)
         .map(Entry::getKey)
-        .filter(p -> !p.isDeleted())
-        .filter(p -> !productControlApi.getHiddenProductIds().contains(p.getId()))
+        .toList();
+    var hiddenProductIds = productControlApi.getHiddenProductIds();
+    return frequentProducts.stream()
+        .filter(not(Product::isDeleted))
+        .filter(p -> !hiddenProductIds.contains(p.getId()))
         .collect(toList());
   }
+
 }

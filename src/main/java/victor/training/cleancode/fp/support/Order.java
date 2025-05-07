@@ -66,4 +66,12 @@ public class Order {
     return this;
   }
 
+  public boolean wasPlacedWithingTheLastMonth() {
+    return creationDate().isAfter(LocalDate.now().minusMonths(1));
+  }
+
+  public boolean hasPremiumProduct() {
+    return orderLines().stream()
+        .anyMatch(line -> line.product().isPremium());
+  }
 }
