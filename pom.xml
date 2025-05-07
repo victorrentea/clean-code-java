@@ -61,6 +61,12 @@
             <version>3.4.18</version>
         </dependency>
         <dependency>
+            <!-- TupleUtils -->
+            <groupId>io.projectreactor.addons</groupId>
+            <artifactId>reactor-extra</artifactId>
+            <version>3.4.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>32.0.0-jre</version>
