@@ -6,7 +6,6 @@ public class E5_MonadicError {
     Long newId = dbInsert(request);
     kafkaSendAudit(request);
     return newId;
-    // TODO plot twist: bulk processing
   }
 
   private String process(String payload) {
