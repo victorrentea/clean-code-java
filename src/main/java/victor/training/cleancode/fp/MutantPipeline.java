@@ -45,7 +45,7 @@ public class MutantPipeline {
           card.setAlias(newAlias);
           return paymentCardMapper.toDto(paymentCardRepository.save(card));
         })
-        .orElseThrow(() -> new IllegalArgumentException("Card " + paymentCardId + " with sso " + ssoId + " cannot be found"));
+        .orElseThrow();
   }
   //endregion
 }
