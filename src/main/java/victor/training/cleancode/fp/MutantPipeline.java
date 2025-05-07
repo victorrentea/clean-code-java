@@ -12,17 +12,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class MutantPipeline {
-
-  //region .add
-  public List<LocalDate> getShipDates(List<Order> orders) {
-    List<LocalDate> shipDates = new ArrayList<>();
-    orders.stream()
-        .filter(Order::isActive)
-        .forEach(order -> order.shipDate().ifPresent(shipDates::add));
-    return shipDates;
-  }
-  //endregion
-
   //region +=
   public int totalActiveOrderPrice(List<Order> orders) {
     int sum = 0;
@@ -32,6 +21,16 @@ public class MutantPipeline {
       }
     }
     return sum;
+  }
+  //endregion
+
+  //region .add
+  public List<LocalDate> getShipDates(List<Order> orders) {
+    List<LocalDate> shipDates = new ArrayList<>();
+    orders.stream()
+        .filter(Order::isActive)
+        .forEach(order -> order.shipDate().ifPresent(shipDates::add));
+    return shipDates;
   }
   //endregion
 
