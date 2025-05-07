@@ -1,8 +1,9 @@
 package victor.training.cleancode.fp;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuples;
 
 @RequiredArgsConstructor
 public class E7_TangledTuples {
@@ -10,11 +11,21 @@ public class E7_TangledTuples {
 
   // ... Reactive Programming
   public Mono<Result> reactiveEnrich(int id) {
-    var wtf = api.a(id)
-        .flatMap(a -> api.b(a).map(b -> Tuples.of(a, b)))
-        .flatMap(t -> api.c(t.getT1(), t.getT2()).map(c -> Tuples.of(t.getT1(), t.getT2(), c)))
-        .zipWith(api.d(id), (t, d) -> new Result(t.getT1(), t.getT3(), d));
-    return wtf;
+//    var wtf = api.a(id)
+//        .flatMap(a -> api.b(a).map(b -> Tuples.of(a, b)))
+//        .flatMap(t -> api.c(t.getT1(), t.getT2()).map(c -> Tuples.of(t.getT1(), t.getT2(), c)))
+//        .zipWith(api.d(id), (t, d) -> new Result(t.getT1(), t.getT3(), d));
+
+    return Mono.just(Context.builder().id(id).build())
+        .flatMap(x -> api.a(x.id).map(a -> x.withA(a)))
+        .flatMap(x -> api.b(x.a).map(b -> x.withB(b)))
+        .flatMap(x -> api.c(x.a, x.b).map(c -> x.withC(c)))
+        .zipWith(api.d(id), (x, d) -> new Result(x.a, x.c, d));
+  }
+
+  @With
+  @Builder
+  record Context(int id, A a, B b, C c, D d) {
   }
 
   protected interface Api {
