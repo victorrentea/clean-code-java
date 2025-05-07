@@ -3,15 +3,15 @@ package victor.training.cleancode.fp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import victor.training.cleancode.fp.E4_Optionality.Entity;
+import victor.training.cleancode.fp.E4_OptionalObsession.Entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static victor.training.cleancode.fp.E4_Optionality.Dto;
+import static victor.training.cleancode.fp.E4_OptionalObsession.Dto;
 
 @ExtendWith(MockitoExtension.class)
 public class OptionalityTest {
 
-  private final E4_Optionality optionality = new E4_Optionality();
+  private final E4_OptionalObsession optionality = new E4_OptionalObsession();
 
   @Test
   void setsRecipientEmailWhenDtoHasValidRecipientPerson() {
