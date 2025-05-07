@@ -8,7 +8,8 @@ public class FragmentedImmutable {
   }
 
   private static void jitter(POI poi) {
-    // TODO +1 to poi.x and .y
+    // TODO +1 to poi.x
+    // TODO +1 to poi.y
   }
 
   record POI(
