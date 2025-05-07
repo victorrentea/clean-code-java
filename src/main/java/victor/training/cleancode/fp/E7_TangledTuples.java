@@ -17,9 +17,9 @@ public class E7_TangledTuples {
 //        .zipWith(api.d(id), (t, d) -> new Result(t.getT1(), t.getT3(), d));
 
     return Mono.just(Context.builder().id(id).build())
-        .flatMap(x -> api.a(x.id).map(a -> x.withA(a)))
-        .flatMap(x -> api.b(x.a).map(b -> x.withB(b)))
-        .flatMap(x -> api.c(x.a, x.b).map(c -> x.withC(c)))
+        .flatMap(x -> api.a(x.id).map(x::withA))
+        .flatMap(x -> api.b(x.a).map(x::withB))
+        .flatMap(x -> api.c(x.a, x.b).map(x::withC))
         .zipWith(api.d(id), (x, d) -> new Result(x.a, x.c, d));
   }
 
