@@ -10,17 +10,9 @@ public class E7_TangledTuples {
 
   // ... Reactive Programming
   public Mono<Result> reactiveEnrich(int id) {
-//    var a = api.a(id).block();
-//    var b = api.b(a).block();
-//    var c = api.c(a, b).block();
-//    var d = api.d(id).block();
-//    return Mono.just(new Result(a, c, d));
-
     var wtf = api.a(id)
-        .flatMap(a -> api.b(a)
-            .flatMap(b -> api.c(a, b)
-                .map(c -> Tuples.of(a, b, c))
-            ))
+        .flatMap(a -> api.b(a).map(b -> Tuples.of(a, b)))
+        .flatMap(t -> api.c(t.getT1(), t.getT2()).map(c -> Tuples.of(t.getT1(), t.getT2(), c)))
         .zipWith(api.d(id), (t, d) -> new Result(t.getT1(), t.getT3(), d));
     return wtf;
   }
