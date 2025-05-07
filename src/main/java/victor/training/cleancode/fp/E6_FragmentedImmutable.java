@@ -9,6 +9,7 @@ public class E6_FragmentedImmutable {
 
   private static void jitter(POI poi) {
     // TODO +1 to poi.x
+
     // TODO +1 to poi.y
   }
 
