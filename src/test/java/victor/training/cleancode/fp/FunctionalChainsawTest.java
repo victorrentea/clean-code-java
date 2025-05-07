@@ -27,7 +27,7 @@ public class FunctionalChainsawTest {
   private OrderRepo orderRepo;
 
   @InjectMocks
-  private FunctionalChainsaw functionalChainsaw;
+  private E2_FunctionalChainsaw functionalChainsaw;
 
   private Product product = new Product("Chair", HOME)
       .setId(7L)

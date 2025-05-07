@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ReduceAbuseTest {
 
-    private final ReduceAbuse sut = new ReduceAbuse();
+    private final E3_ReduceAbuse sut = new E3_ReduceAbuse();
 
     @Test
     void noPremiumOrders() {

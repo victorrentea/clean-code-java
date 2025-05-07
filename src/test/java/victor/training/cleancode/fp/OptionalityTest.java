@@ -3,21 +3,21 @@ package victor.training.cleancode.fp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import victor.training.cleancode.fp.OptionalAbuse.Entity;
+import victor.training.cleancode.fp.E4_Optionality.Entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static victor.training.cleancode.fp.OptionalAbuse.Dto;
+import static victor.training.cleancode.fp.E4_Optionality.Dto;
 
 @ExtendWith(MockitoExtension.class)
-public class OptionalAbuseTest {
+public class OptionalityTest {
 
-  private final OptionalAbuse optionalAbuse = new OptionalAbuse();
+  private final E4_Optionality optionality = new E4_Optionality();
 
   @Test
   void setsRecipientEmailWhenDtoHasValidRecipientPerson() {
     Dto dto = new Dto(" JohnDoe ", 30);
 
-    Entity result = optionalAbuse.trappedOptional(dto);
+    Entity result = optionality.trappedOptional(dto);
 
     assertThat(result.getRecipient()).isEqualTo("johndoe@example.com");
   }
@@ -26,7 +26,7 @@ public class OptionalAbuseTest {
   void setsAnonymousEmailWhenRecipientPersonIsBlank() {
     Dto dto = new Dto("   ", 30);
 
-    Entity result = optionalAbuse.trappedOptional(dto);
+    Entity result = optionality.trappedOptional(dto);
 
     assertThat(result.getRecipient()).isEqualTo("anonymous@example.com");
   }
@@ -35,7 +35,7 @@ public class OptionalAbuseTest {
   void setsAnonymousEmailWhenRecipientPersonIsNull() {
     Dto dto = new Dto(null, 30);
 
-    Entity result = optionalAbuse.trappedOptional(dto);
+    Entity result = optionality.trappedOptional(dto);
 
     assertThat(result.getRecipient()).isEqualTo("anonymous@example.com");
   }

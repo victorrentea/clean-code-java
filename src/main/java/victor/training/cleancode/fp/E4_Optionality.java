@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.Optional;
 
-public class OptionalAbuse {
+public class E4_Optionality {
   public Entity trappedOptional(Dto dto) {
     Entity entity = new Entity();
     Optional.ofNullable(dto)

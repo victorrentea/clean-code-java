@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class MutantPipeline {
+public class E1_MutantPipeline {
   //region +=
   public int totalActiveOrderPrice(List<Order> orders) {
     int sum = 0;

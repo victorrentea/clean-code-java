@@ -20,7 +20,7 @@ class MutantPipelineTest {
   public static final long SSO_ID = 1L;
   public static final long PAYMENT_CARD_ID = 123L;
   PaymentCardRepository repository = mock(PaymentCardRepository.class);
-  MutantPipeline mutantPipeline = new MutantPipeline(repository, new PaymentCardMapper());
+  E1_MutantPipeline p01MutantPipeline = new E1_MutantPipeline(repository, new PaymentCardMapper());
 
   @Test
   void totalOrderPrice() {
@@ -29,7 +29,7 @@ class MutantPipelineTest {
         new Order().setPrice(5).setActive(true),
         new Order().setPrice(3).setActive(false)
     );
-    int result = mutantPipeline.totalActiveOrderPrice(orders);
+    int result = p01MutantPipeline.totalActiveOrderPrice(orders);
     assertThat(result).isEqualTo(15);
   }
 
@@ -40,7 +40,7 @@ class MutantPipelineTest {
         new Order().setShipDate(null).setActive(true),
         new Order().setShipDate(now()).setActive(false)
     );
-    var result = mutantPipeline.getShipDates(orders);
+    var result = p01MutantPipeline.getShipDates(orders);
     assertThat(result).containsExactly(now());
   }
 
@@ -49,7 +49,7 @@ class MutantPipelineTest {
     when(repository.findById(PAYMENT_CARD_ID)).thenReturn(of(new PaymentCard().setId(SSO_ID)));
     when(repository.save(any())).thenAnswer(i -> i.getArgument(0));
 
-    var result = mutantPipeline.updateCardAlias(PAYMENT_CARD_ID, SSO_ID, "UpdatedAlias");
+    var result = p01MutantPipeline.updateCardAlias(PAYMENT_CARD_ID, SSO_ID, "UpdatedAlias");
 
     assertThat(result).isEqualTo(new PaymentCardDto(SSO_ID, "UpdatedAlias"));
   }
@@ -58,7 +58,7 @@ class MutantPipelineTest {
   void updateCardAlias_notFound_throwsException() {
     when(repository.findById(PAYMENT_CARD_ID)).thenReturn(empty());
 
-    assertThatThrownBy(() -> mutantPipeline.updateCardAlias(PAYMENT_CARD_ID, SSO_ID, "UpdatedAlias"))
+    assertThatThrownBy(() -> p01MutantPipeline.updateCardAlias(PAYMENT_CARD_ID, SSO_ID, "UpdatedAlias"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

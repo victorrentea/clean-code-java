@@ -1,6 +1,6 @@
 package victor.training.cleancode.fp;
 
-public class FragmentedImmutable {
+public class E6_FragmentedImmutable {
   public static void main(String[] args) {
     POI poi = new POI(50, 50, "drop", "Toilet");
     jitter(poi);

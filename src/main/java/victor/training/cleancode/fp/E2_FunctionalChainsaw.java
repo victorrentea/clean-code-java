@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
-public class FunctionalChainsaw/*Massacre*/ {
+public class E2_FunctionalChainsaw/*Massacre*/ {
 	private final ProductRepo productRepo;
 	private final OrderRepo orderRepo;
 

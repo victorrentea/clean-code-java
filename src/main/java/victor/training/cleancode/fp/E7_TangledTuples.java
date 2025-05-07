@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public class TangledTuples {
+public class E7_TangledTuples {
   protected final Api api;
 
   public Mono<ACD> reactiveEnrich(int id) {

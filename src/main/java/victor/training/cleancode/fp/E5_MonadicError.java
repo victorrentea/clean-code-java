@@ -1,6 +1,6 @@
 package victor.training.cleancode.fp;
 
-public class MonadicError {
+public class E5_MonadicError {
   public Long tryingToDoStuff(String payload) {
     var request = process(payload);
     Long newId = dbInsert(request);
