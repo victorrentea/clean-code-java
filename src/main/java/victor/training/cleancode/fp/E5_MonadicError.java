@@ -1,5 +1,7 @@
 package victor.training.cleancode.fp;
 
+import java.util.List;
+
 public class E5_MonadicError {
   public Long tryingToDoStuff(String payload) {
     var request = process(payload);
@@ -25,5 +27,9 @@ public class E5_MonadicError {
 
   private void kafkaSendAudit(String message) {
     //throw new RuntimeException("Kafka is down; #life"); // imagine
+  }
+
+  private List<Long> dbInsertAll(List<String> data) {
+    return List.of(42L);
   }
 }
