@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
 public class E2_FunctionalChainsaw/*Massacre*/ {
-  private final ProductRepo productRepo;
+  private final ProductControlApi productControlApi;
   private final OrderRepo orderRepo;
 
   public List<Product> getHotProducts() {
@@ -25,7 +25,7 @@ public class E2_FunctionalChainsaw/*Massacre*/ {
         .filter(e -> e.getValue() >= 10)
         .map(Entry::getKey)
         .filter(p -> !p.isDeleted())
-        .filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+        .filter(p -> !productControlApi.getHiddenProductIds().contains(p.getId()))
         .collect(toList());
   }
 }

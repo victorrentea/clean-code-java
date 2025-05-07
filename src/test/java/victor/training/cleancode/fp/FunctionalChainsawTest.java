@@ -21,7 +21,7 @@ import static victor.training.cleancode.fp.support.ProductCategory.HOME;
 public class FunctionalChainsawTest {
 
   @Mock
-  private ProductRepo productRepo;
+  private ProductControlApi productControlApi;
 
   @Mock
   private OrderRepo orderRepo;
@@ -43,7 +43,7 @@ public class FunctionalChainsawTest {
   @Test
   void allInOneOrder() {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder()));
-    when(productRepo.getHiddenProductIds()).thenReturn(List.of());
+    when(productControlApi.getHiddenProductIds()).thenReturn(List.of());
 
     assertThat(functionalChainsaw.getHotProducts()).containsExactly(product);
   }
@@ -54,7 +54,7 @@ public class FunctionalChainsawTest {
     Order order2 = anOrder().setOrderLines(List.of(new OrderLine(product, 6)));
 
     when(orderRepo.findAll()).thenReturn(List.of(order1, order2));
-    when(productRepo.getHiddenProductIds()).thenReturn(List.of());
+    when(productControlApi.getHiddenProductIds()).thenReturn(List.of());
 
     assertThat(functionalChainsaw.getHotProducts()).containsExactly(product);
   }
@@ -63,7 +63,7 @@ public class FunctionalChainsawTest {
   void excludesDeletedProducts() {
     product.setDeleted(true);
     when(orderRepo.findAll()).thenReturn(List.of(anOrder()));
-    when(productRepo.getHiddenProductIds()).thenReturn(List.of());
+    when(productControlApi.getHiddenProductIds()).thenReturn(List.of());
 
     assertThat(functionalChainsaw.getHotProducts()).isEmpty();
   }
@@ -71,7 +71,7 @@ public class FunctionalChainsawTest {
   @Test
   void excludesHiddenProducts() {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder()));
-    when(productRepo.getHiddenProductIds()).thenReturn(List.of(product.getId()));
+    when(productControlApi.getHiddenProductIds()).thenReturn(List.of(product.getId()));
 
     assertThat(functionalChainsaw.getHotProducts()).isEmpty();
   }
@@ -79,7 +79,7 @@ public class FunctionalChainsawTest {
   @Test
   void excludesOldOrders() {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder().setCreationDate(LocalDate.now().minusYears(1))));
-    when(productRepo.getHiddenProductIds()).thenReturn(List.of());
+    when(productControlApi.getHiddenProductIds()).thenReturn(List.of());
 
     assertThat(functionalChainsaw.getHotProducts()).isEmpty();
   }
@@ -87,7 +87,7 @@ public class FunctionalChainsawTest {
   @Test
   void excludesInactiveOrders() {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder().setActive(false)));
-    when(productRepo.getHiddenProductIds()).thenReturn(List.of());
+    when(productControlApi.getHiddenProductIds()).thenReturn(List.of());
 
     assertThat(functionalChainsaw.getHotProducts()).isEmpty();
   }

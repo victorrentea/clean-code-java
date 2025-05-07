@@ -3,7 +3,6 @@ package victor.training.cleancode.fp.support;
 
 import java.util.List;
 
-public interface ProductRepo  {
+public interface ProductControlApi {
   List<Long> getHiddenProductIds();
-  List<Product> findAllById(List<Long> productIds);
 }
