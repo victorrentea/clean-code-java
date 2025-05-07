@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import victor.training.cleancode.fp.support.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static java.time.LocalDate.now;
 import static java.util.Optional.empty;
@@ -59,6 +60,6 @@ class MutantPipelineTest {
     when(repository.findById(PAYMENT_CARD_ID)).thenReturn(empty());
 
     assertThatThrownBy(() -> p01MutantPipeline.updateCardAlias(PAYMENT_CARD_ID, SSO_ID, "UpdatedAlias"))
-        .isInstanceOf(IllegalArgumentException.class);
+        .isInstanceOf(NoSuchElementException.class);
   }
 }
