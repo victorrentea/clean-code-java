@@ -13,8 +13,7 @@ public class E5_MonadicError {
       throw new IllegalArgumentException("Invalid payload");
     }
     if (payload.contains("Analytica")) {
-      // FIXME: "It's not FP to throw exceptions!", the preacher said
-      throw new IllegalArgumentException("Banned Business");
+      throw new IllegalArgumentException("Banned Business"); // FIXME: "not FP!", the preacher said
     }
     return payload.trim().toUpperCase();
   }
