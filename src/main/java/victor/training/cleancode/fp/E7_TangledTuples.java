@@ -15,10 +15,10 @@ public class E7_TangledTuples {
     return Mono.just(new Result(a, c, d));
 
 //    var wtf = api.a(id)
-//            .flatMap(a -> api.b(a)
-//                .flatMap(b -> api.c(a, b)
-//                    .map(c -> Tuples.of(a, b, c))
-//                ))
+//        .flatMap(a -> api.b(a)
+//            .flatMap(b -> api.c(a, b)
+//                .map(c -> Tuples.of(a, b, c))
+//            ))
 //        .zipWith(api.d(id));
 //    return wtf;
   }
