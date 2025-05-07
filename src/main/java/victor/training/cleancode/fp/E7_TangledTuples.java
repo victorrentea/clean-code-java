@@ -30,6 +30,8 @@ public class E7_TangledTuples {
     Mono<D> d(int id);
   }
 
+  public record ACD(A a, C c, D d) {}
+
   //region support code
   public record A() {}
 
@@ -38,8 +40,6 @@ public class E7_TangledTuples {
   public record C() {}
 
   public record D() {}
-
-  public record ACD(A a, C c, D d) {}
   //endregion
 
 }
