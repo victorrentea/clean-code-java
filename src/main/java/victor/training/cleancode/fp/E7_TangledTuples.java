@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 public class E7_TangledTuples {
   protected final Api api;
 
+  // ... Reactive Programming
   public Mono<Result> reactiveEnrich(int id) {
     var a = api.a(id).block();
     var b = api.b(a).block();
