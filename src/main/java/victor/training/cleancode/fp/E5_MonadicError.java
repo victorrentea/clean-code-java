@@ -9,7 +9,7 @@ public class E5_MonadicError {
   }
 
   private String process(String payload) {
-    if (payload == null || payload.isBlank()) {
+    if (payload.isBlank()) {
       throw new IllegalArgumentException("Invalid payload");
     }
     if (payload.contains("Analytica")) {
