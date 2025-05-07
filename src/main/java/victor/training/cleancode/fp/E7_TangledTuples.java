@@ -14,13 +14,13 @@ public class E7_TangledTuples {
     var d = api.d(id).block();
     return Mono.just(new ACD(a, c, d));
 
-//    var ftw = api.d(id).zipWith(
-//        api.a(id)
+//    var wtf = api.a(id)
 //            .flatMap(a -> api.b(a)
 //                .flatMap(b -> api.c(a, b)
 //                    .map(c -> Tuples.of(a, b, c))
-//                )));
-//    return ftw;
+//                ))
+//        .zipWith(api.d(id));
+//    return wtf;
   }
 
   protected interface Api {
