@@ -7,12 +7,12 @@ import reactor.core.publisher.Mono;
 public class E7_TangledTuples {
   protected final Api api;
 
-  public Mono<ACD> reactiveEnrich(int id) {
+  public Mono<Result> reactiveEnrich(int id) {
     var a = api.a(id).block();
     var b = api.b(a).block();
     var c = api.c(a, b).block();
     var d = api.d(id).block();
-    return Mono.just(new ACD(a, c, d));
+    return Mono.just(new Result(a, c, d));
 
 //    var wtf = api.a(id)
 //            .flatMap(a -> api.b(a)
@@ -30,7 +30,7 @@ public class E7_TangledTuples {
     Mono<D> d(int id);
   }
 
-  public record ACD(A a, C c, D d) {}
+  public record Result(A a, C c, D d) {}
 
   //region support code
   public record A() {}
