@@ -2,6 +2,8 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class E7_TangledTuples {
                 .map(c -> Tuples.of(a, b, c))
             ))
         .zipWith(api.d(id))
-        .map(tt -> new Result(tt.getT1().getT1(), tt.getT1().getT3(), tt.getT2()));
+        .map((Tuple2<Tuple3<A, B, C>, D> tt) -> new Result(tt.getT1().getT1(), tt.getT1().getT3(), tt.getT2()));
     return wtf;
   }
 
