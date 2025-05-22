@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -141,6 +141,6 @@ class ExerciseTest {
 
     ArgumentCaptor<ProjectServicesDto> captor = ArgumentCaptor.forClass(ProjectServicesDto.class);
     verify(userServiceHelper, times(1)).sendUserToServicesOnCreate(captor.capture(), eq(project), eq(MessageAction.CREATE), eq(user), eq(projectUser), eq("ADMIN"));
-    assertEquals(service, captor.getValue().getService());
+    assertThat(captor.getValue().getService()).isEqualTo(service);
   }
 }

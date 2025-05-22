@@ -12,7 +12,6 @@ import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +31,7 @@ public class SplitLoopHardTest {
 
     String actual = splitLoopHard.computeStatsHard(Collections.singletonList(consultant));
 
-    assertEquals("Employee(s) not persisted", actual);
+    assertThat(actual).isEqualTo("Employee(s) not persisted");
   }
 
   @Test

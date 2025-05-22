@@ -6,7 +6,7 @@ import victor.training.cleancode.SplitLoop.Employee;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SplitLoopTest {
 
@@ -21,7 +21,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 4000.0; ids: [1, 2, 3, 4]", result);
+      assertThat(result).isEqualTo("Total consultant salary: 4000.0; ids: [1, 2, 3, 4]");
     }
 
     @Test
@@ -30,7 +30,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 0.0; ids: []", result);
+      assertThat(result).isEqualTo("Total consultant salary: 0.0; ids: []");
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 7000.0; ids: [1, 2]", result);
+      assertThat(result).isEqualTo("Total consultant salary: 7000.0; ids: [1, 2]");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class SplitLoopTest {
 
         String result = new SplitLoop().computeStats(employees);
 
-        assertEquals("Total consultant salary: 0.0; ids: [1, 2]", result);
+      assertThat(result).isEqualTo("Total consultant salary: 0.0; ids: [1, 2]");
     }
 
 }
