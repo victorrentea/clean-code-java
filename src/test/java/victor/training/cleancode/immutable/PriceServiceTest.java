@@ -8,11 +8,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class PriceServiceTest {
+class PriceServiceTest {
    @Mock
    private SupplierService supplierService;
    @Mock
@@ -20,8 +21,8 @@ public class PriceServiceTest {
    @InjectMocks
    private PriceService priceService;
 
-   @Test
-   public void computePrice() {
+  @Test
+  void computePrice() {
       when(supplierService.getCost(any(), any())).thenReturn(valueOf(80));
       when(logisticsService.estimateDeliveryCosts(any())).thenReturn(valueOf(20));
 

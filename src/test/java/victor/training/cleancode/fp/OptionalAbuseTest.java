@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static victor.training.cleancode.fp.OptionalAbuse.Dto;
 
 @ExtendWith(MockitoExtension.class)
-public class OptionalAbuseTest {
+class OptionalAbuseTest {
 
   private final OptionalAbuse optionalAbuse = new OptionalAbuse();
 

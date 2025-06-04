@@ -12,11 +12,11 @@ import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SplitLoopHardTest {
+class SplitLoopHardTest {
   @Mock
   EmployeeService employeeService;
   @InjectMocks
@@ -26,7 +26,7 @@ public class SplitLoopHardTest {
   Employee employee = new Employee(2, 30, 4000, false);
 
   @Test
-  public void consultantIdNull() {
+  void consultantIdNull() {
     consultant = consultant.toBuilder().id(null).build();
 
     String actual = splitLoopHard.computeStatsHard(Collections.singletonList(consultant));
@@ -35,16 +35,16 @@ public class SplitLoopHardTest {
   }
 
   @Test
-  public void throws_consultantSalaryNull_retrieveNull() {
+  void throws_consultantSalaryNull_retrieveNull() {
     consultant = consultant.toBuilder().salary(null).build();
     when(employeeService.retrieveSalary(consultant.id())).thenReturn(null);
 
-    assertThrows(RuntimeException.class, () ->
+    assertThatExceptionOfType(RuntimeException.class).isThrownBy(() ->
         splitLoopHard.computeStatsHard(Collections.singletonList(consultant)));
   }
 
   @Test
-  public void consultantSalaryNull_retrieveSalary_avg() {
+  void consultantSalaryNull_retrieveSalary_avg() {
     consultant = consultant.toBuilder().salary(null).build();
     when(employeeService.retrieveSalary(consultant.id())).thenReturn(3000);
     Employee consultant2 = new Employee(15, 56, 5000, true);
@@ -55,7 +55,7 @@ public class SplitLoopHardTest {
   }
 
   @Test
-  public void employeeAgeAverage() {
+  void employeeAgeAverage() {
     Employee employee2 = new Employee(15, 56, 2000, false);
 
     String actual = splitLoopHard.computeStatsHard(asList(employee, employee2));

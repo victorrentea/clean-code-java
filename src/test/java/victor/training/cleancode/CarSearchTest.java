@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class CarSearchTest {
 
@@ -29,6 +29,6 @@ class CarSearchTest {
 
       List<CarModel> models = searchEngine.filterCarModels(criteria, List.of(fordFocusMk2));
 
-      assertThat(models).hasSize(0);
+     assertThat(models).isEmpty();
    }
 }

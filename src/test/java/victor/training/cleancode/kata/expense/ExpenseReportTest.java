@@ -1,11 +1,12 @@
 package victor.training.cleancode.kata.expense;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import victor.training.cleancode.CaptureSystemOutput;
 import victor.training.cleancode.CaptureSystemOutput.OutputCapture;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ExpenseReportTest {
 
@@ -21,7 +22,7 @@ class ExpenseReportTest {
         new Expense("CAR_RENTAL", 200)
     ));
 
-    Assertions.assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
+    assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
         """
             Expenses Report
             Dinner	100	\s
@@ -40,7 +41,7 @@ class ExpenseReportTest {
         new Expense("BREAKFAST", 1200)
     ));
 
-    Assertions.assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
+    assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
         """
             Expenses Report
             Breakfast	1200	X
@@ -57,7 +58,7 @@ class ExpenseReportTest {
         new Expense("DINNER", 5200)
     ));
 
-    Assertions.assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
+    assertThat(outputCapture.toString()).isEqualToIgnoringWhitespace(
         """
             Expenses Report
             Dinner	5200	X

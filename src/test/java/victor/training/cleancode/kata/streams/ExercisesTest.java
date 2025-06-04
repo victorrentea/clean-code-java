@@ -216,7 +216,7 @@ class ExercisesTest {
 
 
   @Test
-  public void pB_ordersByPaymentPerMonth_should_return_correct_grouping() {
+  void pB_ordersByPaymentPerMonth_should_return_correct_grouping() {
     Order a = new Order().paymentMethod(CARD).createdOn(parse("2024-01-15"));
     Order b = new Order().paymentMethod(CASH_ON_DELIVERY).createdOn(parse("2024-01-07"));
     Order c = new Order().paymentMethod(CARD).createdOn(parse("2024-02-17"));
@@ -237,7 +237,7 @@ class ExercisesTest {
   }
 
   @Test
-  void testBlankLinesInFile() throws IOException {
+  void blankLinesInFile() throws IOException {
     File file = new File("src/test/java/victor/training/cleancode/kata/streams/sample.csv");
 
     Set<Integer> actual = sut.pC_csvLinesInAllFilesInFolder(file);
@@ -247,7 +247,7 @@ class ExercisesTest {
   }
 
   @Test
-  public void testPD_fib() {
+  void pDFib() {
     assertThat(sut.pD_fib(0, 6)).containsExactly(1, 1, 2, 3, 5, 8);
     assertThat(sut.pD_fib(5, 9)).containsExactly(8, 13, 21, 34);
   }

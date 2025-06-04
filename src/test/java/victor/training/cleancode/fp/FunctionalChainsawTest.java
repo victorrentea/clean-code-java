@@ -18,7 +18,7 @@ import static victor.training.cleancode.fp.support.ProductCategory.HOME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class FunctionalChainsawTest {
+class FunctionalChainsawTest {
 
   @Mock
   private ProductRepo productRepo;
