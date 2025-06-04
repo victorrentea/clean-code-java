@@ -1,6 +1,6 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: victor.training.CleanCode
+name: victor.training.OpenRewriteDemo
 displayName: AssertJ best practices
 description: |
   Migrates JUnit asserts to AssertJ and applies best practices to assertions.
