@@ -2,8 +2,6 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +16,10 @@ class PureFunction {
   private final ProductRepo productRepo;
 
   // TODO extract complexity into a pure function
-  public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
+  public Map<Long, Double> computePrices(
+      long customerId,
+      List<Long> productIds,
+      Map<Long, Double> internalPrices) {
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds);
 

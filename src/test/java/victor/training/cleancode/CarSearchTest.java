@@ -17,7 +17,7 @@ class CarSearchTest {
    // can't afford a 2021 car
    @Test
    void byYear_match() {
-      CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford");
+      CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford", null);
 
       List<CarModel> models = searchEngine.filterCarModels(criteria, List.of(fordFocusMk2));
 
@@ -25,7 +25,7 @@ class CarSearchTest {
    }
    @Test
    void byYear_no_match() {
-      CarSearchCriteria criteria = new CarSearchCriteria(2017, 2018, "Ford");
+      CarSearchCriteria criteria = new CarSearchCriteria(2017, 2018, "Ford", null);
 
       List<CarModel> models = searchEngine.filterCarModels(criteria, List.of(fordFocusMk2));
 

@@ -9,22 +9,21 @@ import java.util.ResourceBundle;
 public class StructuralReplace {
   private static final Logger log = LoggerFactory.getLogger(StructuralReplace.class);
 
-  public void location1() {
-    String firstName = "John";
-    log.info(Library.render(Library.translate("Hello %s %s"),
-        firstName,
-        "Doe"));
-    log.info(Library.render(Library.translate("Hi " + "%s"), firstName.toUpperCase()));
-    log.info(Library.render("No Template", firstName));
+  public void inLegacyCodebases(int i) {
+    String name = "John";
+    log.info(Lib.render(Lib.translate("key-2"), name, "2nd param"));
+//    log.info(Library.renderTranslate("key-2", name, "Doe")); // result
 
-//    log.info(Library.renderTranslate("Hello %s %s", firstName, "Doe")); // result
-//    log.info(Library.renderTranslate("Hi " + "%s", firstName.toUpperCase())); // result
-//    log.info(Library.render("No Template", firstName)); // result
+    log.info(Lib.render(Lib.translate("key-" + i), name.toUpperCase()));
+//    log.info(Library.renderTranslate("key-" + i, name.toUpperCase())); // result
+
+    log.info(Lib.render("N/A", name));
+//    log.info(Library.render("N/A", name)); // result no change as no nested call render(translate(
   }
 
   public String location2(String in) {
-    return Library.render(Library.translate("Hi " + "%s"), in.toUpperCase());
-//    return Library.renderTranslate("Hi " + "%s", in.toUpperCase()); // result
+    return Lib.render(Lib.translate("key-1"), in.toUpperCase());
+//    return Library.renderTranslate("key-1", in.toUpperCase()); // result
   }
   // Go to Edit > Find > Replace Structurally
   // Input: victor.training.cleancode.Library.render(victor.training.cleancode.Library.translate($Key$), $Parameters$)
@@ -32,8 +31,13 @@ public class StructuralReplace {
   // Output: victor.training.cleancode.Library.renderTranslate($Key$, $Parameters$)
 }
 
-class Library {
+class Lib {
   public static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
+
+  // TODO use this instead of render(translate(<string>), <string>*)
+  public static String renderTranslate(String key, String... values) {
+    return render(translate(key), values);
+  }
 
   public static String render(String template, String... values) {
     String[] transformedParams = Arrays.stream(values).map(java.lang.String::toUpperCase).toArray(String[]::new);
@@ -46,9 +50,5 @@ class Library {
     } else {
       return messageKey;
     }
-  }
-
-  public static String renderTranslate(String key, String... values) {
-    return render(translate(key), values);
   }
 }
