@@ -12,7 +12,6 @@ public class ProductService {
   private final SupplierRepo supplierRepo;
   private final ProductRepo productRepo;
   private final SafetyApiAdapter safetyApiAdapter;
-  private final ProductMapper productMapper;
 
   public Long createProduct(ProductDto productDto) {
     log.info("Creating product {}", productDto);
