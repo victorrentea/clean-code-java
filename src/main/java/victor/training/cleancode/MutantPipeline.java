@@ -1,10 +1,10 @@
-package victor.training.cleancode.fp;
+package victor.training.cleancode;
 
 import lombok.RequiredArgsConstructor;
-import victor.training.cleancode.fp.support.Order;
-import victor.training.cleancode.fp.support.PaymentCardDto;
-import victor.training.cleancode.fp.support.PaymentCardMapper;
-import victor.training.cleancode.fp.support.PaymentCardRepository;
+import victor.training.cleancode.support.Order;
+import victor.training.cleancode.support.PaymentCardDto;
+import victor.training.cleancode.support.PaymentCardMapper;
+import victor.training.cleancode.support.PaymentCardRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

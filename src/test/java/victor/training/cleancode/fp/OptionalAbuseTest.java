@@ -3,10 +3,11 @@ package victor.training.cleancode.fp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import victor.training.cleancode.fp.OptionalAbuse.Entity;
+import victor.training.cleancode.OptionalAbuse;
+import victor.training.cleancode.OptionalAbuse.Entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static victor.training.cleancode.fp.OptionalAbuse.Dto;
+import static victor.training.cleancode.OptionalAbuse.Dto;
 
 @ExtendWith(MockitoExtension.class)
 class OptionalAbuseTest {

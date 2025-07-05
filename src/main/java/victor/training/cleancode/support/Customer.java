@@ -1,6 +1,4 @@
-package victor.training.cleancode.fp.support;
-
-import lombok.Value;
+package victor.training.cleancode.support;
 
 import java.util.List;
 

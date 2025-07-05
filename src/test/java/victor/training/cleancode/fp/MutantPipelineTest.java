@@ -1,7 +1,8 @@
 package victor.training.cleancode.fp;
 
 import org.junit.jupiter.api.Test;
-import victor.training.cleancode.fp.support.*;
+import victor.training.cleancode.MutantPipeline;
+import victor.training.cleancode.support.*;
 
 import java.util.List;
 

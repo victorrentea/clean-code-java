@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
 import lombok.RequiredArgsConstructor;
-import victor.training.cleancode.fp.support.*;
+import victor.training.cleancode.support.*;
 
 import java.time.LocalDate;
 import java.util.List;

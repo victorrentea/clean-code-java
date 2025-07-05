@@ -38,6 +38,9 @@ public class Product {
   @CreatedBy // Spring assigns this at creation time from SecurityContext
   private String createdBy;
 
+    private boolean deleted;
+    private boolean premium;
+
   public Product(String name, String barcode, ProductCategory category) {
     this.name = name;
     this.barcode = barcode;

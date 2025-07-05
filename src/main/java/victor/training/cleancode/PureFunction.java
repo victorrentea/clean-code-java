@@ -1,7 +1,7 @@
-package victor.training.cleancode.fp;
+package victor.training.cleancode;
 
 import lombok.RequiredArgsConstructor;
-import victor.training.cleancode.fp.support.*;
+import victor.training.cleancode.support.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-class PureFunction {
+public class PureFunction {
   private final CustomerRepo customerRepo;
   private final ThirdPartyPricesApi thirdPartyPricesApi;
   private final CouponRepo couponRepo;

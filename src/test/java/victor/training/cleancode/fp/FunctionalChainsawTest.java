@@ -8,14 +8,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import victor.training.cleancode.FunctionalChainsaw;
-import victor.training.cleancode.fp.support.*;
+import victor.training.cleancode.support.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static victor.training.cleancode.fp.support.ProductCategory.HOME;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -30,7 +29,7 @@ class FunctionalChainsawTest {
   @InjectMocks
   private FunctionalChainsaw functionalChainsaw;
 
-  private Product product = new Product("Chair", HOME)
+  private Product product = new Product("Chair", "", ProductCategory.HOME)
       .setId(7L)
       .setDeleted(false);
 

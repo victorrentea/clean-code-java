@@ -1,4 +1,4 @@
-package victor.training.cleancode.fp;
+package victor.training.cleancode;
 
 import lombok.Data;
 
