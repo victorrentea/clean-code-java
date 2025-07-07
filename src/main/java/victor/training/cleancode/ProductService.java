@@ -1,8 +1,9 @@
-package victor.training.cleancode.support;
+package victor.training.cleancode;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import victor.training.cleancode.support.*;
 
 @Slf4j
 @Service
