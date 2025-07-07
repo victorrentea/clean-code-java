@@ -7,14 +7,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CarSearchTest {
-
    CarSearch searchEngine = new CarSearch();
 
    CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
 
-   // Ford Focus:     [2012 ---- 2016]
-   // Search:              [2014 ---- 2018]
-   // can't afford a 2021 car
    @Test
    void byYear_match() {
       CarSearchCriteria criteria = new CarSearchCriteria(2014, 2018, "Ford", null);
