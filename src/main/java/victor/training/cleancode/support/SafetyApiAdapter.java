@@ -19,10 +19,10 @@ public class SafetyApiAdapter {
   public record SafetyResponse(String category, String detailsUrl) {
   }
 
-  public boolean isSafe(String barcode) {
+  public boolean isSafe(ProductDto productDto) {
     SafetyResponse response = restTemplate.getForEntity(
             baseUrl + "/product/{barcode}/safety",
-            SafetyResponse.class, barcode)
+            SafetyResponse.class, productDto.barcode())
         .getBody();
     return "SAFE".equals(response.category());
   }

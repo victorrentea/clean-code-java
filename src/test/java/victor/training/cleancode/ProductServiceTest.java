@@ -27,7 +27,6 @@ public class ProductServiceTest {
   SafetyApiAdapter safetyApiAdapter;
   @InjectMocks
   ProductService productService;
-
   @Captor
   ArgumentCaptor<Product> productCaptor;
 
@@ -39,7 +38,7 @@ public class ProductServiceTest {
         .supplierCode("code2")
         .category(ProductCategory.HOME)
         .build();
-    when(safetyApiAdapter.isSafe("code1")).thenReturn(false);
+    when(safetyApiAdapter.isSafe(any())).thenReturn(false);
 
     assertThatThrownBy(() -> productService.createProduct(productDto))
         .isInstanceOf(IllegalStateException.class)
@@ -55,7 +54,7 @@ public class ProductServiceTest {
         .category(ProductCategory.HOME)
         .build();
     when(supplierRepo.findByCode("code2")).thenReturn(Optional.of(new Supplier().setCode("code2")));
-    when(safetyApiAdapter.isSafe("code1")).thenReturn(true);
+    when(safetyApiAdapter.isSafe(any())).thenReturn(true);
     when(productRepo.save(any())).thenReturn(new Product().setId(123L));
 
     Long createdId = productService.createProduct(productDto);

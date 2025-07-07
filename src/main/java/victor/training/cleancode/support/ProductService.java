@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-  public static final String PRODUCT_CREATED_TOPIC = "product-created";
   private final SupplierRepo supplierRepo;
   private final ProductRepo productRepo;
   private final SafetyApiAdapter safetyApiAdapter;
 
   public Long createProduct(ProductDto productDto) {
     log.info("Creating product {}", productDto);
-    boolean safe = safetyApiAdapter.isSafe(productDto.barcode()); // ⚠️ REST call inside
+    boolean safe = safetyApiAdapter.isSafe(productDto);
     if (!safe) {
       throw new IllegalStateException("Product is not safe!");
     }
