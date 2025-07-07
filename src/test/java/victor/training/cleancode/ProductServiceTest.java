@@ -4,28 +4,32 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestTemplate;
+import org.wiremock.spring.EnableWireMock;
 import victor.training.cleancode.support.*;
 
 import java.util.Optional;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@EnableWireMock
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {ProductService.class, SafetyApiAdapter.class, RestTemplate.class})
+@TestPropertySource(properties = "safety.service.url.base=http://localhost:${wiremock.server.port:9999}")
 public class ProductServiceTest {
-  @Mock
+  @MockitoBean
   SupplierRepo supplierRepo;
-  @Mock
+  @MockitoBean
   ProductRepo productRepo;
-  @Mock
-  SafetyApiAdapter safetyApiAdapter;
-  @InjectMocks
+  @Autowired
   ProductService productService;
   @Captor
   ArgumentCaptor<Product> productCaptor;
@@ -38,7 +42,8 @@ public class ProductServiceTest {
         .supplierCode("code2")
         .category(ProductCategory.HOME)
         .build();
-    when(safetyApiAdapter.isSafe(any())).thenReturn(false);
+    stubFor(get(urlEqualTo("/product/code1/safety"))
+        .willReturn(okJson("{\"category\": \"UNSAFE\"}")));
 
     assertThatThrownBy(() -> productService.createProduct(productDto))
         .isInstanceOf(IllegalStateException.class)
@@ -54,12 +59,12 @@ public class ProductServiceTest {
         .category(ProductCategory.HOME)
         .build();
     when(supplierRepo.findByCode("code2")).thenReturn(Optional.of(new Supplier().setCode("code2")));
-    when(safetyApiAdapter.isSafe(any())).thenReturn(true);
-    when(productRepo.save(any())).thenReturn(new Product().setId(123L));
+    when(productRepo.save(productCaptor.capture())).thenReturn(new Product().setId(123L));
+    stubFor(get(urlEqualTo("/product/code1/safety"))
+        .willReturn(okJson("{\"category\": \"SAFE\"}")));
 
     Long createdId = productService.createProduct(productDto);
 
-    verify(productRepo).save(productCaptor.capture());
     assertThat(createdId).isEqualTo(123L);
     assertThat(productCaptor.getValue())
         .returns("name", Product::getName)

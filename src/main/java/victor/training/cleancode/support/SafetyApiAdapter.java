@@ -14,7 +14,7 @@ import java.net.URL;
 public class SafetyApiAdapter {
   private final RestTemplate restTemplate;
   @Value("${safety.service.url.base}")
-  private final URL baseUrl;
+  private URL baseUrl;
 
   public record SafetyResponse(String category, String detailsUrl) {
   }
