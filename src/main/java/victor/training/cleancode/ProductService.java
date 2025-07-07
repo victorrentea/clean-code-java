@@ -11,11 +11,11 @@ import victor.training.cleancode.support.*;
 public class ProductService {
   private final SupplierRepo supplierRepo;
   private final ProductRepo productRepo;
-  private final SafetyApiAdapter safetyApiAdapter;
+  private final RapexClient rapexClient;
 
   public Long createProduct(ProductDto productDto) {
     log.info("Creating product {}", productDto);
-    boolean safe = safetyApiAdapter.isSafe(productDto);
+    boolean safe = rapexClient.isSafe(productDto);
     if (!safe) {
       throw new IllegalStateException("Product is not safe!");
     }

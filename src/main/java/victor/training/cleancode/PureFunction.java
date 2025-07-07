@@ -15,7 +15,6 @@ public class PureFunction {
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
-  // TODO extract complexity into a pure function
   public Map<Long, Double> computePrices(
       long customerId,
       List<Long> productIds,

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @EnableWireMock
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ProductService.class, SafetyApiAdapter.class, RestTemplate.class})
+@ContextConfiguration(classes = {ProductService.class, RapexClient.class, RestTemplate.class})
 @TestPropertySource(properties = "safety.service.url.base=http://localhost:${wiremock.server.port:9999}")
 public class ProductServiceTest {
   @MockitoBean
