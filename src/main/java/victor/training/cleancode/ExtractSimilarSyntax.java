@@ -2,7 +2,7 @@ package victor.training.cleancode;
 
 class ClassA {
   public void f(int n) {
-    System.out.println("Logic F");
+    System.out.println("F Logic");
     for (int i = 0; i < 4; i++) {
       if (n + i < 0) {
         System.out.println("CodeO" + i);
@@ -15,7 +15,7 @@ class ClassA {
 
 class ClassB {
   public void g(int n) {
-    System.out.println("Logic G");
+    System.out.println("G Logic");
     try {
       for (int j = 0; j < 4; j++) {
         if (n + j < 0) {
