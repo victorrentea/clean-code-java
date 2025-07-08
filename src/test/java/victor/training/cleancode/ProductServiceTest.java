@@ -43,7 +43,7 @@ public class ProductServiceTest {
         .category(ProductCategory.HOME)
         .build();
     stubFor(get(urlEqualTo("/product/code1/safety"))
-        .willReturn(okJson("{\"category\": \"UNSAFE\"}")));
+        .willReturn(okJson("{\"safetyClass\": \"UNSAFE\"}")));
 
     assertThatThrownBy(() -> productService.createProduct(productDto))
         .isInstanceOf(IllegalStateException.class)
@@ -54,21 +54,21 @@ public class ProductServiceTest {
   void createOk() {
     ProductDto productDto = ProductDto.builder()
         .name("name")
-        .barcode("code1")
+        .barcode("Code1")
         .supplierCode("code2")
         .category(ProductCategory.HOME)
         .build();
     when(supplierRepo.findByCode("code2")).thenReturn(Optional.of(new Supplier().setCode("code2")));
     when(productRepo.save(productCaptor.capture())).thenReturn(new Product().setId(123L));
     stubFor(get(urlEqualTo("/product/code1/safety"))
-        .willReturn(okJson("{\"category\": \"SAFE\"}")));
+        .willReturn(okJson("{\"safetyClass\": \"SAFE\"}")));
 
     Long createdId = productService.createProduct(productDto);
 
     assertThat(createdId).isEqualTo(123L);
     assertThat(productCaptor.getValue())
         .returns("name", Product::getName)
-        .returns("code1", Product::getBarcode)
+        .returns("Code1", Product::getBarcode)
         .returns("code2", p -> p.getSupplier().getCode())
         .returns(ProductCategory.HOME, Product::getCategory);
   }

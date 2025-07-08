@@ -17,14 +17,14 @@ public class RapexClient {
   @Value("${safety.service.url.base}")
   private URL baseUrl;
 
-  public record SafetyResponse(String category, String detailsUrl) {
+  public record SafetyResponse(String safetyClass, String detailsUrl) {
   }
 
   public boolean isSafe(ProductDto productDto) {
     SafetyResponse response = restTemplate.getForEntity(
             baseUrl + "/product/{barcode}/safety",
-            SafetyResponse.class, productDto.barcode())
+            SafetyResponse.class, productDto.barcode().toLowerCase())
         .getBody();
-    return "SAFE".equals(response.category());
+    return "SAFE".equals(response.safetyClass());
   }
 }

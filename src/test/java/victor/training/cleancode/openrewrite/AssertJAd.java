@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@Disabled("enable on demand and compare failures of JUnit❌ and AssertJ💖")
+@Disabled("enable to compare 💖AssertJ and 🤢JUnit Assertions")
 public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-starter-test
 
   @Nested
@@ -36,7 +36,7 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
     @Test
     public void size1_JUnit() {
-      org.junit.jupiter.api.Assertions.assertEquals(1, aList.size());
+      assertEquals(1, aList.size());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
     @Test
     public void onceInAnyOrder_JUnit() {
-      org.junit.jupiter.api.Assertions.assertTrue(aList.containsAll(List.of(100, 200, 700)));
+      assertTrue(aList.containsAll(List.of(100, 200, 700)));
       assertEquals(3, aList.size());
     }
 
