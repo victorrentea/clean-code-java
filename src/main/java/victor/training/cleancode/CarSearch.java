@@ -9,22 +9,22 @@ class CarSearch {
       throw new IllegalArgumentException("start larger than end");
     }
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> intervalsIntersect(criteria.yearInterval(), carModel.yearInterval()))
+        .filter(carModel -> criteria.yearInterval().intersectsWith(carModel.yearInterval()))
         .toList();
-    System.out.println("Another use:" + intervalsIntersect(new Interval(1, 10), new Interval(5, 20)));
+    System.out.println("Another use:" + new Interval(1, 10).intersectsWith(new Interval(5, 20)));
     return results;
   }
 
-  // good new
-  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
-    return interval1.start() <= interval2.end() &&
-           interval2.start() <= interval1.end();
-  }
   // old bad
 }
 
 // part of my domain model = that secret set of data structure I use for most of my complexity
-record Interval(int start, int end) {}
+record Interval(int start, int end) {
+  // good new
+  public boolean intersectsWith(Interval other) {
+    return start <= other.end && other.start <= end;
+  }
+}
 
 class MathUtil {
 
