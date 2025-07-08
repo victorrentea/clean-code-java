@@ -10,17 +10,22 @@ class CarSearch {
     }
     List<CarModel> results = carModels.stream()
         .filter(carModel -> intervalsIntersect(
-            criteria.startYear(), criteria.endYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+            new Interval(criteria.startYear(), criteria.endYear()),
+            new Interval(carModel.getStartYear(), carModel.getEndYear())))
         .toList();
-    System.out.println("Another use:" + intervalsIntersect(1, 10, 5, 20));
+    System.out.println("Another use:" + intervalsIntersect(new Interval(1, 10), new Interval(5, 20)));
     return results;
   }
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+  // good new
+  public static boolean intervalsIntersect(Interval interval1, Interval interval2) {
+    return interval1.start() <= interval2.end() &&
+           interval2.start() <= interval1.end();
   }
+  // old bad
 }
+
+record Interval(int start, int end) {}
 
 class MathUtil {
 
