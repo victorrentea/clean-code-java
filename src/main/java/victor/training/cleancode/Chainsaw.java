@@ -11,18 +11,19 @@ import static java.util.stream.Collectors.*;
 // 0TODO 1
 @RequiredArgsConstructor
 public class /*Functional*/Chainsaw/*..BrainMassacre*/ {
+	public static final int PRODUCT_COUNT_THRESHOLD = 10;
 	private final ProductRepo productRepo;
 	private final OrderRepo orderRepo;
 
 	public List<Product> getHotProducts() {
-		return orderRepo.findAll().stream()
-				.filter(Order::isActive)
+		var recentProductCount = orderRepo.findAll().stream()
+				.filter(Order::isActive)// TODO WHERE ftw
 				.filter(Order::withinTheLastMonth) // OOP
 				.flatMap(o -> o.orderLines().stream())
-				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)))
-				.entrySet()
+				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
+		return recentProductCount.entrySet()
 				.stream()
-				.filter(e -> e.getValue() >= 10)
+				.filter(e -> e.getValue() >= PRODUCT_COUNT_THRESHOLD)
 				.map(Entry::getKey)
 				.filter(p -> !p.isDeleted())
 				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
