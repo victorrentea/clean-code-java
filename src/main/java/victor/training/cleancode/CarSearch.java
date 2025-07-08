@@ -9,9 +9,7 @@ class CarSearch {
       throw new IllegalArgumentException("start larger than end");
     }
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> intervalsIntersect(
-            new Interval(criteria.startYear(), criteria.endYear()),
-            new Interval(carModel.getStartYear(), carModel.getEndYear())))
+        .filter(carModel -> intervalsIntersect(criteria.yearInterval(), carModel.yearInterval()))
         .toList();
     System.out.println("Another use:" + intervalsIntersect(new Interval(1, 10), new Interval(5, 20)));
     return results;
@@ -25,6 +23,7 @@ class CarSearch {
   // old bad
 }
 
+// part of my domain model = that secret set of data structure I use for most of my complexity
 record Interval(int start, int end) {}
 
 class MathUtil {
@@ -36,7 +35,11 @@ record CarSearchCriteria( // API JSON DTO
     int endYear,
     String make,
     String model
-) {}
+) {
+  public Interval yearInterval() {
+    return new Interval(startYear(), endYear());
+  }
+}
 
 class CarModel { // Domain Model👑
   private final String make;
@@ -65,6 +68,10 @@ class CarModel { // Domain Model👑
 
   public String getModel() {
     return model;
+  }
+
+  Interval yearInterval() {
+    return new Interval(startYear, endYear);
   }
 }
 
