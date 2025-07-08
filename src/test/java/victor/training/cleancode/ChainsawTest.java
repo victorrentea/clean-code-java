@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class FunctionalChainsawTest {
+class ChainsawTest {
 
   @Mock
   private ProductRepo productRepo;
@@ -26,7 +26,7 @@ class FunctionalChainsawTest {
   private OrderRepo orderRepo;
 
   @InjectMocks
-  private FunctionalChainsaw functionalChainsaw;
+  private Chainsaw chainsaw;
 
   private Product product = new Product("Chair", "", ProductCategory.HOME)
       .setId(7L)
@@ -44,7 +44,7 @@ class FunctionalChainsawTest {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder()));
     when(productRepo.getHiddenProductIds()).thenReturn(List.of());
 
-    assertThat(functionalChainsaw.getHotProducts()).containsExactly(product);
+    assertThat(chainsaw.getHotProducts()).containsExactly(product);
   }
 
   @Test
@@ -55,7 +55,7 @@ class FunctionalChainsawTest {
     when(orderRepo.findAll()).thenReturn(List.of(order1, order2));
     when(productRepo.getHiddenProductIds()).thenReturn(List.of());
 
-    assertThat(functionalChainsaw.getHotProducts()).containsExactly(product);
+    assertThat(chainsaw.getHotProducts()).containsExactly(product);
   }
 
   @Test
@@ -64,7 +64,7 @@ class FunctionalChainsawTest {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder()));
     when(productRepo.getHiddenProductIds()).thenReturn(List.of());
 
-    assertThat(functionalChainsaw.getHotProducts()).isEmpty();
+    assertThat(chainsaw.getHotProducts()).isEmpty();
   }
 
   @Test
@@ -72,7 +72,7 @@ class FunctionalChainsawTest {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder()));
     when(productRepo.getHiddenProductIds()).thenReturn(List.of(product.getId()));
 
-    assertThat(functionalChainsaw.getHotProducts()).isEmpty();
+    assertThat(chainsaw.getHotProducts()).isEmpty();
   }
 
   @Test
@@ -80,7 +80,7 @@ class FunctionalChainsawTest {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder().setCreationDate(LocalDate.now().minusYears(1))));
     when(productRepo.getHiddenProductIds()).thenReturn(List.of());
 
-    assertThat(functionalChainsaw.getHotProducts()).isEmpty();
+    assertThat(chainsaw.getHotProducts()).isEmpty();
   }
 
   @Test
@@ -88,6 +88,6 @@ class FunctionalChainsawTest {
     when(orderRepo.findAll()).thenReturn(List.of(anOrder().setActive(false)));
     when(productRepo.getHiddenProductIds()).thenReturn(List.of());
 
-    assertThat(functionalChainsaw.getHotProducts()).isEmpty();
+    assertThat(chainsaw.getHotProducts()).isEmpty();
   }
 }
