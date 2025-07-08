@@ -14,6 +14,7 @@ class CarSearch {
             carModel.getStartYear(), carModel.getEndYear()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
+    System.out.println("Another use:" + intervalsIntersect(1, 10, 5, 20));
     return results;
   }
 
