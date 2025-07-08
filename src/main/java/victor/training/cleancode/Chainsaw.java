@@ -21,12 +21,15 @@ public class /*Functional*/Chainsaw/*..BrainMassacre*/ {
 				.filter(Order::withinTheLastMonth) // OOP
 				.flatMap(o -> o.orderLines().stream())
 				.collect(groupingBy(OrderLine::product, summingInt(OrderLine::itemCount)));
-		return recentProductCount.entrySet()
+		var hiddenProductIds = productRepo.getHiddenProductIds();
+		var frequentProducts = recentProductCount.entrySet()
 				.stream()
 				.filter(e -> e.getValue() >= PRODUCT_COUNT_THRESHOLD)
 				.map(Entry::getKey)
+				.toList();
+		return frequentProducts.stream()
 				.filter(p -> !p.isDeleted())
-				.filter(p -> !productRepo.getHiddenProductIds().contains(p.getId()))
+				.filter(p -> !hiddenProductIds.contains(p.getId()))
 				.collect(toList());
 	}
 
