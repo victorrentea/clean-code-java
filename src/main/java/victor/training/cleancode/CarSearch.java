@@ -1,8 +1,8 @@
 package victor.training.cleancode;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+// TODO 3
 class CarSearch {
   public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
     if (criteria.startYear() > criteria.endYear()) {
@@ -12,8 +12,7 @@ class CarSearch {
         .filter(carModel -> intervalsIntersect(
             criteria.startYear(), criteria.endYear(),
             carModel.getStartYear(), carModel.getEndYear()))
-        .collect(Collectors.toList());
-    System.out.println("More filtering logic ...");
+        .toList();
     System.out.println("Another use:" + intervalsIntersect(1, 10, 5, 20));
     return results;
   }

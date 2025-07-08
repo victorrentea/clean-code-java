@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+// TODO 8
 public class StructuralReplace {
   private static final Logger log = LoggerFactory.getLogger(StructuralReplace.class);
 
@@ -34,7 +35,6 @@ public class StructuralReplace {
 class Lib {
   public static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
-  // TODO use this instead of render(translate(<string>), <string>*)
   public static String renderTranslate(String key, String... values) {
     return render(translate(key), values);
   }

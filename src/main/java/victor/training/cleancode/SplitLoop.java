@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SplitLoop {
-  // TODO Split loops and refactor to .stream. Run Tests✅
   public String computeStats(List<Employee> employees) {
     List<Integer> employeeIds = new ArrayList<>();
     double totalConsultantSalary = 0;

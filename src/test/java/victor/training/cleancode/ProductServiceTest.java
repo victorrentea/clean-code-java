@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+// TODO 2
 @EnableWireMock
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ProductService.class, RestTemplate.class})

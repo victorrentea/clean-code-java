@@ -2,6 +2,7 @@ package victor.training.cleancode;
 
 import java.util.List;
 
+// TODO 6
 public class Guards {
 
   public static final int DEAD_PAY_AMOUNT = 1;

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// TODO 7
 @RequiredArgsConstructor
 public class PureFunction {
   private final CustomerRepo customerRepo;
