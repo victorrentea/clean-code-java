@@ -5,7 +5,6 @@ Interval:20
 ProductService:20
 Similar:5
 Guards:5
-Pure±?: 15
 Structural Replace, OpenRewrite, Refaster:15
 
 Lessons Learned

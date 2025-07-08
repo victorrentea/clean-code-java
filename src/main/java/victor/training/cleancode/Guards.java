@@ -9,26 +9,24 @@ public class Guards {
 
   public int getPayAmount(Marine marine, BonusPackage bonusPackage) {
     int result;
-    if (marine != null && !(bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
-      if (!marine.dead()) {
-        if (!marine.retired()) {
-          if (marine.yearsOfService() != null) {
-            result = marine.yearsOfService() * 100 + bonusPackage.value();
-            if (!marine.awards().isEmpty()) {
-              result += 1000;
-            }
-            if (marine.awards().size() >= 3) {
-              result += 2000;
-            }
-          } else {
-            throw new IllegalArgumentException("Any marine should have the years of service set");
-          }
-        } else result = retiredAmount();
-      } else {
-        result = DEAD_PAY_AMOUNT;
-      }
-    } else {
+    if (marine == null || (bonusPackage.value() < 10 || bonusPackage.value() > 100)) {
       throw new IllegalArgumentException("Not applicable!");
+    }
+    if (marine.dead()) {
+      return DEAD_PAY_AMOUNT;
+    }
+    if (marine.retired()) {
+      return retiredAmount();
+    }
+    if (marine.yearsOfService() == null) {
+      throw new IllegalArgumentException("Any marine should have the years of service set");
+    }
+    result = marine.yearsOfService() * 100 + bonusPackage.value();
+    if (!marine.awards().isEmpty()) {
+      result += 1000;
+    }
+    if (marine.awards().size() >= 3) {
+      result += 2000;
     }
     return result;
   }
