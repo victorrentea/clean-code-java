@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {ProductService.class, RestTemplate.class})
 @TestPropertySource(properties = "rapex.service.url.base=http://localhost:${wiremock.server.port:9999}")
 class ProductServiceTest {
+  public static final String SUPPLIER_CODE = "code2";
   @MockitoBean
   SupplierRepo supplierRepo;
   @MockitoBean
@@ -52,7 +53,7 @@ class ProductServiceTest {
   @Test
   void createOk() {
     ProductDto productDto = MotherObject.aProduct().withName("different");
-    when(supplierRepo.findByCode("code2")).thenReturn(Optional.of(new Supplier().setCode("code2")));
+    when(supplierRepo.findByCode(SUPPLIER_CODE)).thenReturn(Optional.of(new Supplier().setCode(SUPPLIER_CODE)));
     when(productRepo.save(productCaptor.capture())).thenReturn(new Product().setId(123L));
     stubFor(get(urlEqualTo("/product/code1/safety"))
         .willReturn(okJson("{\"safetyClass\": \"SAFE\"}")));
@@ -63,7 +64,7 @@ class ProductServiceTest {
     assertThat(productCaptor.getValue())
         .returns("different", Product::getName)
         .returns("code1", Product::getBarcode)
-        .returns("code2", p -> p.getSupplier().getCode())
+        .returns(SUPPLIER_CODE, p -> p.getSupplier().getCode())
         .returns(ProductCategory.HOME, Product::getCategory);
   }
 }

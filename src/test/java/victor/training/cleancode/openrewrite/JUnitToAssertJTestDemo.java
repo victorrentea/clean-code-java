@@ -5,16 +5,17 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
-// TODO 9
 class JUnitToAssertJTestDemo {
   @Test
   void test() {
     assertThat(testedCode()).contains("es");
-    assertThat(testedCode()).startsWith("re");
+//    assertThat(testedCode())
+//        .contains("es")
+//        .containsIgnoringCase("es");
   }
 
   private String testedCode() {
-    return "result";
+    return "barcelona";
   }
 
   @Test
