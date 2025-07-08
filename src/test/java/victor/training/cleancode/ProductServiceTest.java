@@ -23,9 +23,9 @@ import static org.mockito.Mockito.when;
 
 @EnableWireMock
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ProductService.class, RapexClient.class, RestTemplate.class})
-@TestPropertySource(properties = "safety.service.url.base=http://localhost:${wiremock.server.port:9999}")
-public class ProductServiceTest {
+@ContextConfiguration(classes = {ProductService.class, RestTemplate.class})
+@TestPropertySource(properties = "rapex.service.url.base=http://localhost:${wiremock.server.port:9999}")
+class ProductServiceTest {
   @MockitoBean
   SupplierRepo supplierRepo;
   @MockitoBean
@@ -39,7 +39,7 @@ public class ProductServiceTest {
   void createThrowsForUnsafeProduct() {
     ProductDto productDto = ProductDto.builder()
         .name("name")
-        .barcode("code1")
+        .barcode("Code1")
         .supplierCode("code2")
         .category(ProductCategory.HOME)
         .build();

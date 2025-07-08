@@ -16,7 +16,7 @@ public class ProductService {
   private final SupplierRepo supplierRepo;
   private final ProductRepo productRepo;
   private final RestTemplate restTemplate;
-  @Value("${safety.service.url.base}")
+  @Value("${rapex.service.url.base}")
   private URL baseUrl;
 
   public Long createProduct(ProductDto productDto) {

@@ -2,14 +2,14 @@ package victor.training.cleancode.openrewrite;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
 class JUnitToAssertJTestDemo {
   @Test
   void test() {
-    assertTrue(testedCode().contains("es"));
-    assertTrue(testedCode().startsWith("re"));
+    assertThat(testedCode()).contains("es");
+    assertThat(testedCode()).startsWith("re");
   }
 
   private String testedCode() {
@@ -17,8 +17,8 @@ class JUnitToAssertJTestDemo {
   }
 
   @Test
-  void testExceptions() {
-    assertThrows(IllegalArgumentException.class, () -> throwingCode());
+  void exceptions() {
+    assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> throwingCode());
   }
 
   private void throwingCode() {

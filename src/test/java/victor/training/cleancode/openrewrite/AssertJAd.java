@@ -14,7 +14,6 @@ import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.byLessThan;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @Disabled("enable to compare 💖AssertJ and 🤢JUnit Assertions")
@@ -22,74 +21,76 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class Strings {
+  class Strings {
     String string = "abcdef";
 
     @Test
-    public void startsWith_JUnit() {
-      assertTrue(string.startsWith("bcd")); // see the failure message 🤢
+    void startsWith_JUnit() {
+      assertThat(string).startsWith("bcd"); // see the failure message 🤢
     }
 
     @Test
-    public void startsWith_AssertJ() {
+    void startsWith_AssertJ() {
       assertThat(string).startsWith("bcd"); // see the failure message
     }
 
     @Test
-    public void ignoreCase_JUnit() {
-      assertEquals("ABCDE", string.toUpperCase()); // looses the original case
+    void ignoreCase_JUnit() {
+      assertThat(string.toUpperCase()).isEqualTo("ABCDE"); // looses the original case
     }
 
     @Test
-    public void ignoreCase_AssertJ() {
+    void ignoreCase_AssertJ() {
       assertThat(string).isEqualToIgnoringCase("AbCdE");
     }
 
     @Test
-    public void regex_JUnit() {
-      assertTrue(string.matches(".*bd.*"));
+    void regex_JUnit() {
+      assertThat(string).matches(".*bd.*");
     }
 
     @Test
-    public void regex_AssertJ() {
+    void regex_AssertJ() {
       assertThat(string).matches(".*bd.*");
     }
   }
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class CollectionsPrimitives {
+  class CollectionsPrimitives {
     List<Integer> aList = List.of(100, 200, 300, 300);
 
     @Test
-    public void size1_JUnit() {
-      assertEquals(1, aList.size());
-    }
-
-    @Test
-    public void size1_AssertJ() {
+    void size1_JUnit() {
       assertThat(aList).hasSize(1);
     }
 
     @Test
-    public void onceInAnyOrder_JUnit() {
-      assertTrue(aList.containsAll(List.of(100, 200, 700)));
-      assertEquals(3, aList.size());
+    void size1_AssertJ() {
+      assertThat(aList).hasSize(1);
     }
 
     @Test
-    public void onceInAnyOrder_AssertJ() {
+    void onceInAnyOrder_JUnit() {
+      assertThat(aList)
+          .containsAll(List.of(100, 200, 700))
+          .hasSize(3);
+    }
+
+    @Test
+    void onceInAnyOrder_AssertJ() {
       assertThat(aList).containsExactlyInAnyOrder(100, 200, 300);
     }
 
     @Test
-    public void contains_JUnit() {
-      assertTrue(aList.containsAll(List.of(100, 200, 400)));
-      assertFalse(aList.contains(500));
+    void contains_JUnit() {
+      assertThat(aList)
+          .containsAll(List.of(100, 200, 400))
+          .doesNotContain(500);
     }
 
     @Test
-    public void contains_AssertJ() {
+    void contains_AssertJ() {
       assertThat(aList)
           .contains(100, 200, 400)
           .doesNotContain(500);
@@ -100,16 +101,16 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class Time {
+  class Time {
     private final LocalDateTime oneMinAgo = now().minusMinutes(1);
 
     @Test
-    public void deltaTime_JUnit() {
-      assertTrue(oneMinAgo.isAfter(now().minusSeconds(1)));
+    void deltaTime_JUnit() {
+      assertThat(oneMinAgo.isAfter(now().minusSeconds(1))).isTrue();
     }
 
     @Test
-    public void deltaTime_AssertJ() {
+    void deltaTime_AssertJ() {
       assertThat(oneMinAgo).isCloseTo(now(), byLessThan(1, SECONDS));
     }
   }
