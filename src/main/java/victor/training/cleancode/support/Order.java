@@ -66,4 +66,7 @@ public class Order {
     return this;
   }
 
+  public boolean withinTheLastMonth() {
+    return creationDate.isAfter(LocalDate.now().minusMonths(1));
+  }
 }
