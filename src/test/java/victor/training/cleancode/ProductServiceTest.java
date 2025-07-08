@@ -1,6 +1,5 @@
 package victor.training.cleancode;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -36,17 +35,9 @@ class ProductServiceTest {
   ProductService productService;
   @Captor
   ArgumentCaptor<Product> productCaptor;
-  private ProductDto productDto;
 
-  @BeforeEach
-  void setUp() {
-    productDto = ProductDto.builder()
-        .name("name")
-        .barcode("code1")
-        .supplierCode("code2")
-        .category(ProductCategory.HOME)
-        .build();
-  }
+  ProductDto productDto = MotherObject.aProduct();
+
 
   @Test
   void createThrowsForUnsafeProduct() {
@@ -60,6 +51,7 @@ class ProductServiceTest {
 
   @Test
   void createOk() {
+    productDto = productDto.withName("different");
     when(supplierRepo.findByCode("code2")).thenReturn(Optional.of(new Supplier().setCode("code2")));
     when(productRepo.save(productCaptor.capture())).thenReturn(new Product().setId(123L));
     stubFor(get(urlEqualTo("/product/code1/safety"))
@@ -69,7 +61,7 @@ class ProductServiceTest {
 
     assertThat(createdId).isEqualTo(123L);
     assertThat(productCaptor.getValue())
-        .returns("name", Product::getName)
+        .returns("different", Product::getName)
         .returns("code1", Product::getBarcode)
         .returns("code2", p -> p.getSupplier().getCode())
         .returns(ProductCategory.HOME, Product::getCategory);
