@@ -1,2 +1,10 @@
-Function Frenzy example
-Redo Videostore another real world example
+Chainsaw:15
+Test:25
+Interval:45
+
+ProductService:20
+Similar:5
+Guards:5
+Pure±?: 15
+Structural Replace, OpenRewrite, Refaster:15
+Lessons Learned

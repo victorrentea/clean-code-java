@@ -39,7 +39,7 @@ class ProductServiceTest {
   void createThrowsForUnsafeProduct() {
     ProductDto productDto = ProductDto.builder()
         .name("name")
-        .barcode("Code1")
+        .barcode("code1")
         .supplierCode("code2")
         .category(ProductCategory.HOME)
         .build();
@@ -55,7 +55,7 @@ class ProductServiceTest {
   void createOk() {
     ProductDto productDto = ProductDto.builder()
         .name("name")
-        .barcode("Code1")
+        .barcode("code1")
         .supplierCode("code2")
         .category(ProductCategory.HOME)
         .build();
