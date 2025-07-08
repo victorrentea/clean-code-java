@@ -1,4 +1,4 @@
-package victor.training.cleancode.app;
+package victor.training.cleancode.infra;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -6,18 +6,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import victor.training.cleancode.app.SafetyCheckerService;
 
 import java.net.URL;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service // Adapter pattern
-public class RapexApiClient {
+public class RapexApiClient implements SafetyCheckerService {
   private final RestTemplate restTemplate;
   @Value("${rapex.service.url.base}")
   private URL baseUrl;
 
   @SuppressWarnings("DataFlowIssue")
+  @Override
   public boolean isSafe(@NotNull String barcode) {
     SafetyResponse response = restTemplate.getForEntity(
             baseUrl + "/product/{barcode}/safety",
