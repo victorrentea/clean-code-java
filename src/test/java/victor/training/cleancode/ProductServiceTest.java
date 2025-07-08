@@ -70,7 +70,7 @@ class ProductServiceTest {
     assertThat(createdId).isEqualTo(123L);
     assertThat(productCaptor.getValue())
         .returns("name", Product::getName)
-        .returns("Code1", Product::getBarcode)
+        .returns("code1", Product::getBarcode)
         .returns("code2", p -> p.getSupplier().getCode())
         .returns(ProductCategory.HOME, Product::getCategory);
   }
