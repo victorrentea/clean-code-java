@@ -1,4 +1,4 @@
-package victor.training.cleancode.fp;
+package victor.training.cleancode;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +7,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import victor.training.cleancode.PureFunction;
 import victor.training.cleancode.support.*;
 
 import java.util.List;

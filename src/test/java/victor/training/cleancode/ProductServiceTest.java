@@ -11,6 +11,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import org.wiremock.spring.EnableWireMock;
+import victor.training.cleancode.app.ProductService;
 import victor.training.cleancode.support.*;
 
 import java.util.Optional;
