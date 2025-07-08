@@ -36,11 +36,11 @@ class ProductServiceTest {
   @Captor
   ArgumentCaptor<Product> productCaptor;
 
-  ProductDto productDto = MotherObject.aProduct();
 
 
   @Test
   void createThrowsForUnsafeProduct() {
+    ProductDto productDto = MotherObject.aProduct();
     stubFor(get(urlEqualTo("/product/code1/safety"))
         .willReturn(okJson("{\"safetyClass\": \"UNSAFE\"}")));
 
@@ -51,7 +51,7 @@ class ProductServiceTest {
 
   @Test
   void createOk() {
-    productDto = productDto.withName("different");
+    ProductDto productDto = MotherObject.aProduct().withName("different");
     when(supplierRepo.findByCode("code2")).thenReturn(Optional.of(new Supplier().setCode("code2")));
     when(productRepo.save(productCaptor.capture())).thenReturn(new Product().setId(123L));
     stubFor(get(urlEqualTo("/product/code1/safety"))
