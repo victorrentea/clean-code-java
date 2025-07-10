@@ -42,8 +42,8 @@ class Two {
     System.out.println("b=" + 987);
     System.out.println("b=" + 987);
     double ssq = numbers.stream()
-        .filter(number -> number % 2 == 0)
-        .mapToDouble(number -> number * number)
+        .filter(n -> n % 2 == 0)
+        .mapToDouble(n -> n * n)
         .sum();
     return Math.sqrt(ssq);
   }
