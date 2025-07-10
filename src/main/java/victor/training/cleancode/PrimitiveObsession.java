@@ -26,7 +26,7 @@ public class PrimitiveObsession {
     if (!"CARD".equals(paymentMethod) && !"CASH".equals(paymentMethod)) {
       throw new IllegalArgumentException("Only CARD payment method is supported");
     }
-    var map = fetchData(paymentMethod);
+    Map<Long, Map<String, Integer>> map = fetchData(paymentMethod);
 
     for (var e : map.entrySet()) { // iterating map entries 🤢
       String pl = e.getValue().entrySet().stream()

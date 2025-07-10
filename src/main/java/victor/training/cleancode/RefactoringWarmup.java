@@ -8,8 +8,7 @@ class RefactoringWarmup {
     Two two = new Two();
     System.out.println(two.loop(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
     System.out.println(new One(two).f());
-    final R r = new R(1);
-    System.out.println(two.g(r.x(), 3));
+    System.out.println(two.g(new R(1)));
   }
 }
 
@@ -21,30 +20,25 @@ class One {
   }
 
   public int f() {
-    final R r = new R(3);
-    return 2 * two.g(r.x(), 2);
+    return 2 * two.g(new R(3));
   }
 }
 
 class Two {
-  // extract/inline: variabila locala, metoda, constanta
-  // reorder de param cu CHange Signature
-  // Preview impl: ctrl-shift-i/opt-space
-  // Refactor this: ^T vs Ctrl-Alt-Shift-T
-  public int g(int x, int p) {
-    var i = p;
-    System.out.println("b=" + i);
-    System.out.println("b=" + i);
-    return 1 + i + x;
+  public int g(R r) {
+    int b = 2;
+    System.out.println("b=" + b);
+    return 1 + b + r.x();
   }
 
   public double loop(List<Integer> numbers) {
     System.out.println("b=" + 987);
-    System.out.println("b=" + 987);
-    double ssq = numbers.stream()
-        .filter(n -> n % 2 == 0)
-        .mapToDouble(n -> n * n)
-        .sum();
+    double ssq = 0;
+    for (Integer number : numbers) {
+      if (number % 2 == 0) {
+        ssq += number * number;
+      }
+    }
     return Math.sqrt(ssq);
   }
 }
