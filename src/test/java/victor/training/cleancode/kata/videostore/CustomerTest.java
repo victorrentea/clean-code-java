@@ -1,31 +1,38 @@
 package victor.training.cleancode.kata.videostore;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class CustomerTest {
 
   @Test
   void characterizationTest() {
-        Customer customer = new Customer("John Doe");
-        customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
-        customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
-        customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
-        customer.addRental(new Movie("Wicked", Movie.CHILDRENS), 3);
+    Customer customer = new Customer("John Doe");
+    customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
+    customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
+    customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
+    customer.addRental(new Movie("Wicked", Movie.CHILDRENS), 3);
 
-        String expected = """
-            Rental Record for John Doe
-            	Star Wars	18.0
-            	Sofia	7.5
-            	Inception	6.5
-            	Wicked	1.5
-            Amount owed is 33.5
-            You earned 5 frequent renter points""";
+    String expected = """
+        Rental Record for John Doe
+        	Star Wars	18.0
+        	Sofia	7.5
+        	Inception	6.5
+        	Wicked	1.5
+        Amount owed is 33.5
+        You earned 5 frequent renter points""";
 
-    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
+//    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
     // if above line fails to compile, uncomment the next line:
-    // assertEquals(expected.replaceAll("\\r\\n?", "\n"), customer.statement().replaceAll("\\r\\n?", "\n"));
-    }
+    assertEquals(normalizeNewLines(expected), normalizeNewLines(customer.statement()));
+  }
+
+  private String normalizeNewLines(String expected) {
+    return expected.replaceAll("\\r\\n?", "\n");
+  }
+
 }
