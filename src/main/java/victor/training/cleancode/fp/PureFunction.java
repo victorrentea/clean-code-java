@@ -23,7 +23,13 @@ class PureFunction {
 
     Customer customer = customerRepo.findById(customerId);
     List<Product> products = productRepo.findAllById(productIds); // WHERE ID IN (?,?..?)§
+    var resolvedPrices = resolvePrices(internalPrices, products);
+    var result = applyCoupons(products, resolvedPrices, customer);
+    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
+    return result.finalPrices();
+  }
 
+  private Map<Long, Double> resolvePrices(Map<Long, Double> internalPrices, List<Product> products) {
     Map<Long, Double> resolvedPrices = new HashMap<>();
     for (Product product : products) {
       Double price = internalPrices.get(product.getId());
@@ -32,10 +38,7 @@ class PureFunction {
       }
       resolvedPrices.put(product.getId(), price);
     }
-    var result = applyCoupons(products, resolvedPrices, customer);
-
-    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
-    return result.finalPrices();
+    return resolvedPrices;
   }
 
   /* package */ record PriceCalculationResult(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {}
@@ -60,4 +63,14 @@ class PureFunction {
     }
     return new PriceCalculationResult(usedCoupons, finalPrices);
   }
+
+  private void f1() {
+  }
+
+  private void f2() {
+  }
+
+  private void f3() {
+  }
+
 }
