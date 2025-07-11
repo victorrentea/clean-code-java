@@ -8,7 +8,7 @@ class RefactoringWarmup {
     Two two = new Two();
     System.out.println(two.loop(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
     System.out.println(new One(two).f());
-    System.out.println(two.g(new R(1)));
+    System.out.println(new R(1).g());
   }
 }
 
@@ -20,16 +20,11 @@ class One {
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    return 2 * new R(3).g();
   }
 }
 
 class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
-  }
 
   public double loop(List<Integer> numbers) {
     System.out.println("b=" + 987);
@@ -44,6 +39,11 @@ class Two {
 }
 
 record R(int x) {
+  public int g() {
+    int b = 2;
+    System.out.println("b=" + b);
+    return 1 + b + x();
+  }
 }
 
 // TODO: Practice Refactoring
