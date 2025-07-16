@@ -47,7 +47,7 @@
             <!-- Slf4j + Logback -->
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.14</version>
+            <version>1.5.13</version>
         </dependency>
         <dependency>
             <!-- FP library: Either, Try, Tuple7, Function6 -->
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.0.0-jre</version>
+            <version>32.0.1-jre</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
