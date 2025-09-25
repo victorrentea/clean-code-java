@@ -41,7 +41,9 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public CarSearchCriteria(int startYear, int endYear, String make) {
     this.make = make;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }
@@ -74,7 +76,9 @@ class CarModel { // the Entity Model👑 test
   public CarModel(String make, String model, int startYear, int endYear) {
     this.make = make;
     this.model = model;
-    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+    if (startYear > endYear) {
+      throw new IllegalArgumentException("start larger than end");
+    }
     this.startYear = startYear;
     this.endYear = endYear;
   }

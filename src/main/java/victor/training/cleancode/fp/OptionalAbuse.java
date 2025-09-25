@@ -14,7 +14,7 @@ public class OptionalAbuse {
         .filter(s -> !s.isBlank())
         .map(s -> s + "@example.com")
         .ifPresentOrElse(
-            email -> entity.setRecipient(email),
+            entity::setRecipient,
             () -> entity.setRecipient("anonymous@example.com")
         );
     entity.setAge(dto.age());

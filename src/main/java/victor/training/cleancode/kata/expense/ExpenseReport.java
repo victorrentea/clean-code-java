@@ -1,6 +1,5 @@
 package victor.training.cleancode.kata.expense;
 
-import java.util.Date;
 import java.util.List;
 
 public class ExpenseReport {
@@ -12,7 +11,7 @@ public class ExpenseReport {
         System.out.println("Expenses Report");
 
         for (Expense expense : expenses) {
-            if (expense.type.equals("DINNER") || expense.type.equals("BREAKFAST")) {
+          if ("DINNER".equals(expense.type) || "BREAKFAST".equals(expense.type)) {
                 mealExpenses += expense.amount;
             }
 
@@ -30,8 +29,8 @@ public class ExpenseReport {
             }
 
             // meal over expenses
-            String m = expense.type.equals("DINNER") && expense.amount > 5000 || expense.type.equals("BREAKFAST") && expense.amount > 1000 ? "X" : " ";
-            mealOver |= m.equals("X");
+          String m = "DINNER".equals(expense.type) && expense.amount > 5000 || "BREAKFAST".equals(expense.type) && expense.amount > 1000 ? "X" : " ";
+          mealOver |= "X".equals(m);
 
             System.out.println(en + "\t" + expense.amount + "\t" + m);
 

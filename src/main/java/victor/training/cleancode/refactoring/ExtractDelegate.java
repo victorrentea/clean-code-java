@@ -10,9 +10,9 @@ public class ExtractDelegate {
     }
 }
 class BigOne {
-    private A a = new A();
-    private B b = new B();
-    private C c = new C();
+  private final A a = new A();
+  private final B b = new B();
+  private final C c = new C();
 
     public void fa() {
         a.f();

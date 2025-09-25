@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 class POValidatorTest {
-  private POItem item = new POItem();
+  private final POItem item = new POItem();
 
   @Test
   void validatePurchaseOrderItem_ItemValid_ReturnsTrue() {

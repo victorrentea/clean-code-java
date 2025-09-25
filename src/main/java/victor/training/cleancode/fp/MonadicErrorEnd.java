@@ -25,7 +25,9 @@ public class MonadicErrorEnd {
 
   private Try<Long> insert(String data) {
     return Try.of(() -> {
-      if (Math.random() < .001) throw new IllegalArgumentException("UK Violation: NULL tea");
+      if (Math.random() < .001) {
+        throw new IllegalArgumentException("UK Violation: NULL tea");
+      }
       return 42L; // the new ID
     });
   }

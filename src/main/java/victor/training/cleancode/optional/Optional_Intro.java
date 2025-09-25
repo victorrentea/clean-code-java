@@ -22,7 +22,7 @@ public class Optional_Intro {
 //            .map(value -> "You got a discount of %" + value.globalPercentage())
 //            .orElse("Buy more!")).orElse("Paranoicule!");
     return customer.getMemberCard()
-        .flatMap(card -> computeDiscount(card))
+        .flatMap(Optional_Intro::computeDiscount)
         .map(value -> "You got a discount of %" + value.globalPercentage())
         .orElse("No Discount");
   }

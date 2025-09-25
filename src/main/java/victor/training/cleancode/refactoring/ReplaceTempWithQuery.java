@@ -11,14 +11,15 @@ public class ReplaceTempWithQuery {
 
     public double computePrice() {
         double basePrice = quantity * itemPrice;
-        if (quantity > 10)
-            return basePrice * 0.95;
-        else
-            return computeNormalPrice(basePrice);
+      if (quantity > 10) {
+        return basePrice * 0.95;
+      } else {
+        return computeNormalPrice(basePrice);
+      }
     }
 
     private double computeNormalPrice(double basePrice) {
-        double factor = (basePrice > 1000) ? 0.95: 0.98;
+      double factor = basePrice > 1000 ? 0.95 : 0.98;
         return factor * basePrice;
     }
 

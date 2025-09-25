@@ -36,6 +36,6 @@ public class PaymentFileService {
   }
 
   private Try.WithResources1<InputStream> openFile(final String fileName) {
-    return Try.withResources(() -> new FileInputStream(new File(folderPath + "/" + fileName)));
+    return Try.withResources(() -> new FileInputStream(folderPath + "/" + fileName));
   }
 }

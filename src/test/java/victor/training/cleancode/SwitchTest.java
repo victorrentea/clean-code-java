@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SwitchTest {
 
-  private Switch target = new Switch();
+  private final Switch target = new Switch();
 
   @ParameterizedTest
   @CsvSource({

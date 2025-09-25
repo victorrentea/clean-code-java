@@ -22,7 +22,9 @@ public class PatientService extends BaseService<PatientDAO> {
     internalMethod("42");
     LOG.debug("Message {}", patient);
     getDao().update(patient, user);
-    if (new Long(1L) == 42) System.out.println();
+    if (Long.valueOf(1L) == 42) {
+      System.out.println();
+    }
     if (Long.valueOf("1") == 42) {
       System.out.println("Answer to life");
     }

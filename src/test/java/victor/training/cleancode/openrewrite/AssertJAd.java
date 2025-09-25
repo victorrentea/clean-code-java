@@ -112,18 +112,18 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
     @Test
     void multipleAttributes_JUnit() {
       assertThat(fellowship.stream().anyMatch(c ->
-          c.name().equals("Frodo") &&
+          "Frodo".equals(c.name()) &&
           c.age() == 20 &&
-          c.race().name().equals("Hobbit"))).isTrue();
+          "Hobbit".equals(c.race().name()))).isTrue();
       assertThat(fellowship.stream().anyMatch(c ->
-          c.name().equals("Aragorn") &&
+          "Aragorn".equals(c.name()) &&
           c.age() == 39 &&
-          c.race().name().equals("Man"))).isTrue();
+          "Man".equals(c.race().name()))).isTrue();
       assertThat(fellowship.stream().anyMatch(c ->
-          c.name().equals("Legolas") &&
+          "Legolas".equals(c.name()) &&
           c.age() == 100 && // ❌
 //          c.age() == 1000 && // ✅
-          c.race().name().equals("Elf"))).isTrue();
+          "Elf".equals(c.race().name()))).isTrue();
     }
 
     @Test

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 public class LoanPattern_vsAOP {
 
   public static void main(String[] args) {
-    timeIt(() -> suspect());
+    timeIt(LoanPattern_vsAOP::suspect);
   }
 
   private static int suspect() {

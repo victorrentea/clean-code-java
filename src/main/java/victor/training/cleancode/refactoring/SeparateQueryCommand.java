@@ -6,11 +6,11 @@ public class SeparateQueryCommand {
 
     public String alertForMiscreant(List<String> people) {
         for (String person : people) {
-            if (person.equals("Don")) {
+          if ("Don".equals(person)) {
                 setOffAlarms();
                 return "Don";
             }
-            if (person.equals("John")) {
+          if ("John".equals(person)) {
                 setOffAlarms();
                 return "John";
             }

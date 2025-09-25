@@ -10,7 +10,9 @@ public class ParameterObjects {
   }
 
   private void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
-    if (fName == null || lName == null) throw new IllegalArgumentException();
+    if (fName == null || lName == null) {
+      throw new IllegalArgumentException();
+    }
 
     System.out.println("Some Logic");
     System.out.println("Shipping to " + city + " on St. " + streetName + " " + streetNumber);
@@ -20,7 +22,9 @@ public class ParameterObjects {
 
 class AnotherClass {
   public void otherMethod(String firstName, String lastName, int x) {
-    if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    if (firstName == null || lastName == null) {
+      throw new IllegalArgumentException();
+    }
 
     System.out.println("Another distant Logic " + x);
     System.out.println("Person: " + lastName);
@@ -30,12 +34,14 @@ class AnotherClass {
 // Domain Entity
 class Person {
   private Long id;
-  private String firstName;
+  private final String firstName;
   private String lastName;
   private String phone;
 
   public Person(String firstName, String lastName) {
-    if (firstName == null || lastName == null) throw new IllegalArgumentException();
+    if (firstName == null || lastName == null) {
+      throw new IllegalArgumentException();
+    }
     this.firstName = firstName;
     this.lastName = lastName;
   }

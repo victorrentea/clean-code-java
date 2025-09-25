@@ -23,7 +23,9 @@ class JUnitToAssertJTestDemo {
   }
 
   private String notification(boolean shouldThrow) {
-    if (shouldThrow) throw new IllegalArgumentException("Boom");
+    if (shouldThrow) {
+      throw new IllegalArgumentException("Boom");
+    }
     return "result";
   }
   // 1) run openrewrite-assertj.yaml in IntelliJ, or

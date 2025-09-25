@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ExpenseReportTest {
 
-  private ExpenseReport report = new ExpenseReport();
+  private final ExpenseReport report = new ExpenseReport();
 
   @Test
   @CaptureSystemOutput

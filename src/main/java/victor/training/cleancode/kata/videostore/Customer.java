@@ -9,7 +9,7 @@ class Customer {
 
 	public Customer(String name) {
 		this.name = name;
-	};
+	}
 
 	public void addRental(Movie m, int d) {
 		rentals.put(m, d);
@@ -31,25 +31,28 @@ class Customer {
 			switch (each.getPriceCode()) {
 				case Movie.REGULAR:
 					thisAmount += 2;
-					if (dr > 2)
+					if (dr > 2) {
 						thisAmount += (dr - 2) * 1.5;
+					}
 					break;
 				case Movie.NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
 				case Movie.CHILDRENS:
 					thisAmount += 1.5;
-					if (dr > 3)
+					if (dr > 3) {
 						thisAmount += (dr - 3) * 1.5;
+					}
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
+					(each.getPriceCode() == Movie.NEW_RELEASE)
+					&& dr > 1) {
 				frequentRenterPoints++;
+			}
 			// show figures line for this rental
 			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
