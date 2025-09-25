@@ -1,0 +1,6 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: victor.training.SASTDemo
+displayName: Resolve common static analysis issues (also known as SAST issues)
+recipeList:
+  - org.openrewrite.staticanalysis.CommonStaticAnalysis

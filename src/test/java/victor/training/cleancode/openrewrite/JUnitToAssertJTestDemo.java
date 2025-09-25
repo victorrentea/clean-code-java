@@ -26,7 +26,7 @@ class JUnitToAssertJTestDemo {
     if (shouldThrow) throw new IllegalArgumentException("Boom");
     return "result";
   }
-  // 1) run open-rewrite.yaml in IntelliJ, or
+  // 1) run openrewrite-assertj.yaml in IntelliJ, or
   // 2) mvn -U org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:RELEASE -Drewrite.activeRecipes=org.openrewrite.java.testing.assertj.JUnitAssertEqualsToAssertThat -Drewrite.exportDatatables=true
 
 }
