@@ -12,6 +12,8 @@ public class Patient implements Data {
   private String lastName;
   private String phoneNumber;
   private String email;
+  private Long processCenterId;
+
   @OldAnnotation
   private List<Consultation> consultations;
 
@@ -19,7 +21,6 @@ public class Patient implements Data {
     consultations = new ArrayList<Consultation>();
     email = null;
   }
-
 
   public String getId() {
     return id;
@@ -67,6 +68,14 @@ public class Patient implements Data {
 
   public void setConsultations(List<Consultation> consultations) {
     this.consultations = consultations;
+  }
+
+  public Long getProcessCenterId() {
+    return processCenterId;
+  }
+
+  public void setProcessCenterId(Long processCenterId) {
+    this.processCenterId = processCenterId;
   }
 
   @Override
