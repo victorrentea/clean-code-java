@@ -1,10 +1,26 @@
 *** Refactoring Power Tools ***
-- Code I work on: 
-  https://github.com/victorrentea/clean-code-java.git branch power-tools
-- Openrewrite project to play refaster in: 
-  https://github.com/openrewrite/rewrite-migrate-java.git
-- This document will be uploaded to the meetup page:
-  https://www.meetup.com/european-software-crafters/events/308580043
+- Code I worked on: https://github.com/victorrentea/clean-code-java.git branch power-tools
+- Openrewrite project to play refaster in: https://github.com/openrewrite/rewrite-migrate-java.git
+- This document will be uploaded to the meetup page: https://www.meetup.com/european-software-crafters/events/308580043
+- Project I played today 40 minutes to create my own recipe that I showed: https://docs.openrewrite.org/authoring-recipes/refaster-recipes
+
+Links from Rick:
+Here are my links:
+- Picnic's Error Prone Support: https://github.com/PicnicSupermarket/error-prone-support
+- Docs on the rules from EPS: https://error-prone.picnic.tech/
+- Maven configuration example of EPS in Checkstyle: https://github.com/checkstyle/checkstyle/blob/master/pom.xml#L2537-L2568
+- Google Error Prone: https://github.com/google/error-prone
+- Commandline flags used to configure Error Prone: https://errorprone.info/docs/flags
+- List of BugPatterns: https://errorprone.info/bugpatterns
+- Simple demo Maven project with Error Prone + Error Prone Support: https://github.com/rickie/error-prone-demo/blob/main/pom.xml
+- Gradle plugin for Error Prone: https://github.com/tbroyer/gradle-errorprone-plugin
+- Picnic's Refaster Rules in Checkstyle via OpenRewrite: https://github.com/checkstyle/checkstyle/blob/master/pom.xml#L5363-L5374.
+- OpenRewrite:
+- Refaster rules available in OpenRewrite: https://docs.openrewrite.org/recipes/tech/picnic/errorprone/refasterrules
+- Refaster <> OpenRewrite integration: https://github.com/openrewrite/rewrite-templating/ 
+
+
+
 
 Notes:
 - Remove Boilerplate
@@ -47,3 +63,5 @@ https://github.com/openrewrite/rewrite-migrate-java.git
             
             @Override
             public void defaults.. {spec.recipe(new AbcRecipes())}
+
+
