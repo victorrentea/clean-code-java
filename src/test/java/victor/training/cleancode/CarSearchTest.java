@@ -8,9 +8,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CarSearchTest {
 
-   CarSearch searchEngine = new CarSearch();
+  private CarSearch searchEngine = new CarSearch();
 
-   CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+  private CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
 
    // Ford Focus:     [2012 ---- 2016]
    // Search:              [2014 ---- 2018]

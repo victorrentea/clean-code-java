@@ -16,7 +16,7 @@ public class Optional_Intro {
     System.out.println(getDiscountLine(new Customer()));
   }
 
-  public static String getDiscountLine(Customer customer) {
+  private static String getDiscountLine(Customer customer) {
 //    return customer.getMemberCard()
 //        .map(memberCard -> computeDiscount(memberCard)
 //            .map(value -> "You got a discount of %" + value.globalPercentage())
@@ -40,7 +40,7 @@ public class Optional_Intro {
     return Optional.empty();
   }
 
-  public record Discount(int globalPercentage, Map<String, Integer> categoryDiscounts) {
+  protected record Discount(int globalPercentage, Map<String, Integer> categoryDiscounts) {
   }
 }
 

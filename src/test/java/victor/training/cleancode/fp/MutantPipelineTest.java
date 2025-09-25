@@ -19,8 +19,8 @@ class MutantPipelineTest {
 
   public static final long SSO_ID = 1L;
   public static final long PAYMENT_CARD_ID = 123L;
-  PaymentCardRepository repository = mock(PaymentCardRepository.class);
-  MutantPipeline mutantPipeline = new MutantPipeline(repository, new PaymentCardMapper());
+  private PaymentCardRepository repository = mock(PaymentCardRepository.class);
+  private MutantPipeline mutantPipeline = new MutantPipeline(repository, new PaymentCardMapper());
 
   @Test
   void totalOrderPrice() {

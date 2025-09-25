@@ -9,7 +9,7 @@ public class ParameterObjects {
     new AnotherClass().otherMethod("John", "Doe", 17);
   }
 
-  public void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
+  private void placeOrder(String fName, String lName, String city, String streetName, Integer streetNumber) {
     if (fName == null || lName == null) throw new IllegalArgumentException();
 
     System.out.println("Some Logic");
@@ -62,7 +62,7 @@ class PersonService {
     System.out.println("Record for " + fullNameStr);
   }
 
-  public void p(String streetName, String city, Integer streetNumber) {
+  private void p(String streetName, String city, Integer streetNumber) {
     System.out.println("Living in " + city + " on street: " + streetName + " " + streetNumber);
   }
 

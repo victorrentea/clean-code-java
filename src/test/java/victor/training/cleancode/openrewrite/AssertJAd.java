@@ -23,7 +23,6 @@ import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @Disabled("enable on demand and compare failures of JUnit❌ and AssertJ💖")
@@ -31,38 +30,40 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class CollectionsPrimitives {
+  protected class CollectionsPrimitives {
     List<Integer> aList = List.of(100, 200, 300, 300);
 
     @Test
-    public void size1_JUnit() {
-      org.junit.jupiter.api.Assertions.assertEquals(1, aList.size());
-    }
-
-    @Test
-    public void size1_AssertJ() {
+    void size1_JUnit() {
       assertThat(aList).hasSize(1);
     }
 
     @Test
-    public void onceInAnyOrder_JUnit() {
-      org.junit.jupiter.api.Assertions.assertTrue(aList.containsAll(List.of(100, 200, 700)));
-      assertEquals(3, aList.size());
+    void size1_AssertJ() {
+      assertThat(aList).hasSize(1);
     }
 
     @Test
-    public void onceInAnyOrder_AssertJ() {
+    void onceInAnyOrder_JUnit() {
+      assertThat(aList)
+          .containsAll(List.of(100, 200, 700))
+          .hasSize(3);
+    }
+
+    @Test
+    void onceInAnyOrder_AssertJ() {
       assertThat(aList).containsExactlyInAnyOrder(100, 200, 300);
     }
 
     @Test
-    public void contains_JUnit() {
-      assertTrue(aList.containsAll(List.of(100, 200, 400)));
-      assertFalse(aList.contains(500));
+    void contains_JUnit() {
+      assertThat(aList)
+          .containsAll(List.of(100, 200, 400))
+          .doesNotContain(500);
     }
 
     @Test
-    public void contains_AssertJ() {
+    void contains_AssertJ() {
       assertThat(aList)
           .contains(100, 200, 400)
           .doesNotContain(500);
@@ -72,7 +73,7 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class CollectionsElements {
+  protected class CollectionsElements {
     record Character(String name, int age, Race race) {
     }
 
@@ -90,18 +91,18 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
     );
 
     @Test
-    public void oneAttribute_JUnit() {
+    void oneAttribute_JUnit() {
       // preprocess the collection before the assertion:
       Set<String> races = fellowship.stream()
           .map(Character::race)
           .map(Race::name)
           .collect(toSet());
 
-      assertEquals(Set.of("Man", "Dwarf", "Elf", "Hobbit", "Orc"), races);
+      assertThat(races).isEqualTo(Set.of("Man", "Dwarf", "Elf", "Hobbit", "Orc"));
     }
 
     @Test
-    public void oneAttribute_AssertJ() {
+    void oneAttribute_AssertJ() {
       assertThat(fellowship)
           .map(Character::race)
           .map(Race::name)
@@ -109,24 +110,24 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
     }
 
     @Test
-    public void multipleAttributes_JUnit() {
-      assertTrue(fellowship.stream().anyMatch(c ->
+    void multipleAttributes_JUnit() {
+      assertThat(fellowship.stream().anyMatch(c ->
           c.name().equals("Frodo") &&
           c.age() == 20 &&
-          c.race().name().equals("Hobbit")));
-      assertTrue(fellowship.stream().anyMatch(c ->
+          c.race().name().equals("Hobbit"))).isTrue();
+      assertThat(fellowship.stream().anyMatch(c ->
           c.name().equals("Aragorn") &&
           c.age() == 39 &&
-          c.race().name().equals("Man")));
-      assertTrue(fellowship.stream().anyMatch(c ->
+          c.race().name().equals("Man"))).isTrue();
+      assertThat(fellowship.stream().anyMatch(c ->
           c.name().equals("Legolas") &&
           c.age() == 100 && // ❌
 //          c.age() == 1000 && // ✅
-          c.race().name().equals("Elf")));
+          c.race().name().equals("Elf"))).isTrue();
     }
 
     @Test
-    public void multipleAttributes_AssertJ() {
+    void multipleAttributes_AssertJ() {
       assertThat(fellowship)
           // .extracting("name", "age", "race.name") // alternative
           .extracting(Character::name, Character::age, c -> c.race().name())
@@ -141,52 +142,52 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class Strings {
+  protected class Strings {
     private final String string = "abcdef";
 
     @Test
-    public void startsWith_JUnit() {
-      assertTrue(string.startsWith("bcd")); // see the failure message
-    }
-
-    @Test
-    public void startsWith_AssertJ() {
+    void startsWith_JUnit() {
       assertThat(string).startsWith("bcd"); // see the failure message
     }
 
     @Test
-    public void ignoreCase_JUnit() {
-      assertEquals("ABCDE", string.toUpperCase()); // looses the original case
+    void startsWith_AssertJ() {
+      assertThat(string).startsWith("bcd"); // see the failure message
     }
 
     @Test
-    public void ignoreCase_AssertJ() {
+    void ignoreCase_JUnit() {
+      assertThat(string.toUpperCase()).isEqualTo("ABCDE"); // looses the original case
+    }
+
+    @Test
+    void ignoreCase_AssertJ() {
       assertThat(string).isEqualToIgnoringCase("AbCdE");
     }
 
     @Test
-    public void regex_JUnit() {
-      assertTrue(string.matches(".*bd.*"));
+    void regex_JUnit() {
+      assertThat(string).matches(".*bd.*");
     }
 
     @Test
-    public void regex_AssertJ() {
+    void regex_AssertJ() {
       assertThat(string).matches(".*bd.*");
     }
   }
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class Time {
+  protected class Time {
     private final LocalDateTime oneMinAgo = now().minusMinutes(1);
 
     @Test
-    public void deltaTime_JUnit() {
-      assertTrue(oneMinAgo.isAfter(now().minusSeconds(1)));
+    void deltaTime_JUnit() {
+      assertThat(oneMinAgo.isAfter(now().minusSeconds(1))).isTrue();
     }
 
     @Test
-    public void deltaTime_AssertJ() {
+    void deltaTime_AssertJ() {
       assertThat(oneMinAgo).isCloseTo(now(), byLessThan(1, SECONDS));
     }
   }
@@ -195,13 +196,13 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
   record Villa(int guests, String kitchen, String library) {
   }
 
-  static Villa testedCode() {
+  private static Villa testedCode() {
     return new Villa(6, "dirty", "clean");
   }
 
   @Nested
   @TestMethodOrder(MethodName.class)
-  public class CustomAssertions {
+  class CustomAssertions {
     @Test
     void extendingAssertJ() {
       Villa villa = testedCode();
@@ -212,7 +213,7 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
           .hasLibrary("clean");
     }
 
-    public static VillaAssert assertThat(Villa actual) {
+    protected static VillaAssert assertThat(Villa actual) {
       return new VillaAssert(actual);
     }
 
@@ -221,19 +222,19 @@ public class AssertJAd { // from org.assertj:assertj-core, or via spring-boot-st
         super(actual, VillaAssert.class);
       }
 
-      public VillaAssert hasGuests(int guests) {
+      protected VillaAssert hasGuests(int guests) {
         Assertions.assertThat(actual.guests()).as("Living Guests")
             .isEqualTo(guests);
         return this;
       }
 
-      public VillaAssert hasKitchen(String kitchen) {
+      protected VillaAssert hasKitchen(String kitchen) {
         Assertions.assertThat(actual.kitchen()).as("Kitchen")
             .isEqualTo(kitchen);
         return this;
       }
 
-      public VillaAssert hasLibrary(String library) {
+      protected VillaAssert hasLibrary(String library) {
         Assertions.assertThat(actual.library()).as("Library")
             .isEqualTo(library);
         return this;

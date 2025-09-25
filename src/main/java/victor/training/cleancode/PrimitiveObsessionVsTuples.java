@@ -1,8 +1,5 @@
 package victor.training.cleancode;
 
-import org.jooq.lambda.tuple.Tuple;
-import org.jooq.lambda.tuple.Tuple2;
-
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +8,7 @@ import static java.util.stream.Collectors.joining;
 public class PrimitiveObsessionVsTuples {
 
   //<editor-fold desc="Tuple source of data">
-  public Map<CustomerId, List<ProductCount>> extremeFP() {
+  private Map<CustomerId, List<ProductCount>> extremeFP() {
     Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;

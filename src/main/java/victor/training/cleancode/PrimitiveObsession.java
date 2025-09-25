@@ -11,7 +11,7 @@ public class PrimitiveObsession {
   }
 
   //<editor-fold desc="fetchData()">
-  public Map<Long, Map<String, Integer>> fetchData(String paymentMethod) {
+  private Map<Long, Map<String, Integer>> fetchData(String paymentMethod) {
     Long customerId = 1L;
     Integer product1Count = 2;
     Integer product2Count = 4;
@@ -22,7 +22,7 @@ public class PrimitiveObsession {
   }
   //</editor-fold>
 
-  public void primitiveObsession(String paymentMethod) {
+  private void primitiveObsession(String paymentMethod) {
     if (!"CARD".equals(paymentMethod) && !"CASH".equals(paymentMethod)) {
       throw new IllegalArgumentException("Only CARD payment method is supported");
     }

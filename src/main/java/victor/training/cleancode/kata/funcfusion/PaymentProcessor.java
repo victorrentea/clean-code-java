@@ -80,7 +80,7 @@ public class PaymentProcessor {
   }
 
 
-  record Result(boolean success, Runnable cleanup) {
+  private record Result(boolean success, Runnable cleanup) {
   }
 }
 

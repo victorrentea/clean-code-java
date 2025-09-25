@@ -8,12 +8,12 @@ public class LoanPattern_vsAOP {
     timeIt(() -> suspect());
   }
 
-  public static int suspect() {
+  private static int suspect() {
     System.out.println("Stuff");
     return 1;
   }
 
-  public static <T> T timeIt(Supplier<T> f) {
+  private static <T> T timeIt(Supplier<T> f) {
     long t0 = System.currentTimeMillis();
     T r = f.get();
     long t1 = System.currentTimeMillis();

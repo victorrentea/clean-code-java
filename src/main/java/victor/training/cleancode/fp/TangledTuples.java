@@ -33,15 +33,15 @@ public class TangledTuples {
   }
 
   //region support code
-  public record A() {}
+  private record A() {}
 
-  public record B() {}
+  private record B() {}
 
-  public record C() {}
+  private record C() {}
 
-  public record D() {}
+  private record D() {}
 
-  public record ACD(A a, C c, D d) {}
+  protected record ACD(A a, C c, D d) {}
   //endregion
 
 }

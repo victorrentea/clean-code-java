@@ -38,13 +38,13 @@ public class MyException extends  RuntimeException {
       this.params = params;
    }
 
-   public MyException(String message, Throwable cause, ErrorCode code, Object... params) {
+  private MyException(String message, Throwable cause, ErrorCode code, Object... params) {
       super(message, cause);
       this.code = code;
       this.params = params;
    }
 
-   public MyException(Throwable cause, ErrorCode code, Object... params) {
+  private MyException(Throwable cause, ErrorCode code, Object... params) {
       super(cause);
       this.code = code;
       this.params = params;

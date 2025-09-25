@@ -33,7 +33,7 @@ public class StructuralReplace {
 }
 
 class Library {
-  public static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
+  private static ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
   public static String render(String template, String... values) {
     String[] transformedParams = Arrays.stream(values).map(java.lang.String::toUpperCase).toArray(String[]::new);

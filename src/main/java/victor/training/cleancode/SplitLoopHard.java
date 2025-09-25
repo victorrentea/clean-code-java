@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SplitLoopHard {
 
-    EmployeeService employeeService;
+  private EmployeeService employeeService;
 
     // TODO Split loops and refactor to .stream. Run Tests✅
     public String computeStatsHard(List<Employee> employees) {

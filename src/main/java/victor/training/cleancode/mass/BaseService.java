@@ -3,11 +3,11 @@ package victor.training.cleancode.mass;
 public abstract class BaseService<D extends DAO> {
   private D dao;
 
-  public D getDao() {
+  protected D getDao() {
     return dao;
   }
 
-  public void setDao(D dao) {
+  protected void setDao(D dao) {
     this.dao = dao;
   }
 }

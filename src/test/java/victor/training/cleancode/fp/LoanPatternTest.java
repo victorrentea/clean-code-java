@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import victor.training.cleancode.fp.support.Order;
 import victor.training.cleancode.fp.support.OrderRepo;
 
-import java.io.IOException;
 import java.util.stream.Stream;
 
 import static java.time.LocalDate.parse;
@@ -23,7 +22,7 @@ class LoanPatternTest {
 
 
   @Test
-  void exportOrders() throws IOException {
+  void exportOrders() throws Exception {
       Order order = new Order();
       order.setId(1L);
       order.setCreationDate(parse("2021-01-07"));

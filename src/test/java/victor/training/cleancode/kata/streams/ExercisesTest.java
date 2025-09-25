@@ -7,7 +7,6 @@ import victor.training.cleancode.kata.streams.Order.PaymentMethod;
 import victor.training.cleancode.kata.streams.Order.Status;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
@@ -237,7 +236,7 @@ class ExercisesTest {
   }
 
   @Test
-  void blankLinesInFile() throws IOException {
+  void blankLinesInFile() throws Exception {
     File file = new File("src/test/java/victor/training/cleancode/kata/streams/sample.csv");
 
     Set<Integer> actual = sut.pC_csvLinesInAllFilesInFolder(file);

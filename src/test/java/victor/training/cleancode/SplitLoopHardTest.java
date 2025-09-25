@@ -22,8 +22,8 @@ class SplitLoopHardTest {
   @InjectMocks
   SplitLoopHard splitLoopHard;
 
-  Employee consultant = new Employee(1, 24, 2000, true);
-  Employee employee = new Employee(2, 30, 4000, false);
+  private Employee consultant = new Employee(1, 24, 2000, true);
+  private Employee employee = new Employee(2, 30, 4000, false);
 
   @Test
   void consultantIdNull() {

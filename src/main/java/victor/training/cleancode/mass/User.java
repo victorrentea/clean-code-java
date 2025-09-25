@@ -1,8 +1,8 @@
 package victor.training.cleancode.mass;
 
 public class User {
-  String username;
-  String fullName;
+  private String username;
+  private String fullName;
 
   public User() {
   }

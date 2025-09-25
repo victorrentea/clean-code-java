@@ -1,0 +1,49 @@
+*** Refactoring Power Tools ***
+- Code I work on: 
+  https://github.com/victorrentea/clean-code-java.git branch power-tools
+- Openrewrite project to play refaster in: 
+  https://github.com/openrewrite/rewrite-migrate-java.git
+- This document will be uploaded to the meetup page:
+  https://www.meetup.com/european-software-crafters/events/308580043
+
+Notes:
+- Remove Boilerplate
+    - @Getter, @Setter, @Data⚠️
+    - Use <> in constructor call instead of <Type>
+    - Initialize fields in declaration, instead of default ctor
+    - Empty methods implementing an interface -> default methods
+    - The type of "consultations" should be an interface such as "List" rather than the implementation "ArrayList".
+    - Remove @OldAnnotation
+
+- Improve Design 
+    - Make all methods possible->private: vs called from outside/lib?
+
+- Correct old (bad) habits / deprecated method
+    - new Long(String).longValue() -> Long.parseLong(String)
+    - log.debug("Message " + data)
+
+- Adopt a framework (Spring)
+    - adopt DI: @PostConstruct init() {setDao(new DaoX())} -> @Inject setDao(DaoX dao) {super.setDao(dao);}
+    
+- Propagate metadata via ThreadLocal
+    - user state holder
+
+- Improve code style 
+    - """
+    - openrewrite: commons
+    - openrewrite: assertJ
+    - .size() == 0 -> .isEmpty()
+
+customer refaster via openrewrite
+https://github.com/openrewrite/rewrite-migrate-java.git
+    src/main/: 
+        class Abc {
+            @RecipeDescriptor static class
+    src/test/: 
+        class AbcTest {
+            //language=java
+            rewriteRun(
+            Assertions.java("""
+            
+            @Override
+            public void defaults.. {spec.recipe(new AbcRecipes())}

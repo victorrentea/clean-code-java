@@ -6,12 +6,12 @@ public class OrElseGetTrap {
   private record Transfer(String from, String to, int amount) {
   }
 
-  static Optional<Transfer> takeOwnMoney(String user) {
+  private static Optional<Transfer> takeOwnMoney(String user) {
     System.out.println("Taking money from " + user);
     return Optional.of(new Transfer("Victor", "Vodafone", 100));
   }
 
-  static Transfer takeCreditMoney(String user) {
+  private static Transfer takeCreditMoney(String user) {
     System.out.println("Borrowing⚠️ money for " + user);
     return new Transfer("Creditor", "Vodafone", 100);
   }

@@ -1,7 +1,7 @@
 package victor.training.cleancode;
 
 class SomeController {
-  SomeService someService;
+  private SomeService someService;
 
 //  @GetMapping("blue/{storeId}")
   public void blueEndpoint(int storeId, Task task) {

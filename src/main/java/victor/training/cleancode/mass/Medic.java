@@ -1,41 +1,17 @@
 package victor.training.cleancode.mass;
 
-import org.w3c.dom.Document;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Medic implements Data {
-  @OldAnnotation
   private String name;
-  @OldAnnotation(name = "consultationList")
-  private ArrayList<Consultation> consultations;
-
-  public Medic() {
-    consultations = new ArrayList<Consultation>();
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public ArrayList<Consultation> getConsultations() {
-    return consultations;
-  }
-
-  public void setConsultations(ArrayList<Consultation> consultations) {
-    this.consultations = consultations;
-  }
-
-  @Override
-  public void fromXml(Document pDocument) {
-  }
-
-  @Override
-  public Document toXml() {
-    return null;
-  }
+  @Getter
+  @Setter
+  private List<Consultation> consultations = new ArrayList<>();
+  @Getter
+  @Setter
+  private List<Consultation> list2;
 }
