@@ -3,13 +3,12 @@ package victor.training.cleancode.mass;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Medic implements Data {
   @OldAnnotation
   private String name;
   @OldAnnotation(name = "consultationList")
-  private List<Consultation> consultations;
+  private ArrayList<Consultation> consultations;
 
   public Medic() {
     consultations = new ArrayList<Consultation>();
@@ -23,11 +22,11 @@ public class Medic implements Data {
     this.name = name;
   }
 
-  public List<Consultation> getConsultations() {
+  public ArrayList<Consultation> getConsultations() {
     return consultations;
   }
 
-  public void setConsultations(List<Consultation> consultations) {
+  public void setConsultations(ArrayList<Consultation> consultations) {
     this.consultations = consultations;
   }
 
