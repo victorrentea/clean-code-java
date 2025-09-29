@@ -16,33 +16,44 @@ class SomeController {
 
 class SomeService {
   public void blueMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void greenMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void yellowMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, false);
+    BooleanParameters.bigUglyMethod(id, task);
   }
 
   public void redMethod(int id, Task task) {
-    BooleanParameters.bigUglyMethod(id, task, true);
+    BooleanParameters.bigUglyMethod323(id, task);
   }
 }
 
 public class BooleanParameters {
-  public static void bigUglyMethod(int storeId, Task task, boolean cr323) {
-    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
-    System.out.println(task);
-    System.out.println("Donkey Logic 3 " + task);
+  public static void bigUglyMethod(int storeId, Task task) {
+    donkey(storeId, task);
+    sheep(storeId);
+  }
 
-    if (cr323) System.out.println("Logic just for CR#323 : " + task);
+  public static void bigUglyMethod323(int storeId, Task task) {
+    donkey(storeId, task);
+    System.out.println("Logic just for CR#323 : " + task);
+    sheep(storeId);
+  }
 
+  private static void sheep(int storeId) {
     System.out.println("Sheep Logic 1 " + storeId);
     System.out.println("Sheep Logic 2 ");
     System.out.println("Sheep Logic 3 ");
+  }
+
+  private static void donkey(int storeId, Task task) {
+    System.out.println("Donkey Logic 1 " + task + " and " + storeId);
+    System.out.println(task);
+    System.out.println("Donkey Logic 3 " + task);
   }
 }
 

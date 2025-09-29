@@ -10,7 +10,7 @@ class CarSearchTest {
 
    CarSearch searchEngine = new CarSearch();
 
-   CarModel fordFocusMk2 = new CarModel("Ford", "Focus", 2012, 2016);
+  CarModel fordFocusMk2 = new CarModel("Ford", "Focus", new YearInterval(2012, 2016));
 
    // Ford Focus:     [2012 ---- 2016]
    // Search:              [2014 ---- 2018]
