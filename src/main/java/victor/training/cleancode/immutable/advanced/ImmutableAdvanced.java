@@ -1,13 +1,11 @@
 package victor.training.cleancode.immutable.advanced;
 
 import com.google.common.collect.ImmutableList;
+import lombok.With;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
-import static java.util.stream.Collectors.toList;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
@@ -16,67 +14,51 @@ public class ImmutableAdvanced {
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
 //    list.clear(); // too evil to be true; but possible
-    wilderness(immutable);
-    System.out.println("After:  " + immutable);
+    var movedImmutable = wilderness(immutable);
+
+//    for (int i = 0; i < 10_000_000; i++) {
+//      immutable = wilderness(immutable); // 600 MB allocated
+//    }
+
+    System.out.println("After:  " + movedImmutable);
   }
 
-  private static void wilderness(Immutable immutable) {
-    // dark, deep logic not expected to change the immutable object x,y
+  private static Immutable wilderness(Immutable immutable) {
 //    immutable.getList().clear(); // runtime surprise!
 //    immutable.getList().clear(); // runtime surprise!
+    // CR: add +1 to x and y
+//    return new Immutable(
+//        immutable.x() + 1,
+//        immutable.y() + 1,
+//        immutable.list(),
+//        immutable.other()
+//    );
+
+//    return immutable
+//        .withX(immutable.x() + 1)
+//        .withY(immutable.y() + 1);
+    return immutable
+//        .move(immutable.x() + 1, immutable.y() + 1);
+        .moveBy(1, 1);
   }
 }
 
 // shallow immutable
-class Immutable {
-  private final Integer x;
-  private final Integer y;
-  private final ImmutableList<Integer> list;
-  private final Other other;
+record Immutable(
+    @With
+    Integer x,
+    @With
+    Integer y,
+    ImmutableList<Integer> list,
+    Other other) {
+//  public Immutable withX(Integer newX) {
+//    return new Immutable(newX, this.y, this.list, this.other);
+//  }
 
-  Immutable(Integer x, Integer y, ImmutableList<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list; // 1 malloc
-    this.other = other;
-  }
-
-  public ImmutableList<Integer> getList() {
-//    return List.copyOf(list); // malloc - inefficient,waste
-//    return Collections.unmodifiableList(list); // THE WAY
-    return list; // THE WAY
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
+  public Immutable moveBy(int dx, int dy) {
+    return new Immutable(this.x + dx, this.y + dy, this.list, this.other);
   }
 }
 
-class Other {
-  private int a;
-
-  public Other(int a) {
-    this.a = a;
-  }
-
-  public int getA() {
-    return a;
-  }
-
-  public void setA(int a) {
-    this.a = a;
-  }
+record Other(int a) {
 }
