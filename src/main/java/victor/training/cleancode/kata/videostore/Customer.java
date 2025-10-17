@@ -5,58 +5,61 @@ import java.util.Map;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
+	private final Map<Movie, Integer> movieRentalDuration = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
 	public Customer(String name) {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie movie, int daysRented) {
+		movieRentalDuration.put(movie, daysRented);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+	public String generateStatement() {
+        int rewardPoints = 0;
+		StringBuilder statement = new StringBuilder("Rental Record for " + getName() + "\n");
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
+        double totalCost = 0;
+        for (Movie movie : movieRentalDuration.keySet()) {
+            // determine amounts for every line
+            int daysRented = movieRentalDuration.get(movie);
+            double movieCost = getMovieCost(movie, daysRented);
+            // add frequent renter points
+			rewardPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.PriceCode.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
+			if (movie.getPriceCode() == Movie.PriceCode.NEW_RELEASE && daysRented > 1)
+				rewardPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			statement.append("\t").append(movie.getTitle()).append("\t").append(movieCost).append("\n");
+			totalCost += movieCost;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		statement.append("Amount owed is ").append(totalCost).append("\n");
+		statement.append("You earned ").append(rewardPoints).append(" frequent renter points");
+		return statement.toString();
 	}
+
+    private static double getMovieCost(Movie movie, int daysRented) {
+        double movieCost = 0;
+        switch (movie.getPriceCode()) {
+            case REGULAR:
+                movieCost += 2;
+                if (daysRented > 2)
+                    movieCost += (daysRented - 2) * 1.5;
+                break;
+            case NEW_RELEASE:
+                movieCost += daysRented * 3;
+                break;
+            case CHILDRENS:
+                movieCost += 1.5;
+                if (daysRented > 3)
+                    movieCost += (daysRented - 3) * 1.5;
+                break;
+        }
+        return movieCost;
+    }
 }

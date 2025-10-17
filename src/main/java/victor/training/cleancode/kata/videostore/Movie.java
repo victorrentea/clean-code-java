@@ -1,15 +1,7 @@
 package victor.training.cleancode.kata.videostore;
-public class Movie {
+public record Movie( String title, PriceCode priceCode) {
 
   public enum PriceCode {CHILDRENS, REGULAR, NEW_RELEASE}
-
-	private final String title;
-	private final PriceCode priceCode;
-
-	public Movie(String title, PriceCode priceCode) {
-		this.title = title;
-		this.priceCode = priceCode;
-	}
 
 	public PriceCode getPriceCode() {
 		return priceCode;

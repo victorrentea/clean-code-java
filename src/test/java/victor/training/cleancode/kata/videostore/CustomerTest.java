@@ -1,6 +1,5 @@
 package victor.training.cleancode.kata.videostore;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +28,7 @@ class CustomerTest {
 
 //    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
     // if above line fails to compile, uncomment the next line:
-    assertEquals(normalizeNewLines(expected), normalizeNewLines(customer.statement()));
+    assertEquals(normalizeNewLines(expected), normalizeNewLines(customer.generateStatement()));
   }
 
   private String normalizeNewLines(String expected) {
