@@ -1,62 +1,37 @@
 package victor.training.cleancode.kata.videostore;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 class Customer {
-	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
+    private final String name;
+    private final List<RentedMovie> rentedMovies = new ArrayList<>();
 
-	public Customer(String name) {
-		this.name = name;
-	};
+    public Customer(String name) {
+        this.name = Objects.requireNonNull(name);
+    }
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
-	}
+    public void addRental(Movie movie, int daysOfRental) {
+        rentedMovies.add(new RentedMovie(movie, daysOfRental));
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
-		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
-			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
-					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
-					break;
-				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
-					break;
-			}
-			// add frequent renter points
-			frequentRenterPoints++;
-			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
-				frequentRenterPoints++;
-			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
-		}
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
-	}
+    public String statement() {
+        List<Statement.MoviePrice> moviePrices = rentedMovies.stream()
+                .map(m -> new Statement.MoviePrice(m.movie().title(), m.computePrice()))
+                .toList();
+        Statement statement = new Statement(name, moviePrices, computeFrequentRenterPoints());
+        return statement.format();
+    }
+
+    private long computeFrequentRenterPoints() {
+		long frequentRenterBonusPoints =  rentedMovies.stream()
+				.filter(RentedMovie::isEligibleForFrequentRenterBonus).count();
+		long frequentRenterPoints = rentedMovies.size();
+        return frequentRenterBonusPoints + frequentRenterPoints;
+    }
 }
