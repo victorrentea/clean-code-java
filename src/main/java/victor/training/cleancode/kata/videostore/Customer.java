@@ -22,16 +22,17 @@ class Customer {
         return name;
     }
 
-    public String statement() {
+    public Statement statement() {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
-        // loop over each movie rental
-        for (Movie each : rentals.keySet()) {
+        // loop over movie rental
+		Map<Movie, Double> finalPricePerMovie = new LinkedHashMap<>();
+        for (Movie movie : rentals.keySet()) {
             double thisAmount = 0;
             // determine amounts for every line
-            int price = rentals.get(each);
-            switch (each.priceCode()) {
+            int price = rentals.get(movie);
+            switch (movie.priceCode()) {
                 case REGULAR:
                     thisAmount += 2;
                     if (price > 2)
@@ -49,17 +50,18 @@ class Customer {
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
-            if (each.priceCode() != null &&
-                    (each.priceCode() == NEW_RELEASE)
+            if (movie.priceCode() != null &&
+                    (movie.priceCode() == NEW_RELEASE)
                     && price > 1)
                 frequentRenterPoints++;
             // show figures line for this rental
-            result += "\t" + each.title() + "\t" + thisAmount + "\n";
+            result += "\t" + movie.title() + "\t" + thisAmount + "\n";
             totalAmount += thisAmount;
+			finalPricePerMovie.put(movie, totalAmount);
         }
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
-        return result;
+        return new Statement(totalAmount, points, movieAndPrice);
     }
 }
