@@ -5,30 +5,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class RentalInvoice {
-	private final String name;
-	private final List<MovieRental> movieRentals = new ArrayList<>();
+  private final String customerName;
+  private final List<MovieRental> movieRentals = new ArrayList<>();
 
-	public RentalInvoice(String name) {
-		this.name = name;
-	}
+  public RentalInvoice(String customerName) {
+    this.customerName = customerName;
+  }
 
-	public void addRental(Movie movie, int rentalDays) {
-        movieRentals.add(new MovieRental(movie, rentalDays));
-	}
+  public void addRental(Movie movie, int rentalDays) {
+    movieRentals.add(new MovieRental(movie, rentalDays));
+  }
 
-    public String statement() {
-        String result = "Rental Record for " + name + "\n";
-        result += movieRentals.stream().map(MovieRental::formatForInvoice).collect(Collectors.joining());
-		result += "Amount owed is " + computeTotalRentalAmount() + "\n";
-		result += "You earned " + computeFrequentRenterPoints(movieRentals) + " frequent renter points";
-		return result;
-	}
+  public String statement() {
+    String result = "Rental Record for " + customerName + "\n";
+    result += movieRentals.stream().map(MovieRental::formatForInvoice).collect(Collectors.joining());
+    result += "Amount owed is " + computeTotalRentalAmount() + "\n";
+    result += "You earned " + computeFrequentRenterPoints(movieRentals) + " frequent renter points";
+    return result;
+  }
 
-    private double computeTotalRentalAmount() {
-        return movieRentals.stream().mapToDouble(MovieRental::computePrice).sum();
-    }
+  private double computeTotalRentalAmount() {
+    return movieRentals.stream().mapToDouble(MovieRental::computePrice).sum();
+  }
 
-    private long computeFrequentRenterPoints(List<MovieRental> movieRentals) {
-        return movieRentals.size() + movieRentals.stream().filter(MovieRental::isEligibleForBonus).count();
-    }
+  private long computeFrequentRenterPoints(List<MovieRental> movieRentals) {
+    return movieRentals.size() + movieRentals.stream().filter(MovieRental::isEligibleForBonus).count();
+  }
 }
