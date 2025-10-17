@@ -11,10 +11,10 @@ class CustomerTest {
   void characterizationTest() {
     Customer customer = new Customer("John Doe");
 //    customer.addRental(new Movie("Star Wars", Movie.BABACI), 6);
-    customer.addRental(new Movie("Star Wars", PriceCode.NEW_RELEASE), 6);
-    customer.addRental(new Movie("Sofia", PriceCode.CHILDRENS), 7);
-    customer.addRental(new Movie("Inception", PriceCode.REGULAR), 5);
-    customer.addRental(new Movie("Wicked", PriceCode.CHILDRENS), 3);
+    customer.addRental(new Movie("Star Wars", MoviePricingCategory.NEW_RELEASE), 6);
+    customer.addRental(new Movie("Sofia", MoviePricingCategory.CHILDRENS), 7);
+    customer.addRental(new Movie("Inception", MoviePricingCategory.REGULAR), 5);
+    customer.addRental(new Movie("Wicked", MoviePricingCategory.CHILDRENS), 3);
 
     String expected = """
         Rental Record for John Doe

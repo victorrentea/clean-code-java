@@ -16,7 +16,7 @@ public class Rentals {
   }
 
   private double computeTotalCost() {
-    return rentals.stream().mapToDouble(Rental::getCost).sum();
+    return rentals.stream().mapToDouble(r -> r.movie().getCost(r.daysRented())).sum();
   }
 
   public String generateStatementBody() {
