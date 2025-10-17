@@ -12,8 +12,8 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int price) {
-		rentals.put(m, price);
+	public void addRental(Movie m, int baseRentalPrice) {
+		rentals.put(m, baseRentalPrice);
 	}
 
 	public String getName() {
@@ -25,37 +25,42 @@ class Customer {
 		int frequentRenterPoints = 0;
 		StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 		// loop over each movie rental
-		for (Movie each : rentals.keySet()) {
-			double movieAmount = 0;
+		for (Movie movie : rentals.keySet()) {
 			// determine amounts for every line
-			int rentalAmount = rentals.get(each);
-			switch (each.pricecode()) {
-				case REGULAR:
-					movieAmount += 2;
-					if (rentalAmount > 2)
-						movieAmount += (rentalAmount - 2) * 1.5;
-					break;
-				case NEW_RELEASE:
-					movieAmount += rentalAmount * 3;
-					break;
-				case CHILDRENS:
-					movieAmount += 1.5;
-					if (rentalAmount > 3)
-						movieAmount += (rentalAmount - 3) * 1.5;
-					break;
-			}
+			int rentalDays = rentals.get(movie);
+			double movieAmount = computeAmountFromPriceCodeAndRentalDays(movie.pricecode(), rentalDays);
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.pricecode() == PriceCode.NEW_RELEASE && rentalAmount > 1)
+			if (movie.pricecode() == PriceCode.NEW_RELEASE && rentalDays > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result.append("\t").append(each.title()).append("\t").append(movieAmount).append("\n");
+			result.append("\t").append(movie.title()).append("\t").append(movieAmount).append("\n");
 			totalAmount += movieAmount;
 		}
 		// add footer lines
 		result.append("Amount owed is ").append(totalAmount).append("\n");
 		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
 		return result.toString();
+	}
+
+	private static double computeAmountFromPriceCodeAndRentalDays(PriceCode priceCode, int rentalDays) {
+        return switch (priceCode) {
+            case REGULAR -> {
+                double movieAmount = 2;
+                if (rentalDays > 2) {
+                    movieAmount += (rentalDays - 2) * 1.5;
+                }
+				yield movieAmount;
+            }
+            case NEW_RELEASE -> rentalDays * 3;
+            case CHILDRENS -> {
+                double movieAmount = 1.5;
+                if (rentalDays > 3) {
+                    movieAmount += (rentalDays - 3) * 1.5;
+                }
+				yield movieAmount;
+            }
+        };
 	}
 }
