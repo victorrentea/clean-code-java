@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-
+// Test commit (Beatriz)
 @ExtendWith(MockitoExtension.class)
 class ExerciseTest {
   @Mock
