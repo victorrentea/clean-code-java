@@ -24,7 +24,7 @@ class CustomerTest {
         	Inception	6.5
         	Wicked	1.5
         Amount owed is 33.5
-        You earned 5 new release renter points""";
+        You earned 5 frequent renter points""";
 
 //    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
     // if above line fails to compile, uncomment the next line:

@@ -23,7 +23,7 @@ class Customer {
     public String displayRentals() {
 		String result ="Rental Record for " + getCustomerName() + "\n";
 		// loop over each movie rental
-		result += rentals.stream().map(this::renderRentalStatement).collect(Collectors.joining());
+		result += rentals.stream().map(this::renderRentalStatement).collect(Collectors.joining("\n")) + "\n";
 		double totalAmount = rentals.stream().mapToDouble(Rental::computeRentalPrice).sum();
 
 		// add frequent points bonus for a two day new release rental
@@ -32,7 +32,7 @@ class Customer {
 
 		// add footer lines
 		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " new release renter points";
+		result += "You earned " + frequentRenterPoints + " frequent renter points";
 		return result;
 	}
 
@@ -41,6 +41,6 @@ class Customer {
 	}
 
 	private String renderRentalStatement(Rental rental) {
-		return "\t" + rental.movie().title() + "\t" + rental.computeRentalPrice() + "\n";
+		return "\t" + rental.movie().title() + "\t" + rental.computeRentalPrice();
 	}
 }
