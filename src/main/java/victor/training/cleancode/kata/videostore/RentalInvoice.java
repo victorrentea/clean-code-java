@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class Customer {
+class RentalInvoice {
 	private final String name;
 	private final List<RentedMovie> rentedMovies = new ArrayList<>();
 
-	public Customer(String name) {
+	public RentalInvoice(String name) {
 		this.name = name;
 	};
 
@@ -23,8 +23,6 @@ class Customer {
 	public String statement() {
         String result = "Rental Record for " + getName() + "\n";
         result += rentedMovies.stream().map(RentedMovie::formatForInvoice).collect(Collectors.joining());
-
-		// add footer lines
 		result += "Amount owed is " + computeTotalRentalAmount(rentedMovies) + "\n";
 		result += "You earned " + computeFrequentRenterPoints(rentedMovies) + " frequent renter points";
 		return result;

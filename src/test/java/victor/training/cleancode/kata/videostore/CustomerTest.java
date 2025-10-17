@@ -1,6 +1,5 @@
 package victor.training.cleancode.kata.videostore;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,7 +10,7 @@ class CustomerTest {
 
   @Test
   void characterizationTest() {
-    Customer customer = new Customer("John Doe");
+    RentalInvoice customer = new RentalInvoice("John Doe");
 //    customer.addRental(new Movie("Star Wars", Movie.BABACI), 6);
     customer.addRental(new Movie("Star Wars", PriceCode.NEW_RELEASE), 6);
     customer.addRental(new Movie("Sofia", PriceCode.CHILDREN), 7);
