@@ -2,10 +2,9 @@ package victor.training.cleancode.kata.videostore;
 
 class Customer {
   private final String name;
-  private final Rentals rentals;
+  private final StatementView rentals = new StatementView();
 
   public Customer(String name) {
-    rentals = new Rentals();
     this.name = name;
   }
 
@@ -18,7 +17,7 @@ class Customer {
   }
 
   public String generateStatement() {
-    return "Rental Record for " + getName() + "\n" + rentals.generateStatementBody();
+    return "Rental Record for " + name + "\n" + rentals.generateStatementBody();
   }
 
 

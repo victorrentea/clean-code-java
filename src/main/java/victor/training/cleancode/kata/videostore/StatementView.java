@@ -3,7 +3,7 @@ package victor.training.cleancode.kata.videostore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rentals {
+public class StatementView {
 
   private final List<Rental> rentals = new ArrayList<>();
 
@@ -16,7 +16,7 @@ public class Rentals {
   }
 
   private double computeTotalCost() {
-    return rentals.stream().mapToDouble(r -> r.movie().getCost(r.daysRented())).sum();
+    return rentals.stream().mapToDouble(Rental::getCost).sum();
   }
 
   public String generateStatementBody() {
@@ -28,14 +28,14 @@ public class Rentals {
       statementBody.append(rental.generateStatementLine());
     }
 
-    appendFooter(statementBody, totalCost, rewardPoints);
+    statementBody.append(formatFooter(totalCost, rewardPoints));
 
     return statementBody.toString();
   }
 
-  private static void appendFooter(StringBuilder statement, double totalCost, int rewardPoints) {
-    statement.append("Amount owed is ").append(totalCost).append("\n");
-    statement.append("You earned ").append(rewardPoints).append(" frequent renter points");
+  private static String formatFooter(double totalCost, int rewardPoints) {
+    return "Amount owed is " + totalCost + "\n" +
+           "You earned " + rewardPoints + " frequent renter points";
   }
 
 }
