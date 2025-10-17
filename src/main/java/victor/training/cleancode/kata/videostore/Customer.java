@@ -6,11 +6,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static victor.training.cleancode.kata.videostore.PriceCode.NEW_RELEASE;
 
 class Customer {
-    @Getter
     private final String name;
     private final List<Rental> rentals = new LinkedList<>(); // preserves order of elements TODO find a better way to store this
 
@@ -18,22 +18,20 @@ class Customer {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void addRental(Movie movie, int days) {
         rentals.add(new Rental(movie, days));
     }
 
     public Statement statement() {
-        double totalAmount = rentals.stream().mapToDouble(Rental::computeRentalPrice).sum();
-
-        Map<Movie, Double> finalPricePerMovie = new LinkedHashMap<>();
-        for (Rental rental : rentals) {
-            // determine amounts for every line
-            double thisAmount = rental.computeRentalPrice();
-            finalPricePerMovie.put(rental.movie(), thisAmount);
-        }
+        List<RentalAmount> rentalAmounts = rentals.stream().map(entry -> new RentalAmount(entry.movie(), entry.computeRentalPrice())).toList();
+        double totalRentalAmount = rentalAmounts.stream().mapToDouble(RentalAmount::amount).sum();
 
         int frequentRenterPoints = computeFrequentRenterPoints();
-        return new Statement(this, totalAmount, frequentRenterPoints, finalPricePerMovie);
+        return new Statement(this, totalRentalAmount, frequentRenterPoints, rentalAmounts);
     }
 
     private int computeFrequentRenterPoints() {
