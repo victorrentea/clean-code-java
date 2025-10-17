@@ -2,6 +2,8 @@ package victor.training.cleancode.kata.videostore;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static victor.training.cleancode.kata.videostore.PriceCode.*;
 
@@ -28,7 +30,11 @@ class CustomerTest {
 
 //    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
     // if above line fails to compile, uncomment the next line:
-    assertEquals(normalizeNewLines(expected), normalizeNewLines(customer.statement()));
+      Statement statement = customer.statement();
+      assertEquals(33.5, statement.totalAmount());
+      assertEquals(5, statement.frequentRenterPoints());
+      Map<Movie, Double> expectedRealAmounts = statement.rentalAmounts();
+      assertEquals(normalizeNewLines(expected), normalizeNewLines(statement.sorryTemp()));
   }
 
   private String normalizeNewLines(String expected) {

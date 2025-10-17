@@ -26,25 +26,26 @@ class Customer {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
+
         // loop over movie rental
 		Map<Movie, Double> finalPricePerMovie = new LinkedHashMap<>();
         for (Movie movie : rentals.keySet()) {
             double thisAmount = 0;
             // determine amounts for every line
-            int price = rentals.get(movie);
+            int days = rentals.get(movie);
             switch (movie.priceCode()) {
                 case REGULAR:
                     thisAmount += 2;
-                    if (price > 2)
-                        thisAmount += (price - 2) * 1.5;
+                    if (days > 2)
+                        thisAmount += (days - 2) * 1.5;
                     break;
                 case NEW_RELEASE:
-                    thisAmount += price * 3;
+                    thisAmount += days * 3;
                     break;
                 case CHILDRENS:
                     thisAmount += 1.5;
-                    if (price > 3)
-                        thisAmount += (price - 3) * 1.5;
+                    if (days > 3)
+                        thisAmount += (days - 3) * 1.5;
                     break;
             }
             // add frequent renter points
@@ -52,16 +53,16 @@ class Customer {
             // add bonus for a two day new release rental
             if (movie.priceCode() != null &&
                     (movie.priceCode() == NEW_RELEASE)
-                    && price > 1)
+                    && days > 1)
                 frequentRenterPoints++;
             // show figures line for this rental
             result += "\t" + movie.title() + "\t" + thisAmount + "\n";
+            finalPricePerMovie.put(movie, totalAmount);
             totalAmount += thisAmount;
-			finalPricePerMovie.put(movie, totalAmount);
         }
         // add footer lines
         result += "Amount owed is " + totalAmount + "\n";
         result += "You earned " + frequentRenterPoints + " frequent renter points";
-        return new Statement(totalAmount, points, movieAndPrice);
+        return new Statement(totalAmount, frequentRenterPoints, finalPricePerMovie, result);
     }
 }
