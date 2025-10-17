@@ -18,10 +18,11 @@ public class MutantPipeline {
 
   //region .add
   public List<LocalDate> getShipDates(List<Order> orders) {
-    List<LocalDate> shipDates = new ArrayList<>();
-    orders.stream()
+    List<LocalDate> shipDates = orders.stream()
         .filter(Order::isActive)
-        .forEach(order -> order.shipDate().ifPresent(shipDates::add));
+//        .forEach(order -> order.shipDate().ifPresent(shipDates::add));
+        .flatMap(order -> order.shipDate().stream())
+        .toList();
     return shipDates;
   }
   //endregion
@@ -29,14 +30,15 @@ public class MutantPipeline {
 
   //region +=
   public int totalActiveOrderPrice(List<Order> orders) {
-    int sum = 0;
-    for (Order order : orders) {
-      if (order.isActive()) {
-        sum += order.price();
-      }
-    }
-    return sum;
+    return orders.stream()
+        .filter(Order::isActive)
+        .mapToInt(Order::price)
+        .sum();
   }
+
+
+
+
   public PaymentCardDto updateCardAlias(long paymentCardId, long ssoId, String newAlias) {
     return paymentCardRepository.findById(paymentCardId)
         .filter(card -> card.getId() == ssoId)

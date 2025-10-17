@@ -7,21 +7,17 @@ import java.util.Optional;
 public class OptionalAbuse {
   public Entity trappedOptional(Dto dto) {
     Entity entity = new Entity();
-    Optional.ofNullable(dto)
-        .map(Dto::recipientPerson)
-        .map(String::trim)
-        .map(String::toLowerCase)
+    // paranoid development?// NULL is even possible in the broader scope? NO
+    var email = dto.recipientPerson
+                    .map(s -> s.trim().toLowerCase())
         .filter(s -> !s.isBlank())
-        .map(s -> s + "@example.com")
-        .ifPresentOrElse(
-            email -> entity.setRecipient(email),
-            () -> entity.setRecipient("anonymous@example.com")
-        );
+                    .orElse("anonymous") + "@example.com";
+    entity.setRecipient(email);
     entity.setAge(dto.age());
     return entity;
   }
 
-  public record Dto(String recipientPerson, int age) {
+  public record Dto(Optional<String> recipientPerson, int age) {
   }
 
   @Data

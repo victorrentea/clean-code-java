@@ -1,5 +1,6 @@
 package victor.training.cleancode;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -40,10 +41,15 @@ class SomeOtherClientCode {
 // Keep It Simple, Stupid! - US NAVY
 //record Interval(int start, int end) { // generic
 record YearInterval(int start, int end) { // specific
-  public YearInterval {// just java
+  public YearInterval {// just javat2t2ttt; bulletproof anywhere you 'new'
     if (start > end) { // invariants
       throw new IllegalArgumentException("start larger than end");
     }
+  }
+
+  @AssertTrue // works if used as request DTO
+  public boolean startLessThanEnd() {
+    return start <= end;
   }
 
   public boolean intersects(YearInterval other) {

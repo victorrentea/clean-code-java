@@ -1,5 +1,7 @@
 package victor.training.cleancode.exception.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
@@ -7,6 +9,7 @@ import static java.util.Optional.ofNullable;
 public class Customer {
    private String name;
    private MemberCard memberCard;
+  private List<String> tags = new ArrayList<>();
 
    public Customer() {
    }

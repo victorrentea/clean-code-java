@@ -1,6 +1,7 @@
 package victor.training.cleancode.fp;
 
 import com.google.common.annotations.VisibleForTesting;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
 import victor.training.cleancode.fp.support.Product;
@@ -18,6 +19,10 @@ class PureFunction {
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
+  //  @RolesAllowed/@Secured(ROLE_ADMIN)
+//  @Timed
+//  @Transactional
+//  @TransactionAttribute
   // TODO extract most complexity into a pure function: clear inputs/outputs, temporal couplings, easy to test (a pure function requires not MOCKS to test). just data
   public Map<Long, Double> computePrices(long customerId,
                                          List<Long> productIds,

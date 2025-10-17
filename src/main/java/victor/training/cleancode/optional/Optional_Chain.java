@@ -1,9 +1,13 @@
 package victor.training.cleancode.optional;
 
+import java.util.Optional;
+
 public class Optional_Chain {
   private static final MyMapper mapper = new MyMapper();
 
   public static void main(String[] args) {
+    var i = 1;
+    g(1);
     Parcel parcel = new Parcel();
     parcel.setDelivery(new Delivery(new Address(new ContactPerson("John"))));
     //    parcel.setDelivery(new Delivery(new Address(null)));
@@ -12,12 +16,22 @@ public class Optional_Chain {
     DeliveryDto dto = mapper.convert(parcel);
     System.out.println(dto);
   }
+
+  private static int f() { // reflection
+    return 1;
+  }
+
+  public static int g(int x) { // reflection
+    return 1;
+  }
 }
+
 
 class MyMapper {
   public DeliveryDto convert(Parcel parcel) {
     DeliveryDto dto = new DeliveryDto();
-    dto.recipientPerson = parcel.getDelivery().getAddress().getContactPerson().getName().toUpperCase();
+    dto.recipientPerson = parcel.getDelivery().getAddress()
+        .getContactPerson().orElseThrow().getName().toUpperCase();
     return dto;
   }
 }
@@ -62,8 +76,8 @@ class Address {
     this.contactPerson = contactPerson;
   }
 
-  public ContactPerson getContactPerson() {
-    return contactPerson;
+  public Optional<ContactPerson> getContactPerson() {
+    return Optional.ofNullable(contactPerson);
   }
 }
 
