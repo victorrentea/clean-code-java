@@ -13,7 +13,7 @@ public class Exercise {
    private final UserRepo userRepo;
    private final ServiceRepo serviceRepo;
    private final UserServiceHelper userServiceHelper;
-
+//
    public void sendUserMessageOnCreate(UserDto userDto, Project project, MessageAction action) {
       if (userDto.getRole() == UserRole.ADMIN) {
          List<ProjectServices> projectServices = projectServicesRepo.findByProjectId(project.getId());
