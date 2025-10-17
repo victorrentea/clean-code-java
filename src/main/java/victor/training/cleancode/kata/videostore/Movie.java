@@ -1,25 +1,21 @@
 package victor.training.cleancode.kata.videostore;
 public class Movie {
-	public static final int CHILDRENS = 2;
-	public static final int REGULAR = 0;
-	public static final int NEW_RELEASE = 1;
-	private String _title;
-	Integer _priceCode;
 
-	public Movie(String title, Integer priceCode) {
-		_title = title;
-		_priceCode = priceCode;
+  public enum PriceCode {CHILDRENS, REGULAR, NEW_RELEASE}
+
+	private final String title;
+	private final PriceCode priceCode;
+
+	public Movie(String title, PriceCode priceCode) {
+		this.title = title;
+		this.priceCode = priceCode;
 	}
 
-	public Integer getPriceCode() {
-		return _priceCode;
-	}
-
-	public void setPriceCode(Integer arg) {
-		_priceCode = arg;
+	public PriceCode getPriceCode() {
+		return priceCode;
 	}
 
 	public String getTitle() {
-		return _title;
-	};
+		return title;
+	}
 }
