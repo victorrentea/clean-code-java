@@ -32,7 +32,7 @@ class CustomerTest {
     // if above line fails to compile, uncomment the next line:
       Statement statement = customer.statement();
 
-      assertEquals(normalizeNewLines(expected), normalizeNewLines(statement.toString()));
+    assertEquals(normalizeNewLines(expected), normalizeNewLines(statement.format()));
   }
 
   private String normalizeNewLines(String expected) {
