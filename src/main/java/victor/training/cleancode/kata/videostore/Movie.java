@@ -1,3 +1,3 @@
 package victor.training.cleancode.kata.videostore;
 
-public record Movie (String title, PriceCode pricecode) {}
+public record Movie (String title, MoviePricingCategory moviePricingCategory) {}
