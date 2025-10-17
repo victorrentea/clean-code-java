@@ -1,46 +1,54 @@
 package victor.training.cleancode.kata.videostore;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.joining;
 
 class Customer {
+  // life is not sweet w/o Lombok in FinTech
+  private final String customerName;
 
-	@Getter
-    private final String customerName;
-	private final List<Rental> rentals = new ArrayList<>(); // preserves order of elements TODO find a better way to store this
+  private final List<Rental> rentals = new ArrayList<>();
 
-	public Customer(String customerName) {
-		this.customerName = customerName;
-	}
+  public Customer(String customerName) {
+    this.customerName = customerName;
+  }
 
-	public void addRental(Movie movie, int rentalDays) {
-		rentals.add(new Rental(movie, rentalDays));
-	}
+  public void addRental(Movie movie, int rentalDays) {
+    rentals.add(new Rental(movie, rentalDays));
+  }
 
-    public String displayRentals() {
-		String result ="Rental Record for " + getCustomerName() + "\n";
-		// loop over each movie rental
-		result += rentals.stream().map(this::renderRentalStatement).collect(Collectors.joining("\n")) + "\n";
-		double totalAmount = rentals.stream().mapToDouble(Rental::computeRentalPrice).sum();
+  public String displayRentals() {
+    return header() + body() + footer();
+  }
 
-		// add frequent points bonus for a two day new release rental
-		int newReleaseExtraPoints = (int) rentals.stream().filter(Customer::eligibleForBonus).count();
-		int frequentRenterPoints = rentals.size() + newReleaseExtraPoints;
+  private String header() {
+    return "Rental Record for " + customerName + "\n";
+  }
 
-		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
-	}
+  private String body() {
+    return rentals.stream().map(this::renderRentalStatement).collect(joining("\n")) + "\n";
+  }
 
-	private static boolean eligibleForBonus(Rental rental) {
-		return rental.movie().moviePricingCategory() == MoviePricingCategory.NEW_RELEASE && rental.rentalDays() > 1;
-	}
+  private String footer() {
+    return "Amount owed is " + getTotalAmount() + "\n" +
+           "You earned " + getFrequentRenterPoints() + " frequent renter points";
+  }
 
-	private String renderRentalStatement(Rental rental) {
-		return "\t" + rental.movie().title() + "\t" + rental.computeRentalPrice();
-	}
+  private String renderRentalStatement(Rental rental) {
+    return "\t" + rental.movie().title() + "\t" + rental.computeRentalPrice();
+  }
+
+  private double getTotalAmount() {
+    return rentals.stream().mapToDouble(Rental::computeRentalPrice).sum();
+  }
+
+  private int getFrequentRenterPoints() {
+    // add frequent points bonus for a two day new release rental
+    int newReleaseExtraPoints = (int) rentals.stream().filter(Rental::eligibleForBonus).count();
+    int frequentRenterPoints = rentals.size() + newReleaseExtraPoints;
+    return frequentRenterPoints;
+  }
+
 }
