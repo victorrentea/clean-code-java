@@ -11,11 +11,11 @@ public class Rentals {
     rentals.add(rental);
   }
 
-  public int computeRewardPoints() {
+  private int computeRewardPoints() {
     return rentals.stream().mapToInt(Rental::calculateRewardPoints).sum();
   }
 
-  public double computeTotalCost() {
+  private double computeTotalCost() {
     return rentals.stream().mapToDouble(Rental::getCost).sum();
   }
 
