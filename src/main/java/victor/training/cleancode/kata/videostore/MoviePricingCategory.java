@@ -6,19 +6,19 @@ enum MoviePricingCategory {
     NEW_RELEASE(0,0,3);
 
     private final double movieBasePrice;
-    private final int rentalDaysThresholdForPenalty;
+    private final int rentalDaysBeforePenaltyApplies;
     private final double penaltyMultiplier;
 
-    MoviePricingCategory(double movieBasePrice, int rentalDaysThresholdForPenalty, double penaltyMultiplier) {
+    MoviePricingCategory(double movieBasePrice, int rentalDaysBeforePenaltyApplies, double penaltyMultiplier) {
         this.movieBasePrice = movieBasePrice;
-        this.rentalDaysThresholdForPenalty = rentalDaysThresholdForPenalty;
+        this.rentalDaysBeforePenaltyApplies = rentalDaysBeforePenaltyApplies;
         this.penaltyMultiplier = penaltyMultiplier;
     }
 
     double computeMovieRentalPrice(int rentalDays) {
         double movieAmount = movieBasePrice;
-        if (rentalDays > rentalDaysThresholdForPenalty) {
-            movieAmount += (rentalDays - rentalDaysThresholdForPenalty) * penaltyMultiplier;
+        if (rentalDays > rentalDaysBeforePenaltyApplies) {
+            movieAmount += (rentalDays - rentalDaysBeforePenaltyApplies) * penaltyMultiplier;
         }
         return movieAmount;
     }
