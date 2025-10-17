@@ -1,11 +1,13 @@
 package victor.training.cleancode.kata.videostore;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 class Customer {
 	private final String name;
-	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
+	private final List<RentedMovie> rentals = new ArrayList<>();
 
 	public Customer(String name) {
 		this.name = name;
@@ -28,16 +30,16 @@ class Customer {
 			double thisAmount = 0;
 			// determine amounts for every line
 			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
+			switch (each.priceCode()) {
+				case REGULAR:
 					thisAmount += 2;
 					if (dr > 2)
 						thisAmount += (dr - 2) * 1.5;
 					break;
-				case Movie.NEW_RELEASE:
+				case NEW_RELEASE:
 					thisAmount += dr * 3;
 					break;
-				case Movie.CHILDRENS:
+				case CHILDREN:
 					thisAmount += 1.5;
 					if (dr > 3)
 						thisAmount += (dr - 3) * 1.5;
@@ -46,12 +48,12 @@ class Customer {
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
+			if (each.priceCode() != null &&
+				 (each.priceCode() == PriceCode.NEW_RELEASE)
 				 && dr > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
+			result += "\t" + each.title() + "\t" + thisAmount + "\n";
 			totalAmount += thisAmount;
 		}
 		// add footer lines
