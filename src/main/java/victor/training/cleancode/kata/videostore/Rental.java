@@ -4,7 +4,7 @@ public record Rental (Movie movie, int daysRented) {
 
     double getCost() {
         double movieCost = 0;
-        switch (movie.getPriceCode()) {
+        switch (movie.priceCode()) {
             case REGULAR:
                 movieCost += 2;
                 if (daysRented > 2)
@@ -21,4 +21,16 @@ public record Rental (Movie movie, int daysRented) {
         }
         return movieCost;
     }
+
+    int calculateRewardPoints() {
+        if (movie.priceCode() == PriceCode.NEW_RELEASE && daysRented > 1) {
+          return 2;
+        } else {
+          return 1;
+        }
+    }
+
+  String generateStatementLine() {
+    return "\t" + movie().title() + "\t" + getCost() + "\n";
+  }
 }
