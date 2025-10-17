@@ -3,7 +3,7 @@ public class Movie {
 	public static final int CHILDRENS = 2;
 	public static final int REGULAR = 0;
 	public static final int NEW_RELEASE = 1;
-	private String _title;
+  private final String _title;
 	Integer _priceCode;
 
 	public Movie(String title, Integer priceCode) {
@@ -21,5 +21,5 @@ public class Movie {
 
 	public String getTitle() {
 		return _title;
-	};
+  }
 }
