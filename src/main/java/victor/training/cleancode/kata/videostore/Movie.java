@@ -1,25 +1,20 @@
 package victor.training.cleancode.kata.videostore;
 
 public class Movie {
-    private final String _title;
-    private PriceCode _priceCode;
+    private final String title;
+    private final PriceCode priceCode;
 
     public Movie(String title, PriceCode priceCode) {
-        _title = title;
-        _priceCode = priceCode;
+        this.title = title;
+        this.priceCode = priceCode;
     }
 
     public PriceCode getPriceCode() {
-        return _priceCode;
-    }
-
-    public void setPriceCode(PriceCode arg) {
-        _priceCode = arg;
+        return priceCode;
     }
 
     public String getTitle() {
-        return _title;
+        return title;
     }
 
-    ;
 }
