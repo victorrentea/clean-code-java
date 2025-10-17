@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 class Customer {
+
 	private final String name;
 	private final Map<Movie, Integer> rentals = new LinkedHashMap<>(); // preserves order of elements TODO find a better way to store this
 
@@ -11,52 +12,50 @@ class Customer {
 		this.name = name;
 	};
 
-	public void addRental(Movie m, int d) {
-		rentals.put(m, d);
+	public void addRental(Movie m, int price) {
+		rentals.put(m, price);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String statement() {
+	public String displayRentals() {
 		double totalAmount = 0;
 		int frequentRenterPoints = 0;
-		String result = "Rental Record for " + getName() + "\n";
+		StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {
-			double thisAmount = 0;
+			double movieAmount = 0;
 			// determine amounts for every line
-			int dr = rentals.get(each);
-			switch (each.getPriceCode()) {
-				case Movie.REGULAR:
-					thisAmount += 2;
-					if (dr > 2)
-						thisAmount += (dr - 2) * 1.5;
+			int rentalAmount = rentals.get(each);
+			switch (each.pricecode()) {
+				case REGULAR:
+					movieAmount += 2;
+					if (rentalAmount > 2)
+						movieAmount += (rentalAmount - 2) * 1.5;
 					break;
-				case Movie.NEW_RELEASE:
-					thisAmount += dr * 3;
+				case NEW_RELEASE:
+					movieAmount += rentalAmount * 3;
 					break;
-				case Movie.CHILDRENS:
-					thisAmount += 1.5;
-					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+				case CHILDRENS:
+					movieAmount += 1.5;
+					if (rentalAmount > 3)
+						movieAmount += (rentalAmount - 3) * 1.5;
 					break;
 			}
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if (each.getPriceCode() != null &&
-				 (each.getPriceCode() == Movie.NEW_RELEASE)
-				 && dr > 1)
+			if (each.pricecode() == PriceCode.NEW_RELEASE && rentalAmount > 1)
 				frequentRenterPoints++;
 			// show figures line for this rental
-			result += "\t" + each.getTitle() + "\t" + thisAmount + "\n";
-			totalAmount += thisAmount;
+			result.append("\t").append(each.title()).append("\t").append(movieAmount).append("\n");
+			totalAmount += movieAmount;
 		}
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
-		return result;
+		result.append("Amount owed is ").append(totalAmount).append("\n");
+		result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+		return result.toString();
 	}
 }

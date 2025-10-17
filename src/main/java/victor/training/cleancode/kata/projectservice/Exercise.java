@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.kata.projectservice.ProjectServices.Status;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 @RequiredArgsConstructor
@@ -19,12 +18,12 @@ public class Exercise {
          List<ProjectServices> projectServices = projectServicesRepo.findByProjectId(project.getId());
          List<ProjectServices> subscribedProjectServices = projectServices.stream()
              .filter(projectService -> projectService.getStatus() == Status.SUBSCRIBED)
-             .collect(Collectors.toList());
+             .toList();
 
          subscribedProjectServices.forEach(subscribedProjectService -> {
             ProjectServicesDto projectServicesDto = new ProjectServicesDto();
             projectServicesDto.setService(subscribedProjectService.getService());
-            User user = userRepo.findByUuid(userDto.getUuid()).get();
+            User user = userRepo.findByUuid(userDto.getUuid()).orElseThrow();
             userServiceHelper.sendUserToServicesOnCreate(projectServicesDto, project, action, user, userDto, UserRole.ADMIN.name());
          });
       } else {
@@ -37,7 +36,7 @@ public class Exercise {
                if (projectServices1 != null && projectServices1.getStatus() == Status.SUBSCRIBED) {
                   ProjectServicesDto projectServicesDto = new ProjectServicesDto();
                   projectServicesDto.setService(service);
-                  User user = userRepo.findByUuid(userDto.getUuid()).get();
+                  User user = userRepo.findByUuid(userDto.getUuid()).orElseThrow();
                   if (userDto.getRole() == UserRole.VIEW) {
                      userServiceHelper.sendUserToServicesOnCreate(projectServicesDto, project, action, user, userDto, UserRole.VIEW.name());
                   } else {

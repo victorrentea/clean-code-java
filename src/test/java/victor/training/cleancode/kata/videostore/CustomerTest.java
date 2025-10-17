@@ -1,6 +1,5 @@
 package victor.training.cleancode.kata.videostore;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,10 +12,10 @@ class CustomerTest {
   void characterizationTest() {
     Customer customer = new Customer("John Doe");
 //    customer.addRental(new Movie("Star Wars", Movie.BABACI), 6);
-    customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
-    customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
-    customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
-    customer.addRental(new Movie("Wicked", Movie.CHILDRENS), 3);
+    customer.addRental(new Movie("Star Wars", PriceCode.NEW_RELEASE), 6);
+    customer.addRental(new Movie("Sofia", PriceCode.CHILDRENS), 7);
+    customer.addRental(new Movie("Inception", PriceCode.REGULAR), 5);
+    customer.addRental(new Movie("Wicked", PriceCode.CHILDRENS), 3);
 
     String expected = """
         Rental Record for John Doe
@@ -29,7 +28,7 @@ class CustomerTest {
 
 //    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
     // if above line fails to compile, uncomment the next line:
-    assertEquals(normalizeNewLines(expected), normalizeNewLines(customer.statement()));
+    assertEquals(normalizeNewLines(expected), normalizeNewLines(customer.displayRentals()));
   }
 
   private String normalizeNewLines(String expected) {
