@@ -15,8 +15,8 @@ class Customer {
         this.name = name;
     }
 
-    public void addRental(Movie m, int price) {
-        rentals.add(new Rental(m, price));
+    public void addRental(Movie movie, int days) {
+        rentals.add(new Rental(movie, days));
     }
 
     public String getName() {
@@ -31,25 +31,10 @@ class Customer {
         // loop over movie rental
 		Map<Movie, Double> finalPricePerMovie = new LinkedHashMap<>();
         for (Rental rental : rentals) {
-            double thisAmount = 0;
             // determine amounts for every line
             int days = rental.days();
             Movie movie = rental.movie();
-            switch (movie.priceCode()) {
-                case REGULAR:
-                    thisAmount += 2;
-                    if (days > 2)
-                        thisAmount += (days - 2) * 1.5;
-                    break;
-                case NEW_RELEASE:
-                    thisAmount += days * 3;
-                    break;
-                case CHILDRENS:
-                    thisAmount += 1.5;
-                    if (days > 3)
-                        thisAmount += (days - 3) * 1.5;
-                    break;
-            }
+            double thisAmount = rental.computeRentalPrice();
             // add frequent renter points
             frequentRenterPoints++;
             // add bonus for a two day new release rental
@@ -65,4 +50,5 @@ class Customer {
         result += "You earned " + frequentRenterPoints + " frequent renter points";
         return new Statement(totalAmount, frequentRenterPoints, finalPricePerMovie, result);
     }
+
 }

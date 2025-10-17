@@ -15,9 +15,9 @@ class CustomerTest {
     Customer customer = new Customer("John Doe");
 //    customer.addRental(new Movie("Star Wars", Movie.BABACI), 6);
     customer.addRental(new Movie("Star Wars", NEW_RELEASE), 6);
-    customer.addRental(new Movie("Sofia", CHILDRENS), 7);
+    customer.addRental(new Movie("Sofia", CHILDREN), 7);
     customer.addRental(new Movie("Inception", REGULAR), 5);
-    customer.addRental(new Movie("Wicked", CHILDRENS), 3);
+    customer.addRental(new Movie("Wicked", CHILDREN), 3);
 
     String expected = """
         Rental Record for John Doe
