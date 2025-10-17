@@ -27,6 +27,7 @@ public class Order {
 
    public Order setOfferDate(Date offerDate) {
       this.offerDate = requireNonNull(offerDate);
+
       return this;
    }
 }
