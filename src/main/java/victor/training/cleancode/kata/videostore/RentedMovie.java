@@ -29,4 +29,10 @@ public record RentedMovie(Movie movie, int rentalDays) {
     PriceCode moviePriceCode() {
         return movie.priceCode();
     }
+
+    public boolean isMultidayNewReleaseRental() {
+        return moviePriceCode() != null &&
+              (moviePriceCode() == PriceCode.NEW_RELEASE)
+              && rentalDays() > 1;
+    }
 }

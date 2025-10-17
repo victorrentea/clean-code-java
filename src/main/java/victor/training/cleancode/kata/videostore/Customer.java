@@ -21,39 +21,22 @@ class Customer {
 	}
 
 	public String statement() {
-		int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
-        // loop over each movie rental
-
-        double totalAmount = rentedMovies.stream().mapToDouble(RentedMovie::computeRentalPrice).sum();
-
-        for (RentedMovie rentedMovie : rentedMovies) {
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two-day new release rental
-            if (isATwoDayNewReleaseRental(rentedMovie)) {
-                frequentRenterPoints++;
-            }
-        }
-
-        String title = rentedMovies.stream().map(rentedMovie -> rentedMovie.toString()).collect(Collectors.joining("\n"));
-
-		for (RentedMovie rentedMovie : rentedMovies) {
-            // show figures line for this rental
-            result += rentedMovie.formatForInvoice();
-		}
+        result += rentedMovies.stream().map(RentedMovie::formatForInvoice).collect(Collectors.joining());
 
 		// add footer lines
-		result += "Amount owed is " + totalAmount + "\n";
-		result += "You earned " + frequentRenterPoints + " frequent renter points";
+		result += "Amount owed is " + computeTotalRentalAmount(rentedMovies) + "\n";
+		result += "You earned " + computeFrequentRenterPoints(rentedMovies) + " frequent renter points";
 		return result;
 	}
 
-
-    private static boolean isATwoDayNewReleaseRental(RentedMovie rentedMovie) {
-        return rentedMovie.moviePriceCode() != null &&
-              (rentedMovie.moviePriceCode() == PriceCode.NEW_RELEASE)
-              && rentedMovie.rentalDays() > 1;
+    private double computeTotalRentalAmount(List<RentedMovie> rentedMovies) {
+        return rentedMovies.stream().mapToDouble(RentedMovie::computeRentalPrice).sum();
     }
+
+    private int computeFrequentRenterPoints(List<RentedMovie> rentedMovies) {
+        return (int) (rentedMovies.size() + rentedMovies.stream().filter(RentedMovie::isMultidayNewReleaseRental).count());
+    }
+
 
 }
