@@ -31,10 +31,8 @@ class CustomerTest {
 //    assertThat(customer.statement()).isEqualToIgnoringNewLines(expected);
     // if above line fails to compile, uncomment the next line:
       Statement statement = customer.statement();
-      assertEquals(33.5, statement.totalAmount());
-      assertEquals(5, statement.frequentRenterPoints());
-      Map<Movie, Double> expectedRealAmounts = statement.rentalAmounts();
-      assertEquals(normalizeNewLines(expected), normalizeNewLines(statement.sorryTemp()));
+
+      assertEquals(normalizeNewLines(expected), normalizeNewLines(statement.toString()));
   }
 
   private String normalizeNewLines(String expected) {
