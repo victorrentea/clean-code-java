@@ -2,6 +2,7 @@ package victor.training.cleancode.kata.videostore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Customer {
 	private final String name;
@@ -24,7 +25,7 @@ class Customer {
         String result = "Rental Record for " + getName() + "\n";
         // loop over each movie rental
 
-        double totalAmount = rentedMovies.stream().mapToDouble(Customer::computeAmountForRental).sum();
+        double totalAmount = rentedMovies.stream().mapToDouble(RentedMovie::computeRentalPrice).sum();
 
         for (RentedMovie rentedMovie : rentedMovies) {
             // add frequent renter points
@@ -35,9 +36,11 @@ class Customer {
             }
         }
 
+        String title = rentedMovies.stream().map(rentedMovie -> rentedMovie.toString()).collect(Collectors.joining("\n"));
+
 		for (RentedMovie rentedMovie : rentedMovies) {
             // show figures line for this rental
-            result += "\t" + rentedMovie.movie().title() + "\t" + computeAmountForRental(rentedMovie) + "\n";
+            result += rentedMovie.formatForInvoice();
 		}
 
 		// add footer lines
@@ -46,30 +49,11 @@ class Customer {
 		return result;
 	}
 
+
     private static boolean isATwoDayNewReleaseRental(RentedMovie rentedMovie) {
         return rentedMovie.moviePriceCode() != null &&
               (rentedMovie.moviePriceCode() == PriceCode.NEW_RELEASE)
               && rentedMovie.rentalDays() > 1;
     }
 
-    private static double computeAmountForRental(RentedMovie rentedMovie) {
-        double thisAmount = 0;
-        // determine amounts for every line
-        switch (rentedMovie.moviePriceCode()) {
-            case REGULAR:
-                thisAmount += 2;
-                if (rentedMovie.rentalDays() > 2)
-                    thisAmount += (rentedMovie.rentalDays() - 2) * 1.5;
-                break;
-            case NEW_RELEASE:
-                thisAmount += rentedMovie.rentalDays() * 3;
-                break;
-            case CHILDREN:
-                thisAmount += 1.5;
-                if (rentedMovie.rentalDays() > 3)
-                    thisAmount += (rentedMovie.rentalDays() - 3) * 1.5;
-                break;
-        }
-        return thisAmount;
-    }
 }
