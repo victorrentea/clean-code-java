@@ -1,8 +1,8 @@
 package victor.training.cleancode.kata.videostore;
 
-public record Movie(String title, MoviePricingCategory priceCode) {
+public record Movie(String title, MovieCategory category) {
     double getCost(int daysRented) {
-        return switch (priceCode) {
+        return switch (category) {
             case REGULAR -> regularCost(daysRented);
             case NEW_RELEASE -> daysRented * 3;
             case CHILDRENS -> childrenPrice(daysRented);
