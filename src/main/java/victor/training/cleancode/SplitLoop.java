@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SplitLoop {
-  // TODO Split loops and refactor to .stream. Run Tests✅
+
   public String computeStats(List<Employee> employees) {
     List<Integer> employeeIds = new ArrayList<>();
     double totalConsultantSalary = 0;
-    for (Employee employee : employees) {
+    for (Employee employee : employees) { // SRP: sa faci 1 lucru odata
       if (employee.consultant()) {
         totalConsultantSalary += employee.salary();
       }
+    }
+    for (Employee employee : employees) { // SRP: sa faci 1 lucru odata
       employeeIds.add(employee.id());
     }
     System.out.println("Employee IDs: " + employeeIds);
