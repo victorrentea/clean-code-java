@@ -2,9 +2,7 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SplitLoop {
 
@@ -17,7 +15,11 @@ public class SplitLoop {
     // PY = sum(e.salary for e in employees if e.consultant)
 
     // SRP: sa faci 1 lucru odata
-    List<Integer> employeeIds = employees.stream().map(Employee::id).toList();
+    List<Integer> employeeIds = employees.stream().map(e -> e.id).toList(); // ❤️
+//    List<Integer> employeeIds = new ArrayList<>();
+//    employees.stream().map(Employee::id).forEach(id->employeeIds.add(id));
+    // PR rejected: avoidable side-effects in lambda == scar boss
+
     // TS: = employees.map(e=>e.id)
     // PY: = [e.id for e in employees]
     System.out.println("Employee IDs: " + employeeIds);
