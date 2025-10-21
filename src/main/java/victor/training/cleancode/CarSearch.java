@@ -1,5 +1,8 @@
 package victor.training.cleancode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,58 +12,60 @@ class CarSearch {
   public List<CarModel> filterCarModels(
       CarSearchCriteria criteria, List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> doYearsIntersect(criteria, carModel))
+        .filter(carModel -> criteria.getYears().intersects(carModel.getInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
 
-  private boolean doYearsIntersect(CarSearchCriteria criteria, CarModel carModel) {
-    int start1 = criteria.getStartYear();
-    int end1 = criteria.getEndYear();
-    int start2 = carModel.getStartYear();
-    int end2 = carModel.getEndYear();
-    return MathUtil.intervalsIntersect(
-        new Interval(start1, end1),
-        new Interval(start2, end2)
-    );
-  }
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(
-        new Interval(1000, 1600),
+    System.out.println(new Interval(1000, 1600).intersects(
         new Interval(1250, 2000)
     ));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(
-        new Interval(1000, 1600),
-        new Interval(1250, 2000)
+    System.out.println(new Interval(1000, 1600)
+        .intersects(new Interval(1250, 2000)
     ));
   }
 }
 
-//record IntervalDates() {}
+//record IntervalDates(int,int,int,int) {}
 //record Interval(int) {}
-//record 2PerechiDeCapete(int) {}
+//record DouaPerechiDeCapete(int) {}
 //record OPerecheDeCapete(int,int) {}
 //record PeriodDeIncadrare(int,int) {}
 //record DOuaINtervale(int) {}
 //record PatruAni(int,int,int,int) {}
 //record Period(int startYear,int endYear) {}
-record Interval(int startYear, int endYear) {}
-class MathUtil {
-  public static boolean intervalsIntersect(
-      Interval interval1, Interval interval2) {
-    return interval1.startYear() <= interval2.endYear()
-           && interval2.startYear() <= interval1.endYear();
+record Interval(int startYear, int endYear) {
+  Interval {
+    if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
+  }
+
+  @AssertTrue
+  @JsonIgnore
+  public boolean startIsBeforeEnd() {
+    return startYear <= endYear;
+  }
+
+  public boolean intersects(Interval other) {
+    return startYear <= other.endYear && other.startYear <= endYear;
+  }
+}
+
+class IntervalUtil { // POO: UTILu te pica examenul
+  //
+  {
+    new Interval(2007, 2002);
   }
 }
 
 
-class CarSearchCriteria { // a DTO received from JSON
+class CarSearchCriteria { // a DTO received from JSON (REST API) = contract. NU ATINGE!! ca vine frontu/nemtii peste tine cu batele!
   private final int startYear;
   private final int endYear;
   private final String make;
@@ -83,6 +88,11 @@ class CarSearchCriteria { // a DTO received from JSON
   public String getMake() {
     return make;
   }
+
+  @JsonIgnore
+  public Interval getYears() {
+    return new Interval(startYear, endYear);
+  }
 }
 
 // @Entity
@@ -91,8 +101,7 @@ class CarModel { // the Entity Model👑 test
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  private Interval interval;
 
   protected CarModel() {
   } // for Hibernate
@@ -101,8 +110,11 @@ class CarModel { // the Entity Model👑 test
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+    this.interval = new Interval(startYear, endYear);
+  }
+
+  public Interval getInterval() {
+    return interval;
   }
 
   public Long getId() {
@@ -110,11 +122,11 @@ class CarModel { // the Entity Model👑 test
   }
 
   public int getEndYear() {
-    return endYear;
+    return interval.endYear();
   }
 
   public int getStartYear() {
-    return startYear;
+    return interval.startYear();
   }
 
   public String getMake() {

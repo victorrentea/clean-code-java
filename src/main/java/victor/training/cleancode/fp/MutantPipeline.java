@@ -25,18 +25,23 @@ public class MutantPipeline {
     return shipDates;
   }
   //endregion
+
+
   private final PaymentCardMapper paymentCardMapper;
 
-  //region +=
   public int totalActiveOrderPrice(List<Order> orders) {
-    int sum = 0;
-    for (Order order : orders) {
-      if (order.isActive()) {
-        sum += order.price();
-      }
-    }
+    int sum = orders.stream().filter(Order::isActive).mapToInt(Order::price).sum();
+//    for (Order order : orders) {
+//      if (order.isActive()) {
+//        sum += order.price();
+//      }
+//    }
+    // ts: .reduce(0,(acc,o)=>acc+o.price))
+    // py: sum= sum(o.price for o in orders if o.active)
     return sum;
   }
+
+
   public PaymentCardDto updateCardAlias(long paymentCardId, long ssoId, String newAlias) {
     return paymentCardRepository.findById(paymentCardId)
         .filter(card -> card.getId() == ssoId)
