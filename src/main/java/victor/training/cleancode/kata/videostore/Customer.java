@@ -40,7 +40,9 @@ class Customer {
 				case Movie.CHILDRENS:
 					thisAmount += 1.5;
 					if (dr > 3)
-						thisAmount += (dr - 3) * 1.5;
+            thisAmount += (dr - 3) * 2;
+          if (dr > 7)
+            thisAmount += (dr - 7) * 3;
 					break;
 			}
 			// add frequent renter points
