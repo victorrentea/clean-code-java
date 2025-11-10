@@ -1,36 +1,43 @@
 package victor.training.cleancode;
 
 
+import lombok.Data;
+import lombok.Value;
+
 import java.util.List;
 
 class RefactoringWarmup {
   public static void main(String[] args) {
-    Two two = new Two();
+    TwoInterface two = new Two();
     System.out.println(two.loop(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)));
     System.out.println(new One(two).f());
-    System.out.println(two.g(new R(1)));
+    System.out.println(new R(1).g());
   }
 }
 
+class TwoBis implements TwoInterface {
+  @Override
+  public double loop(List<Integer> numbers) {
+    return 0;
+  }
+}
 class One {
-  private final Two two;
+  private final TwoInterface two;
 
-  One(Two two) {
+  One(TwoInterface two) {
     this.two = two;
   }
 
   public int f() {
-    return 2 * two.g(new R(3));
+    two.loop(List.of());
+    return 2 * new R(3).g();
   }
 }
 
-class Two {
-  public int g(R r) {
-    int b = 2;
-    System.out.println("b=" + b);
-    return 1 + b + r.x();
-  }
+class Two implements TwoInterface {
+  public static final int BONUS_ANIMAL = 2;
 
+  @Override
   public double loop(List<Integer> numbers) {
     System.out.println("b=" + 987);
     double ssq = 0;
@@ -43,7 +50,25 @@ class Two {
   }
 }
 
+// = final fields+ctr+getter (fara "get-")+eq/hash+toString
 record R(int x) {
+  public int g() {
+    System.out.println("b=" + Two.BONUS_ANIMAL);
+    return 1 + Two.BONUS_ANIMAL + x();
+  }
+}
+
+// === sau cu lombok, care scrie bytecode la javac
+@Data // hint: poti folosi Delombok sa-ti arate codul generat de javac
+// interzis pe @Entity de JPA: pui doar @Getter ±@Setter
+class RR {
+  private final int x;
+}
+
+// ===
+@Value//❤️
+class RRR {
+  int x;
 }
 
 // TODO: Practice Refactoring

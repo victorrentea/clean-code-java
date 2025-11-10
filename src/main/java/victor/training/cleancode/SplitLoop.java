@@ -2,20 +2,14 @@ package victor.training.cleancode;
 
 import lombok.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SplitLoop {
   // TODO Split loops and refactor to .stream. Run Tests✅
   public String computeStats(List<Employee> employees) {
-    List<Integer> employeeIds = new ArrayList<>();
-    double totalConsultantSalary = 0;
-    for (Employee employee : employees) {
-      if (employee.consultant()) {
-        totalConsultantSalary += employee.salary();
-      }
-      employeeIds.add(employee.id());
-    }
+    double totalConsultantSalary = employees.stream().filter(Employee::consultant).mapToDouble(Employee::salary).sum();
+    List<Integer> employeeIds = employees.stream().map(Employee::id).collect(Collectors.toList());
     System.out.println("Employee IDs: " + employeeIds);
     return "Total consultant salary: " + totalConsultantSalary + "; ids: " + employeeIds;
   }
