@@ -6,31 +6,43 @@ import java.util.stream.Collectors;
 class CarSearch {
 
   // run tests
-  public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
+  public List<CarModel> filterCarModels(
+      CarSearchCriteria criteria,
+      List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> criteria.getYearInterval().intersects(carModel.getYearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
+
 }
 
 class SomeOtherClientCode {
   private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
   private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
+    System.out.println(new Interval(1000, 1600).intersects(new Interval(1250, 2000)));
   }
 }
 
-class MathUtil {
-
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+record Interval(int start, int end) {
+  Interval {
+    if (start > end) {
+      throw new IllegalArgumentException("start larger than end");
+    }
   }
+
+  // noua si buna
+  public boolean intersects(Interval other) {
+    return start <= other.end && other.start <= end;
+  }
+}
+class MathUtil {
+  // veche si naspa
+  // daca e cod dintr-un jar comun cu alte gituri (gen librarie)
+  //  @Deprecated("forever 🤛")
 }
 
 
@@ -44,6 +56,10 @@ class CarSearchCriteria { // a DTO received from JSON
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
     this.startYear = startYear;
     this.endYear = endYear;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 
   public int getStartYear() {
@@ -65,8 +81,9 @@ class CarModel { // the Entity Model👑 test
   private Long id;
   private String make;
   private String model;
-  private int startYear;
-  private int endYear;
+  //  private int startYear;
+//  private int endYear;
+  private Interval yearInterval;
 
   protected CarModel() {
   } // for Hibernate
@@ -75,8 +92,9 @@ class CarModel { // the Entity Model👑 test
     this.make = make;
     this.model = model;
     if (startYear > endYear) throw new IllegalArgumentException("start larger than end");
-    this.startYear = startYear;
-    this.endYear = endYear;
+//    this.startYear = startYear;
+//    this.endYear = endYear;
+    this.yearInterval = new Interval(startYear, endYear);
   }
 
   public Long getId() {
@@ -84,11 +102,15 @@ class CarModel { // the Entity Model👑 test
   }
 
   public int getEndYear() {
-    return endYear;
+    return yearInterval.end();
   }
 
   public int getStartYear() {
-    return startYear;
+    return yearInterval.start();
+  }
+
+  public Interval getYearInterval() {
+    return yearInterval;
   }
 
   public String getMake() {
