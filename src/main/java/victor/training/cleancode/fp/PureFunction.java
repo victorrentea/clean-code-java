@@ -1,5 +1,6 @@
 package victor.training.cleancode.fp;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
 
@@ -17,20 +18,29 @@ class PureFunction {
 
   // TODO extract most complexity into a pure function
   public Map<Long, Double> computePrices(
-      final long customerId,
-      final List<Long> productIds,
-      final Map<Long, Double> internalPrices) {
-    final Customer customer = customerRepo.findById(customerId); //+
-    final List<Product> products = productRepo.findAllById(productIds); // WHERE id IN (?,?..)
+      long customerId,
+      List<Long> productIds,
+      Map<Long, Double> internalPrices) {
 
-    final Map<Long, Double> initialPrices = fetchInitialPrices(internalPrices, products);
+    Customer customer = customerRepo.findById(customerId);
+    List<Product> products = productRepo.findAllById(productIds); // WHERE id IN (?,?..)
+    Map<Long, Double> initialPrices = fetchInitialPrices(internalPrices, products);
+    ApplyCouponsResult result = applyCoupons(products, initialPrices, customer.coupons());
+    couponRepo.markUsedCoupons(customerId, result.usedCoupons());
+    return result.finalPrices();
+  }
 
-    // apply coupons
-    final List<Coupon> usedCoupons = new ArrayList<>();
-    final Map<Long, Double> finalPrices = new HashMap<>();
-    for (final Product product : products) {
+  @VisibleForTesting
+    // Sonar se asigura ca nu folosesti metoda decat din src/test din afara clasei asteia
+  ApplyCouponsResult applyCoupons(
+      List<Product> products,
+      Map<Long, Double> initialPrices,
+      List<Coupon> coupons) {
+    List<Coupon> usedCoupons = new ArrayList<>();
+    Map<Long, Double> finalPrices = new HashMap<>();
+    for (Product product : products) {
       Double price = initialPrices.get(product.getId());
-      for (final Coupon coupon : customer.coupons()) {
+      for (Coupon coupon : coupons) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {
           price = coupon.apply(product, price);
           usedCoupons.add(coupon);
@@ -38,13 +48,12 @@ class PureFunction {
       }
       finalPrices.put(product.getId(), price);
     }
-    couponRepo.markUsedCoupons(customerId, usedCoupons);
-    return finalPrices;
+    return new ApplyCouponsResult(usedCoupons, finalPrices);
   }
 
-  private Map<Long, Double> fetchInitialPrices(final Map<Long, Double> internalPrices, final List<Product> products) {
-    final Map<Long, Double> initialPrices = new HashMap<>();
-    for (final Product product : products) {
+  private Map<Long, Double> fetchInitialPrices(Map<Long, Double> internalPrices, List<Product> products) {
+    Map<Long, Double> initialPrices = new HashMap<>();
+    for (Product product : products) {
       Double price = internalPrices.get(product.getId());
       if (price == null) {
         price = thirdPartyPricesApi.fetchPrice(product.getId());//+
@@ -53,5 +62,7 @@ class PureFunction {
     }
     return initialPrices;
   }
+
+  record ApplyCouponsResult(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {}
 }
 
