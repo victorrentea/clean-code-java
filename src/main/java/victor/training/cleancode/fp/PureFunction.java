@@ -30,6 +30,18 @@ class PureFunction {
     return result.finalPrices();
   }
 
+  private Map<Long, Double> fetchInitialPrices(Map<Long, Double> internalPrices, List<Product> products) {
+    Map<Long, Double> initialPrices = new HashMap<>();
+    for (Product product : products) {
+      Double price = internalPrices.get(product.getId());
+      if (price == null) {
+        price = thirdPartyPricesApi.fetchPrice(product.getId());//+
+      }
+      initialPrices.put(product.getId(), price);
+    }
+    return initialPrices;
+  }
+
   @VisibleForTesting
     // Sonar se asigura ca nu folosesti metoda decat din src/test din afara clasei asteia
   ApplyCouponsResult applyCoupons(
@@ -49,18 +61,6 @@ class PureFunction {
       finalPrices.put(product.getId(), price);
     }
     return new ApplyCouponsResult(usedCoupons, finalPrices);
-  }
-
-  private Map<Long, Double> fetchInitialPrices(Map<Long, Double> internalPrices, List<Product> products) {
-    Map<Long, Double> initialPrices = new HashMap<>();
-    for (Product product : products) {
-      Double price = internalPrices.get(product.getId());
-      if (price == null) {
-        price = thirdPartyPricesApi.fetchPrice(product.getId());//+
-      }
-      initialPrices.put(product.getId(), price);
-    }
-    return initialPrices;
   }
 
   record ApplyCouponsResult(List<Coupon> usedCoupons, Map<Long, Double> finalPrices) {}

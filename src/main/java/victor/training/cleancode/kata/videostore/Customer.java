@@ -20,8 +20,8 @@ class Customer {
 	}
 
 	public String statement() {
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
+    double totalAmount = 0;
+    int frequentRenterPoints = 0;
 		String result = "Rental Record for " + getName() + "\n";
 		// loop over each movie rental
 		for (Movie each : rentals.keySet()) {

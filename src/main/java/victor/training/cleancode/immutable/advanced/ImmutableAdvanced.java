@@ -1,13 +1,12 @@
 package victor.training.cleancode.immutable.advanced;
 
-import java.util.List;
-import java.util.stream.Stream;
+import com.google.common.collect.ImmutableList;
 
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Stream;
 
 public class ImmutableAdvanced {
   public static void main(String[] args) {
-    List<Integer> list = Stream.of(1, 2, 3).collect(toList()); // ArrayList
+    var list = Stream.of(1, 2, 3).collect(ImmutableList.toImmutableList()); // ArrayList
 
     Immutable immutable = new Immutable(1, 2, list, new Other(15));
     System.out.println("Before: " + immutable);
@@ -18,43 +17,24 @@ public class ImmutableAdvanced {
   }
 
   private static void wilderness(Immutable immutable) {
+    immutable.list().clear();
     // dark, deep logic not expected to change the immutable object x,y
   }
 }
 
-class Immutable {
-  private final Integer x;
-  private final Integer y;
-  private final List<Integer> list;
-  private final Other other;
-
-  Immutable(Integer x, Integer y, List<Integer> list, Other other) {
-    this.x = x;
-    this.y = y;
-    this.list = list;
-    this.other = other;
-  }
-
-  public List<Integer> getList() {
-    return list;
-  }
-
-  public Integer getX() {
-    return x;
-  }
-
-  public Integer getY() {
-    return y;
-  }
-
-  public Other getOther() {
-    return other;
-  }
-
-  @Override
-  public String toString() {
-    return "Immutable{x=%d, y=%d, numbers=%s, other=%s}".formatted(x, y, list, other);
-  }
+//  -----
+record Immutable(
+    Integer x,
+    Integer y,
+//    List<Integer> list,  mutable collection 1995-style
+    ImmutableList<Integer> list, // guava (google.common)
+    Other other) {
+//  @Override
+//  public List<Integer> list() {
+//    return list;//
+//    return new ArrayList<>(list);// malloc toata lista + misleading
+//    return Collections.unmodifiableList(list); // aloci 10b + erroare
+//  }
 }
 
 class Other {
