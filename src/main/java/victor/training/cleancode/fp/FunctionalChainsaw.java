@@ -14,7 +14,7 @@ public class FunctionalChainsaw/*Massacre*/ {
 	private final ProductRepo productRepo;
 	private final OrderRepo orderRepo;
 
-	public List<Product> getHotProducts() {
+  public List<Product> getHotProducts() {
     List<Long> hiddenProductIds = productRepo.getHiddenProductIds();
     // FP maniac averse to SQL = prost
     Map<Product, Integer> productCounts = orderRepo.findAll().stream()
