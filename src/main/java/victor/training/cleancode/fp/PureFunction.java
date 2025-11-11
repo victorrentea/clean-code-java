@@ -2,8 +2,6 @@ package victor.training.cleancode.fp;
 
 import lombok.RequiredArgsConstructor;
 import victor.training.cleancode.fp.support.*;
-import victor.training.cleancode.fp.support.Product;
-import victor.training.cleancode.fp.support.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,19 +15,22 @@ class PureFunction {
   private final CouponRepo couponRepo;
   private final ProductRepo productRepo;
 
-  // TODO extract complexity into a pure function
-  public Map<Long, Double> computePrices(long customerId, List<Long> productIds, Map<Long, Double> internalPrices) {
-    Customer customer = customerRepo.findById(customerId);
-    List<Product> products = productRepo.findAllById(productIds);
+  // TODO extract most complexity into a pure function
+  public Map<Long, Double> computePrices(
+      final long customerId,
+      final List<Long> productIds,
+      final Map<Long, Double> internalPrices) {
+    final Customer customer = customerRepo.findById(customerId); //+
+    final List<Product> products = productRepo.findAllById(productIds); // WHERE id IN (?,?..)
 
-    List<Coupon> usedCoupons = new ArrayList<>();
-    Map<Long, Double> finalPrices = new HashMap<>();
-    for (Product product : products) {
-      Double price = internalPrices.get(product.getId());
-      if (price == null) {
-        price = thirdPartyPricesApi.fetchPrice(product.getId());
-      }
-      for (Coupon coupon : customer.coupons()) {
+    final Map<Long, Double> initialPrices = fetchInitialPrices(internalPrices, products);
+
+    // apply coupons
+    final List<Coupon> usedCoupons = new ArrayList<>();
+    final Map<Long, Double> finalPrices = new HashMap<>();
+    for (final Product product : products) {
+      Double price = initialPrices.get(product.getId());
+      for (final Coupon coupon : customer.coupons()) {
         if (coupon.autoApply() && coupon.isApplicableFor(product) && !usedCoupons.contains(coupon)) {
           price = coupon.apply(product, price);
           usedCoupons.add(coupon);
@@ -37,9 +38,20 @@ class PureFunction {
       }
       finalPrices.put(product.getId(), price);
     }
-
     couponRepo.markUsedCoupons(customerId, usedCoupons);
     return finalPrices;
+  }
+
+  private Map<Long, Double> fetchInitialPrices(final Map<Long, Double> internalPrices, final List<Product> products) {
+    final Map<Long, Double> initialPrices = new HashMap<>();
+    for (final Product product : products) {
+      Double price = internalPrices.get(product.getId());
+      if (price == null) {
+        price = thirdPartyPricesApi.fetchPrice(product.getId());//+
+      }
+      initialPrices.put(product.getId(), price);
+    }
+    return initialPrices;
   }
 }
 
