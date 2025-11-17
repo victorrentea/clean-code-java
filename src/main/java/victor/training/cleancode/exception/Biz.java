@@ -11,10 +11,10 @@ public class Biz {
    public void applyDiscount(Order order, Customer customer) {
       System.out.println("START");
       if (order.getOfferDate().before(config.getLastPromoDate()) &&
-          customer.getMemberCard().isPresent()) { // TODO inside
-         int points = customer.getMemberCard().get().getFidelityPoints();
+          customer.getMemberCard() != null) { // TODO inside
+        int points = customer.getMemberCard().getFidelityPoints();
          order.setPrice(order.getPrice() * (100 - 2 * points) / 100);
-         System.out.println("APPLIED DISCOUNT using " + customer.getMemberCard().get().getBarcode());
+        System.out.println("APPLIED DISCOUNT using " + customer.getMemberCard().getBarcode());
       } else {
          System.out.println("NO DISCOUNT");
       }

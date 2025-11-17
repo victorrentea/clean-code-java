@@ -19,24 +19,36 @@ public class MutantPipeline {
   //region .add
   public List<LocalDate> getShipDates(List<Order> orders) {
     List<LocalDate> shipDates = new ArrayList<>();
-    orders.stream()
-        .filter(Order::isActive)
-        .forEach(order -> order.shipDate().ifPresent(shipDates::add));
+    /*List<LocalDate> shipDates = */
+//    orders.stream()
+//        .filter(Order::isActive)
+//        .map(order -> order.shipDate().orElseGet(()->))
+//        .forEach(order -> order.shipDate()
+//            .ifPresent(e -> shipDates.add(e)));
     return shipDates;
   }
+
   //endregion
   private final PaymentCardMapper paymentCardMapper;
 
   //region +=
+//  AtomicInteger
   public int totalActiveOrderPrice(List<Order> orders) {
-    int sum = 0;
-    for (Order order : orders) {
-      if (order.isActive()) {
-        sum += order.price();
-      }
-    }
+    int sum = orders.stream()
+        .filter(Order::isActive)
+        .mapToInt(Order::price)
+        .sum();
+//        .forEach(order -> {
+//          sum += order.price(); // side-effect in lambda care poate fi evitat
+//        });
+//        .reduce(0, (acc, x) -> acc + x); // reduce = FP kung-fu, de evitat in Java
     return sum;
   }
+// PURE FUNCTION =
+// - intoarce acelasi return pt aceiasi param
+// - nu face side-effects: nu modifica date in jur sau sa dea network calls(I/O)
+// ideal-> tot ce scrii dupa -> ar trebui sa fie pure function
+
   public PaymentCardDto updateCardAlias(long paymentCardId, long ssoId, String newAlias) {
     return paymentCardRepository.findById(paymentCardId)
         .filter(card -> card.getId() == ssoId)

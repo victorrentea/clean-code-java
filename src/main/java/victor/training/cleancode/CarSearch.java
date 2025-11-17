@@ -6,30 +6,30 @@ import java.util.stream.Collectors;
 class CarSearch {
 
   // run tests
-  public List<CarModel> filterCarModels(CarSearchCriteria criteria, List<CarModel> carModels) {
+  public List<CarModel> filterCarModels(
+      CarSearchCriteria criteria,
+      List<CarModel> carModels) {
     List<CarModel> results = carModels.stream()
-        .filter(carModel -> MathUtil.intervalsIntersect(
-            criteria.getStartYear(), criteria.getEndYear(),
-            carModel.getStartYear(), carModel.getEndYear()))
+        .filter(carModel -> criteria.getYearInterval().intersectsWith(carModel.getYearInterval()))
         .collect(Collectors.toList());
     System.out.println("More filtering logic ...");
     return results;
   }
+
 }
 
-class SomeOtherClientCode {
-  private void applyLengthFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-  }
-  private void applyCapacityFilter() { // pretend
-    System.out.println(MathUtil.intervalsIntersect(1000, 1600, 1250, 2000));
-  }
-}
 
 class MathUtil {
+}
 
-  public static boolean intervalsIntersect(int start1, int end1, int start2, int end2) {
-    return start1 <= end2 && start2 <= end1;
+//@Data// NU!
+// constructor, hash/eq, getteri (fara "get"), toString;
+// campurile sunt finale fara setteri
+// am explicitat in cod un concept de domeniu (interval)
+record Interval(int start, int end) { // tip nou
+  public boolean intersectsWith(Interval other) {
+    // logica in el daca lucreaza doar pe campurile mele
+    return start() <= other.end() && other.start() <= end(); // copiata cu grije de pe SO!
   }
 }
 
@@ -56,6 +56,10 @@ class CarSearchCriteria { // a DTO received from JSON
 
   public String getMake() {
     return make;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(getStartYear(), getEndYear());
   }
 }
 
@@ -97,6 +101,10 @@ class CarModel { // the Entity Model👑 test
 
   public String getModel() {
     return model;
+  }
+
+  public Interval getYearInterval() {
+    return new Interval(startYear, endYear);
   }
 }
 
