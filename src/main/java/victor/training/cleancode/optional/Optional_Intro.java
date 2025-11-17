@@ -13,15 +13,13 @@ public class Optional_Intro {
     // test with 10 points or no MemberCard
     System.out.println(getDiscountLine(new Customer(new MemberCard("bar", 60))));
     System.out.println(getDiscountLine(new Customer(new MemberCard("bar", 30))));
+    System.out.println(getDiscountLine(new Customer()));
   }
   public static String getDiscountLine(Customer customer) {
-    Optional<Discount> discount = computeDiscount(customer.getMemberCard());
-    if (discount.isPresent()) {
-      return "You got a discount of %" + discount.orElseThrow().globalPercentage();
-    }
-    return "Earn more points to be eligible for a discount"; // FOMO-n ei
+    return computeDiscount(customer.getMemberCard())
+        .map(d -> "You got a discount of %" + d.globalPercentage())
+        .orElse("Earn more points to be eligible for a discount");
   }
-
   private static Optional<Discount> computeDiscount(MemberCard card) {
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5, Map.of()));
