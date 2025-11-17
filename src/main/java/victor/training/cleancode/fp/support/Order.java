@@ -1,12 +1,13 @@
 package victor.training.cleancode.fp.support;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Order {
   private Long id;
-  private List<OrderLine> orderLines = List.of();
+  private List<OrderLine> orderLines = new ArrayList<>();
   private LocalDate creationDate;
   private LocalDate shipDate;
   private boolean active;
