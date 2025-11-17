@@ -21,6 +21,9 @@ public class Optional_Intro {
         .orElse("Earn more points to be eligible for a discount");
   }
   private static Optional<Discount> computeDiscount(MemberCard card) {
+    if (card == null) {
+      return Optional.empty();
+    }
     if (card.getFidelityPoints() >= 100) {
       return Optional.of(new Discount(5, Map.of()));
     }
