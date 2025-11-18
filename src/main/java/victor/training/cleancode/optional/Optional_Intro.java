@@ -16,7 +16,11 @@ public class Optional_Intro {
     System.out.println(getDiscountLine(new Customer()));
   }
   public static String getDiscountLine(Customer customer) {
-    return computeDiscount(customer.getMemberCard())
+    // principiu: incepi cu Optionalu' si .map.map.map pa el.
+    // Stream<Stream, Optional<Optional, Mono<Mono -> flatMap te scapa
+
+    return customer.getMemberCard()
+        .flatMap(Optional_Intro::computeDiscount)
         .map(d -> "You got a discount of %" + d.globalPercentage())
         .orElse("Earn more points to be eligible for a discount");
   }
