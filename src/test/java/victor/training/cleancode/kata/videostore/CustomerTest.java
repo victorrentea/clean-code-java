@@ -13,7 +13,7 @@ class CustomerTest {
     customer.addRental(new Movie("Star Wars", Movie.NEW_RELEASE), 6);
     customer.addRental(new Movie("Sofia", Movie.CHILDRENS), 7);
     customer.addRental(new Movie("Inception", Movie.REGULAR), 5);
-    customer.addRental(new Movie("Wicked", Movie.CHILDRENS), 3);
+    customer.addRental(new Movie("Wicked", null), 3);
 
     String expected = """
         Rental Record for John Doe
